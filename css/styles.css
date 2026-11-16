@@ -1476,6 +1476,7 @@ body.channel-b-active .nav-btn:hover {
   box-shadow: 4px 4px 0px var(--border-line);
   overflow: hidden;
   position: relative;
+  overscroll-behavior-x: contain;
 }
 
 .hanging-stage-header {
@@ -1556,6 +1557,7 @@ body.channel-b-active .nav-btn:hover {
   height: 480px;
   position: relative;
   overflow: hidden;
+  overscroll-behavior-x: contain;
   background: 
     radial-gradient(#121212 1px, transparent 1px),
     linear-gradient(to bottom, #FFFFFF 0%, #F5F5F0 100%);
@@ -1730,6 +1732,108 @@ body.channel-b-active .nav-btn:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hanging-hint {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: #666672;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wire-nav-arrows {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.wire-arrow-btn {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid var(--border-line);
+  background: var(--pure-white);
+  color: var(--dark-anthracite);
+  box-shadow: 2.5px 2.5px 0px var(--border-line);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease, opacity 0.2s ease, border-color 0.15s ease;
+}
+
+.wire-arrow-btn:hover:not(.disabled) {
+  background: var(--bauhaus-yellow);
+  color: #121216;
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 4px 4px 0px var(--border-line);
+}
+
+.wire-arrow-btn:active:not(.disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--border-line);
+  background: #FFD166;
+}
+
+.wire-arrow-btn .wire-arrow-icon {
+  font-size: 0.78rem;
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.wire-arrow-btn:hover:not(.disabled) .wire-arrow-icon {
+  transform: scale(1.15);
+}
+
+.wire-arrow-btn.disabled,
+.wire-arrow-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
+  filter: grayscale(0.5);
+}
+
+/* Modalità Cyber (Channel B) */
+body.channel-b-active .wire-arrow-btn {
+  background: rgba(14, 28, 48, 0.9);
+  color: #90E0EF;
+  border-color: rgba(0, 180, 216, 0.5);
+  box-shadow: 2.5px 2.5px 0px rgba(0, 180, 216, 0.4);
+}
+
+body.channel-b-active .wire-arrow-btn:hover:not(.disabled) {
+  background: #0077B6;
+  color: #FFFFFF;
+  border-color: #00B4D8;
+  box-shadow: 4px 4px 0px #00B4D8;
+}
+
+body.channel-b-active .wire-arrow-btn:active:not(.disabled) {
+  background: #03045E;
+}
+
+body.channel-b-active .wire-arrow-btn.disabled {
+  opacity: 0.25;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #667085;
+}
+
+body.channel-b-active .hanging-hint {
+  color: #90A0B5;
 }
 
 /* =====================================================================

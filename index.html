@@ -16,7 +16,7 @@
 
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/styles.css?v=2.5">
+  <link rel="stylesheet" href="css/styles.css?v=2.6">
 </head>
 <body class="crt-bezel-frame">
 
@@ -166,11 +166,17 @@
 
             <div class="hanging-stage-controls">
               <span class="hanging-hint">
-                ⇄ Scorri con la rotella o trackpad per navigare i progetti lungo il filo · Clicca su un foglio per aprire la scheda
+                Passa sopra un foglio per sollevarlo · Clicca per aprire la scheda
               </span>
               <div class="wire-nav-arrows">
-                <button id="btn-wire-scroll-left" class="nav-btn" title="Scorri a sinistra">◄ SCORRI</button>
-                <button id="btn-wire-scroll-right" class="nav-btn" title="Scorri a destra">SCORRI ►</button>
+                <button id="btn-wire-scroll-left" class="wire-arrow-btn" aria-label="Scorri indietro" title="Scorri indietro lungo il filo">
+                  <span class="wire-arrow-icon">◄</span>
+                  <span class="wire-arrow-label">INDIETRO</span>
+                </button>
+                <button id="btn-wire-scroll-right" class="wire-arrow-btn" aria-label="Scorri avanti" title="Scorri avanti lungo il filo">
+                  <span class="wire-arrow-label">AVANTI</span>
+                  <span class="wire-arrow-icon">►</span>
+                </button>
               </div>
             </div>
           </div>
@@ -754,14 +760,14 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/audio.js?v=2.5"></script>
-  <script src="js/heroSphere.js?v=2.5"></script>
-  <script src="js/hangingCatalog.js?v=2.5"></script>
-  <script src="js/dither.js?v=2.5"></script>
-  <script src="js/crane.js?v=2.5"></script>
-  <script src="js/modal.js?v=2.5"></script>
-  <script src="js/flute.js?v=2.5"></script>
-  <script src="js/main.js?v=2.5"></script>
+  <script src="js/audio.js?v=2.6"></script>
+  <script src="js/heroSphere.js?v=2.6"></script>
+  <script src="js/hangingCatalog.js?v=2.6"></script>
+  <script src="js/dither.js?v=2.6"></script>
+  <script src="js/crane.js?v=2.6"></script>
+  <script src="js/modal.js?v=2.6"></script>
+  <script src="js/flute.js?v=2.6"></script>
+  <script src="js/main.js?v=2.6"></script>
 
 </body>
 </html>
