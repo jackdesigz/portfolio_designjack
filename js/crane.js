@@ -254,17 +254,58 @@ class SuperCuteCandyClawMachine {
   setupScene() {
     this.scene = new THREE.Scene();
 
+    // Deep arcade noir atmosphere
+    this.scene.background = new THREE.Color(0x0a0a0f);
+    this.scene.fog = new THREE.Fog(0x0a0a0f, 14, 28);
+
     this.camera = new THREE.PerspectiveCamera(34, this.width / this.height, 0.1, 100);
     this.updateCameraFraming();
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.1;
 
     this.container.innerHTML = '';
     this.container.appendChild(this.renderer.domElement);
+
+    // Arcade floor plane (dark reflective)
+    const floorGeo = new THREE.PlaneGeometry(18, 18);
+    const floorMat = new THREE.MeshStandardMaterial({
+      color: 0x060608,
+      roughness: 0.08,
+      metalness: 0.72,
+      envMapIntensity: 1.0
+    });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -0.02;
+    floor.receiveShadow = true;
+    this.scene.add(floor);
+
+    // Rear arcade wall
+    const wallGeo = new THREE.PlaneGeometry(18, 10);
+    const wallMat = new THREE.MeshStandardMaterial({
+      color: 0x0d0d14,
+      roughness: 0.85,
+      metalness: 0.0
+    });
+    const wall = new THREE.Mesh(wallGeo, wallMat);
+    wall.position.set(0, 4, -5.5);
+    this.scene.add(wall);
+
+    // Side walls for depth
+    const sideWallMat = new THREE.MeshStandardMaterial({ color: 0x0c0c12, roughness: 0.9 });
+    [-7, 7].forEach(wx => {
+      const sw = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), sideWallMat);
+      sw.rotation.y = wx < 0 ? Math.PI / 2 : -Math.PI / 2;
+      sw.position.set(wx, 4, -1);
+      this.scene.add(sw);
+    });
 
     window.addEventListener('resize', () => this.onResize());
   }
@@ -309,20 +350,23 @@ class SuperCuteCandyClawMachine {
   }
 
   setupLighting() {
-    const ambient = new THREE.AmbientLight(0xffffff, 0.75);
+    // Very soft base ambient — keep it dark for arcade drama
+    const ambient = new THREE.AmbientLight(0x1a1030, 1.4);
     this.scene.add(ambient);
 
-    // Warm key spotlight casting realistic soft shadows
-    const warmKey = new THREE.SpotLight(0xfffaed, 1.8, 20, Math.PI / 3, 0.4, 1.2);
-    warmKey.position.set(2, 7.2, 5.8);
+    // Overhead warm-white key light from front-top — main scene illumination
+    const warmKey = new THREE.SpotLight(0xfff5e0, 2.4, 22, Math.PI / 3.5, 0.3, 1.0);
+    warmKey.position.set(1.5, 9, 7);
     warmKey.castShadow = true;
-    warmKey.shadow.mapSize.width = 1024;
-    warmKey.shadow.mapSize.height = 1024;
+    warmKey.shadow.mapSize.width = 2048;
+    warmKey.shadow.mapSize.height = 2048;
     warmKey.shadow.bias = -0.001;
+    warmKey.shadow.camera.near = 2;
+    warmKey.shadow.camera.far = 20;
     this.scene.add(warmKey);
 
-    // Dynamic downward spotlight mounted on gantry carriage that follows claw
-    this.clawSpotlight = new THREE.SpotLight(0xFFFFFF, 2.2, 7.5, Math.PI / 4.5, 0.35, 1.0);
+    // Dynamic claw-tracking spotlight — crisp focused beam inside cabinet
+    this.clawSpotlight = new THREE.SpotLight(0xd0eeff, 3.0, 8, Math.PI / 5, 0.25, 1.2);
     this.clawSpotlight.position.set(this.clawPos.x, 3.75, this.clawPos.z);
     this.clawSpotlightTarget = new THREE.Object3D();
     this.clawSpotlightTarget.position.set(this.clawPos.x, 1.15, this.clawPos.z);
@@ -330,80 +374,124 @@ class SuperCuteCandyClawMachine {
     this.clawSpotlight.target = this.clawSpotlightTarget;
     this.scene.add(this.clawSpotlight);
 
-    // Warm ceiling interior floodlight (illuminates the toys)
-    const ceilingLight = new THREE.PointLight(0xFFF3D8, 2.4, 7.5);
-    ceilingLight.position.set(0, 3.8, 0);
+    // Warm golden ceiling glow — the LED diffuser inside cabinet
+    const ceilingLight = new THREE.PointLight(0xFFE8A0, 3.2, 8.0);
+    ceilingLight.position.set(0.1, 3.72, 0);
     this.scene.add(ceilingLight);
 
-    // Prize trough retrieval light (warm amber glow inside hopper)
-    const troughLight = new THREE.PointLight(0xFFB703, 1.2, 2.0);
-    troughLight.position.set(this.chutePos.x, 0.45, this.chutePos.z + 0.3);
+    // Candy-neon CYAN accent light — left interior fill
+    this.neonCyan = new THREE.PointLight(0x00e5ff, 1.1, 5.5);
+    this.neonCyan.position.set(-1.6, 1.8, -0.5);
+    this.scene.add(this.neonCyan);
+
+    // Candy-neon RED accent — right interior rim
+    this.neonRed = new THREE.PointLight(0xff2244, 0.9, 5.0);
+    this.neonRed.position.set(1.8, 2.0, -0.8);
+    this.scene.add(this.neonRed);
+
+    // Golden retro bulb — from below/front for uplighting the machine face
+    this.neonGold = new THREE.PointLight(0xffb703, 1.2, 6.0);
+    this.neonGold.position.set(0, 0.5, 4.5);
+    this.scene.add(this.neonGold);
+
+    // Prize trough glow (amber)
+    const troughLight = new THREE.PointLight(0xFFB703, 2.0, 2.5);
+    troughLight.position.set(this.chutePos.x, 0.6, this.chutePos.z + 0.4);
     this.scene.add(troughLight);
 
-    // Rim and fill accents
-    const redRim = new THREE.DirectionalLight(0xE62020, 0.75);
-    redRim.position.set(-4, 3.5, -2);
+    // Strong red rim from back-left — Bauhaus drama
+    const redRim = new THREE.DirectionalLight(0xcc1122, 0.9);
+    redRim.position.set(-5, 4, -3);
     this.scene.add(redRim);
 
-    const yellowFill = new THREE.DirectionalLight(0xFFDD00, 0.55);
-    yellowFill.position.set(4, 2.5, -1);
-    this.scene.add(yellowFill);
+    // Golden bounce fill from right — warm retro feel
+    const goldFill = new THREE.DirectionalLight(0xFFCC44, 0.6);
+    goldFill.position.set(5, 3, -1);
+    this.scene.add(goldFill);
+
+    // Subtle cool backlight — separates machine from bg wall
+    const coolBack = new THREE.DirectionalLight(0x334488, 0.55);
+    coolBack.position.set(0, 5, -6);
+    this.scene.add(coolBack);
   }
 
   buildToyMachine() {
     const machine = new THREE.Group();
 
-    // High gloss molded candy red material
+    // High gloss molded candy red — deeper, richer with emissive warmth
     const redGlossMat = new THREE.MeshStandardMaterial({
-      color: 0xDC141E,
-      roughness: 0.12,
-      metalness: 0.18
+      color: 0xC50F18,
+      roughness: 0.08,
+      metalness: 0.22,
+      emissive: 0x3a0005,
+      emissiveIntensity: 0.4
     });
 
-    // Precision chassis gray material
+    // Precision chassis dark charcoal — industrial look
     const toyGrayMat = new THREE.MeshStandardMaterial({
-      color: 0xCBD2DE,
-      roughness: 0.28,
-      metalness: 0.22
+      color: 0x2a2d35,
+      roughness: 0.55,
+      metalness: 0.35
     });
 
-    // Gleaming polished mirror chrome
+    // Gleaming mirror chrome — maximum reflectivity
     const silverChromeMat = new THREE.MeshStandardMaterial({
-      color: 0xE8ECF4,
-      roughness: 0.06,
-      metalness: 0.98
-    });
-
-    // Arcade golden trim
-    const goldChromeMat = new THREE.MeshStandardMaterial({
-      color: 0xFFD700,
-      roughness: 0.1,
-      metalness: 0.95
-    });
-
-    // Clear acrylic walls with realistic refraction
-    const acrylicMat = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      transmission: 0.96,
-      opacity: 0.38,
-      transparent: true,
-      roughness: 0.02,
-      reflectivity: 0.95,
-      ior: 1.52
-    });
-
-    // Deep arcade rear mirror panel (creates authentic visual depth)
-    const rearMirrorMat = new THREE.MeshStandardMaterial({
-      color: 0x161820,
+      color: 0xd8e4f8,
       roughness: 0.03,
-      metalness: 0.98
+      metalness: 1.0,
+      envMapIntensity: 1.5
+    });
+
+    // Warm brushed gold trim
+    const goldChromeMat = new THREE.MeshStandardMaterial({
+      color: 0xFFCC22,
+      roughness: 0.08,
+      metalness: 0.98,
+      emissive: 0x332200,
+      emissiveIntensity: 0.3
+    });
+
+    // Clear acrylic walls — tinted very faintly cyan for a neon-lit look
+    const acrylicMat = new THREE.MeshPhysicalMaterial({
+      color: 0xe8f8ff,
+      transmission: 0.94,
+      opacity: 0.32,
+      transparent: true,
+      roughness: 0.015,
+      reflectivity: 0.98,
+      ior: 1.52,
+      thickness: 0.12
+    });
+
+    // Deep rear mirror with subtle blue-chrome tint
+    const rearMirrorMat = new THREE.MeshStandardMaterial({
+      color: 0x0a0c18,
+      roughness: 0.02,
+      metalness: 1.0,
+      envMapIntensity: 2.0
+    });
+
+    // Neon trim emissive strip — cyan glow
+    const neonCyanMat = new THREE.MeshStandardMaterial({
+      color: 0x00e5ff,
+      emissive: 0x00e5ff,
+      emissiveIntensity: 1.8,
+      roughness: 0.3
+    });
+
+    // Neon trim emissive strip — red glow
+    const neonRedMat = new THREE.MeshStandardMaterial({
+      color: 0xff2244,
+      emissive: 0xff2244,
+      emissiveIntensity: 1.5,
+      roughness: 0.3
     });
 
     const baseW = 4.6;
     const baseH = 0.65;
     const baseD = 3.6;
 
-    // 1. Lower Gray Chassis with extruded chrome base trim
+    // 1. Lower Chassis — dark industrial with chrome trim
     const lowerBaseGeo = new THREE.BoxGeometry(baseW, baseH, baseD);
     const lowerBase = new THREE.Mesh(lowerBaseGeo, toyGrayMat);
     lowerBase.position.set(0, baseH / 2, 0);
@@ -416,6 +504,12 @@ class SuperCuteCandyClawMachine {
     const btmTrim = new THREE.Mesh(btmTrimGeo, silverChromeMat);
     btmTrim.position.set(0, 0.03, 0);
     machine.add(btmTrim);
+
+    // Cyan neon accent strip along the base front
+    const neonBaseFrontGeo = new THREE.BoxGeometry(baseW - 0.4, 0.028, 0.028);
+    const neonBaseFront = new THREE.Mesh(neonBaseFrontGeo, neonCyanMat);
+    neonBaseFront.position.set(0.1, baseH * 0.55, baseD / 2 + 0.014);
+    machine.add(neonBaseFront);
 
     // Chrome T-Molding around upper base edge
     const midTrimGeo = new THREE.BoxGeometry(baseW + 0.06, 0.06, baseD + 0.06);
@@ -445,10 +539,20 @@ class SuperCuteCandyClawMachine {
 
     // Front Brushed Steel Coin Door Assembly
     const coinDoorGeo = new THREE.BoxGeometry(1.6, 0.44, 0.06);
-    const coinDoorMat = new THREE.MeshStandardMaterial({ color: 0x9AA0AF, metalness: 0.8, roughness: 0.3 });
+    const coinDoorMat = new THREE.MeshStandardMaterial({ color: 0x1a1d28, metalness: 0.9, roughness: 0.2 });
     const coinDoor = new THREE.Mesh(coinDoorGeo, coinDoorMat);
     coinDoor.position.set(0.65, 0.34, baseD / 2 + 0.03);
     machine.add(coinDoor);
+
+    // Red neon border around coin door
+    const coinDoorBorderMat = new THREE.MeshStandardMaterial({ color: 0xff2244, emissive: 0xff2244, emissiveIntensity: 1.2, roughness: 0.3 });
+    const doorBorderH = new THREE.BoxGeometry(1.68, 0.025, 0.025);
+    const doorTop = new THREE.Mesh(doorBorderH, coinDoorBorderMat);
+    doorTop.position.set(0.65, 0.34 + 0.22 + 0.012, baseD / 2 + 0.055);
+    machine.add(doorTop);
+    const doorBot = new THREE.Mesh(doorBorderH, coinDoorBorderMat);
+    doorBot.position.set(0.65, 0.34 - 0.22 - 0.012, baseD / 2 + 0.055);
+    machine.add(doorBot);
 
     // Dual illuminated 25¢ coin return buttons
     const coinBtnGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.03, 16);
@@ -521,6 +625,13 @@ class SuperCuteCandyClawMachine {
     ledgeLip.position.set(0.65, baseH + 0.12, baseD / 2 + 0.86);
     machine.add(ledgeLip);
 
+    // Cyan neon strip under ledge — illuminates the control deck from below
+    const ledgeNeonGeo = new THREE.CylinderGeometry(0.012, 0.012, 2.3, 8);
+    const ledgeNeon = new THREE.Mesh(ledgeNeonGeo, neonCyanMat);
+    ledgeNeon.rotation.z = Math.PI / 2;
+    ledgeNeon.position.set(0.65, baseH + 0.04, baseD / 2 + 0.72);
+    machine.add(ledgeNeon);
+
     // Sunburst Arcade Graphic Decal on Console
     const decalCanvas = document.createElement('canvas');
     decalCanvas.width = 512;
@@ -551,7 +662,7 @@ class SuperCuteCandyClawMachine {
     // 4. Three Retro Ball-Top Joystick Levers with Accordion Rubber Boots
     this.levers = [];
     const leverXPositions = [-0.62, 0.0, 0.62];
-    const leverBallColors = [0x00B4D8, 0xDCE0EB, 0xE5181F]; // Cyan, Chrome, Candy Red
+    const leverBallColors = [0x00e5ff, 0xf0f4ff, 0xE5181F]; // Neon Cyan, Bright Chrome, Candy Red
 
     leverXPositions.forEach((lx, i) => {
       // Chrome collar mounting plate
@@ -581,10 +692,13 @@ class SuperCuteCandyClawMachine {
 
       // High-gloss specular spherical ball top
       const ballGeo = new THREE.SphereGeometry(0.13, 24, 24);
+      const ballEmissive = [0x003344, 0x111122, 0x200005];
       const ballMat = new THREE.MeshStandardMaterial({
         color: leverBallColors[i],
-        roughness: 0.08,
-        metalness: 0.45
+        roughness: 0.05,
+        metalness: 0.5,
+        emissive: ballEmissive[i],
+        emissiveIntensity: 0.6
       });
       const ball = new THREE.Mesh(ballGeo, ballMat);
       ball.position.y = 0.44;
@@ -594,11 +708,12 @@ class SuperCuteCandyClawMachine {
       this.levers.push(leverGroup);
     });
 
-    // 5. Four Mirror Chrome Corner Pillars with Fluted Rings and Brackets
+    // 5. Four Mirror Chrome Corner Pillars with Fluted Rings and Neon Base Rings
     const colRadius = 0.11;
     const colHeight = 3.0;
     const colGeo = new THREE.CylinderGeometry(colRadius, colRadius, colHeight, 20);
     const ringGeo = new THREE.TorusGeometry(colRadius + 0.02, 0.022, 10, 20);
+    const neonRingGeo = new THREE.TorusGeometry(colRadius + 0.035, 0.016, 8, 24);
 
     const cornerCols = [
       [-baseW / 2 + 0.22, -baseD / 2 + 0.22],
@@ -607,7 +722,7 @@ class SuperCuteCandyClawMachine {
       [ baseW / 2 - 0.22,  baseD / 2 - 0.22]
     ];
 
-    cornerCols.forEach(([cx, cz]) => {
+    cornerCols.forEach(([cx, cz], ci) => {
       const col = new THREE.Mesh(colGeo, silverChromeMat);
       col.position.set(cx, baseH + 0.28 + colHeight / 2, cz);
       col.castShadow = true;
@@ -619,6 +734,15 @@ class SuperCuteCandyClawMachine {
         ring.rotation.x = Math.PI / 2;
         ring.position.set(cx, baseH + 0.28 + colHeight / 2 + ry, cz);
         machine.add(ring);
+      });
+
+      // Neon accent ring at column base and top — alternating cyan/red
+      const neonRingMat = (ci % 2 === 0) ? neonCyanMat : neonRedMat;
+      [baseH + 0.32, baseH + 0.28 + colHeight - 0.04].forEach(ry => {
+        const nring = new THREE.Mesh(neonRingGeo, neonRingMat);
+        nring.rotation.x = Math.PI / 2;
+        nring.position.set(cx, ry, cz);
+        machine.add(nring);
       });
     });
 
@@ -678,13 +802,13 @@ class SuperCuteCandyClawMachine {
     // 8. Molded Glossy Red Canopy with Beveled Lips & Illuminated Diffuser
     const roofY = baseH + 0.28 + colHeight;
 
-    // Translucent Illuminated Ceiling Diffuser
+    // Translucent Illuminated Ceiling Diffuser — warm golden glow
     const ceilingDiffuserGeo = new THREE.PlaneGeometry(baseW - 0.2, baseD - 0.2);
     const ceilingDiffuserMat = new THREE.MeshStandardMaterial({
-      color: 0xFFFDF0,
-      emissive: 0xFFECC4,
-      emissiveIntensity: 0.65,
-      roughness: 0.25
+      color: 0xFFFAE0,
+      emissive: 0xFFCC55,
+      emissiveIntensity: 1.1,
+      roughness: 0.18
     });
     const ceilingPanel = new THREE.Mesh(ceilingDiffuserGeo, ceilingDiffuserMat);
     ceilingPanel.rotation.x = Math.PI / 2;
@@ -704,88 +828,157 @@ class SuperCuteCandyClawMachine {
     canopyTrim.position.set(0, roofY + 0.025, 0);
     machine.add(canopyTrim);
 
+    // Red neon edge strip on canopy underside perimeter
+    const canopyNeonFrontGeo = new THREE.BoxGeometry(baseW + 0.44, 0.022, 0.022);
+    const canopyNeonFront = new THREE.Mesh(canopyNeonFrontGeo, neonRedMat);
+    canopyNeonFront.position.set(0, roofY + 0.025, baseD / 2 + 0.22);
+    machine.add(canopyNeonFront);
+    const canopyNeonBack = new THREE.Mesh(canopyNeonFrontGeo, neonRedMat);
+    canopyNeonBack.position.set(0, roofY + 0.025, -(baseD / 2 + 0.22));
+    machine.add(canopyNeonBack);
+    const canopyNeonSideGeo = new THREE.BoxGeometry(0.022, 0.022, baseD + 0.44);
+    [-( baseW / 2 + 0.22), baseW / 2 + 0.22].forEach(nx => {
+      const sn = new THREE.Mesh(canopyNeonSideGeo, neonRedMat);
+      sn.position.set(nx, roofY + 0.025, 0);
+      machine.add(sn);
+    });
+
     // Stepped Upper Roof Lip
     const topTrayGeo = new THREE.BoxGeometry(baseW + 0.12, 0.22, baseD + 0.12);
     const topTray = new THREE.Mesh(topTrayGeo, redGlossMat);
     topTray.position.set(0, roofY + 0.56, 0);
     machine.add(topTray);
 
-    // Retro Marquee Arch Sign on Canopy ("★ JACK'S CANDY CLAW ★")
+    // Retro Marquee Sign -- premium dark LED panel look
     const marqueeCanvas = document.createElement('canvas');
     marqueeCanvas.width = 1024;
-    marqueeCanvas.height = 180;
+    marqueeCanvas.height = 200;
     const mctx = marqueeCanvas.getContext('2d');
-    
-    // Radiant gradient red background
-    const grad = mctx.createLinearGradient(0, 0, 1024, 0);
-    grad.addColorStop(0, '#B80D17');
-    grad.addColorStop(0.5, '#E5181F');
-    grad.addColorStop(1, '#B80D17');
-    mctx.fillStyle = grad;
-    mctx.fillRect(0, 0, 1024, 180);
 
-    // Gold decorative border
+    // Deep noir BG
+    const gradM = mctx.createLinearGradient(0, 0, 0, 200);
+    gradM.addColorStop(0, '#1a0005');
+    gradM.addColorStop(0.4, '#060001');
+    gradM.addColorStop(1, '#1a0005');
+    mctx.fillStyle = gradM;
+    mctx.fillRect(0, 0, 1024, 200);
+
+    // Outer gold border
     mctx.strokeStyle = '#FFD700';
     mctx.lineWidth = 10;
-    mctx.strokeRect(8, 8, 1008, 164);
+    mctx.strokeRect(5, 5, 1014, 190);
 
-    // Inner subtle gold border
-    mctx.strokeStyle = 'rgba(255, 215, 0, 0.4)';
+    // Inner red thin border
+    mctx.strokeStyle = '#E5181F';
     mctx.lineWidth = 3;
-    mctx.strokeRect(18, 18, 988, 144);
+    mctx.strokeRect(18, 18, 988, 164);
 
-    // Arcade Title typography
+    // LED dot grid
+    mctx.fillStyle = 'rgba(255,200,0,0.07)';
+    for (let gx = 24; gx < 1000; gx += 8) {
+      for (let gy = 24; gy < 176; gy += 8) {
+        mctx.fillRect(gx, gy, 3, 3);
+      }
+    }
+
+    // Main title with gold glow
+    mctx.shadowColor = '#FFD700';
+    mctx.shadowBlur = 20;
     mctx.fillStyle = '#FFFFFF';
-    mctx.font = '900 68px "Montserrat", sans-serif';
+    mctx.font = '900 70px "Montserrat", sans-serif';
     mctx.textAlign = 'center';
-    mctx.shadowColor = 'rgba(0,0,0,0.8)';
-    mctx.shadowBlur = 12;
-    mctx.fillText('★ JACK’S TOY CLAW ★', 512, 92);
+    mctx.fillText('\u2605  JACK\u2019S TOY CLAW  \u2605', 512, 100);
 
-    // Arcade Subtitle
+    // Subtitle
+    mctx.shadowColor = '#FF4455';
+    mctx.shadowBlur = 10;
+    mctx.fillStyle = '#FFD700';
+    mctx.font = '700 26px "Montserrat", sans-serif';
+    mctx.fillText('\u2756  RETRO ARCADE  \u00B7  PESCA UN PROGETTO!  \u2756', 512, 152);
     mctx.shadowBlur = 0;
-    mctx.fillStyle = '#FFDD00';
-    mctx.font = '700 30px "Montserrat", sans-serif';
-    mctx.fillText('✦ RETRO ARCADE · PESCA UN PROGETTO! ✦', 512, 144);
 
     const marqueeTex = new THREE.CanvasTexture(marqueeCanvas);
-    const marqueeGeo = new THREE.PlaneGeometry(3.6, 0.44);
-    const marqueeMat = new THREE.MeshBasicMaterial({ map: marqueeTex });
+    const marqueeGeo = new THREE.PlaneGeometry(4.0, 0.52);
+    const marqueeMat = new THREE.MeshStandardMaterial({
+      map: marqueeTex,
+      emissive: 0x220005,
+      emissiveIntensity: 0.4,
+      emissiveMap: marqueeTex
+    });
     const marqueeMesh = new THREE.Mesh(marqueeGeo, marqueeMat);
-    marqueeMesh.position.set(0, roofY + 0.24, baseD / 2 + 0.22);
+    marqueeMesh.position.set(0, roofY + 0.26, baseD / 2 + 0.22);
     machine.add(marqueeMesh);
 
-    // Marquee Chaser Bulbs along front roofline with Emissive Glow
+    // Marquee Chaser Bulbs — 3-state color cycle (yellow/red/off)
     this.marqueeBulbs = [];
-    const bulbGeo = new THREE.SphereGeometry(0.05, 12, 12);
-    for (let b = -1.9; b <= 1.9; b += 0.38) {
+    const bulbGeo = new THREE.SphereGeometry(0.055, 12, 12);
+    for (let b = -2.1; b <= 2.1; b += 0.35) {
       const bMat = new THREE.MeshStandardMaterial({
         color: 0xFFDD00,
         emissive: 0xFFAA00,
-        emissiveIntensity: 0.85,
-        roughness: 0.2
+        emissiveIntensity: 1.4,
+        roughness: 0.15
       });
       const bulb = new THREE.Mesh(bulbGeo, bMat);
-      bulb.position.set(b, roofY + 0.46, baseD / 2 + 0.23);
+      bulb.position.set(b, roofY + 0.5, baseD / 2 + 0.24);
       machine.add(bulb);
       this.marqueeBulbs.push(bulb);
     }
 
-    // Playfield Bed Floor with subtle chrome edge
+    // Playfield Bed Floor — dark mirror surface with subtle emissive
     const bedGeo = new THREE.BoxGeometry(baseW - 0.2, 0.1, baseD - 0.2);
-    const bedMat = new THREE.MeshStandardMaterial({ color: 0xE2E4EB, roughness: 0.45, metalness: 0.1 });
+    const bedMat = new THREE.MeshStandardMaterial({
+      color: 0x14141c,
+      roughness: 0.12,
+      metalness: 0.65,
+      emissive: 0x000820,
+      emissiveIntensity: 0.3
+    });
     const bed = new THREE.Mesh(bedGeo, bedMat);
     bed.position.set(0, baseH + 0.29, 0);
     bed.receiveShadow = true;
     machine.add(bed);
 
+    // Cyan neon strip around inside bed perimeter
+    const bedNeonFrontGeo = new THREE.BoxGeometry(baseW - 0.24, 0.016, 0.016);
+    const bedNeonFront = new THREE.Mesh(bedNeonFrontGeo, neonCyanMat);
+    bedNeonFront.position.set(0, baseH + 0.35, baseD / 2 - 0.18);
+    machine.add(bedNeonFront);
+    const bedNeonBack = new THREE.Mesh(bedNeonFrontGeo, neonCyanMat);
+    bedNeonBack.position.set(0, baseH + 0.35, -(baseD / 2 - 0.18));
+    machine.add(bedNeonBack);
+    const bedNeonSideGeo = new THREE.BoxGeometry(0.016, 0.016, baseD - 0.24);
+    [-(baseW / 2 - 0.18), baseW / 2 - 0.18].forEach(bx => {
+      const bs = new THREE.Mesh(bedNeonSideGeo, neonCyanMat);
+      bs.position.set(bx, baseH + 0.35, 0);
+      machine.add(bs);
+    });
+
     this.scene.add(machine);
   }
 
   buildGantryAndClaw() {
-    const silverMat = new THREE.MeshStandardMaterial({ color: 0xE2E6F2, metalness: 0.98, roughness: 0.08 });
-    const goldMat = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.92, roughness: 0.12 });
-    const rubberMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1E, roughness: 0.85 });
+    const silverMat = new THREE.MeshStandardMaterial({
+      color: 0xc8d8f0,
+      metalness: 1.0,
+      roughness: 0.04,
+      envMapIntensity: 1.5
+    });
+    const goldMat = new THREE.MeshStandardMaterial({
+      color: 0xFFCC22,
+      metalness: 0.98,
+      roughness: 0.07,
+      emissive: 0x221100,
+      emissiveIntensity: 0.3
+    });
+    const rubberMat = new THREE.MeshStandardMaterial({ color: 0x0e0e12, roughness: 0.9 });
+    const clawBodyMat = new THREE.MeshStandardMaterial({
+      color: 0xC50F18,
+      roughness: 0.1,
+      metalness: 0.25,
+      emissive: 0x200003,
+      emissiveIntensity: 0.4
+    });
 
     // Dual polished chrome rail tubes for X axis
     const railXGeo = new THREE.CylinderGeometry(0.045, 0.045, 4.0, 16);
@@ -812,8 +1005,7 @@ class SuperCuteCandyClawMachine {
     // Motorized Carriage Box with Stepper Motor & Warning LED
     this.carriageZ = new THREE.Group();
     const carGeo = new THREE.BoxGeometry(0.48, 0.16, 0.48);
-    const carMat = new THREE.MeshStandardMaterial({ color: 0xDC141E, roughness: 0.15, metalness: 0.15 });
-    const carBody = new THREE.Mesh(carGeo, carMat);
+    const carBody = new THREE.Mesh(carGeo, clawBodyMat);
     this.carriageZ.add(carBody);
 
     // Motor cylinder on top of carriage
@@ -902,17 +1094,26 @@ class SuperCuteCandyClawMachine {
 
   // Spawns 68+ crinkled metallic candy foil wrappers (Gold, Purple, Cyan, Magenta, Emerald, Orange)
   spawnCandyFoilWrappers() {
-    const foilColors = [0xFFD700, 0x8338EC, 0xFF007F, 0x00E5FF, 0x06D6A0, 0xFB5607];
+    const foilColorData = [
+      { c: 0xFFD700, e: 0x332200 },
+      { c: 0x9B40FF, e: 0x0d0020 },
+      { c: 0xFF007F, e: 0x200010 },
+      { c: 0x00E5FF, e: 0x001522 },
+      { c: 0x06D6A0, e: 0x001a0d },
+      { c: 0xFF6020, e: 0x1a0800 }
+    ];
     const floorY = 1.15;
 
     for (let i = 0; i < 68; i++) {
-      const col = foilColors[i % foilColors.length];
+      const colData = foilColorData[i % foilColorData.length];
       const candyGroup = new THREE.Group();
 
       const foilMat = new THREE.MeshStandardMaterial({
-        color: col,
-        metalness: 0.96,
-        roughness: 0.12
+        color: colData.c,
+        metalness: 0.98,
+        roughness: 0.06,
+        emissive: colData.e,
+        emissiveIntensity: 0.6
       });
 
       // Center sweet cylinder
@@ -992,14 +1193,14 @@ class SuperCuteCandyClawMachine {
     const capHeight = 0.26;
 
     const toyCapsuleColors = [
-      { hex: 0xE5181F, name: 'red' },
-      { hex: 0xFFDD00, name: 'yellow' },
-      { hex: 0x8338EC, name: 'purple' },
-      { hex: 0x00B4D8, name: 'cyan' },
-      { hex: 0x06D6A0, name: 'green' },
-      { hex: 0xFB5607, name: 'orange' },
-      { hex: 0xFFDD00, name: 'yellow' },
-      { hex: 0xE5181F, name: 'red' }
+      { hex: 0xFF1A28, name: 'red',    emissive: 0x280003 },
+      { hex: 0xFFE01A, name: 'yellow', emissive: 0x1a1000 },
+      { hex: 0x9B40FF, name: 'purple', emissive: 0x0d0020 },
+      { hex: 0x00C8FF, name: 'cyan',   emissive: 0x001822 },
+      { hex: 0x00E87A, name: 'green',  emissive: 0x001a0d },
+      { hex: 0xFF6020, name: 'orange', emissive: 0x1a0800 },
+      { hex: 0xFFE01A, name: 'yellow', emissive: 0x1a1000 },
+      { hex: 0xFF1A28, name: 'red',    emissive: 0x280003 }
     ];
 
     // Crystal clear acrylic top dome material
@@ -1032,11 +1233,13 @@ class SuperCuteCandyClawMachine {
 
       const capGroup = new THREE.Group();
 
-      // Bottom half: opaque colorful glossy plastic
+      // Bottom half: vivid glossy plastic with subtle emissive inner radiance
       const btmMat = new THREE.MeshStandardMaterial({
         color: capCol.hex,
-        roughness: 0.15,
-        metalness: 0.1
+        roughness: 0.1,
+        metalness: 0.08,
+        emissive: capCol.emissive,
+        emissiveIntensity: 1.0
       });
 
       const bodyGeo = new THREE.CylinderGeometry(capRadius, capRadius, capHeight, 20);
@@ -1362,23 +1565,45 @@ class SuperCuteCandyClawMachine {
     // Update Arcade Levers Spring Physics
     this.updateLeverPhysics();
 
-    // Marquee bulbs blinking sequence with emissive radiance
-    if (this.marqueeBulbs.length && this.time % 12 === 0) {
-      const step = Math.floor(this.time / 12) % 2;
+    // Marquee bulbs — 3-state chaser: yellow / red / dim (every 8 frames)
+    if (this.marqueeBulbs.length && this.time % 8 === 0) {
+      const step = Math.floor(this.time / 8) % 3;
       this.marqueeBulbs.forEach((b, i) => {
-        if (i % 2 === step) {
+        const phase = (i + step) % 3;
+        if (phase === 0) {
           b.material.color.setHex(0xFFDD00);
-          if (b.material.emissive) b.material.emissive.setHex(0xFFAA00);
+          b.material.emissive.setHex(0xFFAA00);
+          b.material.emissiveIntensity = 1.6;
+        } else if (phase === 1) {
+          b.material.color.setHex(0xFF2244);
+          b.material.emissive.setHex(0xCC0022);
+          b.material.emissiveIntensity = 1.3;
         } else {
-          b.material.color.setHex(0xE5181F);
-          if (b.material.emissive) b.material.emissive.setHex(0x990A12);
+          b.material.color.setHex(0x1a0003);
+          b.material.emissive.setHex(0x000000);
+          b.material.emissiveIntensity = 0;
         }
       });
     }
 
-    // Gentle spinning of internal tokens
-    this.capsules.forEach(c => {
-      if (c.token) c.token.rotation.y += 0.02;
+    // Animated neon accent lights — slow pulse in and out
+    const t = this.time * 0.025;
+    if (this.neonCyan) {
+      this.neonCyan.intensity = 0.6 + 0.5 * Math.sin(t * 1.1);
+    }
+    if (this.neonRed) {
+      this.neonRed.intensity = 0.5 + 0.4 * Math.sin(t * 0.9 + 1.2);
+    }
+    if (this.neonGold) {
+      this.neonGold.intensity = 0.8 + 0.4 * Math.sin(t * 0.7 + 0.5);
+    }
+
+    // Gentle spinning of internal tokens + slight bob
+    this.capsules.forEach((c, ci) => {
+      if (c.token) {
+        c.token.rotation.y += 0.022;
+        c.token.position.y = Math.sin(this.time * 0.04 + ci * 0.8) * 0.018;
+      }
     });
 
     // 1. CALCULATE CABLE LENGTH AND PENDULUM SWAY PHYSICS
