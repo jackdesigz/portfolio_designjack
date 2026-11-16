@@ -169,6 +169,11 @@ class HangingCatalogWire {
     const btnScrollLeft = document.getElementById('btn-wire-scroll-left');
     const btnScrollRight = document.getElementById('btn-wire-scroll-right');
 
+    const getMaxScroll = () => {
+      const containerW = this.container ? (this.container.clientWidth || 900) : 900;
+      return -(this.sheets.length * 280 - containerW + 140);
+    };
+
     if (btnScrollLeft) {
       btnScrollLeft.addEventListener('click', () => {
         this.targetScrollX = Math.min(0, this.targetScrollX + 340);
@@ -178,18 +183,112 @@ class HangingCatalogWire {
 
     if (btnScrollRight) {
       btnScrollRight.addEventListener('click', () => {
-        const maxScroll = -(this.sheets.length * 280 - (this.container.clientWidth || 900) + 120);
+        const maxScroll = getMaxScroll();
         this.targetScrollX = Math.max(maxScroll, this.targetScrollX - 340);
         if (window.audioEngine) window.audioEngine.playCableTwang();
       });
     }
 
+    // SCROLL INTERCEPTION: Quando l'utente scorre la pagina e arriva al filo,
+    // lo scorrimento verticale muove i progetti sul filo in orizzontale!
+    const wireSection = document.getElementById('wire-catalog-section');
+    let lastAudioTriggerX = 0;
+
+    const handleWheel = (e) => {
+      // Non intercettare se c'è un modale aperto
+      if (document.body.classList.contains('modal-open')) return;
+
+      // Attivo solo sul Canale R
+      const channelR = document.getElementById('channel-view-r');
+      if (channelR && !channelR.classList.contains('active')) return;
+
+      const rect = wireSection ? wireSection.getBoundingClientRect() : null;
+      if (!rect) return;
+
+      const navH = 65;
+      const isCursorOverSection = this.container && (this.container.contains(e.target) || (wireSection && wireSection.contains(e.target)));
+      // Considerato "arrivato al filo" quando la sezione è ancorata in alto o il mouse è sopra
+      const isArrivedAtWire = (rect.top <= navH + 80 && rect.bottom >= window.innerHeight * 0.45);
+
+      if (isCursorOverSection || isArrivedAtWire) {
+        const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+        const delta = isHorizontal ? e.deltaX : e.deltaY;
+        const maxScroll = getMaxScroll();
+
+        if (!isHorizontal) {
+          if (delta > 0) {
+            // Scorrimento in GIÙ -> muove i fogli a DESTRA verso la fine
+            if (this.targetScrollX > maxScroll + 20) {
+              e.preventDefault();
+
+              // Se la sezione non è perfettamente allineata col top dello schermo, la aggancia dolcemente
+              if (rect.top > navH && Math.abs(rect.top - navH) > 10) {
+                window.scrollBy({ top: rect.top - navH, behavior: 'auto' });
+              }
+
+              this.targetScrollX = Math.max(maxScroll, this.targetScrollX - delta * 1.35);
+
+              // Feedback sonoro ogni tot pixel di scorrimento
+              if (Math.abs(this.targetScrollX - lastAudioTriggerX) > 360) {
+                lastAudioTriggerX = this.targetScrollX;
+                if (window.audioEngine) window.audioEngine.playPaperFlutter();
+              }
+              return;
+            }
+            // Fine dei progetti raggiunta: lascia continuare lo scorrimento naturale verso la Claw Machine!
+          } else if (delta < 0) {
+            // Scorrimento in SU -> muove i fogli a SINISTRA verso l'inizio
+            if (this.targetScrollX < -20) {
+              e.preventDefault();
+
+              if (rect.top < navH && Math.abs(rect.top - navH) > 10) {
+                window.scrollBy({ top: rect.top - navH, behavior: 'auto' });
+              }
+
+              this.targetScrollX = Math.min(0, this.targetScrollX - delta * 1.35);
+
+              if (Math.abs(this.targetScrollX - lastAudioTriggerX) > 360) {
+                lastAudioTriggerX = this.targetScrollX;
+                if (window.audioEngine) window.audioEngine.playPaperFlutter();
+              }
+              return;
+            }
+            // Inizio dei progetti raggiunto: lascia continuare lo scorrimento naturale verso l'Hero!
+          }
+        } else {
+          // Gesto orizzontale trackpad nativo
+          if ((delta > 0 && this.targetScrollX > maxScroll) || (delta < 0 && this.targetScrollX < 0)) {
+            e.preventDefault();
+            this.targetScrollX = Math.min(0, Math.max(maxScroll, this.targetScrollX - delta));
+          }
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+
+    // Touch swipe su dispositivi touch
     if (this.container) {
-      this.container.addEventListener('wheel', (e) => {
-        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : (Math.abs(e.deltaY) > 10 ? e.deltaY * 0.6 : 0);
-        if (delta !== 0) {
-          const maxScroll = -(this.sheets.length * 280 - (this.container.clientWidth || 900) + 120);
-          this.targetScrollX = Math.min(0, Math.max(maxScroll, this.targetScrollX - delta));
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let startTargetScrollX = 0;
+
+      this.container.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          startTargetScrollX = this.targetScrollX;
+        }
+      }, { passive: true });
+
+      this.container.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 1) {
+          const diffX = e.touches[0].clientX - touchStartX;
+          const diffY = e.touches[0].clientY - touchStartY;
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            const maxScroll = getMaxScroll();
+            this.targetScrollX = Math.min(0, Math.max(maxScroll, startTargetScrollX + diffX * 1.5));
+          }
         }
       }, { passive: true });
     }
