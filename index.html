@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>designjack // CANALE [R] — Portfolio di Jacopo</title>
+  <meta name="description" content="Portfolio di Jacopo (designjack) — Communication & Digital Designer. Cyber-Bauhaus, Geometria Sferica 3D, Fogli Appesi al Filo e Toy Candy Claw Machine.">
+
+  <!-- Google Fonts: Montserrat, JetBrains Mono, Syne (Organic/Street G), Comfortaa (Calm Marine B) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Comfortaa:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Montserrat:ital,wght@0,300..900;1,300..900&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700&family=Press+Start+2P&family=Syne:wght@500;600;700;800&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+  <!-- Three.js (r128) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Custom Stylesheet & Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="crt-bezel-frame">
+
+  <!-- CRT Global Scanlines & Curvature Screen Filter (Hardware-Safe) -->
+  <div id="crt-screen-overlay"></div>
+  <div id="crt-roll-bar"></div>
+
+  <!-- CRT Monitor Power-Off / Power-On Animation Overlay -->
+  <div id="crt-transition-fx">
+    <div class="crt-beam"></div>
+  </div>
+
+  <!-- ===================================================================
+       1. INTRO / PRELOADER ANIMATO ("JACK-IN-THE-BOX")
+       =================================================================== -->
+  <div id="preloader">
+    <div class="preloader-crosshairs"></div>
+    <div class="preloader-center-content">
+      <div class="preloader-brand">
+        <span id="preloader-design">design</span><span id="preloader-jack">jack</span>
+      </div>
+
+      <div class="preloader-spring-box">
+        <div class="preloader-meter">
+          <div id="preloader-progress-fill"></div>
+        </div>
+      </div>
+
+      <button id="preloader-skip" class="preloader-skip-btn">[ SALTA INTRO -> ]</button>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       2. NAVIGATION HEADER (TOP-MENU RGB CENTRATO)
+       =================================================================== -->
+  <header id="main-nav">
+    <div class="nav-left">
+      <a href="#hero" class="brand-logo-container" title="designjack">
+        <span class="brand-channel-dot"></span>
+        <span class="brand-name">design<span class="brand-jack">jack</span></span>
+      </a>
+    </div>
+
+    <!-- Selettore Canali RGB Centrato -->
+    <div class="nav-center">
+      <nav class="channel-selector-group" aria-label="Selettore Canali">
+        <button id="channel-btn-r" class="channel-tab channel-r active" title="Canale R — Works & Playground">
+          [ R ]
+        </button>
+        <button id="channel-btn-g" class="channel-tab channel-g" title="Canale G — jacopo Febi">
+          [ G ]
+        </button>
+        <button id="channel-btn-b" class="channel-tab channel-b" title="Canale B — Contatti">
+          [ B ]
+        </button>
+      </nav>
+    </div>
+
+    <div class="nav-right">
+      <button id="hud-audio-toggle" class="nav-btn audio-toggle" title="Attiva/Disattiva Audio">
+        AUDIO: ON
+      </button>
+
+      <a id="nav-jump-crane" href="#crane-section" class="nav-btn arcade-jump" title="Gioca alla Toy Claw Machine">
+        [ TOY CLAW ARCADE ↓ ]
+      </a>
+    </div>
+  </header>
+
+  <!-- Notification Toast for Channels -->
+  <div id="channel-toast"></div>
+
+  <!-- ===================================================================
+       MAIN CONTENT (CHANNELS R & G)
+       =================================================================== -->
+  <main id="main-app" class="preload-hidden">
+
+    <!-- ===============================================================
+         CANALE [R] — WORKS & CLAW MACHINE
+         =============================================================== -->
+    <div id="channel-view-r" class="channel-view active">
+
+      <!-- -------------------------------------------------------------
+           1. INTRODUZIONE (HERO WINDOW CON GEOMETRIA SFERICA 3D)
+           ------------------------------------------------------------- -->
+      <section id="hero" class="cyber-window hero-window">
+        <div class="window-topbar">
+          <div class="bauhaus-controls">
+            <span class="ctrl-shape ctrl-circle" title="Cerchio"></span>
+            <span class="ctrl-shape ctrl-triangle" title="Triangolo"></span>
+            <span class="ctrl-shape ctrl-square" title="Quadrato"></span>
+          </div>
+          <div class="window-title">CHI SONO</div>
+          <div></div>
+        </div>
+
+        <div class="window-body">
+          <div class="hero-content-wrapper">
+            <div class="hero-text-block">
+              <h1 class="hero-title">
+                Form Follows <span class="accent-red">Function</span>.<br>
+                Jack-in-the-Box Core.
+              </h1>
+              <p class="hero-bio">
+                Ciao, sono <strong>Jacopo (designjack)</strong>, Communication & Digital Designer. Esploro la convergenza tra grafica, sistemi interattivi e 3D. Sei nel <strong>Canale [R]</strong>: scopri i progetti stesi sul <strong>filo da studio</strong> oppure pesca le capsule con la <strong>Toy Candy Claw Machine</strong> in fondo.
+              </p>
+              <div class="hero-cta-row">
+                <a href="#wire-catalog-section" class="hero-cta-btn primary">[ PROGETTI SU FILO ↓ ]</a>
+                <a href="#crane-section" class="hero-cta-btn">[ TOY CLAW ARCADE ↓ ]</a>
+              </div>
+            </div>
+
+            <!-- 3D GEOMETRIA SFERICA INTERATTIVA -->
+            <div class="hero-sphere-showcase">
+              <div class="sphere-box-topbar">
+                <span>GEOMETRIA SFERICA 3D</span>
+                <span style="color: var(--bauhaus-red);">●</span>
+              </div>
+              <div id="hero-sphere-viewport"></div>
+              <div class="sphere-interactive-hint">
+                <span>Trascina o muovi il cursore per ruotare</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- -------------------------------------------------------------
+           2. PROGETTI SU FILO GIA APERTI + TASTO "APRI CATALOGO INTERO"
+           ------------------------------------------------------------- -->
+      <section id="wire-catalog-section" class="cyber-window wire-catalog-window">
+        <div class="window-topbar">
+          <div class="bauhaus-controls">
+            <span class="ctrl-shape ctrl-circle"></span>
+            <span class="ctrl-shape ctrl-triangle"></span>
+            <span class="ctrl-shape ctrl-square"></span>
+          </div>
+          <div class="window-title">PROGETTI SU FILO // STUDIO WIRE</div>
+          <div></div>
+        </div>
+
+        <div class="wire-window-body">
+          <!-- FOGLI DI PROGETTO APPESI AL FILO CON FISICA ATTIVA -->
+          <div id="hanging-catalog-stage">
+            <div class="hanging-wire-arena">
+              <div class="overhead-steel-wire">
+                <div class="wire-turnbuckle left"></div>
+                <div class="wire-turnbuckle right"></div>
+              </div>
+              <div id="hanging-wire-track"></div>
+            </div>
+
+            <div class="hanging-stage-controls">
+              <span class="hanging-hint">
+                <span class="wire-indicator-dot"></span>
+                I progetti sono stesi sul filo da studio: passa sopra con il mouse per sollevarli e clicca per aprire la scheda.
+              </span>
+              <div class="wire-nav-arrows">
+                <button id="btn-wire-scroll-left" class="nav-btn" title="Scorri a sinistra">[ ◄ SCORRI ]</button>
+                <button id="btn-wire-scroll-right" class="nav-btn" title="Scorri a destra">[ SCORRI ► ]</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TASTO SOTTO IL FILO: APRI CATALOGO INTERO -->
+          <div class="full-catalog-launch-bar">
+            <button id="btn-open-full-catalog" class="btn-open-full-catalog" title="Apri il catalogo completo a schermo intero con griglia stile Instagram">
+              <span class="launch-icon">⤢</span>
+              <span class="launch-title">APRI CATALOGO INTERO</span>
+              <span class="launch-badge">[ GRIGLIA COMPLETA & FILTRI INTERATTIVI ]</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+
+    <!-- ---------------------------------------------------------------
+         4. TOY CANDY CLAW MACHINE 3D ALLA FINE (STANDALONE 3D)
+         --------------------------------------------------------------- -->
+    <section id="crane-section">
+      <div class="crane-standalone-header">
+        <h2 class="crane-station-title">
+          <span class="ctrl-shape ctrl-circle"></span>
+          TOY CLAW MACHINE 3D
+        </h2>
+      </div>
+
+      <div class="crane-standalone-stage">
+        <div class="crane-stage-hud">
+          <div class="stage-hud-badge">
+            <span class="ctrl-shape ctrl-circle"></span>
+            <span id="crane-status-hud">PRONTO // USA LE LEVE O WASD</span>
+          </div>
+        </div>
+
+        <div class="crane-hopper-marker">
+          <span class="ctrl-shape ctrl-triangle"></span>
+          <span>VASCHETTA PREMI</span>
+        </div>
+
+        <div id="crane-canvas-container"></div>
+
+        <div class="crane-bottom-dashboard">
+          <div class="dpad-container">
+            <button id="crane-btn-up" class="arcade-dpad-btn" title="Indietro [W / ▲]">▲</button>
+            <div class="dpad-row">
+              <button id="crane-btn-left" class="arcade-dpad-btn" title="Sinistra [A / ◄]">◄</button>
+              <button id="crane-btn-down" class="arcade-dpad-btn" title="Avanti [S / ▼]">▼</button>
+              <button id="crane-btn-right" class="arcade-dpad-btn" title="Destra [D / ►]">►</button>
+            </div>
+          </div>
+
+          <div class="arcade-instructions">
+            <div class="arcade-inst-title">COMANDI JOYSTICK ARCADE</div>
+            <div class="arcade-inst-keys">
+              Usa <kbd>WASD</kbd> o <kbd>Frecce</kbd> per muovere le leve sul ripiano frontale.
+            </div>
+          </div>
+
+          <div class="arcade-drop-container">
+            <button id="crane-btn-drop" class="btn-drop-claw" title="Pesca la capsula! [SPAZIO]">
+              <span>[ PESCA ]</span>
+              <span>▼</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER CANALE R -->
+    <footer>
+      <div class="footer-left">
+        <span class="footer-dot"></span>
+        <span>designjack © 2026 // Jacopo</span>
+      </div>
+      <div>
+        <span>Canale [R]</span>
+      </div>
+    </footer>
+
+    </div> <!-- Fine #channel-view-r -->
+
+    <!-- ===============================================================
+         CANALE [G] — ORGANIC & STREET ART AESTHETICS (JACOPO FEBI)
+         =============================================================== -->
+    <div id="channel-view-g" class="channel-view">
+      <section class="channel-g-stage">
+        
+        <!-- Topbar Organica con Gocce Fluide -->
+        <div class="channel-g-topbar">
+          <div class="organic-controls">
+            <span class="ctrl-organic-blob blob-1"></span>
+            <span class="ctrl-organic-blob blob-2"></span>
+            <span class="ctrl-organic-blob blob-3"></span>
+          </div>
+          <div class="channel-g-topbar-title">CANALE [G] // ORGANIC × STREET</div>
+          <div></div>
+        </div>
+
+        <div class="channel-g-canvas-arena">
+          
+          <!-- Elementi Grafici: Onde Organiche Armoniose (Ispirate al poster centrale della moodboard) -->
+          <div class="organic-waves-layer" aria-hidden="true">
+            <svg class="panton-ribbon-svg" viewBox="0 0 800 600" fill="none" preserveAspectRatio="none">
+              <!-- Stacked fluid organic ribbons in shades of green -->
+              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#E8F5E9" stroke-width="110" stroke-linecap="round" opacity="0.9"/>
+              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#C8E6C9" stroke-width="88" stroke-linecap="round" opacity="0.9"/>
+              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#81C784" stroke-width="66" stroke-linecap="round" opacity="0.9"/>
+              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#2E7D32" stroke-width="44" stroke-linecap="round" opacity="0.95"/>
+              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#70E000" stroke-width="22" stroke-linecap="round" opacity="1"/>
+            </svg>
+          </div>
+
+          <!-- Elementi Street Art & Graffiti (Sticker, stencil, spray tags dalla moodboard) -->
+          <div class="street-elements-layer">
+            <!-- Acid Star Sticker -->
+            <div class="street-sticker star-sticker">
+              <span class="sticker-star">★</span>
+              <span class="sticker-code">FEB! // 02</span>
+            </div>
+
+            <!-- Urban Barcode Sticker -->
+            <div class="street-sticker barcode-sticker">
+              <div class="sticker-bars"></div>
+              <span>DESIGNJACK.G</span>
+            </div>
+
+            <!-- Graffiti Spray Tag in Permanent Marker -->
+            <div class="street-tag-wrap">
+              <span class="spray-stencil-tag">PARK_SYS</span>
+              <div class="street-tag-graffiti">jacopo febi</div>
+            </div>
+          </div>
+
+          <!-- Contenuto Centrale Estetico con Font Syne -->
+          <div class="channel-g-hero-content">
+            <div class="channel-g-tag-pill">
+              <span class="dot-green"></span>
+              <span>BIO-TOPOLOGY × STREET CULTURE</span>
+            </div>
+            
+            <h1 class="channel-g-title">jacopo Febi</h1>
+            <p class="channel-g-manifesto">
+              Armonie organiche fluide incontrano la texture cruda dei graffiti e della strada.
+            </p>
+
+            <div class="channel-g-actions">
+              <button id="btn-return-channel-r-from-g" class="channel-g-return-btn" title="Ritorna al Canale [R]">
+                [ ← TORNA AL CANALE R ]
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FOOTER CANALE G -->
+        <footer class="channel-g-footer">
+          <div class="footer-left">
+            <span class="footer-dot" style="background-color: var(--channel-g);"></span>
+            <span>designjack // jacopo Febi</span>
+          </div>
+          <div>
+            <span style="color: var(--channel-g); font-weight: 700;">Canale [G] // Organico & Street</span>
+          </div>
+        </footer>
+      </section>
+    </div> <!-- Fine #channel-view-g -->
+
+    <!-- ===============================================================
+         CANALE [B] — CALM MARINE & BUBBLES AESTHETICS (CONTATTI)
+         =============================================================== -->
+    <div id="channel-view-b" class="channel-view">
+      <section class="channel-b-marine-stage">
+        
+        <!-- Topbar Marina Serena -->
+        <div class="channel-b-topbar">
+          <div class="marine-controls">
+            <span class="ctrl-marine-bubble bub-1"></span>
+            <span class="ctrl-marine-bubble bub-2"></span>
+            <span class="ctrl-marine-bubble bub-3"></span>
+          </div>
+          <div class="channel-b-topbar-title">CANALE [B] // CALM MARINE</div>
+          <div></div>
+        </div>
+
+        <!-- Arena Oceanica Calma con Bolle Fluttuanti e Anelli Vortice -->
+        <div class="channel-b-ocean-arena">
+          
+          <!-- Concentric Abyss Water Rings (Ispirati al vortice blu della moodboard) -->
+          <div class="ocean-vortex-rings" aria-hidden="true">
+            <div class="vortex-ring ring-1"></div>
+            <div class="vortex-ring ring-2"></div>
+            <div class="vortex-ring ring-3"></div>
+            <div class="vortex-ring ring-4"></div>
+          </div>
+
+          <!-- Contenitore Bolle Marine Interattive -->
+          <div id="marine-bubbles-container" class="marine-bubbles-container" aria-hidden="true">
+            <!-- Popolate dinamicamente con bolle di vetro trasparente e riflessi -->
+          </div>
+
+          <!-- Contenuto Centrale Minimalista: CONTATTI (Font Comfortaa) -->
+          <div class="channel-b-content-wrap">
+            <div class="channel-b-calm-badge">
+              <span class="marine-pulse-dot"></span>
+              <span>CALM WATERS // ABYSS LAB</span>
+            </div>
+
+            <h1 class="channel-b-title">CONTATTI</h1>
+
+            <p class="channel-b-quiet-lead">
+              Un porto quieto per collaborazioni, visioni digitali e nuovi progetti.
+            </p>
+
+            <div class="channel-b-links-row">
+              <a href="mailto:jacopo@designjack.it" class="channel-b-email-pill" title="Scrivi un'email a Jacopo">
+                <span class="email-drop-icon">💧</span>
+                <span>jacopo@designjack.it</span>
+              </a>
+              <button id="btn-return-channel-r-from-b" class="channel-b-return-btn" title="Ritorna al Canale [R]">
+                [ ← TORNA AL CANALE R ]
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FOOTER CANALE B -->
+        <footer class="channel-b-footer">
+          <div class="footer-left">
+            <span class="footer-dot" style="background-color: #00B4D8;"></span>
+            <span>designjack // jacopo Febi</span>
+          </div>
+          <div>
+            <span style="color: #90E0EF; font-weight: 700;">Canale [B] // Calm Marine</span>
+          </div>
+        </footer>
+      </section>
+    </div> <!-- Fine #channel-view-b -->
+
+  </main>
+
+  <!-- ===================================================================
+       FULLSCREEN CATALOGO INTERO (STILE INSTAGRAM CON FILTRI ATTIVI)
+       =================================================================== -->
+  <div id="fullscreen-catalog-modal" class="fullscreen-catalog-modal" role="dialog" aria-modal="true" aria-label="Catalogo Completo Progetti">
+    <div class="fullscreen-catalog-shell">
+      
+      <!-- Topbar Finestra Fullscreen -->
+      <div class="fullscreen-catalog-topbar">
+        <div class="topbar-branding">
+          <div class="bauhaus-controls">
+            <span class="ctrl-shape ctrl-circle"></span>
+            <span class="ctrl-shape ctrl-triangle"></span>
+            <span class="ctrl-shape ctrl-square"></span>
+          </div>
+          <span class="topbar-title">CATALOGO COMPLETO // ARCHIVIO PROGETTI</span>
+        </div>
+
+        <div class="topbar-actions">
+          <button id="btn-close-full-catalog" class="btn-close-fullscreen" title="Chiudi Catalogo [ESC]">
+            [ ✕ CHIUDI CATALOGO ]
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra dei Filtri Interattivi con Effetto Illuminazione su Hover -->
+      <div class="fullscreen-filters-bar">
+        <div class="filters-heading">
+          <span class="filter-dot"></span>
+          <span>DISCIPLINE:</span>
+        </div>
+
+        <nav class="fullscreen-filter-tabs" aria-label="Filtro discipline progetti">
+          <button class="insta-filter-pill active" data-filter="all">[ TUTTI ]</button>
+          <button class="insta-filter-pill" data-filter="Graphic Design">[ GRAPHIC DESIGN ]</button>
+          <button class="insta-filter-pill" data-filter="Interaction Design">[ INTERACTION DESIGN ]</button>
+          <button class="insta-filter-pill" data-filter="Editorial Design">[ EDITORIAL DESIGN ]</button>
+          <button class="insta-filter-pill" data-filter="Web Design">[ WEB DESIGN ]</button>
+          <button class="insta-filter-pill" data-filter="Brand Design">[ BRAND DESIGN ]</button>
+          <button class="insta-filter-pill" data-filter="Personal Projects">[ PERSONAL PROJECTS ]</button>
+        </nav>
+      </div>
+
+      <!-- Area Scroll Griglia Stile Instagram -->
+      <div class="fullscreen-grid-viewport">
+        <div class="fullscreen-grid-hint">
+          Passa sopra un filtro per illuminare i progetti corrispondenti. Passa sopra un progetto per ingrandirlo e scoprire i dettagli.
+        </div>
+        <div id="instagram-project-grid" class="instagram-project-grid">
+          <!-- Popolato dinamicamente da PROJECT_REGISTRY con solo l'immagine del progetto -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL 1: APERTURA DELLA CAPSULA TOY (SPLIT 3D)
+       =================================================================== -->
+  <div id="capsule-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="capsule-modal-card">
+      <div class="window-topbar">
+        <div class="bauhaus-controls">
+          <span class="ctrl-shape ctrl-circle" id="btn-capsule-close"></span>
+          <span class="ctrl-shape ctrl-triangle"></span>
+          <span class="ctrl-shape ctrl-square"></span>
+        </div>
+        <div class="window-title">CAPSULA PESCATA!</div>
+        <div></div>
+      </div>
+
+      <div class="capsule-modal-body">
+        <div class="capsule-3d-stage-wrapper">
+          <div id="capsule-3d-stage"></div>
+        </div>
+
+        <div class="capsule-spec-sheet">
+          <div class="spec-header-block">
+            <h3 id="capsule-spec-title" class="spec-title">PROGETTO</h3>
+            <div id="capsule-spec-category" class="spec-category">Categoria</div>
+          </div>
+
+          <p id="capsule-spec-desc" class="spec-desc"></p>
+          <div id="capsule-spec-stack" class="spec-stack-row"></div>
+
+          <div class="capsule-actions-row">
+            <button id="btn-capsule-inspect" class="btn-primary-inspect">
+              <span>[ APPROFONDISCI PROGETTO -> ]</span>
+            </button>
+            <button id="btn-capsule-play-again" class="btn-secondary-play">
+              <span>[ TORNA ALLA MACCHINA / PESCA ANCORA ]</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL 2: VISTA DETTAGLIATA PROGETTO (CASE STUDY INSPECTOR)
+       =================================================================== -->
+  <div id="project-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="project-modal-card">
+      <div class="window-topbar">
+        <div class="bauhaus-controls">
+          <span class="ctrl-shape ctrl-circle" id="btn-project-close"></span>
+          <span class="ctrl-shape ctrl-triangle"></span>
+          <span class="ctrl-shape ctrl-square"></span>
+        </div>
+        <div class="window-title">DETTAGLIO PROGETTO</div>
+        <div></div>
+      </div>
+
+      <div class="project-detail-body">
+        <div class="project-header-section">
+          <div>
+            <h2 id="modal-project-title" class="project-modal-title"></h2>
+            <div class="project-modal-meta">
+              <span id="modal-project-category"></span>
+              <span>•</span>
+              <span id="modal-project-year"></span>
+              <span>•</span>
+              <span>Jacopo (designjack)</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="modal-project-metrics" class="metrics-strip"></div>
+
+        <div class="project-narrative-block">
+          <div class="narrative-col">
+            <h4>PANORAMICA</h4>
+            <p id="modal-project-description"></p>
+          </div>
+          <div class="narrative-col">
+            <h4>PROGETTAZIONE</h4>
+            <p id="modal-project-details"></p>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 8px;">SCHEMA GRAFICO</h4>
+          <div class="case-study-canvas-container">
+            <canvas id="case-study-visual-canvas"></canvas>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 8px;">TECNOLOGIE</h4>
+          <div id="modal-project-stack" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+        </div>
+
+        <div class="modal-footer-nav">
+          <button id="btn-project-back-main" class="nav-btn" style="padding: 10px 18px; font-size: 0.82rem;">
+            ← TORNA AI PROGETTI
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/heroSphere.js"></script>
+  <script src="js/hangingCatalog.js"></script>
+  <script src="js/dither.js"></script>
+  <script src="js/crane.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>
