@@ -1554,7 +1554,7 @@ body.channel-b-active .nav-btn:hover {
 
 .hanging-wire-arena {
   width: 100%;
-  height: 480px;
+  height: 560px;
   position: relative;
   overflow: hidden;
   overscroll-behavior-x: contain;
@@ -1567,7 +1567,7 @@ body.channel-b-active .nav-btn:hover {
 /* Overhead Steel Cable stretching across screen */
 .overhead-steel-wire {
   position: absolute;
-  top: 42px;
+  top: 36px;
   left: 0;
   right: 0;
   height: 4px;
@@ -1591,138 +1591,258 @@ body.channel-b-active .nav-btn:hover {
 /* The Moving Physics Track */
 #hanging-wire-track {
   position: absolute;
-  top: 42px;
+  top: 36px;
   left: 0;
   width: 100%;
-  height: 420px;
+  height: 500px;
   pointer-events: none;
 }
 
-/* Individual Hanging Sheet on Wire */
+/* Individual Hanging Sheet on Wire - Grande Formato Poster d'Arte (3 fogli e mezzo visibili) */
 .hanging-sheet {
   position: absolute;
   top: 0;
   left: 0;
-  width: 240px;
+  width: 324px;
+  height: 440px;
   cursor: pointer;
   pointer-events: auto;
   transform-origin: 50% 0; /* Pendulum pivots from top clips */
-  transition: box-shadow 0.15s ease;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 .sheet-clips-row {
   display: flex;
   justify-content: space-between;
-  padding: 0 28px;
-  margin-bottom: -4px;
+  padding: 0 46px;
+  margin-bottom: -6px;
   position: relative;
-  z-index: 10;
+  z-index: 20;
 }
 
 .wire-clip {
-  width: 14px;
+  width: 15px;
   height: 22px;
-  background: #E63946;
+  background: var(--bauhaus-red);
   border: 1.5px solid var(--border-line);
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+  position: relative;
+}
+
+.wire-clip::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  right: 3px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 1px;
 }
 
 .wire-clip.right {
-  background: #FFB703;
+  background: var(--bauhaus-yellow);
 }
 
+/* The Photo / Artwork Card - Solo immagine appesa al filo, senza cornici o testate invasive */
 .sheet-paper {
-  background: #FAF9F5;
-  border: 2px solid var(--border-line);
-  border-radius: 8px;
-  padding: 14px;
-  box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: transform 0.15s ease, background-color 0.15s ease;
-}
-
-.hanging-sheet.is-hovered .sheet-paper {
-  background: #FFFFFF;
-  border-color: var(--bauhaus-red);
-  box-shadow: 6px 12px 24px rgba(230, 57, 70, 0.3);
-}
-
-.sheet-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.sheet-code {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: var(--bauhaus-red);
-}
-
-.sheet-cat {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: #777782;
-}
-
-.sheet-artwork-preview {
   width: 100%;
-  height: 120px;
-  border-radius: 6px;
-  border: 1px solid var(--border-line);
-  overflow: hidden;
+  height: 100%;
   position: relative;
-  background: #0E0E14;
+  background: #14141A;
+  border: 2px solid var(--border-line);
+  border-radius: 12px;
+  box-shadow: 4px 8px 22px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.sheet-mini-canvas {
+.hanging-sheet.is-hovered .sheet-paper,
+.hanging-sheet:hover .sheet-paper {
+  border-color: var(--bauhaus-red);
+  box-shadow: 6px 14px 30px rgba(230, 57, 70, 0.35), 0 0 12px rgba(230, 57, 70, 0.2);
+}
+
+/* Immagine / Artwork a pieno formato */
+.sheet-media-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #101016;
+}
+
+.sheet-photo-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sheet-photo-canvas {
   width: 100%;
   height: 100%;
   display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.hanging-sheet.is-hovered .sheet-photo-media,
+.hanging-sheet.is-hovered .sheet-photo-canvas,
+.hanging-sheet:hover .sheet-photo-media,
+.hanging-sheet:hover .sheet-photo-canvas {
+  transform: scale(1.03);
+}
+
+/* Overlay informativo che appare solo al passaggio del mouse (hover) */
 .sheet-hover-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(230, 57, 70, 0.88);
+  background: linear-gradient(
+    to top,
+    rgba(14, 14, 18, 0.96) 0%,
+    rgba(14, 14, 18, 0.88) 45%,
+    rgba(14, 14, 18, 0.35) 75%,
+    rgba(14, 14, 18, 0.1) 100%
+  );
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   color: #FFFFFF;
+  padding: 22px 18px 18px 18px;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10;
+}
+
+.hanging-sheet.is-hovered .sheet-hover-overlay,
+.hanging-sheet:hover .sheet-hover-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.sheet-overlay-top {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+}
+
+.sheet-overlay-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--bauhaus-red);
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.sheet-overlay-year {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  font-weight: 700;
-  opacity: 0;
-  transition: opacity 0.15s ease;
+  font-weight: 600;
+  color: #D4D4E0;
 }
 
-.hanging-sheet.is-hovered .sheet-hover-overlay {
-  opacity: 1;
-}
-
-.sheet-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.sheet-tags {
+.sheet-overlay-center {
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  margin-bottom: 12px;
+}
+
+.sheet-overlay-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+.sheet-overlay-desc {
+  font-family: var(--font-sans, 'Montserrat', sans-serif);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #C8C8D4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.sheet-overlay-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
   margin-top: 4px;
 }
 
-.sheet-pill {
+.sheet-overlay-tag {
   font-family: var(--font-mono);
   font-size: 0.62rem;
-  background: #EAEAE4;
-  padding: 2px 6px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.14);
+  color: #F0F0F5;
+  padding: 2px 7px;
   border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sheet-overlay-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bauhaus-yellow);
+  color: #121216;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.hanging-sheet:hover .sheet-overlay-cta {
+  background: #FFE066;
+}
+
+.sheet-overlay-cta .cta-arrow {
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+/* Modalità Cyber (Channel B) per i Fogli */
+body.channel-b-active .hanging-sheet.is-hovered .sheet-paper,
+body.channel-b-active .hanging-sheet:hover .sheet-paper {
+  border-color: #00B4D8;
+  box-shadow: 0 0 25px rgba(0, 180, 216, 0.45);
+}
+
+body.channel-b-active .sheet-overlay-badge {
+  background: #0077B6;
+  color: #90E0EF;
+}
+
+body.channel-b-active .sheet-overlay-cta {
+  background: #00B4D8;
+  color: #03045E;
 }
 
 .hanging-stage-controls {
