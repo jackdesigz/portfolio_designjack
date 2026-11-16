@@ -2160,7 +2160,7 @@ body.channel-b-active .nav-btn:hover {
 .fullscreen-catalog-modal {
   position: fixed;
   inset: 0;
-  z-index: 99990;
+  z-index: 99900;
   background: rgba(244, 244, 240, 0.98);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -2441,14 +2441,14 @@ body.channel-b-active .nav-btn:hover {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 14, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 10000;
+  background: rgba(10, 10, 14, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 99980;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: clamp(12px, 2vw, 24px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -2640,22 +2640,22 @@ body.channel-b-active .nav-btn:hover {
 
 .project-modal-card {
   width: 100%;
-  max-width: 980px;
-  max-height: 88vh;
+  max-width: min(96vw, 1340px);
+  max-height: 94vh;
   background: var(--pure-white);
   border-radius: var(--window-radius);
   border: var(--window-border);
-  box-shadow: 10px 10px 0px var(--border-line);
+  box-shadow: 12px 12px 0px var(--border-line);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
 .project-detail-body {
-  padding: 32px;
+  padding: clamp(24px, 3.8vw, 48px);
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
 }
 
 .project-header-section {
@@ -2667,7 +2667,7 @@ body.channel-b-active .nav-btn:hover {
 }
 
 .project-modal-title {
-  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.15;
@@ -2816,15 +2816,15 @@ body.channel-b-active .nav-btn:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 20px;
+  padding: 36px 24px;
   position: relative;
-  min-height: 380px;
-  max-height: 620px;
+  min-height: 420px;
+  max-height: 740px;
   overflow: hidden;
 }
 
 .poster-hero-image {
-  max-height: 540px;
+  max-height: 680px;
   width: auto;
   max-width: 100%;
   object-fit: contain;

@@ -461,6 +461,12 @@ function initFullscreenInstagramCatalog() {
   }
 
   document.addEventListener('keydown', (e) => {
+    // Non chiudere il catalogo se sopra c'è aperto il modale del progetto o il lightbox
+    const projModal = document.getElementById('project-modal-overlay');
+    const lightbox = document.getElementById('project-lightbox');
+    if (projModal && projModal.classList.contains('active')) return;
+    if (lightbox && lightbox.classList.contains('active')) return;
+
     if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
       closeModal();
     }
