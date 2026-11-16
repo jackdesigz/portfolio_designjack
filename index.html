@@ -55,7 +55,6 @@
   <header id="main-nav">
     <div class="nav-left">
       <a href="#hero" class="brand-logo-container" title="designjack">
-        <span class="brand-channel-dot"></span>
         <span class="brand-name">design<span class="brand-jack">jack</span></span>
       </a>
     </div>
@@ -133,7 +132,7 @@
             <div class="hero-sphere-showcase">
               <div class="sphere-box-topbar">
                 <span>GEOMETRIA SFERICA 3D</span>
-                <span style="color: var(--bauhaus-red);">●</span>
+                <span></span>
               </div>
               <div id="hero-sphere-viewport"></div>
               <div class="sphere-interactive-hint">
@@ -171,7 +170,6 @@
 
             <div class="hanging-stage-controls">
               <span class="hanging-hint">
-                <span class="wire-indicator-dot"></span>
                 I progetti sono stesi sul filo da studio: passa sopra con il mouse per sollevarli e clicca per aprire la scheda.
               </span>
               <div class="wire-nav-arrows">
@@ -199,19 +197,11 @@
     <section id="crane-section">
       <div class="crane-standalone-header">
         <h2 class="crane-station-title">
-          <span class="ctrl-shape ctrl-circle"></span>
           TOY CLAW MACHINE 3D
         </h2>
       </div>
 
       <div class="crane-standalone-stage">
-        <div class="crane-stage-hud">
-          <div class="stage-hud-badge">
-            <span class="ctrl-shape ctrl-circle"></span>
-            <span id="crane-status-hud">PRONTO // USA LE LEVE O WASD</span>
-          </div>
-        </div>
-
         <div class="crane-hopper-marker">
           <span class="ctrl-shape ctrl-triangle"></span>
           <span>VASCHETTA PREMI</span>
@@ -249,7 +239,6 @@
     <!-- FOOTER CANALE R -->
     <footer>
       <div class="footer-left">
-        <span class="footer-dot"></span>
         <span>designjack © 2026 // Jacopo</span>
       </div>
       <div>
@@ -314,7 +303,6 @@
           <!-- Contenuto Centrale Estetico con Font Syne -->
           <div class="channel-g-hero-content">
             <div class="channel-g-tag-pill">
-              <span class="dot-green"></span>
               <span>BIO-TOPOLOGY × STREET CULTURE</span>
             </div>
             
@@ -335,7 +323,6 @@
         <!-- FOOTER CANALE G -->
         <footer class="channel-g-footer">
           <div class="footer-left">
-            <span class="footer-dot" style="background-color: var(--channel-g);"></span>
             <span>designjack // jacopo Febi</span>
           </div>
           <div>
@@ -381,7 +368,6 @@
           <!-- Contenuto Centrale Minimalista: CONTATTI (Font Comfortaa) -->
           <div class="channel-b-content-wrap">
             <div class="channel-b-calm-badge">
-              <span class="marine-pulse-dot"></span>
               <span>CALM WATERS // ABYSS LAB</span>
             </div>
 
@@ -402,12 +388,20 @@
             </div>
           </div>
 
+          <!-- Trigger Flauto Magico (Ocarina) posizionato a destra nella sezione B -->
+          <div class="marine-flute-dock">
+            <button id="btn-open-flute" class="marine-flute-trigger-btn" title="Suona il Flauto Magico [Ocarina]" aria-label="Apri Flauto Magico">
+              <span class="flute-trigger-icon">🪈</span>
+              <span class="flute-trigger-text">FLAUTO MAGICO</span>
+              <span class="flute-trigger-hint">[ OCARINA ]</span>
+            </button>
+          </div>
+
         </div>
 
         <!-- FOOTER CANALE B -->
         <footer class="channel-b-footer">
           <div class="footer-left">
-            <span class="footer-dot" style="background-color: #00B4D8;"></span>
             <span>designjack // jacopo Febi</span>
           </div>
           <div>
@@ -446,7 +440,6 @@
       <!-- Barra dei Filtri Interattivi con Effetto Illuminazione su Hover -->
       <div class="fullscreen-filters-bar">
         <div class="filters-heading">
-          <span class="filter-dot"></span>
           <span>DISCIPLINE:</span>
         </div>
 
@@ -537,9 +530,9 @@
             <h2 id="modal-project-title" class="project-modal-title"></h2>
             <div class="project-modal-meta">
               <span id="modal-project-category"></span>
-              <span>•</span>
+              <span class="meta-separator">//</span>
               <span id="modal-project-year"></span>
-              <span>•</span>
+              <span class="meta-separator">//</span>
               <span>Jacopo (designjack)</span>
             </div>
           </div>
@@ -579,6 +572,172 @@
     </div>
   </div>
 
+  <!-- ===================================================================
+       MODAL: FLAUTO MAGICO / OCARINA OF TIME (STRUMENTO MUSICALE)
+       =================================================================== -->
+  <div id="magic-flute-modal" class="flute-modal-overlay" role="dialog" aria-modal="true" aria-label="Flauto Magico Ocarina">
+    <div class="flute-modal-window">
+      <!-- Topbar Finestra Flauto -->
+      <div class="flute-modal-topbar">
+        <div class="flute-topbar-title">
+          <span class="flute-title-icon">🪈</span>
+          <span>FLAUTO MAGICO // OCARINA OF TIME</span>
+        </div>
+        <button id="btn-close-flute" class="flute-close-btn" title="Chiudi Flauto [ESC]">
+          [ ✕ CHIUDI ]
+        </button>
+      </div>
+
+      <div class="flute-modal-body">
+        <!-- Lato Sinistro: Lo Strumento e le Note -->
+        <div class="flute-instrument-column">
+          <div class="flute-instructions">
+            Suona le note con la tastiera (<kbd>R</kbd>, <kbd>T</kbd>, <kbd>Y</kbd>, <kbd>U</kbd>, <kbd>I</kbd>) oppure clicca sui fori del flauto per comporre le melodie di teletrasporto.
+          </div>
+
+          <!-- Pentagramma / Display Note Eseguite -->
+          <div class="flute-stave-display">
+            <div class="stave-notes-container" id="flute-notes-buffer">
+              <span class="stave-placeholder">SUONA UNA NOTA...</span>
+            </div>
+            <button id="btn-flute-clear-notes" class="btn-clear-stave" title="Cancella note eseguite">RESET</button>
+          </div>
+
+          <!-- Grafica dello Strumento Flauto / Ocarina con 5 Fori Interattivi -->
+          <div class="flute-body-graphic">
+            <div class="flute-mouthpiece"></div>
+            <div class="flute-stem">
+              <div class="flute-holes-row">
+                <!-- Nota 1: R -->
+                <button class="flute-hole-btn" data-note="R" data-key="r" title="Nota R (Re)">
+                  <span class="hole-key-badge">R</span>
+                  <div class="hole-orifice">
+                    <span class="hole-inner-glow"></span>
+                  </div>
+                  <span class="hole-note-label">RE · D4</span>
+                </button>
+
+                <!-- Nota 2: T -->
+                <button class="flute-hole-btn" data-note="T" data-key="t" title="Nota T (Fa)">
+                  <span class="hole-key-badge">T</span>
+                  <div class="hole-orifice">
+                    <span class="hole-inner-glow"></span>
+                  </div>
+                  <span class="hole-note-label">FA · F4</span>
+                </button>
+
+                <!-- Nota 3: Y -->
+                <button class="flute-hole-btn" data-note="Y" data-key="y" title="Nota Y (Sol)">
+                  <span class="hole-key-badge">Y</span>
+                  <div class="hole-orifice">
+                    <span class="hole-inner-glow"></span>
+                  </div>
+                  <span class="hole-note-label">SOL · G4</span>
+                </button>
+
+                <!-- Nota 4: U -->
+                <button class="flute-hole-btn" data-note="U" data-key="u" title="Nota U (La)">
+                  <span class="hole-key-badge">U</span>
+                  <div class="hole-orifice">
+                    <span class="hole-inner-glow"></span>
+                  </div>
+                  <span class="hole-note-label">LA · A4</span>
+                </button>
+
+                <!-- Nota 5: I -->
+                <button class="flute-hole-btn" data-note="I" data-key="i" title="Nota I (Si)">
+                  <span class="hole-key-badge">I</span>
+                  <div class="hole-orifice">
+                    <span class="hole-inner-glow"></span>
+                  </div>
+                  <span class="hole-note-label">SI · B4</span>
+                </button>
+              </div>
+            </div>
+            <div class="flute-end-bell"></div>
+          </div>
+        </div>
+
+        <!-- Lato Destro: Gli Spartiti dei Teletrasporti -->
+        <div class="flute-sheet-column">
+          <div class="sheet-column-header">
+            <span>SPARTITI DEI TELETRASPORTI</span>
+          </div>
+
+          <div class="sheet-cards-list">
+            <!-- Spartito Canale R -->
+            <div class="sheet-music-card card-channel-r" id="sheet-song-r">
+              <div class="sheet-card-header">
+                <span class="sheet-badge-r">[ CANALE R ]</span>
+                <span class="sheet-title">Melodia del Rosso</span>
+              </div>
+              <div class="sheet-notes-sequence">
+                <span class="sheet-note-pill pill-r">R</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-t">T</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-y">Y</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-r">R</span>
+              </div>
+              <div class="sheet-target-desc">Destinazione: Archivio Progetti & Toy Claw Machine</div>
+            </div>
+
+            <!-- Spartito Canale G -->
+            <div class="sheet-music-card card-channel-g" id="sheet-song-g">
+              <div class="sheet-card-header">
+                <span class="sheet-badge-g">[ CANALE G ]</span>
+                <span class="sheet-title">Melodia del Verde</span>
+              </div>
+              <div class="sheet-notes-sequence">
+                <span class="sheet-note-pill pill-t">T</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-y">Y</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-u">U</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-t">T</span>
+              </div>
+              <div class="sheet-target-desc">Destinazione: Jacopo Febi // Organic & Street</div>
+            </div>
+
+            <!-- Spartito Canale B -->
+            <div class="sheet-music-card card-channel-b" id="sheet-song-b">
+              <div class="sheet-card-header">
+                <span class="sheet-badge-b">[ CANALE B ]</span>
+                <span class="sheet-title">Melodia del Blu</span>
+              </div>
+              <div class="sheet-notes-sequence">
+                <span class="sheet-note-pill pill-y">Y</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-u">U</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-i">I</span>
+                <span class="sheet-arrow">›</span>
+                <span class="sheet-note-pill pill-y">Y</span>
+              </div>
+              <div class="sheet-target-desc">Destinazione: Contatti // Calm Ocean Abyss</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt Dialog di Conferma Teletrasporto -->
+      <div id="flute-teleport-prompt" class="flute-teleport-prompt" style="display: none;">
+        <div class="prompt-box">
+          <div class="prompt-crest">✨ MELODIA SBLOCCATA! ✨</div>
+          <h3 id="prompt-melody-title" class="prompt-title">Hai suonato la Melodia del Canale R!</h3>
+          <p id="prompt-melody-msg" class="prompt-msg">Vuoi procedere ad andare a destinazione Canale R?</p>
+          <div class="prompt-actions">
+            <button id="btn-flute-prompt-cancel" class="prompt-btn secondary">[ ✕ ANNULLA ]</button>
+            <button id="btn-flute-prompt-confirm" class="prompt-btn primary">[ TELETRASPORTATI ORA → ]</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/audio.js"></script>
   <script src="js/heroSphere.js"></script>
@@ -586,6 +745,7 @@
   <script src="js/dither.js"></script>
   <script src="js/crane.js"></script>
   <script src="js/modal.js"></script>
+  <script src="js/flute.js"></script>
   <script src="js/main.js"></script>
 
 </body>

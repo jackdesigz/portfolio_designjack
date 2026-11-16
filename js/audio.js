@@ -416,6 +416,128 @@ class SoundEngine {
       });
     } catch (e) {}
   }
+
+  // 17. Magic Flute / Ocarina of Time Note Synthesizer (5 Notes: R, T, Y, U, I)
+  playFluteNote(noteKey) {
+    if (this.muted) return;
+    try {
+      this.ensureContext();
+      if (!this.ctx) return;
+
+      const freqMap = {
+        'R': 293.66, // D4
+        'r': 293.66,
+        'T': 349.23, // F4
+        't': 349.23,
+        'Y': 440.00, // A4
+        'y': 440.00,
+        'U': 493.88, // B4
+        'u': 493.88,
+        'I': 587.33, // D5
+        'i': 587.33
+      };
+
+      const freq = freqMap[noteKey] || 440;
+      const t = this.ctx.currentTime;
+      const duration = 0.65;
+
+      // Primary tone (warm sine with natural resonance)
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+
+      // Subtle warm second harmonic (woodwind body)
+      const oscHarmonic = this.ctx.createOscillator();
+      const harmonicGain = this.ctx.createGain();
+      oscHarmonic.type = 'triangle';
+      oscHarmonic.frequency.setValueAtTime(freq * 2, t);
+      harmonicGain.gain.setValueAtTime(0.06, t);
+      harmonicGain.gain.exponentialRampToValueAtTime(0.001, t + duration * 0.8);
+      oscHarmonic.connect(harmonicGain);
+      harmonicGain.connect(gain);
+
+      // Natural Ocarina Vibrato (5.5 Hz LFO slowly blooming in after initial breath)
+      const lfo = this.ctx.createOscillator();
+      const lfoGain = this.ctx.createGain();
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(5.5, t);
+      lfoGain.gain.setValueAtTime(0.5, t);
+      lfoGain.gain.linearRampToValueAtTime(4.5, t + 0.18);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+      lfo.start(t);
+      lfo.stop(t + duration);
+
+      // Acoustic woodwind breath noise articulation
+      const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.08));
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+
+      const noiseFilter = this.ctx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.setValueAtTime(freq * 1.5, t);
+      noiseFilter.Q.setValueAtTime(2.0, t);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.06, t);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(gain);
+      noise.start(t);
+
+      // Master envelope for note
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.linearRampToValueAtTime(0.28, t + 0.035);
+      gain.gain.setValueAtTime(0.25, t + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + duration);
+      oscHarmonic.start(t);
+      oscHarmonic.stop(t + duration);
+    } catch (e) {
+      console.warn('Flute audio error:', e);
+    }
+  }
+
+  // 18. Zelda Mystery / Melody Fanfare Arpeggio
+  playMelodyFanfare() {
+    if (this.muted) return;
+    try {
+      this.ensureContext();
+      if (!this.ctx) return;
+      const t = this.ctx.currentTime;
+      // Classic Zelda secret solve / arpeggio (G4, C5, E5, G5, C6)
+      const notes = [392.00, 523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((freq, i) => {
+        const noteTime = t + i * 0.09;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, noteTime);
+
+        gain.gain.setValueAtTime(0.001, noteTime);
+        gain.gain.linearRampToValueAtTime(0.18, noteTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.45);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(noteTime);
+        osc.stop(noteTime + 0.45);
+      });
+    } catch (e) {}
+  }
 }
 
 window.audioEngine = new SoundEngine();

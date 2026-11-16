@@ -280,21 +280,43 @@ class SuperCuteCandyClawMachine {
   }
 
   setupLighting() {
-    const ambient = new THREE.AmbientLight(0xffffff, 0.82);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.75);
     this.scene.add(ambient);
 
-    const warmKey = new THREE.SpotLight(0xfffaed, 1.45, 18, Math.PI / 3, 0.4, 1.2);
-    warmKey.position.set(2, 6.8, 5.5);
+    // Warm key spotlight casting realistic soft shadows
+    const warmKey = new THREE.SpotLight(0xfffaed, 1.8, 20, Math.PI / 3, 0.4, 1.2);
+    warmKey.position.set(2, 7.2, 5.8);
     warmKey.castShadow = true;
     warmKey.shadow.mapSize.width = 1024;
     warmKey.shadow.mapSize.height = 1024;
+    warmKey.shadow.bias = -0.001;
     this.scene.add(warmKey);
 
-    const redRim = new THREE.DirectionalLight(0xE62020, 0.85);
+    // Dynamic downward spotlight mounted on gantry carriage that follows claw
+    this.clawSpotlight = new THREE.SpotLight(0xFFFFFF, 2.2, 7.5, Math.PI / 4.5, 0.35, 1.0);
+    this.clawSpotlight.position.set(this.clawPos.x, 3.75, this.clawPos.z);
+    this.clawSpotlightTarget = new THREE.Object3D();
+    this.clawSpotlightTarget.position.set(this.clawPos.x, 1.15, this.clawPos.z);
+    this.scene.add(this.clawSpotlightTarget);
+    this.clawSpotlight.target = this.clawSpotlightTarget;
+    this.scene.add(this.clawSpotlight);
+
+    // Warm ceiling interior floodlight (illuminates the toys)
+    const ceilingLight = new THREE.PointLight(0xFFF3D8, 2.4, 7.5);
+    ceilingLight.position.set(0, 3.8, 0);
+    this.scene.add(ceilingLight);
+
+    // Prize trough retrieval light (warm amber glow inside hopper)
+    const troughLight = new THREE.PointLight(0xFFB703, 1.2, 2.0);
+    troughLight.position.set(this.chutePos.x, 0.45, this.chutePos.z + 0.3);
+    this.scene.add(troughLight);
+
+    // Rim and fill accents
+    const redRim = new THREE.DirectionalLight(0xE62020, 0.75);
     redRim.position.set(-4, 3.5, -2);
     this.scene.add(redRim);
 
-    const yellowFill = new THREE.DirectionalLight(0xFFDD00, 0.65);
+    const yellowFill = new THREE.DirectionalLight(0xFFDD00, 0.55);
     yellowFill.position.set(4, 2.5, -1);
     this.scene.add(yellowFill);
   }
@@ -302,40 +324,57 @@ class SuperCuteCandyClawMachine {
   buildToyMachine() {
     const machine = new THREE.Group();
 
-    // High gloss candy red material (matches the photo!)
+    // High gloss molded candy red material
     const redGlossMat = new THREE.MeshStandardMaterial({
-      color: 0xE52024,
-      roughness: 0.18,
-      metalness: 0.12
+      color: 0xDC141E,
+      roughness: 0.12,
+      metalness: 0.18
     });
 
+    // Precision chassis gray material
     const toyGrayMat = new THREE.MeshStandardMaterial({
-      color: 0xD4D6DF,
-      roughness: 0.35,
-      metalness: 0.15
+      color: 0xCBD2DE,
+      roughness: 0.28,
+      metalness: 0.22
     });
 
+    // Gleaming polished mirror chrome
     const silverChromeMat = new THREE.MeshStandardMaterial({
-      color: 0xC8CCD6,
-      roughness: 0.15,
-      metalness: 0.92
+      color: 0xE8ECF4,
+      roughness: 0.06,
+      metalness: 0.98
     });
 
+    // Arcade golden trim
+    const goldChromeMat = new THREE.MeshStandardMaterial({
+      color: 0xFFD700,
+      roughness: 0.1,
+      metalness: 0.95
+    });
+
+    // Clear acrylic walls with realistic refraction
     const acrylicMat = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
-      transmission: 0.95,
-      opacity: 0.32,
+      transmission: 0.96,
+      opacity: 0.38,
       transparent: true,
-      roughness: 0.04,
-      reflectivity: 0.9,
-      ior: 1.5
+      roughness: 0.02,
+      reflectivity: 0.95,
+      ior: 1.52
+    });
+
+    // Deep arcade rear mirror panel (creates authentic visual depth)
+    const rearMirrorMat = new THREE.MeshStandardMaterial({
+      color: 0x161820,
+      roughness: 0.03,
+      metalness: 0.98
     });
 
     const baseW = 4.6;
     const baseH = 0.65;
     const baseD = 3.6;
 
-    // 1. Lower Gray Chassis with Toy Feet
+    // 1. Lower Gray Chassis with extruded chrome base trim
     const lowerBaseGeo = new THREE.BoxGeometry(baseW, baseH, baseD);
     const lowerBase = new THREE.Mesh(lowerBaseGeo, toyGrayMat);
     lowerBase.position.set(0, baseH / 2, 0);
@@ -343,9 +382,23 @@ class SuperCuteCandyClawMachine {
     lowerBase.receiveShadow = true;
     machine.add(lowerBase);
 
-    // 4 Rounded Toy Feet
+    // Chrome T-Molding around bottom base edge
+    const btmTrimGeo = new THREE.BoxGeometry(baseW + 0.06, 0.06, baseD + 0.06);
+    const btmTrim = new THREE.Mesh(btmTrimGeo, silverChromeMat);
+    btmTrim.position.set(0, 0.03, 0);
+    machine.add(btmTrim);
+
+    // Chrome T-Molding around upper base edge
+    const midTrimGeo = new THREE.BoxGeometry(baseW + 0.06, 0.06, baseD + 0.06);
+    const midTrim = new THREE.Mesh(midTrimGeo, silverChromeMat);
+    midTrim.position.set(0, baseH - 0.03, 0);
+    machine.add(midTrim);
+
+    // 4 Heavy-duty Rubber Toy Feet with chrome rings
     const footGeo = new THREE.CylinderGeometry(0.2, 0.24, 0.12, 16);
-    const footMat = new THREE.MeshStandardMaterial({ color: 0x2A2A30, roughness: 0.7 });
+    const footMat = new THREE.MeshStandardMaterial({ color: 0x1C1C22, roughness: 0.8 });
+    const footRingGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.03, 16);
+
     [
       [-baseW / 2 + 0.35, -baseD / 2 + 0.35],
       [ baseW / 2 - 0.35, -baseD / 2 + 0.35],
@@ -355,45 +408,96 @@ class SuperCuteCandyClawMachine {
       const foot = new THREE.Mesh(footGeo, footMat);
       foot.position.set(fx, 0.06, fz);
       machine.add(foot);
+
+      const footRing = new THREE.Mesh(footRingGeo, silverChromeMat);
+      footRing.position.set(fx, 0.11, fz);
+      machine.add(footRing);
     });
 
-    // Lower Red Accent Drawer Plate
-    const drawerGeo = new THREE.BoxGeometry(1.8, 0.36, 0.08);
-    const drawer = new THREE.Mesh(drawerGeo, redGlossMat);
-    drawer.position.set(0.65, 0.36, baseD / 2 + 0.04);
-    machine.add(drawer);
+    // Front Brushed Steel Coin Door Assembly
+    const coinDoorGeo = new THREE.BoxGeometry(1.6, 0.44, 0.06);
+    const coinDoorMat = new THREE.MeshStandardMaterial({ color: 0x9AA0AF, metalness: 0.8, roughness: 0.3 });
+    const coinDoor = new THREE.Mesh(coinDoorGeo, coinDoorMat);
+    coinDoor.position.set(0.65, 0.34, baseD / 2 + 0.03);
+    machine.add(coinDoor);
 
-    // 2. Front-Left Prize Retrieval Trough (The open gray bin in front!)
+    // Dual illuminated 25¢ coin return buttons
+    const coinBtnGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.03, 16);
+    const coinBtnMat = new THREE.MeshStandardMaterial({
+      color: 0xFF8800,
+      emissive: 0xFF5500,
+      emissiveIntensity: 0.65,
+      roughness: 0.2
+    });
+    [-0.32, 0.32].forEach(bx => {
+      const btn = new THREE.Mesh(coinBtnGeo, coinBtnMat);
+      btn.rotation.x = Math.PI / 2;
+      btn.position.set(0.65 + bx, 0.34, baseD / 2 + 0.07);
+      machine.add(btn);
+
+      // Coin entry slit above button
+      const slitGeo = new THREE.BoxGeometry(0.08, 0.016, 0.01);
+      const slitMat = new THREE.MeshBasicMaterial({ color: 0x050508 });
+      const slit = new THREE.Mesh(slitGeo, slitMat);
+      slit.position.set(0.65 + bx, 0.45, baseD / 2 + 0.065);
+      machine.add(slit);
+    });
+
+    // 2. Front-Left Prize Retrieval Trough (Beveled Chrome Rim + Internal Drop Ramp)
     const troughGeo = new THREE.BoxGeometry(1.2, 0.46, 0.72);
     const trough = new THREE.Mesh(troughGeo, toyGrayMat);
     trough.position.set(-1.4, 0.28, baseD / 2 + 0.24);
     machine.add(trough);
 
+    // Polished Chrome Rim around Trough
+    const troughBevelGeo = new THREE.BoxGeometry(1.26, 0.52, 0.06);
+    const troughBevel = new THREE.Mesh(troughBevelGeo, silverChromeMat);
+    troughBevel.position.set(-1.4, 0.28, baseD / 2 + 0.58);
+    machine.add(troughBevel);
+
     const troughCavityGeo = new THREE.BoxGeometry(1.0, 0.38, 0.58);
-    const troughCavityMat = new THREE.MeshStandardMaterial({ color: 0x585864, roughness: 0.6 });
+    const troughCavityMat = new THREE.MeshStandardMaterial({ color: 0x1A1B22, roughness: 0.5 });
     const troughCavity = new THREE.Mesh(troughCavityGeo, troughCavityMat);
     troughCavity.position.set(-1.4, 0.33, baseD / 2 + 0.26);
     machine.add(troughCavity);
 
-    // 3. Molded Red Console Deck
+    // Spring-loaded prize push flap with red finish
+    const flapGeo = new THREE.BoxGeometry(0.88, 0.26, 0.02);
+    const flapMat = new THREE.MeshStandardMaterial({
+      color: 0xE5181F,
+      roughness: 0.2,
+      metalness: 0.1
+    });
+    const flap = new THREE.Mesh(flapGeo, flapMat);
+    flap.position.set(-1.4, 0.38, baseD / 2 + 0.54);
+    flap.rotation.x = 0.2;
+    machine.add(flap);
+
+    // 3. Molded Candy Red Console Deck with Chamfered Edges
     const deckGeo = new THREE.BoxGeometry(baseW + 0.2, 0.28, baseD + 0.6);
     const deck = new THREE.Mesh(deckGeo, redGlossMat);
     deck.position.set(0, baseH + 0.14, 0.25);
     deck.castShadow = true;
     machine.add(deck);
 
-    // Extended Front Console Shelf with rounded edge
+    // Extended Front Console Shelf with rounded chrome lip
     const ledgeGeo = new THREE.BoxGeometry(2.4, 0.18, 0.72);
     const ledge = new THREE.Mesh(ledgeGeo, redGlossMat);
     ledge.position.set(0.65, baseH + 0.12, baseD / 2 + 0.5);
     machine.add(ledge);
 
-    // Sunburst Graphic Decal on Console (Cyan and Yellow Rays as in photo!)
+    const ledgeChromeLipGeo = new THREE.CylinderGeometry(0.04, 0.04, 2.44, 16);
+    const ledgeLip = new THREE.Mesh(ledgeChromeLipGeo, silverChromeMat);
+    ledgeLip.rotation.z = Math.PI / 2;
+    ledgeLip.position.set(0.65, baseH + 0.12, baseD / 2 + 0.86);
+    machine.add(ledgeLip);
+
+    // Sunburst Arcade Graphic Decal on Console
     const decalCanvas = document.createElement('canvas');
     decalCanvas.width = 512;
     decalCanvas.height = 128;
     const dctx = decalCanvas.getContext('2d');
-    dctx.fillStyle = '#0E7AC4';
+    dctx.fillStyle = '#08639C';
     dctx.fillRect(0, 0, 512, 128);
 
     dctx.fillStyle = '#FFDD00';
@@ -403,7 +507,7 @@ class SuperCuteCandyClawMachine {
       dctx.arc(256, 128, 420, a, a + Math.PI / 16);
       dctx.fill();
     }
-    dctx.strokeStyle = '#E52024';
+    dctx.strokeStyle = '#E5181F';
     dctx.lineWidth = 14;
     dctx.strokeRect(6, 6, 500, 116);
 
@@ -415,52 +519,63 @@ class SuperCuteCandyClawMachine {
     decalMesh.position.set(0.65, baseH + 0.22, baseD / 2 + 0.5);
     machine.add(decalMesh);
 
-    // 4. Three Retro Ball-Top Joystick Levers (Interactive!)
+    // 4. Three Retro Ball-Top Joystick Levers with Accordion Rubber Boots
     this.levers = [];
     const leverXPositions = [-0.62, 0.0, 0.62];
-    const leverBallColors = [0x0E7AC4, 0xD4D6DF, 0xE52024]; // Blue, Silver, Red balls!
+    const leverBallColors = [0x00B4D8, 0xDCE0EB, 0xE5181F]; // Cyan, Chrome, Candy Red
 
     leverXPositions.forEach((lx, i) => {
-      const lBaseGeo = new THREE.CylinderGeometry(0.12, 0.14, 0.08, 16);
-      const lBaseMat = new THREE.MeshStandardMaterial({ color: 0x222226, roughness: 0.5 });
-      const lBase = new THREE.Mesh(lBaseGeo, lBaseMat);
-      lBase.position.set(0.65 + lx, baseH + 0.23, baseD / 2 + 0.5);
-      machine.add(lBase);
+      // Chrome collar mounting plate
+      const lPlateGeo = new THREE.CylinderGeometry(0.16, 0.17, 0.03, 20);
+      const lPlate = new THREE.Mesh(lPlateGeo, silverChromeMat);
+      lPlate.position.set(0.65 + lx, baseH + 0.22, baseD / 2 + 0.5);
+      machine.add(lPlate);
+
+      // Accordion rubber dust boot (3 stacked tapered rings)
+      const bootMat = new THREE.MeshStandardMaterial({ color: 0x18181D, roughness: 0.85 });
+      [0.02, 0.05, 0.08].forEach((by, rIdx) => {
+        const rad = 0.13 - rIdx * 0.025;
+        const ringGeo = new THREE.CylinderGeometry(rad * 0.85, rad, 0.03, 16);
+        const ring = new THREE.Mesh(ringGeo, bootMat);
+        ring.position.set(0.65 + lx, baseH + 0.23 + by, baseD / 2 + 0.5);
+        machine.add(ring);
+      });
 
       const leverGroup = new THREE.Group();
-      leverGroup.position.set(0.65 + lx, baseH + 0.27, baseD / 2 + 0.5);
+      leverGroup.position.set(0.65 + lx, baseH + 0.29, baseD / 2 + 0.5);
 
-      // Silver shaft
-      const shaftGeo = new THREE.CylinderGeometry(0.032, 0.032, 0.46, 14);
+      // Polished chrome shaft
+      const shaftGeo = new THREE.CylinderGeometry(0.034, 0.034, 0.44, 16);
       const shaft = new THREE.Mesh(shaftGeo, silverChromeMat);
-      shaft.position.y = 0.23;
+      shaft.position.y = 0.22;
       leverGroup.add(shaft);
 
-      // Shiny spherical ball top
-      const ballGeo = new THREE.SphereGeometry(0.125, 20, 20);
+      // High-gloss specular spherical ball top
+      const ballGeo = new THREE.SphereGeometry(0.13, 24, 24);
       const ballMat = new THREE.MeshStandardMaterial({
         color: leverBallColors[i],
-        roughness: 0.15,
-        metalness: 0.5
+        roughness: 0.08,
+        metalness: 0.45
       });
       const ball = new THREE.Mesh(ballGeo, ballMat);
-      ball.position.y = 0.46;
+      ball.position.y = 0.44;
       leverGroup.add(ball);
 
       machine.add(leverGroup);
       this.levers.push(leverGroup);
     });
 
-    // 5. Four Silver Upright Structural Pillars
-    const colRadius = 0.12;
+    // 5. Four Mirror Chrome Corner Pillars with Fluted Rings and Brackets
+    const colRadius = 0.11;
     const colHeight = 3.0;
-    const colGeo = new THREE.CylinderGeometry(colRadius, colRadius, colHeight, 16);
+    const colGeo = new THREE.CylinderGeometry(colRadius, colRadius, colHeight, 20);
+    const ringGeo = new THREE.TorusGeometry(colRadius + 0.02, 0.022, 10, 20);
 
     const cornerCols = [
-      [-baseW / 2 + 0.25, -baseD / 2 + 0.25],
-      [ baseW / 2 - 0.25, -baseD / 2 + 0.25],
-      [-baseW / 2 + 0.25,  baseD / 2 - 0.25],
-      [ baseW / 2 - 0.25,  baseD / 2 - 0.25]
+      [-baseW / 2 + 0.22, -baseD / 2 + 0.22],
+      [ baseW / 2 - 0.22, -baseD / 2 + 0.22],
+      [-baseW / 2 + 0.22,  baseD / 2 - 0.22],
+      [ baseW / 2 - 0.22,  baseD / 2 - 0.22]
     ];
 
     cornerCols.forEach(([cx, cz]) => {
@@ -468,9 +583,17 @@ class SuperCuteCandyClawMachine {
       col.position.set(cx, baseH + 0.28 + colHeight / 2, cz);
       col.castShadow = true;
       machine.add(col);
+
+      // Fluted accent rings along pillar
+      [-0.8, 0, 0.8].forEach(ry => {
+        const ring = new THREE.Mesh(ringGeo, silverChromeMat);
+        ring.rotation.x = Math.PI / 2;
+        ring.position.set(cx, baseH + 0.28 + colHeight / 2 + ry, cz);
+        machine.add(ring);
+      });
     });
 
-    // 6. Clear Acrylic Walls
+    // 6. Crystal Acrylic Glass Panels + Mirrored Rear Depth Wall
     const glassH = colHeight;
     const glassW = baseW - 0.1;
     const glassD = baseD - 0.1;
@@ -480,10 +603,11 @@ class SuperCuteCandyClawMachine {
     frontGlass.position.set(0, glassY, baseD / 2 - 0.05);
     machine.add(frontGlass);
 
-    const backGlass = new THREE.Mesh(new THREE.PlaneGeometry(glassW, glassH), acrylicMat);
-    backGlass.rotation.y = Math.PI;
-    backGlass.position.set(0, glassY, -baseD / 2 + 0.05);
-    machine.add(backGlass);
+    // REAR MIRROR WALL (Mirrored Chrome reflection panel)
+    const backMirror = new THREE.Mesh(new THREE.PlaneGeometry(glassW, glassH), rearMirrorMat);
+    backMirror.rotation.y = Math.PI;
+    backMirror.position.set(0, glassY, -baseD / 2 + 0.06);
+    machine.add(backMirror);
 
     const leftGlass = new THREE.Mesh(new THREE.PlaneGeometry(glassD, glassH), acrylicMat);
     leftGlass.rotation.y = Math.PI / 2;
@@ -495,68 +619,132 @@ class SuperCuteCandyClawMachine {
     rightGlass.position.set(baseW / 2 - 0.05, glassY, 0);
     machine.add(rightGlass);
 
+    // Thin Chrome Edge Framing on Glass Corners
+    const edgeTrimGeo = new THREE.BoxGeometry(0.04, colHeight, 0.04);
+    cornerCols.forEach(([cx, cz]) => {
+      const trim = new THREE.Mesh(edgeTrimGeo, silverChromeMat);
+      trim.position.set(cx, glassY, cz);
+      machine.add(trim);
+    });
+
     // 7. Internal Red Prize Chute Partition (Front-Left)
     const chuteWallGeo = new THREE.BoxGeometry(1.1, 1.2, 1.0);
     const chuteWall = new THREE.Mesh(chuteWallGeo, redGlossMat);
     chuteWall.position.set(this.chutePos.x, baseH + 0.28 + 0.6, this.chutePos.z);
     machine.add(chuteWall);
 
-    const chuteCavityGeo = new THREE.CylinderGeometry(0.46, 0.38, 0.52, 24, 1, true);
-    const chuteCavityMat = new THREE.MeshStandardMaterial({ color: 0x18181D, side: THREE.DoubleSide });
+    // Chute Polished Lip
+    const chuteLipGeo = new THREE.TorusGeometry(0.44, 0.035, 12, 28);
+    const chuteLip = new THREE.Mesh(chuteLipGeo, silverChromeMat);
+    chuteLip.rotation.x = Math.PI / 2;
+    chuteLip.position.set(this.chutePos.x, baseH + 0.28 + 1.2, this.chutePos.z);
+    machine.add(chuteLip);
+
+    const chuteCavityGeo = new THREE.CylinderGeometry(0.44, 0.36, 0.52, 24, 1, true);
+    const chuteCavityMat = new THREE.MeshStandardMaterial({ color: 0x121216, side: THREE.DoubleSide });
     const chuteCavity = new THREE.Mesh(chuteCavityGeo, chuteCavityMat);
     chuteCavity.position.set(this.chutePos.x, baseH + 0.28 + 1.2, this.chutePos.z);
     machine.add(chuteCavity);
 
-    // 8. Molded Glossy Red Canopy with Marquee Sign!
+    // 8. Molded Glossy Red Canopy with Beveled Lips & Illuminated Diffuser
     const roofY = baseH + 0.28 + colHeight;
+
+    // Translucent Illuminated Ceiling Diffuser
+    const ceilingDiffuserGeo = new THREE.PlaneGeometry(baseW - 0.2, baseD - 0.2);
+    const ceilingDiffuserMat = new THREE.MeshStandardMaterial({
+      color: 0xFFFDF0,
+      emissive: 0xFFECC4,
+      emissiveIntensity: 0.65,
+      roughness: 0.25
+    });
+    const ceilingPanel = new THREE.Mesh(ceilingDiffuserGeo, ceilingDiffuserMat);
+    ceilingPanel.rotation.x = Math.PI / 2;
+    ceilingPanel.position.set(0, roofY - 0.02, 0);
+    machine.add(ceilingPanel);
+
+    // Main Canopy Body
     const canopyGeo = new THREE.BoxGeometry(baseW + 0.4, 0.46, baseD + 0.4);
     const canopy = new THREE.Mesh(canopyGeo, redGlossMat);
     canopy.position.set(0, roofY + 0.23, 0);
     canopy.castShadow = true;
     machine.add(canopy);
 
-    // Stepped Upper Roof Tray (Beveled retro lip as in reference photo)
-    const topTrayGeo = new THREE.BoxGeometry(baseW + 0.1, 0.22, baseD + 0.1);
+    // Chrome perimeter trim on canopy base
+    const canopyTrimGeo = new THREE.BoxGeometry(baseW + 0.44, 0.05, baseD + 0.44);
+    const canopyTrim = new THREE.Mesh(canopyTrimGeo, silverChromeMat);
+    canopyTrim.position.set(0, roofY + 0.025, 0);
+    machine.add(canopyTrim);
+
+    // Stepped Upper Roof Lip
+    const topTrayGeo = new THREE.BoxGeometry(baseW + 0.12, 0.22, baseD + 0.12);
     const topTray = new THREE.Mesh(topTrayGeo, redGlossMat);
     topTray.position.set(0, roofY + 0.56, 0);
     machine.add(topTray);
 
     // Retro Marquee Arch Sign on Canopy ("★ JACK'S CANDY CLAW ★")
     const marqueeCanvas = document.createElement('canvas');
-    marqueeCanvas.width = 512;
-    marqueeCanvas.height = 80;
+    marqueeCanvas.width = 1024;
+    marqueeCanvas.height = 180;
     const mctx = marqueeCanvas.getContext('2d');
-    mctx.fillStyle = '#E52024';
-    mctx.fillRect(0, 0, 512, 80);
-    mctx.strokeStyle = '#FFDD00';
-    mctx.lineWidth = 6;
-    mctx.strokeRect(4, 4, 504, 72);
+    
+    // Radiant gradient red background
+    const grad = mctx.createLinearGradient(0, 0, 1024, 0);
+    grad.addColorStop(0, '#B80D17');
+    grad.addColorStop(0.5, '#E5181F');
+    grad.addColorStop(1, '#B80D17');
+    mctx.fillStyle = grad;
+    mctx.fillRect(0, 0, 1024, 180);
+
+    // Gold decorative border
+    mctx.strokeStyle = '#FFD700';
+    mctx.lineWidth = 10;
+    mctx.strokeRect(8, 8, 1008, 164);
+
+    // Inner subtle gold border
+    mctx.strokeStyle = 'rgba(255, 215, 0, 0.4)';
+    mctx.lineWidth = 3;
+    mctx.strokeRect(18, 18, 988, 144);
+
+    // Arcade Title typography
     mctx.fillStyle = '#FFFFFF';
-    mctx.font = 'bold 36px "Montserrat", sans-serif';
+    mctx.font = '900 68px "Montserrat", sans-serif';
     mctx.textAlign = 'center';
-    mctx.fillText('★ JACK’S TOY CLAW ★', 256, 52);
+    mctx.shadowColor = 'rgba(0,0,0,0.8)';
+    mctx.shadowBlur = 12;
+    mctx.fillText('★ JACK’S TOY CLAW ★', 512, 92);
+
+    // Arcade Subtitle
+    mctx.shadowBlur = 0;
+    mctx.fillStyle = '#FFDD00';
+    mctx.font = '700 30px "Montserrat", sans-serif';
+    mctx.fillText('✦ RETRO ARCADE · PESCA UN PROGETTO! ✦', 512, 144);
 
     const marqueeTex = new THREE.CanvasTexture(marqueeCanvas);
-    const marqueeGeo = new THREE.PlaneGeometry(3.6, 0.38);
+    const marqueeGeo = new THREE.PlaneGeometry(3.6, 0.44);
     const marqueeMat = new THREE.MeshBasicMaterial({ map: marqueeTex });
     const marqueeMesh = new THREE.Mesh(marqueeGeo, marqueeMat);
-    marqueeMesh.position.set(0, roofY + 0.23, baseD / 2 + 0.21);
+    marqueeMesh.position.set(0, roofY + 0.24, baseD / 2 + 0.22);
     machine.add(marqueeMesh);
 
-    // Marquee Chaser Bulbs along front roofline
+    // Marquee Chaser Bulbs along front roofline with Emissive Glow
     this.marqueeBulbs = [];
-    const bulbGeo = new THREE.SphereGeometry(0.045, 10, 10);
+    const bulbGeo = new THREE.SphereGeometry(0.05, 12, 12);
     for (let b = -1.9; b <= 1.9; b += 0.38) {
-      const bMat = new THREE.MeshBasicMaterial({ color: 0xFFDD00 });
+      const bMat = new THREE.MeshStandardMaterial({
+        color: 0xFFDD00,
+        emissive: 0xFFAA00,
+        emissiveIntensity: 0.85,
+        roughness: 0.2
+      });
       const bulb = new THREE.Mesh(bulbGeo, bMat);
-      bulb.position.set(b, roofY + 0.44, baseD / 2 + 0.22);
+      bulb.position.set(b, roofY + 0.46, baseD / 2 + 0.23);
       machine.add(bulb);
       this.marqueeBulbs.push(bulb);
     }
 
-    // Playfield Bed Floor
+    // Playfield Bed Floor with subtle chrome edge
     const bedGeo = new THREE.BoxGeometry(baseW - 0.2, 0.1, baseD - 0.2);
-    const bedMat = new THREE.MeshStandardMaterial({ color: 0xEAEAEA, roughness: 0.6 });
+    const bedMat = new THREE.MeshStandardMaterial({ color: 0xE2E4EB, roughness: 0.45, metalness: 0.1 });
     const bed = new THREE.Mesh(bedGeo, bedMat);
     bed.position.set(0, baseH + 0.29, 0);
     bed.receiveShadow = true;
@@ -566,31 +754,78 @@ class SuperCuteCandyClawMachine {
   }
 
   buildGantryAndClaw() {
-    const silverMat = new THREE.MeshStandardMaterial({ color: 0xC8CCD6, metalness: 0.92, roughness: 0.15 });
+    const silverMat = new THREE.MeshStandardMaterial({ color: 0xE2E6F2, metalness: 0.98, roughness: 0.08 });
+    const goldMat = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.92, roughness: 0.12 });
+    const rubberMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1E, roughness: 0.85 });
 
-    const railGeo = new THREE.BoxGeometry(4.0, 0.1, 0.1);
-    this.gantryX = new THREE.Mesh(railGeo, silverMat);
+    // Dual polished chrome rail tubes for X axis
+    const railXGeo = new THREE.CylinderGeometry(0.045, 0.045, 4.0, 16);
+    this.gantryX = new THREE.Group();
+    
+    [-0.14, 0.14].forEach(offsetZ => {
+      const rod = new THREE.Mesh(railXGeo, silverMat);
+      rod.rotation.z = Math.PI / 2;
+      rod.position.z = offsetZ;
+      this.gantryX.add(rod);
+    });
+
+    // End brackets on rail X
+    [-2.0, 2.0].forEach(endX => {
+      const bGeo = new THREE.BoxGeometry(0.1, 0.16, 0.42);
+      const b = new THREE.Mesh(bGeo, silverMat);
+      b.position.set(endX, 0, 0);
+      this.gantryX.add(b);
+    });
+
     this.gantryX.position.set(0, 3.65, 0);
     this.scene.add(this.gantryX);
 
-    const carGeo = new THREE.BoxGeometry(0.42, 0.14, 0.42);
-    const carMat = new THREE.MeshStandardMaterial({ color: 0xE52024, roughness: 0.2 });
-    this.carriageZ = new THREE.Mesh(carGeo, carMat);
+    // Motorized Carriage Box with Stepper Motor & Warning LED
+    this.carriageZ = new THREE.Group();
+    const carGeo = new THREE.BoxGeometry(0.48, 0.16, 0.48);
+    const carMat = new THREE.MeshStandardMaterial({ color: 0xDC141E, roughness: 0.15, metalness: 0.15 });
+    const carBody = new THREE.Mesh(carGeo, carMat);
+    this.carriageZ.add(carBody);
+
+    // Motor cylinder on top of carriage
+    const motorGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.16, 16);
+    const motor = new THREE.Mesh(motorGeo, silverMat);
+    motor.position.set(0.12, 0.12, 0);
+    this.carriageZ.add(motor);
+
+    // Glowing green status LED
+    const ledGeo = new THREE.SphereGeometry(0.025, 8, 8);
+    const ledMat = new THREE.MeshStandardMaterial({
+      color: 0x70E000,
+      emissive: 0x70E000,
+      emissiveIntensity: 0.9
+    });
+    const led = new THREE.Mesh(ledGeo, ledMat);
+    led.position.set(-0.16, 0.09, 0.22);
+    this.carriageZ.add(led);
+
     this.carriageZ.position.set(0, 3.65, 0);
     this.scene.add(this.carriageZ);
 
+    // Polished steel hoist cable
     const cableGeo = new THREE.CylinderGeometry(0.018, 0.018, 1, 8);
     this.cableMesh = new THREE.Mesh(cableGeo, silverMat);
     this.cableMesh.position.set(0, 3.4, 0);
     this.scene.add(this.cableMesh);
 
-    // Scoop Claw with rivets and curved fingers
+    // Scoop Claw with mechanical winch collar and curved fingers
     this.clawAssembly = new THREE.Group();
     this.clawAssembly.position.set(this.clawPos.x, this.clawPos.y, this.clawPos.z);
 
-    const winchGeo = new THREE.CylinderGeometry(0.22, 0.26, 0.2, 16);
+    // Chrome winch cylinder with gold decorative mechanical band
+    const winchGeo = new THREE.CylinderGeometry(0.24, 0.28, 0.22, 20);
     const winch = new THREE.Mesh(winchGeo, silverMat);
     this.clawAssembly.add(winch);
+
+    const bandGeo = new THREE.CylinderGeometry(0.285, 0.285, 0.06, 20);
+    const band = new THREE.Mesh(bandGeo, goldMat);
+    band.position.y = 0.02;
+    this.clawAssembly.add(band);
 
     this.clawFingers = [];
     const fingerAngles = [0, (Math.PI * 2) / 3, (Math.PI * 4) / 3];
@@ -602,17 +837,30 @@ class SuperCuteCandyClawMachine {
       const mount = new THREE.Group();
       mount.position.set(0.18, -0.06, 0);
 
-      const armGeo = new THREE.BoxGeometry(0.08, 0.42, 0.14);
+      // Scissor hinge joint pin
+      const pinGeo = new THREE.CylinderGeometry(0.035, 0.035, 0.16, 12);
+      const pin = new THREE.Mesh(pinGeo, goldMat);
+      pin.rotation.z = Math.PI / 2;
+      mount.add(pin);
+
+      const armGeo = new THREE.BoxGeometry(0.08, 0.44, 0.14);
       const arm = new THREE.Mesh(armGeo, silverMat);
-      arm.position.set(0, -0.2, 0);
+      arm.position.set(0, -0.21, 0);
       arm.rotation.z = 0.25;
       mount.add(arm);
 
-      const scoopGeo = new THREE.BoxGeometry(0.07, 0.32, 0.2);
+      const scoopGeo = new THREE.BoxGeometry(0.07, 0.34, 0.22);
       const scoop = new THREE.Mesh(scoopGeo, silverMat);
-      scoop.position.set(-0.09, -0.36, 0);
+      scoop.position.set(-0.1, -0.38, 0);
       scoop.rotation.z = -0.7;
       mount.add(scoop);
+
+      // Non-slip rubber tip on claw scoop end
+      const tipGeo = new THREE.BoxGeometry(0.08, 0.08, 0.2);
+      const tip = new THREE.Mesh(tipGeo, rubberMat);
+      tip.position.set(-0.14, -0.5, 0);
+      tip.rotation.z = -0.7;
+      mount.add(tip);
 
       fingerRoot.add(mount);
       this.clawAssembly.add(fingerRoot);
@@ -623,19 +871,19 @@ class SuperCuteCandyClawMachine {
     this.updateClawTransforms();
   }
 
-  // Spawns 40+ crinkled metallic candy foil wrappers (Gold, Purple, Cyan, Magenta) as in the photo!
+  // Spawns 68+ crinkled metallic candy foil wrappers (Gold, Purple, Cyan, Magenta, Emerald, Orange)
   spawnCandyFoilWrappers() {
-    const foilColors = [0xFFD700, 0x8338EC, 0xFF007F, 0x00E5FF, 0x38B000, 0xFF6B00];
+    const foilColors = [0xFFD700, 0x8338EC, 0xFF007F, 0x00E5FF, 0x06D6A0, 0xFB5607];
     const floorY = 1.15;
 
-    for (let i = 0; i < 42; i++) {
+    for (let i = 0; i < 68; i++) {
       const col = foilColors[i % foilColors.length];
       const candyGroup = new THREE.Group();
 
       const foilMat = new THREE.MeshStandardMaterial({
         color: col,
-        metalness: 0.95,
-        roughness: 0.18
+        metalness: 0.96,
+        roughness: 0.12
       });
 
       // Center sweet cylinder
@@ -645,16 +893,16 @@ class SuperCuteCandyClawMachine {
       candyGroup.add(sweet);
 
       // Left twisted foil bow
-      const bowLeftGeo = new THREE.ConeGeometry(0.09, 0.12, 8);
+      const bowLeftGeo = new THREE.ConeGeometry(0.095, 0.13, 8);
       const bowLeft = new THREE.Mesh(bowLeftGeo, foilMat);
-      bowLeft.position.set(-0.14, 0, 0);
+      bowLeft.position.set(-0.15, 0, 0);
       bowLeft.rotation.z = Math.PI / 2;
       candyGroup.add(bowLeft);
 
       // Right twisted foil bow
-      const bowRightGeo = new THREE.ConeGeometry(0.09, 0.12, 8);
+      const bowRightGeo = new THREE.ConeGeometry(0.095, 0.13, 8);
       const bowRight = new THREE.Mesh(bowRightGeo, foilMat);
-      bowRight.position.set(0.14, 0, 0);
+      bowRight.position.set(0.15, 0, 0);
       bowRight.rotation.z = -Math.PI / 2;
       candyGroup.add(bowRight);
 
@@ -663,16 +911,50 @@ class SuperCuteCandyClawMachine {
       let rz = (Math.random() - 0.5) * 2.4;
       if (rx < -0.8 && rz > 0.4) rx += 1.4; // leave chute clear
 
-      candyGroup.position.set(rx, floorY + (Math.random() * 0.04), rz);
+      candyGroup.position.set(rx, floorY + (Math.random() * 0.05), rz);
       candyGroup.rotation.y = Math.random() * Math.PI * 2;
-      candyGroup.rotation.x = (Math.random() - 0.5) * 0.3;
-      candyGroup.rotation.z = (Math.random() - 0.5) * 0.3;
+      candyGroup.rotation.x = (Math.random() - 0.5) * 0.4;
+      candyGroup.rotation.z = (Math.random() - 0.5) * 0.4;
 
       this.scene.add(candyGroup);
     }
+
+    // Cute geometric Bauhaus mascot toy resting amongst the candies
+    this.spawnMascotToy();
   }
 
-  // Spawns colorful pill/egg gashapon capsules
+  spawnMascotToy() {
+    const mascot = new THREE.Group();
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xFFDD00, roughness: 0.2 });
+    const eyeMat = new THREE.MeshBasicMaterial({ color: 0x121218 });
+
+    // Toy body cube
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.24, 0.24), bodyMat);
+    mascot.add(body);
+
+    // Digital dot eyes
+    [-0.05, 0.05].forEach(ex => {
+      const eye = new THREE.Mesh(new THREE.SphereGeometry(0.025, 8, 8), eyeMat);
+      eye.position.set(ex, 0.04, 0.125);
+      mascot.add(eye);
+    });
+
+    // Antenna
+    const antStem = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.08), bodyMat);
+    antStem.position.y = 0.16;
+    mascot.add(antStem);
+
+    const antTip = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshBasicMaterial({ color: 0xE5181F }));
+    antTip.position.y = 0.2;
+    mascot.add(antTip);
+
+    mascot.position.set(-0.3, 1.25, 0.85);
+    mascot.rotation.y = -0.3;
+    mascot.rotation.z = 0.15;
+    this.scene.add(mascot);
+  }
+
+  // Spawns colorful two-tone gashapon capsules with crystal-clear top domes!
   spawnColorfulCapsules() {
     this.capsules.forEach(c => this.scene.remove(c.mesh));
     this.capsules = [];
@@ -681,15 +963,26 @@ class SuperCuteCandyClawMachine {
     const capHeight = 0.26;
 
     const toyCapsuleColors = [
-      { hex: 0xE52024, name: 'red' },
+      { hex: 0xE5181F, name: 'red' },
       { hex: 0xFFDD00, name: 'yellow' },
       { hex: 0x8338EC, name: 'purple' },
-      { hex: 0x3A86FF, name: 'blue' },
-      { hex: 0x38B000, name: 'green' },
+      { hex: 0x00B4D8, name: 'cyan' },
+      { hex: 0x06D6A0, name: 'green' },
       { hex: 0xFB5607, name: 'orange' },
       { hex: 0xFFDD00, name: 'yellow' },
-      { hex: 0xE52024, name: 'red' }
+      { hex: 0xE5181F, name: 'red' }
     ];
+
+    // Crystal clear acrylic top dome material
+    const clearTopMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      transmission: 0.98,
+      opacity: 0.36,
+      transparent: true,
+      roughness: 0.03,
+      reflectivity: 0.95,
+      ior: 1.52
+    });
 
     const floorY = 1.25;
 
@@ -710,28 +1003,49 @@ class SuperCuteCandyClawMachine {
 
       const capGroup = new THREE.Group();
 
-      const bodyGeo = new THREE.CylinderGeometry(capRadius, capRadius, capHeight, 20);
-      const capMat = new THREE.MeshStandardMaterial({
+      // Bottom half: opaque colorful glossy plastic
+      const btmMat = new THREE.MeshStandardMaterial({
         color: capCol.hex,
-        roughness: 0.22,
-        metalness: 0.15
+        roughness: 0.15,
+        metalness: 0.1
       });
-      const bodyMesh = new THREE.Mesh(bodyGeo, capMat);
+
+      const bodyGeo = new THREE.CylinderGeometry(capRadius, capRadius, capHeight, 20);
+      const bodyMesh = new THREE.Mesh(bodyGeo, btmMat);
       bodyMesh.castShadow = true;
       capGroup.add(bodyMesh);
 
-      const topGeo = new THREE.SphereGeometry(capRadius, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2);
-      const topMesh = new THREE.Mesh(topGeo, capMat);
-      topMesh.position.y = capHeight / 2;
-      capGroup.add(topMesh);
-
       const btmGeo = new THREE.SphereGeometry(capRadius, 20, 12, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2);
-      const btmMesh = new THREE.Mesh(btmGeo, capMat);
+      const btmMesh = new THREE.Mesh(btmGeo, btmMat);
       btmMesh.position.y = -capHeight / 2;
       capGroup.add(btmMesh);
 
-      const token = this.createInternalToken(proj, capRadius * 0.7);
+      // Top half: crystal-clear transparent acrylic dome revealing prize inside!
+      const topGeo = new THREE.SphereGeometry(capRadius, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2);
+      const topMesh = new THREE.Mesh(topGeo, clearTopMat);
+      topMesh.position.y = capHeight / 2;
+      capGroup.add(topMesh);
+
+      // Center seam ring where halves snap together
+      const seamGeo = new THREE.TorusGeometry(capRadius + 0.006, 0.012, 8, 24);
+      const seamMat = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.25 });
+      const seam = new THREE.Mesh(seamGeo, seamMat);
+      seam.rotation.x = Math.PI / 2;
+      capGroup.add(seam);
+
+      // Inside: 3D Project Token + miniature golden jewel
+      const token = this.createInternalToken(proj, capRadius * 0.65);
       capGroup.add(token);
+
+      const jewelGeo = new THREE.IcosahedronGeometry(capRadius * 0.28);
+      const jewelMat = new THREE.MeshStandardMaterial({
+        color: 0xFFD700,
+        metalness: 0.95,
+        roughness: 0.12
+      });
+      const jewel = new THREE.Mesh(jewelGeo, jewelMat);
+      jewel.position.set(0.04, 0.05, 0.04);
+      capGroup.add(jewel);
 
       capGroup.position.set(pos.x, floorY, pos.z);
       capGroup.rotation.x = pos.rotX;
@@ -999,6 +1313,12 @@ class SuperCuteCandyClawMachine {
     this.clawFingers.forEach(f => {
       f.rotation.z = -this.clawAngle;
     });
+
+    // Dynamic claw downward spotlight tracks claw horizontal coordinates
+    if (this.clawSpotlight && this.clawSpotlightTarget) {
+      this.clawSpotlight.position.set(this.clawActual.x, 3.75, this.clawActual.z);
+      this.clawSpotlightTarget.position.set(this.clawActual.x, 1.15, this.clawActual.z);
+    }
   }
 
   updateStatusUI(text) {
@@ -1013,14 +1333,16 @@ class SuperCuteCandyClawMachine {
     // Update Arcade Levers Spring Physics
     this.updateLeverPhysics();
 
-    // Marquee bulbs blinking sequence
+    // Marquee bulbs blinking sequence with emissive radiance
     if (this.marqueeBulbs.length && this.time % 12 === 0) {
       const step = Math.floor(this.time / 12) % 2;
       this.marqueeBulbs.forEach((b, i) => {
         if (i % 2 === step) {
           b.material.color.setHex(0xFFDD00);
+          if (b.material.emissive) b.material.emissive.setHex(0xFFAA00);
         } else {
-          b.material.color.setHex(0xE52024);
+          b.material.color.setHex(0xE5181F);
+          if (b.material.emissive) b.material.emissive.setHex(0x990A12);
         }
       });
     }
