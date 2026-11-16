@@ -263,7 +263,7 @@ class MagicFlute {
 
     if (dest && typeof window.switchChannel === 'function') {
       // Trigger full CRT transition to chosen channel!
-      window.switchChannel(dest);
+      window.switchChannel(dest.toUpperCase());
     }
   }
 }

@@ -251,6 +251,12 @@ function initChannelSwitcherCRT() {
     });
   }
 
+  // Expose global channel switcher for Flauto Magico (Ocarina) and external triggers
+  window.switchChannel = (target) => {
+    if (!target) return;
+    switchChannel(target.toUpperCase());
+  };
+
   const craneLink = document.getElementById('nav-jump-crane');
   if (craneLink) {
     craneLink.addEventListener('click', (e) => {
