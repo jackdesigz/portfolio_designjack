@@ -417,7 +417,7 @@ class SoundEngine {
     } catch (e) {}
   }
 
-  // 17. Magic Flute / Ocarina of Time Note Synthesizer (5 Notes: R, T, Y, U, I)
+  // 17. Magic Flute Note Synthesizer (5 Notes: R, T, Y, U, I)
   playFluteNote(noteKey) {
     if (this.muted) return;
     try {
@@ -466,7 +466,7 @@ class SoundEngine {
       oscHarmonic.connect(harmonicGain);
       harmonicGain.connect(gain);
 
-      // Natural Ocarina Vibrato (5.5 Hz LFO)
+      // Natural Flute Vibrato (5.5 Hz LFO)
       try {
         const lfo = this.ctx.createOscillator();
         const lfoGain = this.ctx.createGain();

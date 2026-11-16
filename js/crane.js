@@ -254,9 +254,8 @@ class SuperCuteCandyClawMachine {
   setupScene() {
     this.scene = new THREE.Scene();
 
-    this.camera = new THREE.PerspectiveCamera(36, this.width / this.height, 0.1, 100);
-    this.camera.position.set(0, 4.3, 7.8);
-    this.camera.lookAt(0, 1.7, 0);
+    this.camera = new THREE.PerspectiveCamera(34, this.width / this.height, 0.1, 100);
+    this.updateCameraFraming();
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     this.renderer.setSize(this.width, this.height);
@@ -270,12 +269,42 @@ class SuperCuteCandyClawMachine {
     window.addEventListener('resize', () => this.onResize());
   }
 
+  updateCameraFraming() {
+    if (!this.camera || !this.container) return;
+    const aspect = this.width / Math.max(1, this.height);
+    this.camera.aspect = aspect;
+
+    // Cabinet is centered at X=0, Z=0.
+    // Height spans Y=0.0 (rubber feet) to Y=4.72 (marquee arch & top chaser bulbs).
+    // Center point of whole machine: Y = 2.36.
+    const lookY = 2.36;
+
+    if (aspect >= 1.6) {
+      this.camera.fov = 32;
+      this.camera.position.set(0, 3.4, 9.2);
+    } else if (aspect >= 1.3) {
+      this.camera.fov = 35;
+      this.camera.position.set(0, 3.45, 9.6);
+    } else if (aspect >= 1.0) {
+      this.camera.fov = 40;
+      this.camera.position.set(0, 3.5, 10.4);
+    } else if (aspect >= 0.75) {
+      this.camera.fov = 47;
+      this.camera.position.set(0, 3.55, 11.5);
+    } else {
+      this.camera.fov = 54;
+      this.camera.position.set(0, 3.6, 12.8);
+    }
+
+    this.camera.lookAt(0, lookY, 0);
+    this.camera.updateProjectionMatrix();
+  }
+
   onResize() {
     if (!this.container) return;
     this.width = this.container.clientWidth;
     this.height = this.container.clientHeight || 580;
-    this.camera.aspect = this.width / this.height;
-    this.camera.updateProjectionMatrix();
+    this.updateCameraFraming();
     this.renderer.setSize(this.width, this.height);
   }
 

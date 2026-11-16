@@ -74,20 +74,28 @@ body {
   z-index: 99980;
   overflow: hidden;
   background: 
+    /* Ultra-light, crisp scanlines (0.035 opacity keeps text bright and readable) */
     repeating-linear-gradient(
       to bottom,
       transparent 0px,
       transparent 2px,
-      rgba(0, 0, 0, 0.12) 2px,
-      rgba(0, 0, 0, 0.12) 4px
+      rgba(0, 0, 0, 0.035) 2px,
+      rgba(0, 0, 0, 0.035) 4px
     ),
+    /* Corner & edge vignette: 100% transparent center (72%), gentle falloff to edges */
     radial-gradient(
       circle at 50% 50%,
-      transparent 60%,
-      rgba(0, 0, 0, 0.15) 85%,
-      rgba(0, 0, 0, 0.45) 100%
+      transparent 72%,
+      rgba(0, 0, 0, 0.08) 88%,
+      rgba(0, 0, 0, 0.32) 100%
+    ),
+    /* Subtle angled curved glass reflection */
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0) 30%
     );
-  animation: crtFlicker 0.14s infinite;
+  animation: crtFlicker 0.16s infinite;
 }
 
 /* Authentic CRT Slow White Phosphor Rolling Scanline / Bar */
@@ -95,41 +103,48 @@ body {
   position: fixed;
   left: 0;
   width: 100%;
-  height: 120px;
+  height: 100px;
   pointer-events: none;
   z-index: 99985;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 25%,
-    rgba(255, 255, 255, 0.22) 50%,
-    rgba(255, 255, 255, 0.08) 75%,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.03) 75%,
     transparent 100%
   );
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-  animation: crtRollScanline 8.5s linear infinite;
+  animation: crtRollScanline 10s linear infinite;
 }
 
 @keyframes crtRollScanline {
-  0% { transform: translateY(-140px); }
+  0% { transform: translateY(-120px); }
   100% { transform: translateY(105vh); }
 }
 
 @keyframes crtFlicker {
-  0% { opacity: 0.97; }
+  0% { opacity: 0.985; }
   50% { opacity: 1.0; }
-  100% { opacity: 0.98; }
+  100% { opacity: 0.99; }
 }
 
+/* CRT Screen Frame & Light Barrel Curvature */
 .crt-bezel-frame {
   box-shadow: 
-    inset 0 0 40px rgba(0, 0, 0, 0.18),
-    inset 0 0 10px rgba(0, 0, 0, 0.28);
-  border-radius: 14px;
+    inset 0 0 50px rgba(0, 0, 0, 0.22),
+    inset 0 0 12px rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+}
+
+/* Light authentic CRT barrel curvature on main container */
+#main-app {
+  transform: perspective(1400px) scale(0.998);
+  transform-origin: center center;
+  transition: transform 0.3s ease;
 }
 
 /* =====================================================================
-   CRT MONITOR SHUTDOWN & POWER-ON TRANSITION ENGINE
+   CRT MONITOR SHUTDOWN & POWER-ON TRANSITION ENGINE (ZERO-FLICKER)
    ===================================================================== */
 
 #crt-transition-fx {
@@ -141,44 +156,45 @@ body {
   pointer-events: none;
 }
 
-#crt-transition-fx.active,
-#crt-transition-fx.crt-active {
+#crt-transition-fx.active {
   display: flex !important;
   align-items: center;
   justify-content: center;
   pointer-events: all;
+  background: #000000;
 }
 
+/* By default, the beam is collapsed and invisible so it cannot flash before animation starts */
 .crt-beam {
   width: 100%;
   height: 100%;
   background: #FFFFFF;
   transform-origin: center center;
+  transform: scale(0, 0);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* 1. Shutdown: Picture collapses to a horizontal line, then a dot, then off */
-#crt-transition-fx.shutting-down .crt-beam,
-#crt-transition-fx.crt-shutting-down .crt-beam {
-  animation: crtBeamCollapse 0.38s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+#crt-transition-fx.shutting-down .crt-beam {
+  animation: crtBeamCollapse 0.36s cubic-bezier(0.25, 1, 0.3, 1) forwards;
 }
 
 @keyframes crtBeamCollapse {
   0% {
     transform: scale(1, 1);
     opacity: 0.95;
-    filter: brightness(1.2);
+    background: #FFFFFF;
   }
-  45% {
+  42% {
     transform: scale(1, 0.0035);
     opacity: 1;
-    filter: brightness(6);
     background: #FFFFFF;
     box-shadow: 0 0 40px #FFFFFF, 0 0 80px rgba(230, 57, 70, 0.9);
   }
   75% {
     transform: scale(0.0035, 0.0035);
     opacity: 1;
-    filter: brightness(9);
     background: #FFFFFF;
     box-shadow: 0 0 50px #FFFFFF, 0 0 90px #FFFFFF;
   }
@@ -188,50 +204,54 @@ body {
   }
 }
 
-/* 2. Power-on: Dot bursts in center, expands into a line, blooms vertically */
-#crt-transition-fx.powering-on .crt-beam,
-#crt-transition-fx.crt-powering-on .crt-beam {
-  animation: crtBeamExpand 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* 2. Midpoint Blackout: completely solid black curtain hiding DOM channel switch */
+#crt-transition-fx.blackout {
+  background: #000000 !important;
+}
+
+#crt-transition-fx.blackout .crt-beam {
+  transform: scale(0, 0);
+  opacity: 0;
+}
+
+/* 3. Power-on: Dot bursts in center, expands into a line, blooms vertically */
+#crt-transition-fx.powering-on .crt-beam {
+  animation: crtBeamExpand 0.54s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes crtBeamExpand {
   0% {
     transform: scale(0.003, 0.003);
     opacity: 1;
-    filter: brightness(8);
     background: #FFFFFF;
     box-shadow: 0 0 45px #FFFFFF, 0 0 90px rgba(42, 157, 143, 0.9);
   }
-  32% {
+  30% {
     transform: scale(1, 0.0035);
     opacity: 1;
-    filter: brightness(5);
     background: #FFFFFF;
     box-shadow: 0 0 35px #FFFFFF, 0 0 70px rgba(42, 157, 143, 0.8);
   }
-  65% {
-    transform: scale(1, 1.02);
-    opacity: 0.85;
-    filter: brightness(1.6);
-    background: rgba(255, 255, 255, 0.3);
+  60% {
+    transform: scale(1, 1);
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.25);
   }
   100% {
     transform: scale(1, 1);
     opacity: 0;
-    filter: brightness(1);
     background: transparent;
   }
 }
 
-#crt-transition-fx.powering-on,
-#crt-transition-fx.crt-powering-on {
-  animation: crtBackdropFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+#crt-transition-fx.powering-on {
+  animation: crtBackdropFade 0.54s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes crtBackdropFade {
   0% { background: #000000; }
-  40% { background: #000000; }
-  75% { background: rgba(0, 0, 0, 0.5); }
+  35% { background: #000000; }
+  75% { background: rgba(0, 0, 0, 0.4); }
   100% { background: transparent; }
 }
 
@@ -438,7 +458,8 @@ body {
 
 .brand-name .brand-jack {
   color: var(--bauhaus-red);
-  transition: color 0.2s ease;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s ease;
+  display: inline-block;
 }
 
 body.channel-g-active {
@@ -1973,9 +1994,8 @@ body.channel-b-active .nav-btn:hover {
 
 .crane-standalone-stage {
   width: 100%;
-  min-height: 590px;
   background: radial-gradient(circle at 50% 35%, #242432 0%, #121218 65%, #0B0B0E 100%);
-  border-radius: 28px;
+  border-radius: 24px;
   border: 2.5px solid var(--border-line);
   box-shadow: 8px 8px 0px var(--border-line);
   position: relative;
@@ -1986,7 +2006,7 @@ body.channel-b-active .nav-btn:hover {
 
 #crane-canvas-container {
   width: 100%;
-  height: 580px;
+  height: clamp(430px, 56vh, 580px);
   display: block;
 }
 
@@ -2012,11 +2032,11 @@ body.channel-b-active .nav-btn:hover {
 .crane-bottom-dashboard {
   background: #14141A;
   border-top: 2px solid #282832;
-  padding: 18px 28px;
+  padding: 12px 24px;
   display: grid;
   grid-template-columns: 1fr 1.6fr 1fr;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   z-index: 2;
 }
 
@@ -2024,26 +2044,26 @@ body.channel-b-active .nav-btn:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .dpad-row {
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 
 .arcade-dpad-btn {
-  width: 50px;
-  height: 46px;
+  width: 44px;
+  height: 38px;
   background: #25252E;
   border: 2px solid #3E3E4E;
   color: #FFFFFF;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 0 #111116;
+  box-shadow: 0 3px 0 #111116;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2818,7 +2838,7 @@ footer {
 }
 
 /* =====================================================================
-   MAGIC FLUTE / OCARINA OF TIME (SECTION B TRIGGER & MODAL)
+   MAGIC FLUTE (SECTION B TRIGGER & MODAL)
    ===================================================================== */
 
 /* Floating trigger docked neatly in the bottom right of Section B */

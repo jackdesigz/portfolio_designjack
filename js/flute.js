@@ -1,5 +1,5 @@
 /**
- * designjack - Magic Flute (Ocarina of Time style)
+ * designjack - Magic Flute
  * 5 Notes: R, T, Y, U, I
  * Melodies:
  *   - Song of Red (Canale R): R - T - Y - R
@@ -331,7 +331,7 @@ class MagicFlute {
     if (isAlreadyThere) {
       const toast = document.getElementById('channel-toast');
       if (toast) {
-        toast.textContent = `Sei già nel Canale [${dest}]! Prova a suonare una melodia per gli altri canali.`;
+        toast.textContent = `Sei già nel Canale ${dest}! Prova a suonare una melodia per gli altri canali.`;
         toast.classList.add('visible');
         setTimeout(() => toast.classList.remove('visible'), 3200);
       }

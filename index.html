@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>designjack // CANALE [R] — Portfolio di Jacopo</title>
+  <title>designjack // CANALE R — Portfolio di Jacopo</title>
   <meta name="description" content="Portfolio di Jacopo (designjack) — Communication & Digital Designer. Cyber-Bauhaus, Geometria Sferica 3D, Fogli Appesi al Filo e Toy Candy Claw Machine.">
 
   <!-- Google Fonts: Montserrat, JetBrains Mono, Syne (Organic/Street G), Comfortaa (Calm Marine B) -->
@@ -16,7 +16,7 @@
 
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/styles.css?v=2.0">
+  <link rel="stylesheet" href="css/styles.css?v=2.1">
 </head>
 <body class="crt-bezel-frame">
 
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <button id="preloader-skip" class="preloader-skip-btn">[ SALTA INTRO -> ]</button>
+      <button id="preloader-skip" class="preloader-skip-btn">SALTA INTRO -></button>
     </div>
   </div>
 
@@ -55,7 +55,7 @@
   <header id="main-nav">
     <div class="nav-left">
       <a href="#hero" class="brand-logo-container" title="designjack">
-        <span class="brand-name">design<span class="brand-jack">jack</span></span>
+        <span class="brand-name">design<span id="nav-brand-suffix" class="brand-jack">jack</span></span>
       </a>
     </div>
 
@@ -63,13 +63,13 @@
     <div class="nav-center">
       <nav class="channel-selector-group" aria-label="Selettore Canali">
         <button id="channel-btn-r" class="channel-tab channel-r active" title="Canale R — Works & Playground">
-          [ R ]
+          R
         </button>
         <button id="channel-btn-g" class="channel-tab channel-g" title="Canale G — jacopo Febi">
-          [ G ]
+          G
         </button>
         <button id="channel-btn-b" class="channel-tab channel-b" title="Canale B — Contatti">
-          [ B ]
+          B
         </button>
       </nav>
     </div>
@@ -78,10 +78,6 @@
       <button id="hud-audio-toggle" class="nav-btn audio-toggle" title="Attiva/Disattiva Audio">
         AUDIO: ON
       </button>
-
-      <a id="nav-jump-crane" href="#crane-section" class="nav-btn arcade-jump" title="Gioca alla Toy Claw Machine">
-        [ TOY CLAW ARCADE ↓ ]
-      </a>
     </div>
   </header>
 
@@ -94,7 +90,7 @@
   <main id="main-app" class="preload-hidden">
 
     <!-- ===============================================================
-         CANALE [R] — WORKS & CLAW MACHINE
+         CANALE R — WORKS & CLAW MACHINE
          =============================================================== -->
     <div id="channel-view-r" class="channel-view active">
 
@@ -120,11 +116,11 @@
                 Jack-in-the-Box Core.
               </h1>
               <p class="hero-bio">
-                Ciao, sono <strong>Jacopo (designjack)</strong>, Communication & Digital Designer. Esploro la convergenza tra grafica, sistemi interattivi e 3D. Sei nel <strong>Canale [R]</strong>: scopri i progetti stesi sul <strong>filo da studio</strong> oppure pesca le capsule con la <strong>Toy Candy Claw Machine</strong> in fondo.
+                Ciao, sono <strong>Jacopo (designjack)</strong>, Communication & Digital Designer. Esploro la convergenza tra grafica, sistemi interattivi e 3D. Sei nel <strong>Canale R</strong>: scopri i progetti stesi sul <strong>filo da studio</strong> oppure pesca le capsule con la <strong>Toy Candy Claw Machine</strong> in fondo.
               </p>
               <div class="hero-cta-row">
-                <a href="#wire-catalog-section" class="hero-cta-btn primary">[ PROGETTI SU FILO ↓ ]</a>
-                <a href="#crane-section" class="hero-cta-btn">[ TOY CLAW ARCADE ↓ ]</a>
+                <a href="#wire-catalog-section" class="hero-cta-btn primary">PROGETTI SU FILO ↓</a>
+                <a href="#crane-section" class="hero-cta-btn">TOY CLAW ARCADE ↓</a>
               </div>
             </div>
 
@@ -173,8 +169,8 @@
                 I progetti sono stesi sul filo da studio: passa sopra con il mouse per sollevarli e clicca per aprire la scheda.
               </span>
               <div class="wire-nav-arrows">
-                <button id="btn-wire-scroll-left" class="nav-btn" title="Scorri a sinistra">[ ◄ SCORRI ]</button>
-                <button id="btn-wire-scroll-right" class="nav-btn" title="Scorri a destra">[ SCORRI ► ]</button>
+                <button id="btn-wire-scroll-left" class="nav-btn" title="Scorri a sinistra">◄ SCORRI</button>
+                <button id="btn-wire-scroll-right" class="nav-btn" title="Scorri a destra">SCORRI ►</button>
               </div>
             </div>
           </div>
@@ -184,7 +180,7 @@
             <button id="btn-open-full-catalog" class="btn-open-full-catalog" title="Apri il catalogo completo a schermo intero con griglia stile Instagram">
               <span class="launch-icon">⤢</span>
               <span class="launch-title">APRI CATALOGO INTERO</span>
-              <span class="launch-badge">[ GRIGLIA COMPLETA & FILTRI INTERATTIVI ]</span>
+              <span class="launch-badge">GRIGLIA COMPLETA & FILTRI INTERATTIVI</span>
             </button>
           </div>
         </div>
@@ -211,11 +207,11 @@
 
         <div class="crane-bottom-dashboard">
           <div class="dpad-container">
-            <button id="crane-btn-up" class="arcade-dpad-btn" title="Indietro [W / ▲]">▲</button>
+            <button id="crane-btn-up" class="arcade-dpad-btn" title="Indietro (W / ▲)">▲</button>
             <div class="dpad-row">
-              <button id="crane-btn-left" class="arcade-dpad-btn" title="Sinistra [A / ◄]">◄</button>
-              <button id="crane-btn-down" class="arcade-dpad-btn" title="Avanti [S / ▼]">▼</button>
-              <button id="crane-btn-right" class="arcade-dpad-btn" title="Destra [D / ►]">►</button>
+              <button id="crane-btn-left" class="arcade-dpad-btn" title="Sinistra (A / ◄)">◄</button>
+              <button id="crane-btn-down" class="arcade-dpad-btn" title="Avanti (S / ▼)">▼</button>
+              <button id="crane-btn-right" class="arcade-dpad-btn" title="Destra (D / ►)">►</button>
             </div>
           </div>
 
@@ -227,8 +223,8 @@
           </div>
 
           <div class="arcade-drop-container">
-            <button id="crane-btn-drop" class="btn-drop-claw" title="Pesca la capsula! [SPAZIO]">
-              <span>[ PESCA ]</span>
+            <button id="crane-btn-drop" class="btn-drop-claw" title="Pesca la capsula! (SPAZIO)">
+              <span>PESCA</span>
               <span>▼</span>
             </button>
           </div>
@@ -242,14 +238,14 @@
         <span>designjack © 2026 // Jacopo</span>
       </div>
       <div>
-        <span>Canale [R]</span>
+        <span>Canale R</span>
       </div>
     </footer>
 
     </div> <!-- Fine #channel-view-r -->
 
     <!-- ===============================================================
-         CANALE [G] — ORGANIC & STREET ART AESTHETICS (JACOPO FEBI)
+         CANALE G — ORGANIC & STREET ART AESTHETICS (JACOPO FEBI)
          =============================================================== -->
     <div id="channel-view-g" class="channel-view">
       <section class="channel-g-stage">
@@ -261,7 +257,7 @@
             <span class="ctrl-organic-blob blob-2"></span>
             <span class="ctrl-organic-blob blob-3"></span>
           </div>
-          <div class="channel-g-topbar-title">CANALE [G] // ORGANIC × STREET</div>
+          <div class="channel-g-topbar-title">CANALE G // ORGANIC × STREET</div>
           <div></div>
         </div>
 
@@ -312,8 +308,8 @@
             </p>
 
             <div class="channel-g-actions">
-              <button id="btn-return-channel-r-from-g" class="channel-g-return-btn" title="Ritorna al Canale [R]">
-                [ ← TORNA AL CANALE R ]
+              <button id="btn-return-channel-r-from-g" class="channel-g-return-btn" title="Ritorna al Canale R">
+                ← TORNA AL CANALE R
               </button>
             </div>
           </div>
@@ -326,14 +322,14 @@
             <span>designjack // jacopo Febi</span>
           </div>
           <div>
-            <span style="color: var(--channel-g); font-weight: 700;">Canale [G] // Organico & Street</span>
+            <span style="color: var(--channel-g); font-weight: 700;">Canale G // Organico & Street</span>
           </div>
         </footer>
       </section>
     </div> <!-- Fine #channel-view-g -->
 
     <!-- ===============================================================
-         CANALE [B] — CALM MARINE & BUBBLES AESTHETICS (CONTATTI)
+         CANALE B — CALM MARINE & BUBBLES AESTHETICS (CONTATTI)
          =============================================================== -->
     <div id="channel-view-b" class="channel-view">
       <section class="channel-b-marine-stage">
@@ -345,7 +341,7 @@
             <span class="ctrl-marine-bubble bub-2"></span>
             <span class="ctrl-marine-bubble bub-3"></span>
           </div>
-          <div class="channel-b-topbar-title">CANALE [B] // CALM MARINE</div>
+          <div class="channel-b-topbar-title">CANALE B // CALM MARINE</div>
           <div></div>
         </div>
 
@@ -382,19 +378,19 @@
                 <span class="email-drop-icon">💧</span>
                 <span>jacopo@designjack.it</span>
               </a>
-              <button id="btn-return-channel-r-from-b" class="channel-b-return-btn" title="Ritorna al Canale [R]">
-                [ ← TORNA AL CANALE R ]
+              <button id="btn-return-channel-r-from-b" class="channel-b-return-btn" title="Ritorna al Canale R">
+                ← TORNA AL CANALE R
               </button>
             </div>
           </div>
 
-          <!-- Trigger Flauto Magico (Ocarina) posizionato in basso a destra nella sezione B -->
+          <!-- Trigger Flauto Magico posizionato in basso a destra nella sezione B -->
           <div class="marine-flute-dock">
-            <button id="btn-open-flute" class="marine-flute-trigger-btn" title="Suona il Flauto Magico [Ocarina]" aria-label="Apri Flauto Magico">
+            <button id="btn-open-flute" class="marine-flute-trigger-btn" title="Suona il Flauto Magico" aria-label="Apri Flauto Magico">
               <span class="flute-trigger-icon">🪈</span>
               <div class="flute-trigger-meta">
                 <span class="flute-trigger-text">FLAUTO MAGICO</span>
-                <span class="flute-trigger-hint">[ OCARINA ]</span>
+                <span class="flute-trigger-hint">TELETRASPORTO</span>
               </div>
             </button>
           </div>
@@ -407,7 +403,7 @@
             <span>designjack // jacopo Febi</span>
           </div>
           <div>
-            <span style="color: #90E0EF; font-weight: 700;">Canale [B] // Calm Marine</span>
+            <span style="color: #90E0EF; font-weight: 700;">Canale B // Calm Marine</span>
           </div>
         </footer>
       </section>
@@ -433,8 +429,8 @@
         </div>
 
         <div class="topbar-actions">
-          <button id="btn-close-full-catalog" class="btn-close-fullscreen" title="Chiudi Catalogo [ESC]">
-            [ ✕ CHIUDI CATALOGO ]
+          <button id="btn-close-full-catalog" class="btn-close-fullscreen" title="Chiudi Catalogo (ESC)">
+            ✕ CHIUDI CATALOGO
           </button>
         </div>
       </div>
@@ -446,13 +442,13 @@
         </div>
 
         <nav class="fullscreen-filter-tabs" aria-label="Filtro discipline progetti">
-          <button class="insta-filter-pill active" data-filter="all">[ TUTTI ]</button>
-          <button class="insta-filter-pill" data-filter="Graphic Design">[ GRAPHIC DESIGN ]</button>
-          <button class="insta-filter-pill" data-filter="Interaction Design">[ INTERACTION DESIGN ]</button>
-          <button class="insta-filter-pill" data-filter="Editorial Design">[ EDITORIAL DESIGN ]</button>
-          <button class="insta-filter-pill" data-filter="Web Design">[ WEB DESIGN ]</button>
-          <button class="insta-filter-pill" data-filter="Brand Design">[ BRAND DESIGN ]</button>
-          <button class="insta-filter-pill" data-filter="Personal Projects">[ PERSONAL PROJECTS ]</button>
+          <button class="insta-filter-pill active" data-filter="all">TUTTI</button>
+          <button class="insta-filter-pill" data-filter="Graphic Design">GRAPHIC DESIGN</button>
+          <button class="insta-filter-pill" data-filter="Interaction Design">INTERACTION DESIGN</button>
+          <button class="insta-filter-pill" data-filter="Editorial Design">EDITORIAL DESIGN</button>
+          <button class="insta-filter-pill" data-filter="Web Design">WEB DESIGN</button>
+          <button class="insta-filter-pill" data-filter="Brand Design">BRAND DESIGN</button>
+          <button class="insta-filter-pill" data-filter="Personal Projects">PERSONAL PROJECTS</button>
         </nav>
       </div>
 
@@ -500,10 +496,10 @@
 
           <div class="capsule-actions-row">
             <button id="btn-capsule-inspect" class="btn-primary-inspect">
-              <span>[ APPROFONDISCI PROGETTO -> ]</span>
+              <span>APPROFONDISCI PROGETTO -></span>
             </button>
             <button id="btn-capsule-play-again" class="btn-secondary-play">
-              <span>[ TORNA ALLA MACCHINA / PESCA ANCORA ]</span>
+              <span>TORNA ALLA MACCHINA / PESCA ANCORA</span>
             </button>
           </div>
         </div>
@@ -575,18 +571,18 @@
   </div>
 
   <!-- ===================================================================
-       MODAL: FLAUTO MAGICO / OCARINA OF TIME (STRUMENTO MUSICALE)
+       MODAL: FLAUTO MAGICO (STRUMENTO MUSICALE)
        =================================================================== -->
-  <div id="magic-flute-modal" class="flute-modal-overlay" role="dialog" aria-modal="true" aria-label="Flauto Magico Ocarina">
+  <div id="magic-flute-modal" class="flute-modal-overlay" role="dialog" aria-modal="true" aria-label="Flauto Magico">
     <div class="flute-modal-window">
       <!-- Topbar Finestra Flauto -->
       <div class="flute-modal-topbar">
         <div class="flute-topbar-title">
           <span class="flute-title-icon">🪈</span>
-          <span>FLAUTO MAGICO // OCARINA OF TIME</span>
+          <span>FLAUTO MAGICO // MELODIE DI TELETRASPORTO</span>
         </div>
-        <button id="btn-close-flute" class="flute-close-btn" title="Chiudi Flauto [ESC]">
-          [ ✕ CHIUDI ]
+        <button id="btn-close-flute" class="flute-close-btn" title="Chiudi Flauto (ESC)">
+          ✕ CHIUDI
         </button>
       </div>
 
@@ -605,7 +601,7 @@
             <button id="btn-flute-clear-notes" class="btn-clear-stave" title="Cancella note eseguite">RESET</button>
           </div>
 
-          <!-- Grafica dello Strumento Flauto / Ocarina con 5 Fori Interattivi -->
+          <!-- Grafica dello Strumento Flauto con 5 Fori Interattivi -->
           <div class="flute-body-graphic">
             <div class="flute-mouthpiece"></div>
             <div class="flute-stem">
@@ -670,7 +666,7 @@
             <!-- Spartito Canale R -->
             <div class="sheet-music-card card-channel-r" id="sheet-song-r">
               <div class="sheet-card-header">
-                <span class="sheet-badge-r">[ CANALE R ]</span>
+                <span class="sheet-badge-r">CANALE R</span>
                 <span class="sheet-title">Melodia del Rosso</span>
               </div>
               <div class="sheet-notes-sequence">
@@ -688,7 +684,7 @@
             <!-- Spartito Canale G -->
             <div class="sheet-music-card card-channel-g" id="sheet-song-g">
               <div class="sheet-card-header">
-                <span class="sheet-badge-g">[ CANALE G ]</span>
+                <span class="sheet-badge-g">CANALE G</span>
                 <span class="sheet-title">Melodia del Verde</span>
               </div>
               <div class="sheet-notes-sequence">
@@ -706,7 +702,7 @@
             <!-- Spartito Canale B -->
             <div class="sheet-music-card card-channel-b" id="sheet-song-b">
               <div class="sheet-card-header">
-                <span class="sheet-badge-b">[ CANALE B ]</span>
+                <span class="sheet-badge-b">CANALE B</span>
                 <span class="sheet-title">Melodia del Blu</span>
               </div>
               <div class="sheet-notes-sequence">
@@ -731,8 +727,8 @@
           <h3 id="prompt-melody-title" class="prompt-title">Hai suonato la Melodia del Canale R!</h3>
           <p id="prompt-melody-msg" class="prompt-msg">Vuoi procedere ad andare a destinazione Canale R?</p>
           <div class="prompt-actions">
-            <button id="btn-flute-prompt-cancel" class="prompt-btn secondary">[ ✕ ANNULLA ]</button>
-            <button id="btn-flute-prompt-confirm" class="prompt-btn primary">[ TELETRASPORTATI ORA → ]</button>
+            <button id="btn-flute-prompt-cancel" class="prompt-btn secondary">✕ ANNULLA</button>
+            <button id="btn-flute-prompt-confirm" class="prompt-btn primary">TELETRASPORTATI ORA →</button>
           </div>
         </div>
       </div>
@@ -741,14 +737,14 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/audio.js?v=2.0"></script>
-  <script src="js/heroSphere.js?v=2.0"></script>
-  <script src="js/hangingCatalog.js?v=2.0"></script>
-  <script src="js/dither.js?v=2.0"></script>
-  <script src="js/crane.js?v=2.0"></script>
-  <script src="js/modal.js?v=2.0"></script>
-  <script src="js/flute.js?v=2.0"></script>
-  <script src="js/main.js?v=2.0"></script>
+  <script src="js/audio.js?v=2.1"></script>
+  <script src="js/heroSphere.js?v=2.1"></script>
+  <script src="js/hangingCatalog.js?v=2.1"></script>
+  <script src="js/dither.js?v=2.1"></script>
+  <script src="js/crane.js?v=2.1"></script>
+  <script src="js/modal.js?v=2.1"></script>
+  <script src="js/flute.js?v=2.1"></script>
+  <script src="js/main.js?v=2.1"></script>
 
 </body>
 </html>

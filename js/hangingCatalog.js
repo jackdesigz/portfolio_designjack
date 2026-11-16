@@ -50,7 +50,7 @@ class HangingCatalogWire {
           <div class="sheet-artwork-preview">
             <canvas class="sheet-mini-canvas" width="220" height="130"></canvas>
             <div class="sheet-hover-overlay">
-              <span>[ APRI PROGETTO ]</span>
+              <span>APRI PROGETTO</span>
             </div>
           </div>
           <div class="sheet-footer">
@@ -179,7 +179,7 @@ class HangingCatalogWire {
     }
 
     const toggleLabel = document.getElementById('wire-toggle-label');
-    if (toggleLabel) toggleLabel.textContent = '[ ✕ CHIUDI FILO DA STUDIO ]';
+    if (toggleLabel) toggleLabel.textContent = '✕ CHIUDI FILO DA STUDIO';
 
     if (window.audioEngine) {
       window.audioEngine.playCableTwang();
@@ -203,7 +203,7 @@ class HangingCatalogWire {
     }
 
     const toggleLabel = document.getElementById('wire-toggle-label');
-    if (toggleLabel) toggleLabel.textContent = '[ ⤢ MOSTRA INTERO CATALOGO SU FILO DA STUDIO ]';
+    if (toggleLabel) toggleLabel.textContent = '⤢ MOSTRA INTERO CATALOGO SU FILO DA STUDIO';
 
     if (window.audioEngine) window.audioEngine.playBeep(540, 0.04);
   }

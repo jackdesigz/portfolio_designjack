@@ -34,44 +34,49 @@ window.triggerCRTTransition = function(onMidpoint, onComplete) {
     if (window.audioEngine) window.audioEngine.playCRTShutdown();
   } catch (e) {}
 
-  // 2. Activate shutdown phase (screen collapses into line then dot)
+  // 2. Shut down: picture collapses smoothly into horizontal phosphor line then dot
   crt.className = 'active shutting-down';
 
-  // 3. Midpoint: beam collapsed, cathode blackout pause
+  // 3. Midpoint: beam collapsed, screen is 100% solid black
   setTimeout(() => {
+    // Lock in solid black backdrop so DOM updates are 100% invisible
+    crt.className = 'active blackout';
+
     try {
       if (onMidpoint) onMidpoint();
     } catch (e) {
       console.warn('CRT midpoint callback error:', e);
     }
 
-    // 4. Cathode pause before bloom
+    // Force synchronous browser layout reflow while completely hidden
+    void crt.offsetHeight;
+
+    // 4. Brief cathode pause before bloom
     setTimeout(() => {
-      // 5. Play CRT Degauss coil surge & electrostatic bloom
       try {
         if (window.audioEngine) window.audioEngine.playCRTPowerOn();
       } catch (e) {}
 
-      // 6. Power on: dot bursts into horizontal slit then blossoms vertically
+      // 5. Power on: dot expands into line and blooms vertically
       crt.className = 'active powering-on';
 
-      // 7. Complete transition and hide overlay
+      // 6. Complete transition and hide overlay
       setTimeout(() => {
         crt.className = '';
         try {
           if (onComplete) onComplete();
         } catch (e) {}
-      }, 550);
-    }, 80);
-  }, 380);
+      }, 540);
+    }, 90);
+  }, 360);
 
   // Safety fallback
   setTimeout(() => {
-    if (crt.classList.contains('active')) {
+    if (crt && crt.classList.contains('active')) {
       crt.className = '';
       if (onComplete) onComplete();
     }
-  }, 1600);
+  }, 1800);
 };
 
 // ---------------------------------------------------------------------
@@ -153,6 +158,7 @@ function initChannelSwitcherCRT() {
   const btnReturnG = document.getElementById('btn-return-channel-r-from-g');
   const btnReturnB = document.getElementById('btn-return-channel-r-from-b');
   const toast = document.getElementById('channel-toast');
+  const brandSuffix = document.getElementById('nav-brand-suffix');
 
   const viewR = document.getElementById('channel-view-r');
   const viewG = document.getElementById('channel-view-g');
@@ -174,7 +180,7 @@ function initChannelSwitcherCRT() {
 
     window.triggerCRTTransition(
       () => {
-        // Midpoint: screen is 100% blacked out
+        // Midpoint: screen is 100% blacked out behind the curtain
         currentChannel = target;
 
         // Reset all views & tabs
@@ -182,12 +188,15 @@ function initChannelSwitcherCRT() {
         [viewR, viewG, viewB].forEach(v => v && v.classList.remove('active'));
         document.body.classList.remove('channel-g-active', 'channel-b-active');
 
+        // Instant scroll to top while invisible
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
         if (target === 'R') {
           if (tabR) tabR.classList.add('active');
           if (viewR) viewR.classList.add('active');
-          window.scrollTo(0, 0);
+          if (brandSuffix) brandSuffix.textContent = 'jack';
 
-          showToast('Canale [R] // Bauhaus Works & Arcade');
+          showToast('Canale R // Bauhaus Works & Arcade');
 
           // Wake up 3D viewports if needed
           if (window.heroSphere && window.heroSphere.onResize) window.heroSphere.onResize();
@@ -196,17 +205,17 @@ function initChannelSwitcherCRT() {
           if (tabG) tabG.classList.add('active');
           if (viewG) viewG.classList.add('active');
           document.body.classList.add('channel-g-active');
-          window.scrollTo(0, 0);
+          if (brandSuffix) brandSuffix.textContent = 'febi';
 
-          showToast('Canale [G] // Organic & Street');
+          showToast('Canale G // Organic & Street');
           if (window.audioEngine) window.audioEngine.playSprayCan();
         } else if (target === 'B') {
           if (tabB) tabB.classList.add('active');
           if (viewB) viewB.classList.add('active');
           document.body.classList.add('channel-b-active');
-          window.scrollTo(0, 0);
+          if (brandSuffix) brandSuffix.textContent = 'marine';
 
-          showToast('Canale [B] // Calm Marine & Contatti');
+          showToast('Canale B // Calm Marine & Contatti');
           if (window.audioEngine) window.audioEngine.playWaterDrop();
           initMarineBubbles();
         }
@@ -252,31 +261,11 @@ function initChannelSwitcherCRT() {
     });
   }
 
-  // Expose global channel switcher for Flauto Magico (Ocarina) and external triggers
+  // Expose global channel switcher for Flauto Magico and external triggers
   window.switchChannel = (target) => {
     if (!target) return;
     switchChannel(target.toUpperCase());
   };
-
-  const craneLink = document.getElementById('nav-jump-crane');
-  if (craneLink) {
-    craneLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (currentChannel !== 'R') {
-        switchChannel('R');
-        setTimeout(() => {
-          const target = document.getElementById('crane-section');
-          if (target) target.scrollIntoView({ behavior: 'smooth' });
-        }, 650);
-      } else {
-        const target = document.getElementById('crane-section');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-          if (window.audioEngine) window.audioEngine.playBeep(720, 0.04);
-        }
-      }
-    });
-  }
 }
 
 // ---------------------------------------------------------------------
@@ -361,11 +350,11 @@ function initFullscreenInstagramCatalog() {
       <canvas class="insta-card-canvas" width="340" height="340"></canvas>
       <div class="insta-card-overlay">
         <span class="insta-overlay-cat" style="color: ${proj.colorHex || '#E63946'}; border-color: ${proj.colorHex || '#E63946'};">
-          [ ${proj.category.toUpperCase()} ]
+          ${proj.category.toUpperCase()}
         </span>
         <h3 class="insta-overlay-title">${proj.title}</h3>
         <p class="insta-overlay-desc">${proj.description}</p>
-        <span class="insta-overlay-btn">[ VEDI SCHEDA PROGETTO → ]</span>
+        <span class="insta-overlay-btn">VEDI SCHEDA PROGETTO →</span>
       </div>
     `;
 
