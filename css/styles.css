@@ -144,7 +144,7 @@ body {
 }
 
 /* =====================================================================
-   CRT MONITOR SHUTDOWN & POWER-ON TRANSITION ENGINE (ZERO-FLICKER)
+   CRT MONITOR SHUTDOWN & POWER-ON TRANSITION ENGINE (SILKY-SMOOTH)
    ===================================================================== */
 
 #crt-transition-fx {
@@ -154,6 +154,7 @@ body {
   z-index: 100000;
   background: #000000;
   pointer-events: none;
+  opacity: 0;
 }
 
 #crt-transition-fx.active {
@@ -161,7 +162,7 @@ body {
   align-items: center;
   justify-content: center;
   pointer-events: all;
-  background: #000000;
+  opacity: 1;
 }
 
 /* By default, the beam is collapsed and invisible so it cannot flash before animation starts */
@@ -175,28 +176,33 @@ body {
   pointer-events: none;
 }
 
-/* 1. Shutdown: Picture collapses to a horizontal line, then a dot, then off */
+/* 1. Shutdown: Picture collapses smoothly into a horizontal line then center dot */
+#crt-transition-fx.shutting-down {
+  background: #000000;
+}
+
 #crt-transition-fx.shutting-down .crt-beam {
-  animation: crtBeamCollapse 0.36s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+  animation: crtBeamCollapse 0.32s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
 }
 
 @keyframes crtBeamCollapse {
   0% {
     transform: scale(1, 1);
-    opacity: 0.95;
+    opacity: 0.35;
     background: #FFFFFF;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
   }
-  42% {
-    transform: scale(1, 0.0035);
+  35% {
+    transform: scale(1, 0.004);
     opacity: 1;
     background: #FFFFFF;
-    box-shadow: 0 0 40px #FFFFFF, 0 0 80px rgba(230, 57, 70, 0.9);
+    box-shadow: 0 0 35px #FFFFFF, 0 0 70px rgba(230, 57, 70, 0.8);
   }
   75% {
-    transform: scale(0.0035, 0.0035);
+    transform: scale(0.005, 0.004);
     opacity: 1;
     background: #FFFFFF;
-    box-shadow: 0 0 50px #FFFFFF, 0 0 90px #FFFFFF;
+    box-shadow: 0 0 45px #FFFFFF, 0 0 80px #FFFFFF;
   }
   100% {
     transform: scale(0, 0);
@@ -204,9 +210,10 @@ body {
   }
 }
 
-/* 2. Midpoint Blackout: completely solid black curtain hiding DOM channel switch */
+/* 2. Midpoint Blackout: 100% solid black curtain completely shielding DOM updates */
 #crt-transition-fx.blackout {
   background: #000000 !important;
+  opacity: 1 !important;
 }
 
 #crt-transition-fx.blackout .crt-beam {
@@ -214,45 +221,59 @@ body {
   opacity: 0;
 }
 
-/* 3. Power-on: Dot bursts in center, expands into a line, blooms vertically */
+/* 3. Power-on: Dot expands horizontally, then blooms vertically into full screen */
+#crt-transition-fx.powering-on {
+  animation: crtBackdropFade 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes crtBackdropFade {
+  0% {
+    background: #000000;
+    opacity: 1;
+  }
+  45% {
+    background: #000000;
+    opacity: 1;
+  }
+  75% {
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0.85;
+  }
+  100% {
+    background: transparent;
+    opacity: 0;
+  }
+}
+
 #crt-transition-fx.powering-on .crt-beam {
-  animation: crtBeamExpand 0.54s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: crtBeamExpand 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes crtBeamExpand {
   0% {
-    transform: scale(0.003, 0.003);
+    transform: scale(0.004, 0.004);
     opacity: 1;
     background: #FFFFFF;
-    box-shadow: 0 0 45px #FFFFFF, 0 0 90px rgba(42, 157, 143, 0.9);
+    box-shadow: 0 0 50px #FFFFFF, 0 0 100px rgba(0, 180, 216, 0.9);
   }
-  30% {
-    transform: scale(1, 0.0035);
+  28% {
+    transform: scale(1, 0.004);
     opacity: 1;
     background: #FFFFFF;
-    box-shadow: 0 0 35px #FFFFFF, 0 0 70px rgba(42, 157, 143, 0.8);
+    box-shadow: 0 0 40px #FFFFFF, 0 0 80px rgba(0, 180, 216, 0.8);
   }
-  60% {
+  65% {
     transform: scale(1, 1);
-    opacity: 0.8;
-    background: rgba(255, 255, 255, 0.25);
+    opacity: 0.55;
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
   }
   100% {
     transform: scale(1, 1);
     opacity: 0;
     background: transparent;
+    box-shadow: none;
   }
-}
-
-#crt-transition-fx.powering-on {
-  animation: crtBackdropFade 0.54s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes crtBackdropFade {
-  0% { background: #000000; }
-  35% { background: #000000; }
-  75% { background: rgba(0, 0, 0, 0.4); }
-  100% { background: transparent; }
 }
 
 /* =====================================================================
@@ -892,6 +913,34 @@ body.channel-b-active .nav-btn:hover {
   display: flex;
   flex-direction: column;
   gap: 52px;
+  animation: channelFadeIn 0.36s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.channel-view.transition-out {
+  animation: channelFadeOut 0.22s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes channelFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes channelFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 
 /* =====================================================================

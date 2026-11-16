@@ -120,15 +120,19 @@ class HeroBauhausSphere {
     this.scene.add(this.sphereGroup);
   }
 
+  onResize() {
+    if (!this.container || !this.renderer || !this.camera) return;
+    const w = this.container.clientWidth || 360;
+    const h = this.container.clientHeight || 300;
+    if (w <= 0 || h <= 0) return;
+    this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(w, h);
+    if (this.scene) this.renderer.render(this.scene, this.camera);
+  }
+
   setupEvents() {
-    window.addEventListener('resize', () => {
-      if (!this.container) return;
-      const w = this.container.clientWidth;
-      const h = this.container.clientHeight || 300;
-      this.camera.aspect = w / h;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(w, h);
-    });
+    window.addEventListener('resize', () => this.onResize());
 
     // Mouse tilt tracking
     window.addEventListener('mousemove', (e) => {

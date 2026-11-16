@@ -382,10 +382,14 @@ class SuperCuteCandyClawMachine {
 
   onResize() {
     if (!this.container) return;
-    this.width = this.container.clientWidth;
+    this.width = this.container.clientWidth || 900;
     this.height = this.container.clientHeight || 580;
+    if (this.width <= 0 || this.height <= 0) return;
     this.updateCameraFraming();
-    this.renderer.setSize(this.width, this.height);
+    if (this.renderer) {
+      this.renderer.setSize(this.width, this.height);
+      if (this.scene && this.camera) this.renderer.render(this.scene, this.camera);
+    }
   }
 
   setupLighting() {

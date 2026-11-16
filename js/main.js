@@ -37,7 +37,7 @@ window.triggerCRTTransition = function(onMidpoint, onComplete) {
   // 2. Shut down: picture collapses smoothly into horizontal phosphor line then dot
   crt.className = 'active shutting-down';
 
-  // 3. Midpoint: beam collapsed, screen is 100% solid black
+  // 3. Midpoint: beam collapsed, screen is 100% solid, impenetrable black
   setTimeout(() => {
     // Lock in solid black backdrop so DOM updates are 100% invisible
     crt.className = 'active blackout';
@@ -51,24 +51,29 @@ window.triggerCRTTransition = function(onMidpoint, onComplete) {
     // Force synchronous browser layout reflow while completely hidden
     void crt.offsetHeight;
 
-    // 4. Brief cathode pause before bloom
-    setTimeout(() => {
-      try {
-        if (window.audioEngine) window.audioEngine.playCRTPowerOn();
-      } catch (e) {}
+    // Use double rAF to guarantee browser finished layout & first paint of arrival view
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // 4. Brief cathode pause before bloom
+        setTimeout(() => {
+          try {
+            if (window.audioEngine) window.audioEngine.playCRTPowerOn();
+          } catch (e) {}
 
-      // 5. Power on: dot expands into line and blooms vertically
-      crt.className = 'active powering-on';
+          // 5. Power on: dot expands into line and blooms vertically
+          crt.className = 'active powering-on';
 
-      // 6. Complete transition and hide overlay
-      setTimeout(() => {
-        crt.className = '';
-        try {
-          if (onComplete) onComplete();
-        } catch (e) {}
-      }, 540);
-    }, 90);
-  }, 360);
+          // 6. Complete transition and hide overlay when bloom is fully done
+          setTimeout(() => {
+            crt.className = '';
+            try {
+              if (onComplete) onComplete();
+            } catch (e) {}
+          }, 480);
+        }, 50);
+      });
+    });
+  }, 320);
 
   // Safety fallback
   setTimeout(() => {
@@ -178,6 +183,12 @@ function initChannelSwitcherCRT() {
     if (target === currentChannel || isTransitioning) return;
     isTransitioning = true;
 
+    // Fade out departure view smoothly as the CRT collapses
+    const fromView = currentChannel === 'R' ? viewR : (currentChannel === 'G' ? viewG : viewB);
+    if (fromView) {
+      fromView.classList.add('transition-out');
+    }
+
     window.triggerCRTTransition(
       () => {
         // Midpoint: screen is 100% blacked out behind the curtain
@@ -185,25 +196,37 @@ function initChannelSwitcherCRT() {
 
         // Reset all views & tabs
         [tabR, tabG, tabB].forEach(t => t && t.classList.remove('active'));
-        [viewR, viewG, viewB].forEach(v => v && v.classList.remove('active'));
+        [viewR, viewG, viewB].forEach(v => {
+          if (v) {
+            v.classList.remove('active', 'transition-out');
+            v.style.display = 'none';
+          }
+        });
         document.body.classList.remove('channel-g-active', 'channel-b-active');
 
         // Instant scroll to top while invisible
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
+        const targetView = target === 'R' ? viewR : (target === 'G' ? viewG : viewB);
+        if (targetView) {
+          targetView.style.display = 'flex';
+          targetView.classList.add('active');
+        }
+
         if (target === 'R') {
           if (tabR) tabR.classList.add('active');
-          if (viewR) viewR.classList.add('active');
           if (brandSuffix) brandSuffix.textContent = 'jack';
 
           showToast('Canale R // Bauhaus Works & Arcade');
 
-          // Wake up 3D viewports if needed
+          // Wake up 3D viewports and render fresh frame while hidden
           if (window.heroSphere && window.heroSphere.onResize) window.heroSphere.onResize();
           if (window.craneMachine && window.craneMachine.onResize) window.craneMachine.onResize();
+          if (window.hangingCatalog && window.hangingCatalog.updateButtonStates) {
+            window.hangingCatalog.updateButtonStates();
+          }
         } else if (target === 'G') {
           if (tabG) tabG.classList.add('active');
-          if (viewG) viewG.classList.add('active');
           document.body.classList.add('channel-g-active');
           if (brandSuffix) brandSuffix.textContent = 'febi';
 
@@ -211,7 +234,6 @@ function initChannelSwitcherCRT() {
           if (window.audioEngine) window.audioEngine.playSprayCan();
         } else if (target === 'B') {
           if (tabB) tabB.classList.add('active');
-          if (viewB) viewB.classList.add('active');
           document.body.classList.add('channel-b-active');
           if (brandSuffix) brandSuffix.textContent = 'marine';
 
@@ -221,6 +243,10 @@ function initChannelSwitcherCRT() {
         }
       },
       () => {
+        // Clear any leftover inline styles and release transition lock
+        [viewR, viewG, viewB].forEach(v => {
+          if (v) v.style.display = '';
+        });
         isTransitioning = false;
       }
     );
