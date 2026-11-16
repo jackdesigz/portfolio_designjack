@@ -9,13 +9,24 @@
 
 class MagicFlute {
   constructor() {
+    this.isOpen = false;
+    this.noteBuffer = [];
+    this.bufferTimeout = null;
+    this.targetChannel = null;
+
+    this.cacheElements();
+    this.initMelodies();
+    this.bindEvents();
+  }
+
+  cacheElements() {
     this.modal = document.getElementById('magic-flute-modal');
     this.openBtn = document.getElementById('btn-open-flute');
     this.closeBtn = document.getElementById('btn-close-flute');
     this.clearBtn = document.getElementById('btn-flute-clear-notes');
     this.staveContainer = document.getElementById('flute-notes-buffer');
     this.holeButtons = document.querySelectorAll('.flute-hole-btn');
-    
+
     // Prompt Elements
     this.promptEl = document.getElementById('flute-teleport-prompt');
     this.promptTitle = document.getElementById('prompt-melody-title');
@@ -28,72 +39,96 @@ class MagicFlute {
       'g': document.getElementById('sheet-song-g'),
       'b': document.getElementById('sheet-song-b')
     };
+  }
 
-    this.isOpen = false;
-    this.noteBuffer = [];
-    this.bufferTimeout = null;
-    this.targetChannel = null;
-
-    // Melody definitions
+  initMelodies() {
     this.melodies = [
       {
-        channel: 'r',
+        channel: 'R',
         name: 'Canale R (Archivio & Toy Claw)',
         sequence: ['R', 'T', 'Y', 'R'],
         sheetEl: this.sheetCards.r
       },
       {
-        channel: 'g',
+        channel: 'G',
         name: 'Canale G (Jacopo Febi // Organic & Street)',
         sequence: ['T', 'Y', 'U', 'T'],
         sheetEl: this.sheetCards.g
       },
       {
-        channel: 'b',
+        channel: 'B',
         name: 'Canale B (Contatti // Calm Ocean)',
         sequence: ['Y', 'U', 'I', 'Y'],
         sheetEl: this.sheetCards.b
       }
     ];
-
-    this.init();
   }
 
-  init() {
-    if (!this.modal) return;
+  bindEvents() {
+    // 1. Document-level Event Delegation for 100% click reliability
+    document.addEventListener('click', (e) => {
+      // Trigger Open Flute Button
+      const openTrigger = e.target.closest('#btn-open-flute');
+      if (openTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.open();
+        return;
+      }
 
-    // Open button (located in Channel B right dock)
-    if (this.openBtn) {
-      this.openBtn.addEventListener('click', () => this.open());
-    }
+      // Close Flute Button
+      const closeTrigger = e.target.closest('#btn-close-flute');
+      if (closeTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.close();
+        return;
+      }
 
-    // Close button
-    if (this.closeBtn) {
-      this.closeBtn.addEventListener('click', () => this.close());
-    }
+      // Clear Stave Notes Button
+      const clearTrigger = e.target.closest('#btn-flute-clear-notes');
+      if (clearTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.clearBuffer();
+        return;
+      }
 
-    // Reset notes button
-    if (this.clearBtn) {
-      this.clearBtn.addEventListener('click', () => this.clearBuffer());
-    }
+      // Hole Note Buttons
+      const holeTrigger = e.target.closest('.flute-hole-btn');
+      if (holeTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        const note = holeTrigger.dataset.note;
+        if (note) this.playNote(note.toUpperCase());
+        return;
+      }
 
-    // Modal overlay click outside window
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
+      // Prompt Cancel
+      const cancelTrigger = e.target.closest('#btn-flute-prompt-cancel');
+      if (cancelTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.closePrompt();
+        return;
+      }
+
+      // Prompt Confirm Teleport
+      const confirmTrigger = e.target.closest('#btn-flute-prompt-confirm');
+      if (confirmTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.executeTeleport();
+        return;
+      }
+
+      // Click outside modal window to dismiss
+      if (this.isOpen && this.modal && e.target === this.modal) {
         this.close();
       }
     });
 
-    // Hole click events
-    this.holeButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const note = btn.dataset.note;
-        if (note) this.playNote(note.toUpperCase());
-      });
-    });
-
-    // Keyboard events
+    // 2. Keyboard listener for R, T, Y, U, I and ESC
     window.addEventListener('keydown', (e) => {
       if (!this.isOpen) return;
 
@@ -108,37 +143,45 @@ class MagicFlute {
 
       const key = e.key.toUpperCase();
       if (['R', 'T', 'Y', 'U', 'I'].includes(key)) {
-        // Prevent browser shortcuts when playing
         e.preventDefault();
         this.playNote(key);
       }
     });
-
-    // Prompt Buttons
-    if (this.promptCancelBtn) {
-      this.promptCancelBtn.addEventListener('click', () => this.closePrompt());
-    }
-
-    if (this.promptConfirmBtn) {
-      this.promptConfirmBtn.addEventListener('click', () => this.executeTeleport());
-    }
   }
 
   open() {
+    this.cacheElements();
     this.isOpen = true;
-    this.modal.classList.add('open');
+
+    if (this.modal) {
+      this.modal.classList.add('open');
+      this.modal.style.display = 'flex';
+      this.modal.style.opacity = '1';
+      this.modal.style.pointerEvents = 'auto';
+    }
+
     this.clearBuffer();
     this.closePrompt();
 
-    // Sound effect
+    // Sound effect & AudioContext resume
     if (window.audioEngine) {
-      window.audioEngine.playWaterDrop();
+      try {
+        window.audioEngine.ensureContext();
+        window.audioEngine.playWaterDrop();
+      } catch (e) {}
     }
   }
 
   close() {
     this.isOpen = false;
-    this.modal.classList.remove('open');
+
+    if (this.modal) {
+      this.modal.classList.remove('open');
+      this.modal.style.display = 'none';
+      this.modal.style.opacity = '0';
+      this.modal.style.pointerEvents = 'none';
+    }
+
     this.closePrompt();
     this.clearBuffer();
   }
@@ -148,7 +191,11 @@ class MagicFlute {
 
     // 1. Audio synthesis
     if (window.audioEngine) {
-      window.audioEngine.playFluteNote(note);
+      try {
+        window.audioEngine.playFluteNote(note);
+      } catch (e) {
+        console.warn('Flute sound failed:', e);
+      }
     }
 
     // 2. Visual hole feedback
@@ -172,14 +219,19 @@ class MagicFlute {
   }
 
   triggerHoleVisual(note) {
-    const btn = Array.from(this.holeButtons).find(b => b.dataset.note === note);
-    if (btn) {
-      btn.classList.add('pressed');
-      setTimeout(() => btn.classList.remove('pressed'), 250);
-    }
+    const buttons = document.querySelectorAll('.flute-hole-btn');
+    buttons.forEach(b => {
+      if (b.dataset.note === note) {
+        b.classList.add('pressed');
+        setTimeout(() => b.classList.remove('pressed'), 250);
+      }
+    });
   }
 
   renderStave() {
+    if (!this.staveContainer) {
+      this.staveContainer = document.getElementById('flute-notes-buffer');
+    }
     if (!this.staveContainer) return;
 
     if (this.noteBuffer.length === 0) {
@@ -203,7 +255,12 @@ class MagicFlute {
     this.renderStave();
 
     // Remove sheet card highlight
-    Object.values(this.sheetCards).forEach(el => {
+    const cards = [
+      document.getElementById('sheet-song-r'),
+      document.getElementById('sheet-song-g'),
+      document.getElementById('sheet-song-b')
+    ];
+    cards.forEach(el => {
       if (el) el.classList.remove('melody-unlocked');
     });
   }
@@ -226,12 +283,15 @@ class MagicFlute {
   onMelodySuccess(melody) {
     // 1. Play Zelda Mystery Fanfare
     if (window.audioEngine) {
-      window.audioEngine.playMelodyFanfare();
+      try {
+        window.audioEngine.playMelodyFanfare();
+      } catch (e) {}
     }
 
     // 2. Highlight matching sheet card
-    if (melody.sheetEl) {
-      melody.sheetEl.classList.add('melody-unlocked');
+    const sheetEl = document.getElementById(`sheet-song-${melody.channel.toLowerCase()}`);
+    if (sheetEl) {
+      sheetEl.classList.add('melody-unlocked');
     }
 
     // 3. Open confirmation prompt
@@ -250,6 +310,9 @@ class MagicFlute {
   }
 
   closePrompt() {
+    if (!this.promptEl) {
+      this.promptEl = document.getElementById('flute-teleport-prompt');
+    }
     if (this.promptEl) {
       this.promptEl.style.display = 'none';
       this.promptEl.classList.remove('active');
@@ -258,17 +321,44 @@ class MagicFlute {
   }
 
   executeTeleport() {
-    const dest = this.targetChannel;
+    const dest = (this.targetChannel || 'R').toUpperCase();
     this.close();
 
-    if (dest && typeof window.switchChannel === 'function') {
-      // Trigger full CRT transition to chosen channel!
-      window.switchChannel(dest.toUpperCase());
+    // Check if user is already in that channel
+    const currentView = document.querySelector('.channel-view.active');
+    const isAlreadyThere = currentView && currentView.id === `channel-view-${dest.toLowerCase()}`;
+
+    if (isAlreadyThere) {
+      const toast = document.getElementById('channel-toast');
+      if (toast) {
+        toast.textContent = `Sei già nel Canale [${dest}]! Prova a suonare una melodia per gli altri canali.`;
+        toast.classList.add('visible');
+        setTimeout(() => toast.classList.remove('visible'), 3200);
+      }
+      return;
+    }
+
+    // Primary teleport via global window.switchChannel
+    if (typeof window.switchChannel === 'function') {
+      window.switchChannel(dest);
+    } else {
+      // Fallback: click channel tab directly
+      const tab = document.getElementById(`channel-btn-${dest.toLowerCase()}`);
+      if (tab) tab.click();
     }
   }
 }
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  window.magicFlute = new MagicFlute();
-});
+// Global initialization function
+window.initMagicFlute = function() {
+  if (!window.magicFlute) {
+    window.magicFlute = new MagicFlute();
+  }
+};
+
+// Auto-run if DOM ready or attach listener
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', window.initMagicFlute);
+} else {
+  window.initMagicFlute();
+}

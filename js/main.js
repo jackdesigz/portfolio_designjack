@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.initDitherEngines) window.initDitherEngines();
   if (window.initCraneMachine) window.initCraneMachine();
   if (window.initModalManager) window.initModalManager();
+  if (window.initMagicFlute) window.initMagicFlute();
 });
 
 // ---------------------------------------------------------------------
