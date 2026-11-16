@@ -112,6 +112,30 @@ class HangingCatalogWire {
     const w = canvas.width;
     const h = canvas.height;
 
+    // Se il progetto ha una cover reale (come Echo Sound Festival), la disegniamo
+    if (proj.coverImage) {
+      const img = new Image();
+      img.onload = () => {
+        const aspect = img.width / img.height;
+        const targetAspect = w / h;
+        let sx, sy, sw, sh;
+        if (aspect > targetAspect) {
+          sh = img.height;
+          sw = sh * targetAspect;
+          sx = (img.width - sw) / 2;
+          sy = 0;
+        } else {
+          sw = img.width;
+          sh = sw / targetAspect;
+          sx = 0;
+          sy = (img.height - sh) / 2;
+        }
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+      };
+      img.src = proj.coverImage;
+      return;
+    }
+
     ctx.fillStyle = '#0F0F14';
     ctx.fillRect(0, 0, w, h);
 

@@ -16,7 +16,7 @@
 
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/styles.css?v=2.2">
+  <link rel="stylesheet" href="css/styles.css?v=2.3">
 </head>
 <body class="crt-bezel-frame">
 
@@ -549,7 +549,11 @@
           </div>
         </div>
 
-        <div>
+        <!-- Contenitore Gallery Multimediale Dinamico (Poster, Illustrazioni, Mockup) -->
+        <div id="modal-project-media-showcase" class="project-media-showcase" style="display: none;"></div>
+
+        <!-- Schema Grafico Fallback (per progetti solo concettuali) -->
+        <div id="modal-project-canvas-fallback">
           <h4 style="font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 8px;">SCHEMA GRAFICO</h4>
           <div class="case-study-canvas-container">
             <canvas id="case-study-visual-canvas"></canvas>
@@ -567,6 +571,19 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       LIGHTBOX IMMAGINI PROGETTO A SCHERMO INTERO
+       =================================================================== -->
+  <div id="project-lightbox" class="lightbox-overlay" aria-hidden="true">
+    <div class="lightbox-dialog">
+      <button class="lightbox-close-btn" id="btn-lightbox-close" title="Chiudi (Esc)">✕</button>
+      <div class="lightbox-img-wrap">
+        <img id="lightbox-img" src="" alt="Dettaglio Progetto">
+      </div>
+      <div id="lightbox-caption" class="lightbox-caption"></div>
     </div>
   </div>
 
@@ -737,14 +754,14 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/audio.js?v=2.2"></script>
-  <script src="js/heroSphere.js?v=2.2"></script>
-  <script src="js/hangingCatalog.js?v=2.2"></script>
-  <script src="js/dither.js?v=2.2"></script>
-  <script src="js/crane.js?v=2.2"></script>
-  <script src="js/modal.js?v=2.2"></script>
-  <script src="js/flute.js?v=2.2"></script>
-  <script src="js/main.js?v=2.2"></script>
+  <script src="js/audio.js?v=2.3"></script>
+  <script src="js/heroSphere.js?v=2.3"></script>
+  <script src="js/hangingCatalog.js?v=2.3"></script>
+  <script src="js/dither.js?v=2.3"></script>
+  <script src="js/crane.js?v=2.3"></script>
+  <script src="js/modal.js?v=2.3"></script>
+  <script src="js/flute.js?v=2.3"></script>
+  <script src="js/main.js?v=2.3"></script>
 
 </body>
 </html>

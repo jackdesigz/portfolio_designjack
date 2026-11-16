@@ -473,6 +473,19 @@ function drawInstagramProjectArtwork(canvas, proj, idx) {
   const w = canvas.width;
   const h = canvas.height;
 
+  // Se il progetto ha una cover reale (come Echo Sound Festival), la disegniamo
+  if (proj.coverImage) {
+    const img = new Image();
+    img.onload = () => {
+      const minDim = Math.min(img.width, img.height);
+      const sx = (img.width - minDim) / 2;
+      const sy = (img.height - minDim) / 2;
+      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, w, h);
+    };
+    img.src = proj.coverImage;
+    return;
+  }
+
   // Background
   ctx.fillStyle = idx % 2 === 0 ? '#0B0B10' : '#101016';
   ctx.fillRect(0, 0, w, h);

@@ -232,6 +232,9 @@ class ModalManager {
 
     this.capsuleModal = document.getElementById('capsule-modal-overlay');
     this.projectModal = document.getElementById('project-modal-overlay');
+    this.lightbox = document.getElementById('project-lightbox');
+    this.lightboxImg = document.getElementById('lightbox-img');
+    this.lightboxCaption = document.getElementById('lightbox-caption');
 
     this.init();
   }
@@ -288,9 +291,26 @@ class ModalManager {
       });
     }
 
+    const btnLightboxClose = document.getElementById('btn-lightbox-close');
+    if (btnLightboxClose) {
+      btnLightboxClose.addEventListener('click', () => {
+        this.closeLightbox();
+      });
+    }
+
+    if (this.lightbox) {
+      this.lightbox.addEventListener('click', (e) => {
+        if (e.target === this.lightbox) {
+          this.closeLightbox();
+        }
+      });
+    }
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        if (this.projectModal && this.projectModal.classList.contains('active')) {
+        if (this.lightbox && this.lightbox.classList.contains('active')) {
+          this.closeLightbox();
+        } else if (this.projectModal && this.projectModal.classList.contains('active')) {
           this.closeProjectModal();
         } else if (this.capsuleModal && this.capsuleModal.classList.contains('active')) {
           this.closeCapsuleModal();
@@ -300,6 +320,15 @@ class ModalManager {
     });
 
     document.addEventListener('click', (e) => {
+      const zoomTrigger = e.target.closest('.zoomable-trigger');
+      if (zoomTrigger) {
+        e.preventDefault();
+        const src = zoomTrigger.getAttribute('data-img-src');
+        const caption = zoomTrigger.getAttribute('data-img-caption') || '';
+        if (src) this.openLightbox(src, caption);
+        return;
+      }
+
       const card = e.target.closest('.project-card');
       if (card) {
         const projId = card.getAttribute('data-project-id');
@@ -391,7 +420,7 @@ class ModalManager {
       });
     }
 
-    this.renderCaseStudyVisual(project);
+    this.renderProjectGallery(project);
 
     if (this.projectModal) {
       this.projectModal.classList.add('active');
@@ -403,6 +432,143 @@ class ModalManager {
     if (this.projectModal) {
       this.projectModal.classList.remove('active');
       document.body.classList.remove('modal-open');
+    }
+  }
+
+  openLightbox(src, caption) {
+    if (!this.lightbox || !this.lightboxImg) return;
+    this.lightboxImg.src = src;
+    if (this.lightboxCaption) {
+      this.lightboxCaption.textContent = caption || '';
+    }
+    this.lightbox.classList.add('active');
+    this.lightbox.setAttribute('aria-hidden', 'false');
+    if (window.audioEngine) window.audioEngine.playBeep(920, 0.04);
+  }
+
+  closeLightbox() {
+    if (!this.lightbox) return;
+    this.lightbox.classList.remove('active');
+    this.lightbox.setAttribute('aria-hidden', 'true');
+    if (this.lightboxImg) {
+      setTimeout(() => {
+        if (!this.lightbox.classList.contains('active')) {
+          this.lightboxImg.src = '';
+        }
+      }, 200);
+    }
+  }
+
+  renderProjectGallery(project) {
+    const galleryShowcase = document.getElementById('modal-project-media-showcase');
+    const canvasFallback = document.getElementById('modal-project-canvas-fallback');
+
+    if (!galleryShowcase) return;
+
+    if (project.gallery) {
+      // Progetto con asset reali (Poster, Illustrazioni, Mockup)
+      if (canvasFallback) canvasFallback.style.display = 'none';
+      galleryShowcase.style.display = 'flex';
+
+      const g = project.gallery;
+      let html = '';
+
+      // 1. POSTER IN PRIMO PIANO
+      if (g.poster) {
+        html += `
+          <div class="gallery-block poster-hero-block">
+            <div class="project-section-tag">
+              <span class="step-num">01</span>
+              <span>IL MANIFESTO</span>
+            </div>
+            <div class="poster-hero-container zoomable-trigger" data-img-src="${g.poster.src}" data-img-caption="${g.poster.caption || project.title}">
+              <div class="poster-image-box">
+                <img src="${g.poster.src}" alt="${g.poster.alt || 'Poster'}" class="poster-hero-image" loading="lazy" />
+                <div class="poster-zoom-pill">
+                  <span>🔍</span> CLICCA PER INGRANDIRE IL POSTER
+                </div>
+              </div>
+              <div class="poster-hero-meta">
+                <div class="poster-meta-title">${project.title} — POSTER UFFICIALE</div>
+                <div class="poster-meta-sub">${g.poster.caption || 'Composizione vettoriale realizzata con Adobe Illustrator'}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 2. ILLUSTRAZIONI QUA E LÀ NELLA PAGINA
+      if (g.illustrations && g.illustrations.length) {
+        html += `
+          <div class="gallery-block illustrations-block">
+            <div class="project-section-tag">
+              <span class="step-num">02</span>
+              <span>ELEMENTI GRAFICI & VETTORIALI</span>
+            </div>
+            <p class="section-lead-text">
+              Elementi figurativi, onde cromatiche e curve d'ispirazione POP e psichedelica composti con <strong>Adobe Illustrator</strong>:
+            </p>
+            <div class="illustrations-gallery-grid">
+              ${g.illustrations.map((ill, i) => `
+                <div class="illustration-item-card zoomable-trigger" data-img-src="${ill.src}" data-img-caption="${ill.caption || ill.alt}">
+                  <div class="illustration-img-holder">
+                    <img src="${ill.src}" alt="${ill.alt}" class="illustration-thumb" loading="lazy" />
+                    <div class="card-hover-overlay">
+                      <span>🔍 INGRANDISCI</span>
+                    </div>
+                  </div>
+                  <div class="illustration-card-info">
+                    <span class="ill-badge">ILLUSTRAZIONE 0${i + 1}</span>
+                    <span class="ill-title">${ill.caption || 'Dettaglio vettoriale'}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // 3. GALLERIA DI MOCKUP A FINE PAGINA
+      if (g.mockups && g.mockups.length) {
+        html += `
+          <div class="gallery-block mockups-block">
+            <div class="project-section-tag">
+              <span class="step-num">03</span>
+              <span>GALLERIA MOCKUP & AMBIENTAZIONI</span>
+            </div>
+            <p class="section-lead-text">
+              Applicazione del manifesto grafico in contesti urbani reali e declinazione per i canali social:
+            </p>
+            <div class="mockups-duo-grid">
+              ${g.mockups.map((m, i) => `
+                <div class="mockup-display-card zoomable-trigger" data-img-src="${m.src}" data-img-caption="${m.title} — ${m.desc}">
+                  <div class="mockup-img-holder">
+                    <img src="${m.src}" alt="${m.alt}" class="mockup-thumb" loading="lazy" />
+                    <div class="card-hover-overlay">
+                      <span>🔍 VEDI A SCHERMO INTERO</span>
+                    </div>
+                  </div>
+                  <div class="mockup-card-info">
+                    <div class="mockup-kind-tag">MOCKUP // ${i === 0 ? 'AFFISSIONE OOH' : 'INSTAGRAM FEED'}</div>
+                    <h4 class="mockup-item-title">${m.title}</h4>
+                    <p class="mockup-item-desc">${m.desc}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      galleryShowcase.innerHTML = html;
+    } else {
+      // Progetto generico (senza gallery reale): fallback su canvas Bauhaus
+      if (galleryShowcase) {
+        galleryShowcase.style.display = 'none';
+        galleryShowcase.innerHTML = '';
+      }
+      if (canvasFallback) canvasFallback.style.display = 'block';
+      this.renderCaseStudyVisual(project);
     }
   }
 

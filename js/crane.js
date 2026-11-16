@@ -85,17 +85,56 @@ window.PROJECT_REGISTRY = [
   },
   {
     id: 'r-06',
-    code: 'R-06 // GRAPHIC-BAU',
-    title: 'BAUHAUS POSTERS // FORM & ALGORITHM',
+    code: 'R-06 // GRAPHIC-ECHO',
+    title: 'ECHO SOUND FESTIVAL',
     category: 'Graphic Design',
-    year: '2024',
+    year: '2025',
     shapeName: 'Double Pyramid',
-    colorHex: '#1D3557',
-    capsuleColor: 'blue',
-    stack: ['Serigrafia', 'Illustrator', 'Matrici Geometriche', 'Pantone'],
-    description: 'Serie di manifesti serigrafici di grande formato che reinterpretano i principi costruttivisti di Dessau attraverso tassellature geometriche e gradienti ottici.',
-    metrics: { printRuns: '300 Copie', format: '70x100 cm', papers: 'Fedrigoni 350g' },
-    details: 'Composizioni rigorose a tre inchiostri primari con matrici di cerchi, triangoli e quadrati che creano illusioni di profondità e vibrazione cromatica.'
+    colorHex: '#FF5E7E',
+    capsuleColor: 'red',
+    stack: ['Adobe Illustrator', 'Poster Design', 'Pop Art', 'Illustrazione Vettoriale', 'Mockup Design'],
+    description: 'Esercizio di grafica vettoriale e visual design composto con Adobe Illustrator: una serie di illustrazioni che vanno a comporre un poster grafico ispirato a grafiche psichedeliche e POP, corredato da mockup.',
+    metrics: { software: 'Illustrator', stile: 'POP / Psychedelic', output: 'Poster & Mockup' },
+    details: 'Un lavoro di composizione e ritmo visivo sviluppato interamente in vettoriale. Le singole illustrazioni, ricche di curve organiche e palette sature a contrasto, si intrecciano per dare vita al poster ufficiale dell’Echo Sound Festival e alle sue declinazioni promozionali.',
+    coverImage: 'assets/projects/echo-sound-festival/poster.png',
+    gallery: {
+      poster: {
+        src: 'assets/projects/echo-sound-festival/poster.png',
+        alt: 'Echo Sound Festival — Poster Ufficiale',
+        caption: 'Poster Ufficiale // Composizione vettoriale psichedelica & POP in Adobe Illustrator'
+      },
+      illustrations: [
+        {
+          src: 'assets/projects/echo-sound-festival/illustration-1.png',
+          alt: 'Echo Sound Festival — Illustrazione 1',
+          caption: 'Illustrazione 01 // Soggetto vettoriale & onde cromatiche'
+        },
+        {
+          src: 'assets/projects/echo-sound-festival/illustration-2.png',
+          alt: 'Echo Sound Festival — Illustrazione 2',
+          caption: 'Illustrazione 02 // Curve fluide ed elementi POP'
+        },
+        {
+          src: 'assets/projects/echo-sound-festival/illustration-3.png',
+          alt: 'Echo Sound Festival — Illustrazione 3',
+          caption: 'Illustrazione 03 // Composizione orizzontale di dettaglio'
+        }
+      ],
+      mockups: [
+        {
+          src: 'assets/projects/echo-sound-festival/mockup-poster.png',
+          alt: 'Echo Sound Festival — Mockup Affissione Poster',
+          title: 'Affissione Urbana',
+          desc: 'Mockup realistico del poster ambientato in contesto urbano'
+        },
+        {
+          src: 'assets/projects/echo-sound-festival/mockup-instagram.png',
+          alt: 'Echo Sound Festival — Mockup Instagram',
+          title: 'Instagram Feed & Social Post',
+          desc: 'Declinazione in formato quadrato 1:1 per la promozione social'
+        }
+      ]
+    }
   },
   {
     id: 'r-07',

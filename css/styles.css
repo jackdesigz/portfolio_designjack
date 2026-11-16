@@ -2750,6 +2750,397 @@ body.channel-b-active .nav-btn:hover {
   display: block;
 }
 
+/* =====================================================================
+   PROGETTO MULTIMEDIALE DINAMICO (POSTER, ILLUSTRAZIONI, MOCKUP)
+   ===================================================================== */
+
+.project-media-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 38px;
+  margin: 10px 0 16px 0;
+}
+
+.gallery-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.project-section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--bauhaus-red);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.project-section-tag .step-num {
+  background: var(--bauhaus-red);
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.section-lead-text {
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: #44444F;
+  margin: 0;
+}
+
+/* 1. Poster Hero Block */
+.poster-hero-container {
+  background: #FDFDFB;
+  border: 2.5px solid var(--border-line);
+  border-radius: 20px;
+  box-shadow: 6px 6px 0px var(--border-line);
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.poster-hero-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 8px 8px 0px var(--border-line);
+}
+
+.poster-image-box {
+  background: radial-gradient(circle at 50% 45%, #242434 0%, #101016 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  position: relative;
+  min-height: 380px;
+  max-height: 620px;
+  overflow: hidden;
+}
+
+.poster-hero-image {
+  max-height: 540px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.poster-hero-container:hover .poster-hero-image {
+  transform: scale(1.02);
+}
+
+.poster-zoom-pill {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(14, 14, 20, 0.88);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.poster-hero-meta {
+  padding: 16px 24px;
+  background: #FFFFFF;
+  border-top: 2px solid var(--border-line);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.poster-meta-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--dark-anthracite);
+}
+
+.poster-meta-sub {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #666670;
+}
+
+/* 2. Illustrazioni Staggered Grid */
+.illustrations-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.illustration-item-card {
+  background: #FFFFFF;
+  border: 2px solid var(--border-line);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0px var(--border-line);
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.illustration-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px var(--border-line);
+}
+
+.illustration-img-holder {
+  background: #F4F4F0;
+  min-height: 200px;
+  max-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.illustration-thumb {
+  max-height: 220px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.illustration-item-card:hover .illustration-thumb {
+  transform: scale(1.05);
+}
+
+.card-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(230, 57, 70, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.illustration-item-card:hover .card-hover-overlay,
+.mockup-display-card:hover .card-hover-overlay {
+  opacity: 1;
+}
+
+.illustration-card-info {
+  padding: 12px 16px;
+  border-top: 2px solid var(--border-line);
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ill-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--bauhaus-red);
+}
+
+.ill-title {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #121212;
+  line-height: 1.4;
+}
+
+/* 3. Mockups Duo Grid */
+.mockups-duo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.mockup-display-card {
+  background: #FFFFFF;
+  border: 2.5px solid var(--border-line);
+  border-radius: 18px;
+  box-shadow: 5px 5px 0px var(--border-line);
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.mockup-display-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 7px 7px 0px var(--border-line);
+}
+
+.mockup-img-holder {
+  background: #141418;
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  max-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mockup-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.mockup-display-card:hover .mockup-thumb {
+  transform: scale(1.035);
+}
+
+.mockup-card-info {
+  padding: 16px 20px;
+  border-top: 2px solid var(--border-line);
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mockup-kind-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--bauhaus-blue);
+  letter-spacing: 0.05em;
+}
+
+.mockup-item-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #121212;
+  margin: 0;
+}
+
+.mockup-item-desc {
+  font-size: 0.85rem;
+  color: #666670;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* =====================================================================
+   LIGHTBOX COMPONENT (SCHERMO INTERO CON ESC / CLICK)
+   ===================================================================== */
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(8, 8, 12, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.lightbox-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox-dialog {
+  position: relative;
+  max-width: 94vw;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bauhaus-red);
+  color: #FFFFFF;
+  border: 2.5px solid var(--border-line);
+  box-shadow: 3px 3px 0px var(--border-line);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  z-index: 20;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.lightbox-close-btn:hover {
+  transform: scale(1.1);
+  background: #C50F18;
+}
+
+.lightbox-img-wrap {
+  max-height: 82vh;
+  max-width: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  background: #0E0E14;
+}
+
+#lightbox-img {
+  max-height: 80vh;
+  max-width: 88vw;
+  object-fit: contain;
+  display: block;
+}
+
+.lightbox-caption {
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: center;
+  max-width: 720px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  letter-spacing: 0.02em;
+}
+
 .modal-footer-nav {
   display: flex;
   justify-content: space-between;
