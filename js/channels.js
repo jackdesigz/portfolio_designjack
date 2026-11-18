@@ -244,10 +244,33 @@
       size: document.getElementById('gx-spray-size'),
       clean: document.getElementById('gx-wall-clean')
     }) : null;
+    // i blob si muovono lentamente: 30 fps e solo con l'hero a schermo
+    // (controllo legato allo scroll: una lettura per evento, non per frame)
+    let heroVisible = true;
+    let tick = 0;
+    let queued = false;
+    const hero = root.querySelector('.gx-hero');
+    const checkHero = () => {
+      queued = false;
+      if (!hero) return;
+      const r = hero.getBoundingClientRect();
+      heroVisible = r.height > 0 && r.bottom > 0 && r.top < window.innerHeight;
+    };
+    const queueHero = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(checkHero);
+    };
+    window.addEventListener('scroll', queueHero, { passive: true });
+    window.addEventListener('resize', queueHero);
     return {
-      onShow() { if (wall) wall.resize(); },
+      onShow() {
+        if (wall) wall.resize();
+        checkHero();
+      },
       frame(t) {
-        if (!reduceMotion) drawBlobs(t);
+        tick++;
+        if (!reduceMotion && heroVisible && (tick & 1) === 0) drawBlobs(t);
         if (wall) wall.tick();
       }
     };
@@ -346,7 +369,7 @@
 
     const loop = (ms) => {
       requestAnimationFrame(loop);
-      if (gShown && g) g.frame(ms / 1000);
+      if (gShown && g && !document.hidden) g.frame(ms / 1000);
     };
     requestAnimationFrame(loop);
 

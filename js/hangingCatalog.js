@@ -414,9 +414,19 @@ class HangingCatalogWire {
   }
 
   startPhysicsLoop() {
+    // Il ciclo lavora solo quando il filo è a schermo (e quindi nel canale R)
+    this.onScreen = true;
+    if ('IntersectionObserver' in window && this.container) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((en) => { this.onScreen = en.isIntersecting; });
+      }).observe(this.container);
+    }
     const loop = () => {
-      this.updatePhysics();
       requestAnimationFrame(loop);
+      if (!this.onScreen || document.hidden) return;
+      const cl = document.body.classList;
+      if (cl.contains('channel-g-active') || cl.contains('channel-b-active')) return;
+      this.updatePhysics();
     };
     requestAnimationFrame(loop);
   }
@@ -425,7 +435,11 @@ class HangingCatalogWire {
     if (!this.isOpen) return;
 
     this.scrollX += (this.targetScrollX - this.scrollX) * 0.08;
-    this.updateButtonStates();
+    // i bottoni dipendono solo dalla destinazione: niente letture di layout a ogni frame
+    if (this.targetScrollX !== this._lastButtonTarget) {
+      this._lastButtonTarget = this.targetScrollX;
+      this.updateButtonStates();
+    }
 
     // Elegant physics: smooth glide, high angular damping, gentle organic sway
     const damping = 0.86;
@@ -454,14 +468,22 @@ class HangingCatalogWire {
       const hoverTilt = s.hovered ? -0.025 : 0;
 
       const deg = (s.theta + hoverTilt) * (180 / Math.PI);
-      s.el.style.transform = `
-        translate3d(${screenX}px, ${sagY + hoverElevate}px, 0)
-        rotate(${deg}deg)
-        scale(${hoverScale})
-      `;
+      // scrive nel DOM solo se qualcosa è cambiato davvero (a riposo: zero lavoro)
+      const transform = `translate3d(${screenX.toFixed(1)}px, ${(sagY + hoverElevate).toFixed(1)}px, 0) rotate(${deg.toFixed(2)}deg) scale(${hoverScale})`;
+      if (transform !== s._lastTransform) {
+        s._lastTransform = transform;
+        s.el.style.transform = transform;
+      }
 
-      s.el.style.zIndex = s.hovered ? 100 : Math.floor(Math.abs(s.x) % 20);
-      s.el.classList.toggle('is-hovered', s.hovered);
+      const z = s.hovered ? 100 : Math.floor(Math.abs(s.x) % 20);
+      if (z !== s._lastZ) {
+        s._lastZ = z;
+        s.el.style.zIndex = z;
+      }
+      if (s.hovered !== s._lastHovered) {
+        s._lastHovered = s.hovered;
+        s.el.classList.toggle('is-hovered', s.hovered);
+      }
     });
   }
 }

@@ -5643,8 +5643,6 @@ code {
   z-index: 900;
 }
 
-body.channel-g-active .avatar-pilot.is-docked,
-body.channel-b-active .avatar-pilot.is-docked,
 body.modal-open .avatar-pilot.is-docked {
   display: none;
 }

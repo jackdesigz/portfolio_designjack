@@ -216,6 +216,11 @@ class CapsuleOpeningStage {
   animate() {
     requestAnimationFrame(() => this.animate());
 
+    // disegna solo mentre il modale della capsula è aperto
+    if (document.hidden) return;
+    const overlay = this.container.closest('#capsule-modal-overlay');
+    if (overlay && !overlay.classList.contains('active')) return;
+
     if (this.tokenMesh) {
       this.tokenMesh.rotation.y += 0.025;
       this.tokenMesh.rotation.x += 0.015;

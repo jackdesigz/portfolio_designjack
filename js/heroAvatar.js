@@ -81,6 +81,10 @@
       if (!this.container) return;
       this.bubble = opts.bubble || null;
       this.textureUrl = opts.texture || window.AVATAR_TEXTURE || 'assets/avatar/jacopo-avatar.png';
+      this.messages = opts.messages || MESSAGES;
+      this.autoGreet = opts.autoGreet !== false;
+      this.clickHandler = null;       // se restituisce false, il clic non fa parlare l'avatar
+      this.pixel = 2;                 // lato del "pixel" CRT in px CSS
 
       this.mouse = { x: 0, y: 0, tx: 0, ty: 0 };
       this.spin = 0;
@@ -112,6 +116,7 @@
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       this.container.innerHTML = '';
       this.container.appendChild(this.renderer.domElement);
+      this.buildPost(w, h);
 
       // La texture ha già la sua luce dipinta: qui solo una leggera variazione girando
       this.scene.add(new THREE.AmbientLight(0xffffff, 0.8));
@@ -243,8 +248,90 @@
     }
 
     nextMessage() {
-      this.say(MESSAGES[this.msgIndex % MESSAGES.length]);
+      this.say(this.messages[this.msgIndex % this.messages.length]);
       this.msgIndex++;
+    }
+
+    setMessages(list) {
+      if (!list || !list.length || list === this.messages) return;
+      this.messages = list;
+      this.msgIndex = 0;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Filtro CRT pixelato e leggermente tinto (rosso R, verde G, blu B)    */
+    /* ------------------------------------------------------------------ */
+    buildPost(w, h) {
+      this.rt = new THREE.WebGLRenderTarget(2, 2, {
+        minFilter: THREE.NearestFilter,
+        magFilter: THREE.NearestFilter,
+        format: THREE.RGBAFormat
+      });
+      this.postScene = new THREE.Scene();
+      this.postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      this.postMat = new THREE.ShaderMaterial({
+        uniforms: {
+          tDiffuse: { value: this.rt.texture },
+          uTint: { value: new THREE.Vector3(1, 1, 1) },
+          uMix: { value: 0 },
+          uBlock: { value: 2 }
+        },
+        vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+        fragmentShader: [
+          'uniform sampler2D tDiffuse; uniform vec3 uTint; uniform float uMix; uniform float uBlock;',
+          'varying vec2 vUv;',
+          'void main(){',
+          '  vec4 c = texture2D(tDiffuse, vUv);',
+          '  float l = dot(c.rgb, vec3(0.299, 0.587, 0.114));',
+          '  vec3 col = mix(c.rgb, l * uTint * 1.3, uMix);',
+          // scanline: l'ultima riga di ogni "pixel" è più scura
+          '  float row = mod(gl_FragCoord.y, uBlock);',
+          '  col *= row < max(1.0, uBlock * 0.3) ? 0.8 : 1.0;',
+          // maschera RGB a colonne, appena accennata
+          '  float k = mod(floor(gl_FragCoord.x), 3.0);',
+          '  col *= k < 1.0 ? vec3(1.05, 0.97, 0.97) : (k < 2.0 ? vec3(0.97, 1.05, 0.97) : vec3(0.97, 0.97, 1.05));',
+          '  gl_FragColor = vec4(min(col, vec3(c.a)), c.a);',
+          '}'
+        ].join('\n'),
+        depthTest: false,
+        depthWrite: false,
+        blending: THREE.NoBlending
+      });
+      this.postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.postMat));
+      this.resizePost(w, h);
+    }
+
+    resizePost(w, h) {
+      if (!this.rt) return;
+      this.rt.setSize(Math.max(1, Math.ceil(w / this.pixel)), Math.max(1, Math.ceil(h / this.pixel)));
+      this.postMat.uniforms.uBlock.value = this.pixel * this.renderer.getPixelRatio();
+    }
+
+    // R: solo pixel e scanline, senza tinta. G: verde. B: blu.
+    setTint(channel) {
+      const tints = {
+        r: { c: [1, 1, 1], mix: 0 },
+        g: { c: [0.55, 1.0, 0.42], mix: 0.26 },
+        b: { c: [0.42, 0.76, 1.0], mix: 0.26 }
+      };
+      const t = tints[channel] || tints.r;
+      if (!this.postMat) return;
+      this.postMat.uniforms.uTint.value.set(t.c[0], t.c[1], t.c[2]);
+      this.postMat.uniforms.uMix.value = t.mix;
+    }
+
+    draw() {
+      if (!this.rt) {
+        this.renderer.render(this.scene, this.camera);
+        return;
+      }
+      this.renderer.setRenderTarget(this.rt);
+      this.renderer.setClearColor(0x000000, 0);
+      this.renderer.clear();
+      this.renderer.render(this.scene, this.camera);
+      this.renderer.setRenderTarget(null);
+      this.renderer.clear();
+      this.renderer.render(this.postScene, this.postCam);
     }
 
     /* ------------------------------------------------------------------ */
@@ -258,7 +345,8 @@
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h);
-      this.renderer.render(this.scene, this.camera);
+      this.resizePost(w, h);
+      this.draw();
     }
 
     setupEvents() {
@@ -294,6 +382,7 @@
         if (!this.drag) return;
         const clicked = this.drag.moved < 6;
         this.drag = null;
+        if (clicked && this.clickHandler && this.clickHandler() === false) return;
         if (clicked) {
           this.hopVel = 0.05;
           this.blink.closing = 1;
@@ -307,13 +396,13 @@
         new IntersectionObserver((entries) => {
           entries.forEach((en) => {
             this.visible = en.isIntersecting;
-            if (en.isIntersecting && !greeted) {
+            if (en.isIntersecting && !greeted && this.autoGreet) {
               greeted = true;
               setTimeout(() => this.nextMessage(), 900);
             }
           });
         }, { threshold: 0.2 }).observe(this.container);
-      } else {
+      } else if (this.autoGreet) {
         setTimeout(() => this.nextMessage(), 900);
       }
     }
@@ -324,7 +413,7 @@
     animate() {
       requestAnimationFrame(() => this.animate());
       const dt = Math.min(0.05, this.clock.getDelta());
-      if (!this.visible) return;
+      if (!this.visible || document.hidden) return;
       const t = this.clock.elapsedTime;
 
       const m = this.mouse;
@@ -378,7 +467,7 @@
         this.mouthHole.position.y = -tk.open * 0.018;
       }
 
-      this.renderer.render(this.scene, this.camera);
+      this.draw();
     }
   }
 
@@ -388,7 +477,8 @@
     if (!viewport) return;
     const pilot = viewport.closest('.avatar-pilot');
     window.heroAvatar = new HeroAvatar(viewport, {
-      bubble: pilot ? pilot.querySelector('.avatar-bubble') : null
+      bubble: pilot ? pilot.querySelector('.avatar-bubble') : null,
+      autoGreet: !(window.AvatarPilot && pilot)   // con il pilota il saluto dipende dal canale
     });
     window.heroSphere = window.heroAvatar;   // compatibilità con main.js (onResize)
     if (window.AvatarPilot && pilot) window.avatarPilot = new window.AvatarPilot(pilot, window.heroAvatar);

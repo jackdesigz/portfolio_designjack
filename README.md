@@ -12,6 +12,8 @@ Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri
 - Nella hero, senza finestra, c'è la **testa low-poly di Jacopo** (`js/heroAvatar.js`): il ritratto `assets/avatar/jacopo-avatar.png` è montato come texture su un rilievo 3D (cranio, viso, naso, orbite), quindi ruota con parallasse vera.
 - Fluttua, gira verso il cursore, sbatte le palpebre; **trascinala** per girarla (torna frontale a molla), **cliccala** per farla parlare (fumetto pixel-art, bip, bocca animata). Frasi in `MESSAGES`.
 - **Avatar pilota** (`js/avatarPilot.js`): scrollando oltre la hero vola in basso a sinistra e commenta ciò su cui passi il cursore (mappa `COMMENTS`, oppure attributo `data-avatar-say="..."` su qualsiasi elemento). Passandoci sopra compare una **X** che lo rimanda al suo posto nella hero; tornando in cima alla pagina si riattiva e al prossimo scroll si riaggancia.
+- **Una casa per canale** (`data-avatar-home` in `index.html`): in R sta nella hero, in G accanto al manifesto (stesso comportamento: si aggancia scrollando, la X lo rimanda a casa), in B è **intrappolato in una bolla**: cliccandola scoppia, lui ringrazia e va in basso a sinistra; la X lo rimette nella bolla. Frasi e saluti per canale in `MESSAGES` / `GREETING` di `js/avatarPilot.js`.
+- **Filtro CRT pixelato** leggero sulla testa (render a metà risoluzione + scanline + maschera RGB), tinto di rosso in R, verde in G, blu in B (`setTint` in `js/heroAvatar.js`).
 - Versioni precedenti: `archive/heroSphere.js` (sfera) e `archive/heroAvatar-procedurale.js` (testa procedurale).
 
 ### 2. "Mostra Intero Catalogo" — Fogli Appesi al Filo con Fisica
@@ -46,6 +48,14 @@ Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri
 ### 5. Monitor CRT & Transizione Catodica
 - Spengimento a riga orizzontale, collasso nel punto di fosforo centrale, scarica flyback e riaccensione a degauss surge tra il preloader e il sito, e quando si selezionano i canali `[ G ]` e `[ B ]`.
 - Filtro CRT globale con scanlines, vignettatura scura e telaio con angoli arrotondati.
+
+---
+
+### 6. Canali G e B: due siti a sé
+Quando si passa a G o B la cornice del canale R sparisce (niente scanline CRT, niente carta crema, nav e toast restilizzati); resta solo la transizione CRT come "cambio canale".
+- **Canale G — "febi"** (`css/channel-g.css`): organico × graffiti, tutto verde. Muro notturno con blob che respirano, tag spray con colature, adesivi da trascinare, nastro che scorre, manifesto su carta organica e **muro libero** da dipingere con la bomboletta (colori verdi, colature se tieni fermo il tratto). Font: Sedgwick Ave Display, Fraunces, Bricolage Grotesque.
+- **Canale B — "Frutiger Marine"** (`css/channel-b.css`): contatti in stile Frutiger Aero oceanico, tutto blu. Cielo con sole e riflessi, onde animate, discesa sott'acqua con raggi di luce, caustiche, bolle che scoppiano e pesci; pannelli di vetro lucido con email (e tasto copia), **messaggio in bottiglia** (prepara una mail) e il flauto magico. Font: Varela Round, Hind.
+- Logica di entrambi in `js/channels.js` (le animazioni girano solo con il canale attivo).
 
 ---
 

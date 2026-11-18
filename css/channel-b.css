@@ -110,8 +110,8 @@ body.channel-b-active #channel-toast {
     0 18px 50px rgba(0, 25, 70, 0.32),
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
     inset 0 -12px 30px rgba(40, 195, 255, 0.14);
-  backdrop-filter: blur(16px) saturate(170%);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
 }
 .bx-glass::before {
   content: '';
@@ -246,6 +246,8 @@ body.channel-b-active #channel-toast {
   position: relative;
   z-index: 2;
   max-width: 840px;
+  width: 100%;
+  min-width: 0;
   text-align: center;
 }
 .bx-badge {
@@ -337,10 +339,12 @@ body.channel-b-active #channel-toast {
   top: -8%;
   width: 130px;
   height: 85%;
-  background: linear-gradient(180deg, rgba(220, 245, 255, 0.42), rgba(220, 245, 255, 0) 80%);
-  filter: blur(10px);
+  /* bordi morbidi con una maschera statica: niente blur ricalcolato a ogni frame */
+  background: linear-gradient(180deg, rgba(220, 245, 255, 0.34), rgba(220, 245, 255, 0) 80%);
+  -webkit-mask: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
   transform-origin: top center;
-  mix-blend-mode: screen;
+  will-change: opacity, transform;
   animation: bxRay 8s ease-in-out infinite alternate;
 }
 .bx-rays span:nth-child(1) { left: 8%;  rotate: 18deg; }
@@ -357,18 +361,31 @@ body.channel-b-active #channel-toast {
   position: absolute;
   inset: 0 0 45% 0;
   z-index: -1;
+  overflow: hidden;
   pointer-events: none;
-  background-image: var(--bx-caustic), var(--bx-caustic);
-  background-size: 420px 420px, 560px 560px;
-  opacity: 0.22;
-  mix-blend-mode: screen;
+  opacity: 0.2;
   -webkit-mask: linear-gradient(180deg, #000, transparent);
   mask: linear-gradient(180deg, #000, transparent);
-  animation: bxCaustic 26s linear infinite;
 }
-@keyframes bxCaustic {
-  to { background-position: 420px 210px, -560px 280px; }
+/* due strati di caustiche che scorrono in direzioni opposte, mossi con transform (GPU) */
+.bx-caustics::before,
+.bx-caustics::after {
+  content: '';
+  position: absolute;
+  inset: -560px;
+  background-image: var(--bx-caustic);
+  background-size: 420px 420px;
+  will-change: transform;
+  animation: bxCausticA 26s linear infinite;
 }
+.bx-caustics::after {
+  background-size: 560px 560px;
+  opacity: 0.8;
+  animation-name: bxCausticB;
+  animation-duration: 34s;
+}
+@keyframes bxCausticA { to { transform: translate3d(420px, 420px, 0); } }
+@keyframes bxCausticB { to { transform: translate3d(-560px, 560px, 0); } }
 
 .bx-bubbles {
   position: absolute;
@@ -401,8 +418,8 @@ body.channel-b-active #channel-toast {
   100% { translate: 0 calc(-1 * var(--rise, 900px)); opacity: 0; }
 }
 @keyframes bxWobble {
-  from { margin-left: -14px; }
-  to   { margin-left: 14px; }
+  from { transform: translateX(-14px); }
+  to   { transform: translateX(14px); }
 }
 
 .bx-fishes { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
@@ -425,6 +442,81 @@ body.channel-b-active #channel-toast {
   50%  { translate: 50vw 10px; }
   75%  { translate: 20vw -8px; }
   to   { translate: -20vw 0; }
+}
+
+/* Casa dell'avatar nel canale B: la bolla che lo tiene prigioniero */
+.bx-trapped {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  margin: 10px auto 80px;
+}
+.avatar-home--bubble {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  animation: bxBob 5s ease-in-out infinite;
+}
+.avatar-home--bubble .avatar-pilot { --avatar-h: 280px; }
+.avatar-pilot.is-trapped .avatar-viewport {
+  clip-path: circle(46% at 50% 50%);
+  cursor: pointer;
+}
+.bx-trap-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.95) 0 6%, rgba(255, 255, 255, 0) 16%),
+    radial-gradient(ellipse at 70% 82%, rgba(255, 255, 255, 0.45) 0 6%, rgba(255, 255, 255, 0) 14%),
+    radial-gradient(circle at 50% 50%, rgba(170, 230, 255, 0.04) 0 56%, rgba(140, 215, 255, 0.35) 75%, rgba(255, 255, 255, 0.85) 100%);
+  box-shadow: inset 0 -12px 30px rgba(255, 255, 255, 0.3), 0 0 46px rgba(120, 210, 255, 0.5);
+  transition: scale 0.3s cubic-bezier(.3, 1.4, .5, 1), opacity 0.3s, filter 0.3s;
+}
+.avatar-home--bubble:not(.is-trapped) .bx-trap-glass { opacity: 0; scale: 1.5; }
+.avatar-home--bubble.is-popping .bx-trap-glass { opacity: 0; scale: 1.7; filter: blur(5px); }
+.avatar-home--bubble:not(.is-trapped)::after {
+  /* l'impronta della bolla scoppiata */
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+.bx-trapped-label {
+  margin: 0;
+  padding: 10px 20px;
+  border-radius: 999px;
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 40, 90, 0.5);
+}
+.bx-trapped-label::before { border-radius: 999px 999px 40% 40%; }
+.bx-trapped:has(.is-trapped) .when-free,
+.bx-trapped:not(:has(.is-trapped)) .when-trapped { display: none; }
+
+/* Fumetto dell'avatar nel canale B: schiuma e blu */
+body.channel-b-active .avatar-bubble {
+  background: #EAF8FF;
+  color: var(--bx-ink);
+  box-shadow:
+    0 -3px 0 0 var(--bx-navy), 0 3px 0 0 var(--bx-navy),
+    -3px 0 0 0 var(--bx-navy), 3px 0 0 0 var(--bx-navy),
+    0 7px 0 0 rgba(40, 195, 255, 0.45);
+}
+body.channel-b-active .avatar-bubble::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='12' shape-rendering='crispEdges'%3E%3Cpath fill='%23EAF8FF' d='M3 0h9v3H9v3H6v3H3z'/%3E%3Cpath fill='%230A4F8C' d='M0 0h3v12H0zM12 0h3v3h-3zM9 3h3v3H9zM6 6h3v3H6zM3 9h3v3H3z'/%3E%3C/svg%3E");
+}
+body.channel-b-active .avatar-close {
+  background: #EAF8FF;
+  color: var(--bx-navy);
+  box-shadow: 0 -2px 0 0 var(--bx-navy), 0 2px 0 0 var(--bx-navy), -2px 0 0 0 var(--bx-navy), 2px 0 0 0 var(--bx-navy);
 }
 
 .bx-panels {
@@ -576,8 +668,10 @@ body.channel-b-active #channel-toast {
   .bx-sun { width: 120px; height: 120px; right: 6%; }
   .bx-flare-3 { display: none; }
   .bx-panel { padding: 26px 20px 28px; }
+  .avatar-home--bubble { width: 230px; height: 230px; }
+  .avatar-home--bubble .avatar-pilot { --avatar-h: 230px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bx-wave, .bx-cloud, .bx-sun, .bx-sun::after, .bx-rays span, .bx-caustics, .bx-fish, .bx-orb { animation: none; }
+  .bx-wave, .bx-cloud, .bx-sun, .bx-sun::after, .bx-rays span, .bx-caustics::before, .bx-caustics::after, .bx-bubble, .bx-fish, .bx-orb, .avatar-home--bubble { animation: none; }
 }

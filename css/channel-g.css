@@ -30,6 +30,9 @@ body.channel-b-active #crt-roll-bar {
   display: none;
 }
 
+html:has(body.channel-g-active) { background: #081A11; }
+html:has(body.channel-b-active) { background: #03204D; }
+
 body.channel-g-active.crt-bezel-frame,
 body.channel-b-active.crt-bezel-frame {
   box-shadow: none;
@@ -201,7 +204,6 @@ body.channel-g-active #channel-toast {
   inset: 0;
   background-image: var(--gx-noise);
   opacity: 0.55;
-  mix-blend-mode: multiply;
   z-index: -1;
   pointer-events: none;
 }
@@ -224,6 +226,8 @@ body.channel-g-active #channel-toast {
   position: relative;
   z-index: 2;
   max-width: 900px;
+  width: 100%;
+  min-width: 0;
   text-align: center;
 }
 
@@ -493,24 +497,41 @@ body.channel-g-active #channel-toast {
   padding: 0 2px;
 }
 
-.gx-leaves {
-  width: 100%;
-  max-width: 380px;
-  justify-self: center;
-  overflow: visible;
-  animation: gxSway 9s ease-in-out infinite alternate;
-  transform-origin: 50% 100%;
+/* Casa dell'avatar accanto al manifesto (al posto della foglia) */
+.avatar-home--g {
+  position: relative;
+  height: 430px;
+  min-width: 0;
 }
-.gx-leaf.l1 { fill: var(--gx-moss); }
-.gx-leaf.l2 { fill: var(--gx-fern); }
-.gx-leaf.l3 { fill: #1E4A31; }
-.gx-vein { fill: none; stroke: var(--gx-lime); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 8 10; }
-.gx-spot { fill: var(--gx-lime); }
-.gx-spot.s2 { fill: var(--gx-acid); }
-.gx-spot.s3 { fill: var(--gx-mint); }
-@keyframes gxSway {
-  from { transform: rotate(-3deg); }
-  to   { transform: rotate(3deg); }
+.avatar-home--g::before {
+  /* macchia organica dietro la testa */
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 22%;
+  bottom: 6%;
+  border-radius: 58% 42% 55% 45% / 52% 48% 52% 48%;
+  background: radial-gradient(circle at 40% 40%, rgba(184, 242, 58, 0.22), rgba(79, 154, 95, 0.12) 60%, transparent 72%);
+  pointer-events: none;
+}
+
+/* Fumetto dell'avatar nel canale G: menta e inchiostro bosco */
+body.channel-g-active .avatar-bubble {
+  background: var(--gx-mint);
+  color: var(--gx-ink);
+  box-shadow:
+    0 -3px 0 0 var(--gx-ink), 0 3px 0 0 var(--gx-ink),
+    -3px 0 0 0 var(--gx-ink), 3px 0 0 0 var(--gx-ink),
+    0 7px 0 0 rgba(184, 242, 58, 0.5);
+}
+body.channel-g-active .avatar-bubble::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='12' shape-rendering='crispEdges'%3E%3Cpath fill='%23DDEFD7' d='M3 0h9v3H9v3H6v3H3z'/%3E%3Cpath fill='%2306140C' d='M0 0h3v12H0zM12 0h3v3h-3zM9 3h3v3H9zM6 6h3v3H6zM3 9h3v3H3z'/%3E%3C/svg%3E");
+}
+body.channel-g-active .avatar-close {
+  background: var(--gx-lime);
+  color: var(--gx-ink);
+  box-shadow: 0 -2px 0 0 var(--gx-ink), 0 2px 0 0 var(--gx-ink), -2px 0 0 0 var(--gx-ink), 2px 0 0 0 var(--gx-ink);
 }
 
 /* ---------- Il muro da dipingere ---------- */
@@ -632,7 +653,7 @@ body.channel-g-active #channel-toast {
 /* ---------- Responsive ---------- */
 @media (max-width: 860px) {
   .gx-manifesto { grid-template-columns: 1fr; padding-top: 100px; }
-  .gx-leaves { max-width: 220px; }
+  .avatar-home--g { height: 360px; }
   .gx-paper { padding: 46px 28px 36px; border-radius: 36px 70px 40px 80px / 50px 36px 70px 40px; }
   .gx-points li { grid-template-columns: 54px 1fr; }
   .gx-num { font-size: 2rem; }
@@ -644,5 +665,5 @@ body.channel-g-active #channel-toast {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gx-tape-track, .gx-leaves, .gx-drip { animation: none; }
+  .gx-tape-track, .gx-drip { animation: none; }
 }

@@ -17,9 +17,9 @@
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=Hind:wght@300;400;500;600;700&family=Sedgwick+Ave+Display&family=Varela+Round&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=4.9">
-  <link rel="stylesheet" href="css/channel-g.css?v=1.0">
-  <link rel="stylesheet" href="css/channel-b.css?v=1.0">
+  <link rel="stylesheet" href="css/styles.css?v=5.0">
+  <link rel="stylesheet" href="css/channel-g.css?v=1.2">
+  <link rel="stylesheet" href="css/channel-b.css?v=1.2">
 </head>
 <body class="crt-bezel-frame">
 
@@ -128,7 +128,7 @@
             </div>
 
             <!-- AVATAR 3D LOW-POLY: senza finestra; scrollando vola in basso a sinistra (js/avatarPilot.js) -->
-            <div class="hero-avatar-slot">
+            <div class="hero-avatar-slot" data-avatar-home="r">
               <div class="avatar-pilot">
                 <div class="avatar-bubble" aria-live="polite" hidden></div>
                 <div id="avatar-viewport" class="avatar-viewport" title="Cliccami per parlare, trascinami per girarmi"></div>
@@ -297,15 +297,8 @@
               <li><span class="gx-num">03</span><p>Ogni adesivo è un piccolo manifesto: lo attacchi, qualcuno lo legge, <em>il resto lo fa la pioggia</em>.</p></li>
             </ol>
           </div>
-          <svg class="gx-leaves" viewBox="0 0 400 520" aria-hidden="true">
-            <path class="gx-leaf l1" d="M200 500 C 80 400 60 220 200 40 C 340 220 320 400 200 500 Z"/>
-            <path class="gx-vein" d="M200 490 C 196 360 198 200 200 60"/>
-            <path class="gx-leaf l2" d="M120 470 C 20 420 -10 300 40 200 C 140 250 170 360 120 470 Z"/>
-            <path class="gx-leaf l3" d="M290 470 C 390 420 420 310 370 210 C 270 260 240 370 290 470 Z"/>
-            <circle class="gx-spot s1" cx="320" cy="90" r="34"/>
-            <circle class="gx-spot s2" cx="70" cy="120" r="18"/>
-            <circle class="gx-spot s3" cx="350" cy="160" r="9"/>
-          </svg>
+          <!-- Casa dell'avatar nel canale G (stesso comportamento della hero R) -->
+          <div class="avatar-home avatar-home--g" data-avatar-home="g"></div>
         </section>
 
         <section class="gx-wall-section" id="gx-wall" aria-labelledby="gx-wall-title">
@@ -396,6 +389,17 @@
               </g>
             </defs>
           </svg>
+
+          <!-- Casa dell'avatar nel canale B: una bolla da far scoppiare -->
+          <div class="bx-trapped">
+            <div class="avatar-home avatar-home--bubble is-trapped" data-avatar-home="b">
+              <span class="bx-trap-glass" aria-hidden="true"></span>
+            </div>
+            <p class="bx-glass bx-trapped-label">
+              <span class="when-trapped">Qualcuno è rimasto intrappolato in una bolla… cliccala!</span>
+              <span class="when-free">Bolla vuota. La X sull’avatar lo rimette dentro.</span>
+            </p>
+          </div>
 
           <div class="bx-panels">
             <article class="bx-glass bx-panel">
@@ -787,15 +791,15 @@
   <!-- Scripts -->
   <script src="js/projects.js?v=4.0"></script>
   <script src="js/audio.js?v=4.0"></script>
-  <script src="js/avatarPilot.js?v=1.1"></script>
-  <script src="js/heroAvatar.js?v=2.0"></script>
-  <script src="js/hangingCatalog.js?v=4.8"></script>
+  <script src="js/avatarPilot.js?v=2.1"></script>
+  <script src="js/heroAvatar.js?v=2.2"></script>
+  <script src="js/hangingCatalog.js?v=4.9"></script>
   <script src="js/dither.js?v=4.1"></script>
   <script src="js/clawPhysics2D.js?v=4.6"></script>
   <script src="js/crane2d.js?v=4.7"></script>
-  <script src="js/modal.js?v=4.3"></script>
+  <script src="js/modal.js?v=4.4"></script>
   <script src="js/flute.js?v=4.0"></script>
-  <script src="js/channels.js?v=1.0"></script>
+  <script src="js/channels.js?v=1.2"></script>
   <script src="js/main.js?v=4.7"></script>
 
 </body>
