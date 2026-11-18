@@ -365,6 +365,101 @@ class SoundEngine {
     });
   }
 
+  // Urto fra capsule o contro il vetro: colpetto di plastica, più acuto e forte con la velocità
+  playClack(intensity = 0.5) {
+    if (this.muted) return;
+    this.ensureContext();
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    if (this._lastClack && t - this._lastClack < 0.035) return;
+    this._lastClack = t;
+    const k = Math.max(0.08, Math.min(1, intensity));
+
+    [1, 2.31].forEach((mult, i) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      const f = (520 + k * 520 + Math.random() * 160) * mult;
+      osc.frequency.setValueAtTime(f, t);
+      osc.frequency.exponentialRampToValueAtTime(f * 0.62, t + 0.05);
+      gain.gain.setValueAtTime((i ? 0.035 : 0.09) * k, t);
+      gain.gain.exponentialRampToValueAtTime(0.0008, t + 0.06 + k * 0.03);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.1);
+    });
+  }
+
+  // Ronzio continuo dei motori del carroponte: level 0..1 (0 = fermo)
+  setMotor(level) {
+    if (!this.ctx || this.ctx.state !== 'running') {
+      if (level > 0.02 && !this.muted) this.ensureContext();
+      return;
+    }
+    if (!this._motor) {
+      if (level <= 0.02) return;
+      const osc = this.ctx.createOscillator();
+      const filter = this.ctx.createBiquadFilter();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.value = 70;
+      filter.type = 'lowpass';
+      filter.frequency.value = 420;
+      gain.gain.value = 0;
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      this._motor = { osc, gain };
+    }
+    const t = this.ctx.currentTime;
+    const target = this.muted ? 0 : Math.min(1, Math.max(0, level));
+    this._motor.gain.gain.setTargetAtTime(target * 0.028, t, 0.05);
+    this._motor.osc.frequency.setTargetAtTime(62 + target * 58, t, 0.08);
+  }
+
+  playMiss() {
+    if (this.muted) return;
+    this.ensureContext();
+    if (!this.ctx) return;
+    const baseT = this.ctx.currentTime;
+    [330, 247].forEach((freq, idx) => {
+      const t = baseT + idx * 0.14;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.86, t + 0.2);
+      gain.gain.setValueAtTime(0.11, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.25);
+    });
+  }
+
+  playWin() {
+    if (this.muted) return;
+    this.ensureContext();
+    if (!this.ctx) return;
+    const baseT = this.ctx.currentTime;
+    [523.25, 659.25, 783.99, 1046.5, 1318.5, 1568].forEach((freq, idx) => {
+      const t = baseT + idx * 0.075;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = idx % 2 ? 'triangle' : 'square';
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(idx % 2 ? 0.1 : 0.045, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.32);
+    });
+  }
+
   playCapsuleOpen() {
     this.playSpringPop();
     setTimeout(() => {

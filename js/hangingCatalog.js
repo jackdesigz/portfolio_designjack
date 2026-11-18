@@ -21,6 +21,21 @@ class HangingCatalogWire {
     this.renderSheets();
     this.setupControls();
     this.startPhysicsLoop();
+    // le didascalie dei manifesti usano Montserrat: ridisegna quando il font è pronto
+    if (document.fonts && document.fonts.load) {
+      Promise.all([document.fonts.load('700 22px Montserrat'), document.fonts.load('500 16px Montserrat')]).then(() => {
+        const projects = window.PROJECT_REGISTRY || [];
+        this.wireTrack.querySelectorAll('.hanging-sheet').forEach((sheet, idx) => {
+          const cvs = sheet.querySelector('.sheet-photo-canvas');
+          if (!cvs) return;
+          this.drawSheetGraphic(cvs, projects[idx], idx);
+          const old = sheet.querySelector('.sheet-dither-canvas');
+          if (old) old.remove();
+          delete sheet.dataset.dither;
+        });
+        if (window.initDitherEngines) window.initDitherEngines();
+      }).catch(() => {});
+    }
   }
 
   renderSheets() {
@@ -149,158 +164,95 @@ class HangingCatalogWire {
       return;
     }
 
-    // Palette Bauhaus e Modernista
-    const primaryRed = '#E63946';
-    const primaryYellow = '#FFB703';
-    const primaryBlue = '#1D3557';
-    const primaryCyan = '#00B4D8';
-    const accentColor = proj.colorHex || primaryRed;
-    const bgDark = '#111218';
+    // Manifesto Bauhaus su carta invecchiata (stile della moodboard del Canale R)
+    const RED = '#D93D2A', YEL = '#EEA824', BLU = '#1D3557', INK = '#151413', PAPER = '#F1E8D4';
+    const accent = proj.colorHex && /^#/.test(proj.colorHex) ? proj.colorHex : RED;
+    const rnd = (() => { let t = (idx + 1) * 9973; return () => { t = (t * 16807) % 2147483647; return t / 2147483647; }; })();
 
-    // 1. Fondo scuro elegante
-    ctx.fillStyle = bgDark;
+    // 1. Carta: fondo caldo, vignettatura e grana
+    ctx.fillStyle = PAPER;
     ctx.fillRect(0, 0, w, h);
-
-    // 2. Griglia millimetrata / tecnica sottile di fondo
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-    ctx.lineWidth = 1;
-    for (let x = 30; x < w; x += 36) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
+    const vg = ctx.createRadialGradient(w / 2, h / 2, h * 0.2, w / 2, h / 2, h * 0.75);
+    vg.addColorStop(0, 'rgba(255,250,238,0.35)');
+    vg.addColorStop(1, 'rgba(150,110,60,0.22)');
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, w, h);
+    const grain = ctx.getImageData(0, 0, w, h);
+    for (let i = 0; i < grain.data.length; i += 4) {
+      const n = (rnd() - 0.5) * 18;
+      grain.data[i] += n; grain.data[i + 1] += n; grain.data[i + 2] += n * 0.8;
     }
-    for (let y = 30; y < h; y += 36) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
+    ctx.putImageData(grain, 0, 0);
 
-    // 3. Tipografia decorativa / Filigrana in background
+    const hair = (x1, y1, x2, y2, lw) => { ctx.strokeStyle = INK; ctx.lineWidth = lw || 1.5; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); };
+    const hatch = (x, y, ww, hh, gap) => { ctx.strokeStyle = INK; ctx.lineWidth = 1.4; for (let k = x; k < x + ww; k += gap) { ctx.beginPath(); ctx.moveTo(k, y); ctx.lineTo(k, y + hh); ctx.stroke(); } };
+    const disc = (x, y, r, col, a0, a1) => { ctx.fillStyle = col; ctx.beginPath(); if (a0 !== undefined) ctx.moveTo(x, y); ctx.arc(x, y, r, a0 || 0, a1 === undefined ? Math.PI * 2 : a1); ctx.closePath(); ctx.fill(); };
+
+    // 2. Composizioni (quattro varianti a rotazione)
     ctx.save();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
-    ctx.font = '800 180px monospace';
-    ctx.textAlign = 'right';
-    const codeNum = String(idx + 1).padStart(2, '0');
-    ctx.fillText(codeNum, w - 36, h * 0.38);
+    ctx.globalAlpha = 0.94;
+    const variant = idx % 4;
+    if (variant === 0) {
+      // sole, blocco blu, mezzo disco nero (come il primo manifesto della moodboard)
+      disc(w * 0.62, h * 0.3, 150, accent);
+      ctx.fillStyle = BLU; ctx.fillRect(w * 0.08, h * 0.3, 250, 290);
+      ctx.fillStyle = YEL; ctx.fillRect(w * 0.44, h * 0.47, 170, 170);
+      disc(w * 0.38, h * 0.66, 120, INK, -Math.PI / 2, Math.PI / 2);
+      ctx.fillStyle = RED; ctx.fillRect(w * 0.08, h * 0.63, 110, 120);
+      hatch(w * 0.8, h * 0.18, 70, 230, 9);
+      disc(w * 0.16, h * 0.12, 30, INK);
+      hair(w * 0.06, h * 0.22, w * 0.94, h * 0.22);
+      hair(w * 0.85, h * 0.08, w * 0.85, h * 0.86);
+    } else if (variant === 1) {
+      // archi e cerchio rosso con lama nera (secondo manifesto)
+      ctx.strokeStyle = YEL; ctx.lineWidth = 42;
+      ctx.beginPath(); ctx.arc(w * 0.46, h * 0.36, 175, Math.PI * 0.95, Math.PI * 1.75); ctx.stroke();
+      disc(w * 0.56, h * 0.4, 145, accent);
+      ctx.fillStyle = INK; ctx.save(); ctx.translate(w * 0.62, h * 0.24); ctx.rotate(-0.4);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(210, -30); ctx.lineTo(120, 120); ctx.closePath(); ctx.fill(); ctx.restore();
+      ctx.fillStyle = BLU; ctx.fillRect(w * 0.6, h * 0.58, 120, 220);
+      ctx.fillStyle = YEL; ctx.fillRect(w * 0.54, h * 0.72, 70, 170);
+      ctx.fillStyle = RED; ctx.fillRect(w * 0.66, h * 0.6, 30, 130);
+      hair(w * 0.12, h * 0.4, w * 0.62, h * 0.4, 6);
+      ctx.save(); ctx.beginPath(); ctx.moveTo(w * 0.14, h * 0.6); ctx.lineTo(w * 0.42, h * 0.9); ctx.lineTo(w * 0.2, h * 0.92); ctx.closePath(); ctx.clip();
+      for (let k = -h; k < w; k += 10) hair(k, h * 0.55, k + 300, h * 0.95, 1.2);
+      ctx.restore();
+      ctx.fillStyle = INK; ctx.beginPath(); ctx.moveTo(w * 0.32, h * 0.66); ctx.lineTo(w * 0.52, h * 0.66); ctx.lineTo(w * 0.44, h * 0.9); ctx.closePath(); ctx.fill();
+    } else if (variant === 2) {
+      // griglia costruttivista e diagonale
+      ctx.fillStyle = BLU;
+      ctx.beginPath(); ctx.moveTo(0, h * 0.2); ctx.lineTo(w, h * 0.46); ctx.lineTo(w, h * 0.7); ctx.lineTo(0, h * 0.44); ctx.closePath(); ctx.fill();
+      disc(w * 0.34, h * 0.36, 108, YEL);
+      ctx.fillStyle = accent;
+      ctx.beginPath(); ctx.moveTo(w * 0.5, h * 0.5); ctx.lineTo(w * 0.92, h * 0.5); ctx.lineTo(w * 0.71, h * 0.82); ctx.closePath(); ctx.fill();
+      disc(w * 0.2, h * 0.74, 56, INK);
+      hatch(w * 0.08, h * 0.08, 140, 90, 8);
+      hair(w * 0.1, h * 0.92, w * 0.9, h * 0.06, 2);
+      [0.25, 0.5, 0.75].forEach(f => hair(w * f, h * 0.86, w * f, h * 0.94, 2));
+    } else {
+      // quadrati, cerchi e tratteggi (variante modulare)
+      ctx.fillStyle = accent; ctx.fillRect(w * 0.1, h * 0.14, 230, 230);
+      disc(w * 0.66, h * 0.36, 125, YEL);
+      ctx.fillStyle = INK; ctx.fillRect(w * 0.36, h * 0.48, 240, 26);
+      ctx.fillStyle = BLU; ctx.fillRect(w * 0.18, h * 0.56, 180, 230);
+      disc(w * 0.72, h * 0.72, 90, INK, Math.PI, Math.PI * 2);
+      disc(w * 0.72, h * 0.72, 90, RED, 0, Math.PI);
+      hatch(w * 0.56, h * 0.8, 160, 90, 9);
+      disc(w * 0.88, h * 0.1, 20, INK);
+    }
     ctx.restore();
 
-    // 4. Composizioni grafiche geometriche d'autore (rotazione tra 4 varianti Bauhaus)
-    const variant = idx % 4;
-
-    if (variant === 0) {
-      // Composizione Circolare Costruttivista
-      ctx.fillStyle = accentColor;
-      ctx.beginPath();
-      ctx.arc(w * 0.42, h * 0.52, 170, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = primaryYellow;
-      ctx.fillRect(w * 0.42, h * 0.32, 220, 220);
-
-      ctx.fillStyle = primaryBlue;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.15, h * 0.72);
-      ctx.lineTo(w * 0.75, h * 0.72);
-      ctx.lineTo(w * 0.45, h * 0.22);
-      ctx.closePath();
-      ctx.fill();
-
-      // Fascia diagonale
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 6;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.1, h * 0.3);
-      ctx.lineTo(w * 0.9, h * 0.7);
-      ctx.stroke();
-    } else if (variant === 1) {
-      // Composizione ad Archi Concentrici e Blocchi Orizzontali
-      ctx.fillStyle = primaryYellow;
-      ctx.beginPath();
-      ctx.arc(w * 0.5, h * 0.46, 210, Math.PI * 0.9, Math.PI * 2.1);
-      ctx.fill();
-
-      ctx.fillStyle = accentColor;
-      ctx.beginPath();
-      ctx.arc(w * 0.5, h * 0.46, 130, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = '#0F1016';
-      ctx.beginPath();
-      ctx.arc(w * 0.5, h * 0.46, 60, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = primaryCyan;
-      ctx.fillRect(w * 0.12, h * 0.65, w * 0.76, 28);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(w * 0.25, h * 0.71, w * 0.5, 14);
-    } else if (variant === 2) {
-      // Composizione Diagonale Tectonica
-      ctx.fillStyle = primaryBlue;
-      ctx.beginPath();
-      ctx.moveTo(0, h * 0.15);
-      ctx.lineTo(w, h * 0.45);
-      ctx.lineTo(w, h * 0.85);
-      ctx.lineTo(0, h * 0.55);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = accentColor;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.3, h * 0.25);
-      ctx.lineTo(w * 0.85, h * 0.25);
-      ctx.lineTo(w * 0.6, h * 0.65);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = primaryYellow;
-      ctx.beginPath();
-      ctx.arc(w * 0.32, h * 0.45, 80, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      // Composizione Griglia Modulare e Sfere Isometriche
-      ctx.fillStyle = accentColor;
-      ctx.fillRect(w * 0.16, h * 0.28, 200, 200);
-
-      ctx.fillStyle = primaryYellow;
-      ctx.beginPath();
-      ctx.arc(w * 0.64, h * 0.42, 110, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(w * 0.38, h * 0.52, 180, 120);
-
-      ctx.fillStyle = primaryBlue;
-      ctx.beginPath();
-      ctx.arc(w * 0.38, h * 0.62, 70, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    // 5. Cornice interna e mirini tecnici d'angolo
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    ctx.lineWidth = 2;
-    const pad = 24;
-    ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
-
-    // Mirini a croce agli angoli
-    const crossSize = 10;
-    const corners = [
-      [pad + 12, pad + 12],
-      [w - pad - 12, pad + 12],
-      [pad + 12, h - pad - 12],
-      [w - pad - 12, h - pad - 12]
-    ];
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.lineWidth = 1.5;
-    corners.forEach(([cx, cy]) => {
-      ctx.beginPath();
-      ctx.moveTo(cx - crossSize, cy);
-      ctx.lineTo(cx + crossSize, cy);
-      ctx.moveTo(cx, cy - crossSize);
-      ctx.lineTo(cx, cy + crossSize);
-      ctx.stroke();
-    });
+    // 3. Didascalia tipografica da manifesto
+    const code = String(idx + 1).padStart(2, '0');
+    ctx.fillStyle = INK;
+    ctx.font = '700 22px "Montserrat", "Helvetica Neue", Arial, sans-serif';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText('R-' + code, 36, h - 40);
+    ctx.font = '500 16px "Montserrat", "Helvetica Neue", Arial, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(String(proj.category || '').toUpperCase().slice(0, 24) + ' · ' + (proj.year || ''), w - 36, h - 40);
+    ctx.textAlign = 'left';
+    hair(36, h - 70, w - 36, h - 70, 1.5);
   }
 
   getMaxScroll() {
@@ -513,6 +465,8 @@ class HangingCatalogWire {
     });
   }
 }
+
+window.HangingCatalogWire = HangingCatalogWire;
 
 window.initHangingCatalog = function() {
   window.hangingCatalog = new HangingCatalogWire('hanging-catalog-stage');

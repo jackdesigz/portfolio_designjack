@@ -1,3 +1,10 @@
+// Restituisce il premio alla macchina che l'ha prodotto (3D o 2D)
+window.resetClawPrize = function () {
+  const game = window.clawPrizeOwner || window.craneMachine;
+  window.clawPrizeOwner = null;
+  if (game && game.resetForNewGame) game.resetForNewGame();
+};
+
 /**
  * designjack - Capsule Opening Animation & Project Inspector Modal
  * Cleaned: Removed all random codes, hex addresses, and filler metadata.
@@ -263,16 +270,14 @@ class ModalManager {
       btnPlayAgain.addEventListener('click', () => {
         if (window.audioEngine) window.audioEngine.playBeep(640, 0.04);
         this.closeCapsuleModal();
-        if (window.craneMachine) {
-          window.craneMachine.resetForNewGame();
-        }
+        if (window.resetClawPrize) window.resetClawPrize();
       });
     }
 
     if (btnCapsuleClose) {
       btnCapsuleClose.addEventListener('click', () => {
         this.closeCapsuleModal();
-        if (window.craneMachine) window.craneMachine.resetForNewGame();
+        if (window.resetClawPrize) window.resetClawPrize();
       });
     }
 
@@ -314,7 +319,7 @@ class ModalManager {
           this.closeProjectModal();
         } else if (this.capsuleModal && this.capsuleModal.classList.contains('active')) {
           this.closeCapsuleModal();
-          if (window.craneMachine) window.craneMachine.resetForNewGame();
+          if (window.resetClawPrize) window.resetClawPrize();
         }
       }
     });

@@ -47,14 +47,14 @@ class HeroBauhausSphere {
     this.container.appendChild(this.renderer.domElement);
 
     // Lights
-    const amb = new THREE.AmbientLight(0xffffff, 0.85);
+    const amb = new THREE.AmbientLight(0xfff4e2, 0.9);
     this.scene.add(amb);
 
-    const dirLight1 = new THREE.DirectionalLight(0xE63946, 1.2);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.9);
     dirLight1.position.set(3, 4, 3);
     this.scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xFFB703, 1.0);
+    const dirLight2 = new THREE.DirectionalLight(0xEEA824, 0.45);
     dirLight2.position.set(-3, -2, -2);
     this.scene.add(dirLight2);
 
@@ -69,23 +69,23 @@ class HeroBauhausSphere {
     // 1. Outer Latitude/Longitude Wireframe Sphere (Bauhaus Red)
     const wireGeo = new THREE.SphereGeometry(1.2, 18, 14);
     const wireMat = new THREE.MeshBasicMaterial({
-      color: 0xE63946,
+      color: 0x151413,
       wireframe: true,
       transparent: true,
-      opacity: 0.75
+      opacity: 0.32
     });
     const wireMesh = new THREE.Mesh(wireGeo, wireMat);
     this.sphereGroup.add(wireMesh);
 
     // 2. Middle Orbital Rings (Bauhaus Yellow & Blue)
     const ringGeo1 = new THREE.TorusGeometry(1.35, 0.025, 12, 48);
-    const ringMat1 = new THREE.MeshStandardMaterial({ color: 0xFFB703, metalness: 0.8, roughness: 0.2 });
+    const ringMat1 = new THREE.MeshStandardMaterial({ color: 0xEEA824, metalness: 0.0, roughness: 0.7 });
     this.ringX = new THREE.Mesh(ringGeo1, ringMat1);
     this.ringX.rotation.x = Math.PI / 3;
     this.sphereGroup.add(this.ringX);
 
     const ringGeo2 = new THREE.TorusGeometry(1.42, 0.022, 12, 48);
-    const ringMat2 = new THREE.MeshStandardMaterial({ color: 0x1D3557, metalness: 0.8, roughness: 0.2 });
+    const ringMat2 = new THREE.MeshStandardMaterial({ color: 0x1D3557, metalness: 0.0, roughness: 0.7 });
     this.ringY = new THREE.Mesh(ringGeo2, ringMat2);
     this.ringY.rotation.y = Math.PI / 4;
     this.sphereGroup.add(this.ringY);
@@ -93,9 +93,9 @@ class HeroBauhausSphere {
     // 3. Inner Faceted Geodesic Core (Icosahedron)
     const coreGeo = new THREE.IcosahedronGeometry(0.68, 1);
     const coreMat = new THREE.MeshStandardMaterial({
-      color: 0x121214,
-      metalness: 0.9,
-      roughness: 0.15,
+      color: 0xD93D2A,
+      metalness: 0.0,
+      roughness: 0.75,
       flatShading: true
     });
     this.innerCore = new THREE.Mesh(coreGeo, coreMat);
@@ -103,7 +103,7 @@ class HeroBauhausSphere {
 
     // 4. Floating Bauhaus Primary Axis Dots
     const dotGeo = new THREE.SphereGeometry(0.065, 12, 12);
-    const dotColors = [0xE63946, 0xFFB703, 0x1D3557, 0xffffff];
+    const dotColors = [0x151413, 0xEEA824, 0x1D3557, 0xD93D2A];
     const dotPositions = [
       [1.35, 0, 0], [-1.35, 0, 0],
       [0, 1.35, 0], [0, -1.35, 0],

@@ -6,17 +6,20 @@
   <title>designjack // CANALE R — Portfolio di Jacopo</title>
   <meta name="description" content="Portfolio di Jacopo (designjack) — Communication & Digital Designer. Cyber-Bauhaus, Geometria Sferica 3D, Fogli Appesi al Filo e Toy Candy Claw Machine.">
 
-  <!-- Google Fonts: Montserrat, JetBrains Mono, Syne (Organic/Street G), Comfortaa (Calm Marine B) -->
+  <!-- Google Fonts: Montserrat (tutto il sito); gli altri servono solo al ciclo di font di "jack" nel preloader -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Comfortaa:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Montserrat:ital,wght@0,300..900;1,300..900&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700&family=Press+Start+2P&family=Syne:wght@500;600;700;800&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=JetBrains+Mono:wght@400;500;600;700;800&family=Montserrat:ital,wght@0,300..900;1,300..900&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700&family=Press+Start+2P&family=Syne:wght@500;600;700;800&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 
   <!-- Three.js (r128) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/styles.css?v=2.8">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=Hind:wght@300;400;500;600;700&family=Sedgwick+Ave+Display&family=Varela+Round&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=4.9">
+  <link rel="stylesheet" href="css/channel-g.css?v=1.0">
+  <link rel="stylesheet" href="css/channel-b.css?v=1.0">
 </head>
 <body class="crt-bezel-frame">
 
@@ -95,7 +98,7 @@
     <div id="channel-view-r" class="channel-view active">
 
       <!-- -------------------------------------------------------------
-           1. INTRODUZIONE (HERO WINDOW CON GEOMETRIA SFERICA 3D)
+           1. INTRODUZIONE (HERO WINDOW CON AVATAR 3D LOW-POLY)
            ------------------------------------------------------------- -->
       <section id="hero" class="cyber-window hero-window">
         <div class="window-topbar">
@@ -120,19 +123,16 @@
               </p>
               <div class="hero-cta-row">
                 <a href="#wire-catalog-section" class="hero-cta-btn primary">PROGETTI SU FILO ↓</a>
-                <a href="#crane-section" class="hero-cta-btn">TOY CLAW ARCADE ↓</a>
+                <a href="#claw2d-window" class="hero-cta-btn">TOY CLAW ARCADE ↓</a>
               </div>
             </div>
 
-            <!-- 3D GEOMETRIA SFERICA INTERATTIVA -->
-            <div class="hero-sphere-showcase">
-              <div class="sphere-box-topbar">
-                <span>GEOMETRIA SFERICA 3D</span>
-                <span></span>
-              </div>
-              <div id="hero-sphere-viewport"></div>
-              <div class="sphere-interactive-hint">
-                <span>Trascina o muovi il cursore per ruotare</span>
+            <!-- AVATAR 3D LOW-POLY: senza finestra; scrollando vola in basso a sinistra (js/avatarPilot.js) -->
+            <div class="hero-avatar-slot">
+              <div class="avatar-pilot">
+                <div class="avatar-bubble" aria-live="polite" hidden></div>
+                <div id="avatar-viewport" class="avatar-viewport" title="Cliccami per parlare, trascinami per girarmi"></div>
+                <button type="button" class="avatar-close" aria-label="Rimetti a posto l'avatar" title="Rimetti a posto">×</button>
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
             <span class="ctrl-shape ctrl-triangle"></span>
             <span class="ctrl-shape ctrl-square"></span>
           </div>
-          <div class="window-title">PROGETTI SU FILO // STUDIO WIRE</div>
+          <div class="window-title">PROGETTI SU FILO</div>
           <div></div>
         </div>
 
@@ -192,50 +192,37 @@
         </div>
       </section>
 
-
     <!-- ---------------------------------------------------------------
-         4. TOY CANDY CLAW MACHINE 3D ALLA FINE (STANDALONE 3D)
+         5. CLAW MACHINE 2D (IN FINESTRA)
          --------------------------------------------------------------- -->
-    <section id="crane-section">
-      <div class="crane-standalone-header">
-        <h2 class="crane-station-title">
-          TOY CLAW MACHINE 3D
-        </h2>
-      </div>
-
-      <div class="crane-standalone-stage">
-        <div class="crane-hopper-marker">
+    <section id="claw2d-window" class="cyber-window claw2d-window" aria-label="Toy Claw Machine">
+      <div class="window-topbar">
+        <div class="bauhaus-controls">
+          <span class="ctrl-shape ctrl-circle"></span>
           <span class="ctrl-shape ctrl-triangle"></span>
-          <span>VASCHETTA PREMI</span>
+          <span class="ctrl-shape ctrl-square"></span>
         </div>
-
-        <div id="crane-canvas-container"></div>
-
-        <div class="crane-bottom-dashboard">
-          <div class="dpad-container">
-            <button id="crane-btn-up" class="arcade-dpad-btn" title="Indietro (W / ▲)">▲</button>
-            <div class="dpad-row">
-              <button id="crane-btn-left" class="arcade-dpad-btn" title="Sinistra (A / ◄)">◄</button>
-              <button id="crane-btn-down" class="arcade-dpad-btn" title="Avanti (S / ▼)">▼</button>
-              <button id="crane-btn-right" class="arcade-dpad-btn" title="Destra (D / ►)">►</button>
-            </div>
-          </div>
-
-          <div class="arcade-instructions">
-            <div class="arcade-inst-title">COMANDI JOYSTICK ARCADE</div>
-            <div class="arcade-inst-keys">
-              Usa <kbd>WASD</kbd> o <kbd>Frecce</kbd> per muovere le leve sul ripiano frontale.
-            </div>
-          </div>
-
-          <div class="arcade-drop-container">
-            <button id="crane-btn-drop" class="btn-drop-claw" title="Pesca la capsula! (SPAZIO)">
-              <span>PESCA</span>
-              <span>▼</span>
-            </button>
-          </div>
-        </div>
+        <div class="window-title">TOY CLAW MACHINE</div>
+        <div></div>
       </div>
+        <div id="claw2d-section" class="claw2d-section">
+          <canvas id="claw2d-canvas" aria-hidden="true"></canvas>
+          <div class="claw2d-hud">
+            <div class="claw2d-status" role="status" aria-live="polite"></div>
+            <div class="claw2d-collection" aria-label="Capsule vinte"></div>
+          </div>
+          <div class="claw2d-deck">
+            <div class="claw2d-dpad">
+              <button id="claw2d-left" class="claw2d-key" aria-label="Sinistra" title="Sinistra (A / ◄)">◄</button>
+              <button id="claw2d-right" class="claw2d-key" aria-label="Destra" title="Destra (D / ►)">►</button>
+            </div>
+            <div class="claw2d-help">
+              <strong>ALLINEA IL MIRINO, POI PESCA</strong>
+              <span><kbd>A</kbd> <kbd>D</kbd> o <kbd>◄</kbd> <kbd>►</kbd> per muovere · <kbd>Spazio</kbd> per pescare</span>
+            </div>
+            <button id="claw2d-drop" class="claw2d-drop" title="Pesca la capsula! (SPAZIO)"><span>PESCA</span><span>▼</span></button>
+          </div>
+        </div>
     </section>
 
     <!-- FOOTER CANALE R -->
@@ -244,175 +231,213 @@
         <span>designjack © 2026 // Jacopo</span>
       </div>
       <div>
-        <span>Canale R</span>
+        <span class="footer-channel">CANALE R</span>
       </div>
     </footer>
 
     </div> <!-- Fine #channel-view-r -->
 
     <!-- ===============================================================
-         CANALE G — ORGANIC & STREET ART AESTHETICS (JACOPO FEBI)
+         CANALE G — "febi": ORGANICO × GRAFFITI, TUTTO VERDE
+         Un sito a sé: stili in css/channel-g.css, logica in js/channels.js
          =============================================================== -->
     <div id="channel-view-g" class="channel-view">
-      <section class="channel-g-stage">
-        
-        <!-- Topbar Organica con Gocce Fluide -->
-        <div class="channel-g-topbar">
-          <div class="organic-controls">
-            <span class="ctrl-organic-blob blob-1"></span>
-            <span class="ctrl-organic-blob blob-2"></span>
-            <span class="ctrl-organic-blob blob-3"></span>
+      <div class="gx-site">
+
+        <section class="gx-hero" aria-labelledby="gx-title">
+          <svg class="gx-blobs" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <path class="gx-blob gx-blob-1" data-blob="230,650,340,0.9"/>
+            <path class="gx-blob gx-blob-5" data-blob="640,410,430,2.4"/>
+            <path class="gx-blob gx-blob-2" data-blob="1010,160,300,4.1"/>
+            <path class="gx-blob gx-blob-3" data-blob="990,700,200,5.7"/>
+            <path class="gx-blob gx-blob-4" data-blob="300,150,95,7.3"/>
+            <path class="gx-blob gx-blob-6" data-blob="880,470,58,9.2"/>
+          </svg>
+
+          <div class="gx-hero-inner">
+            <p class="gx-kicker">canale G — fuori orario</p>
+            <h1 class="gx-tag" id="gx-title" aria-label="febi">
+              <span class="gx-tag-word" aria-hidden="true">febi</span>
+              <svg class="gx-drips" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
+                <rect class="gx-drip" x="70" y="0" width="9" height="70" rx="4.5"/>
+                <rect class="gx-drip" x="128" y="0" width="6" height="44" rx="3"/>
+                <rect class="gx-drip" x="214" y="0" width="11" height="96" rx="5.5"/>
+                <rect class="gx-drip" x="296" y="0" width="7" height="58" rx="3.5"/>
+                <rect class="gx-drip" x="338" y="0" width="5" height="30" rx="2.5"/>
+              </svg>
+            </h1>
+            <p class="gx-name">jacopo Febi</p>
+            <p class="gx-lede">Armonie organiche che crescono su muri crudi: forme morbide, vernice spray, adesivi e nastro.</p>
+            <div class="gx-hero-actions">
+              <a href="#gx-wall" class="gx-btn gx-btn-lime">Prendi una bomboletta ↓</a>
+              <button id="btn-return-channel-r-from-g" class="gx-btn gx-btn-ghost" type="button" title="Ritorna al Canale R">← torna al canale R</button>
+            </div>
           </div>
-          <div class="channel-g-topbar-title">CANALE G // ORGANIC × STREET</div>
-          <div></div>
+
+          <div class="gx-sticker gx-st-star" data-drag style="--r:-12deg">★ <b>FEB!</b> // 02</div>
+          <div class="gx-sticker gx-st-barcode" data-drag style="--r:7deg"><i></i><span>DESIGNJACK.G</span></div>
+          <div class="gx-sticker gx-st-round" data-drag style="--r:14deg"><span>organico<br>ma crudo</span></div>
+          <div class="gx-sticker gx-st-tape" data-drag style="--r:-5deg">PARK_SYS</div>
+          <p class="gx-hint">gli adesivi si staccano: trascinali</p>
+        </section>
+
+        <div class="gx-tape" aria-hidden="true">
+          <div class="gx-tape-track">
+            <span>organico × strada × muschio × spray × nastro × adesivi × cemento × </span>
+            <span>organico × strada × muschio × spray × nastro × adesivi × cemento × </span>
+          </div>
         </div>
 
-        <div class="channel-g-canvas-arena">
-          
-          <!-- Elementi Grafici: Onde Organiche Armoniose (Ispirate al poster centrale della moodboard) -->
-          <div class="organic-waves-layer" aria-hidden="true">
-            <svg class="panton-ribbon-svg" viewBox="0 0 800 600" fill="none" preserveAspectRatio="none">
-              <!-- Stacked fluid organic ribbons in shades of green -->
-              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#E8F5E9" stroke-width="110" stroke-linecap="round" opacity="0.9"/>
-              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#C8E6C9" stroke-width="88" stroke-linecap="round" opacity="0.9"/>
-              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#81C784" stroke-width="66" stroke-linecap="round" opacity="0.9"/>
-              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#2E7D32" stroke-width="44" stroke-linecap="round" opacity="0.95"/>
-              <path d="M120,-40 C180,140 280,240 240,380 C200,520 80,560 140,640" stroke="#70E000" stroke-width="22" stroke-linecap="round" opacity="1"/>
-            </svg>
+        <section class="gx-manifesto" aria-labelledby="gx-manifesto-title">
+          <div class="gx-paper">
+            <h2 class="gx-h2" id="gx-manifesto-title">Manifesto <em>in tre spruzzi</em></h2>
+            <ol class="gx-points">
+              <li><span class="gx-num">01</span><p>Le forme <em>crescono</em>, non si disegnano: partono da un punto e si allargano come muschio sul cemento.</p></li>
+              <li><span class="gx-num">02</span><p>Il muro è il primo layout. Il segno <em>sporco</em> vale quanto la griglia perfetta.</p></li>
+              <li><span class="gx-num">03</span><p>Ogni adesivo è un piccolo manifesto: lo attacchi, qualcuno lo legge, <em>il resto lo fa la pioggia</em>.</p></li>
+            </ol>
           </div>
+          <svg class="gx-leaves" viewBox="0 0 400 520" aria-hidden="true">
+            <path class="gx-leaf l1" d="M200 500 C 80 400 60 220 200 40 C 340 220 320 400 200 500 Z"/>
+            <path class="gx-vein" d="M200 490 C 196 360 198 200 200 60"/>
+            <path class="gx-leaf l2" d="M120 470 C 20 420 -10 300 40 200 C 140 250 170 360 120 470 Z"/>
+            <path class="gx-leaf l3" d="M290 470 C 390 420 420 310 370 210 C 270 260 240 370 290 470 Z"/>
+            <circle class="gx-spot s1" cx="320" cy="90" r="34"/>
+            <circle class="gx-spot s2" cx="70" cy="120" r="18"/>
+            <circle class="gx-spot s3" cx="350" cy="160" r="9"/>
+          </svg>
+        </section>
 
-          <!-- Elementi Street Art & Graffiti (Sticker, stencil, spray tags dalla moodboard) -->
-          <div class="street-elements-layer">
-            <!-- Acid Star Sticker -->
-            <div class="street-sticker star-sticker">
-              <span class="sticker-star">★</span>
-              <span class="sticker-code">FEB! // 02</span>
-            </div>
-
-            <!-- Urban Barcode Sticker -->
-            <div class="street-sticker barcode-sticker">
-              <div class="sticker-bars"></div>
-              <span>DESIGNJACK.G</span>
-            </div>
-
-            <!-- Graffiti Spray Tag in Permanent Marker -->
-            <div class="street-tag-wrap">
-              <span class="spray-stencil-tag">PARK_SYS</span>
-              <div class="street-tag-graffiti">jacopo febi</div>
-            </div>
-          </div>
-
-          <!-- Contenuto Centrale Estetico con Font Syne -->
-          <div class="channel-g-hero-content">
-            <div class="channel-g-tag-pill">
-              <span>BIO-TOPOLOGY × STREET CULTURE</span>
-            </div>
-            
-            <h1 class="channel-g-title">jacopo Febi</h1>
-            <p class="channel-g-manifesto">
-              Armonie organiche fluide incontrano la texture cruda dei graffiti e della strada.
-            </p>
-
-            <div class="channel-g-actions">
-              <button id="btn-return-channel-r-from-g" class="channel-g-return-btn" title="Ritorna al Canale R">
-                ← TORNA AL CANALE R
-              </button>
+        <section class="gx-wall-section" id="gx-wall" aria-labelledby="gx-wall-title">
+          <header class="gx-wall-head">
+            <h2 class="gx-h2" id="gx-wall-title">Il muro <em>libero</em></h2>
+            <p>Tieni premuto e spruzza. Qui il verde è l’unico colore ammesso.</p>
+          </header>
+          <div class="gx-wall">
+            <canvas id="gx-spray-canvas" aria-label="Muro da dipingere con la bomboletta"></canvas>
+            <p class="gx-wall-empty" aria-hidden="true">spruzza qui</p>
+            <div class="gx-wall-tools">
+              <div class="gx-cans" role="radiogroup" aria-label="Colore della bomboletta">
+                <button type="button" class="gx-can is-active" role="radio" aria-checked="true" data-color="#B8F23A" style="--c:#B8F23A" aria-label="Lime"></button>
+                <button type="button" class="gx-can" role="radio" aria-checked="false" data-color="#7CFF4F" style="--c:#7CFF4F" aria-label="Verde acido"></button>
+                <button type="button" class="gx-can" role="radio" aria-checked="false" data-color="#4F9A5F" style="--c:#4F9A5F" aria-label="Muschio"></button>
+                <button type="button" class="gx-can" role="radio" aria-checked="false" data-color="#DDEFD7" style="--c:#DDEFD7" aria-label="Menta"></button>
+                <button type="button" class="gx-can" role="radio" aria-checked="false" data-color="#06140C" style="--c:#06140C" aria-label="Nero bosco"></button>
+              </div>
+              <label class="gx-size">tratto <input type="range" id="gx-spray-size" min="10" max="70" value="30"></label>
+              <button type="button" class="gx-btn gx-btn-ghost gx-btn-small" id="gx-wall-clean">pulisci il muro</button>
             </div>
           </div>
+        </section>
 
-        </div>
-
-        <!-- FOOTER CANALE G -->
-        <footer class="channel-g-footer">
-          <div class="footer-left">
-            <span>designjack // jacopo Febi</span>
-          </div>
-          <div>
-            <span style="color: var(--channel-g); font-weight: 700;">Canale G // Organico & Street</span>
-          </div>
+        <footer class="gx-footer">
+          <span class="gx-footer-tag">febi</span>
+          <span class="gx-footer-meta">designjack // jacopo Febi — Canale G</span>
         </footer>
-      </section>
+      </div>
     </div> <!-- Fine #channel-view-g -->
 
     <!-- ===============================================================
-         CANALE B — CALM MARINE & BUBBLES AESTHETICS (CONTATTI)
+         CANALE B — "FRUTIGER MARINE": CONTATTI, TUTTO BLU E LUCIDO
+         Un sito a sé: stili in css/channel-b.css, logica in js/channels.js
          =============================================================== -->
     <div id="channel-view-b" class="channel-view">
-      <section class="channel-b-marine-stage">
-        
-        <!-- Topbar Marina Serena -->
-        <div class="channel-b-topbar">
-          <div class="marine-controls">
-            <span class="ctrl-marine-bubble bub-1"></span>
-            <span class="ctrl-marine-bubble bub-2"></span>
-            <span class="ctrl-marine-bubble bub-3"></span>
-          </div>
-          <div class="channel-b-topbar-title">CANALE B // CALM MARINE</div>
-          <div></div>
-        </div>
+      <div class="bx-site">
 
-        <!-- Arena Oceanica Calma con Bolle Fluttuanti e Anelli Vortice -->
-        <div class="channel-b-ocean-arena">
-          
-          <!-- Concentric Abyss Water Rings (Ispirati al vortice blu della moodboard) -->
-          <div class="ocean-vortex-rings" aria-hidden="true">
-            <div class="vortex-ring ring-1"></div>
-            <div class="vortex-ring ring-2"></div>
-            <div class="vortex-ring ring-3"></div>
-            <div class="vortex-ring ring-4"></div>
-          </div>
+        <section class="bx-surface" aria-labelledby="bx-title">
+          <div class="bx-sun" aria-hidden="true"></div>
+          <span class="bx-flare bx-flare-1" aria-hidden="true"></span>
+          <span class="bx-flare bx-flare-2" aria-hidden="true"></span>
+          <span class="bx-flare bx-flare-3" aria-hidden="true"></span>
+          <span class="bx-cloud bx-cloud-1" aria-hidden="true"></span>
+          <span class="bx-cloud bx-cloud-2" aria-hidden="true"></span>
+          <span class="bx-cloud bx-cloud-3" aria-hidden="true"></span>
 
-          <!-- Contenitore Bolle Marine Interattive -->
-          <div id="marine-bubbles-container" class="marine-bubbles-container" aria-hidden="true">
-            <!-- Popolate dinamicamente con bolle di vetro trasparente e riflessi -->
-          </div>
-
-          <!-- Contenuto Centrale Minimalista: CONTATTI (Font Comfortaa) -->
-          <div class="channel-b-content-wrap">
-            <div class="channel-b-calm-badge">
-              <span>CALM WATERS // ABYSS LAB</span>
+          <div class="bx-surface-inner">
+            <p class="bx-glass bx-badge"><span class="bx-dot"></span>Canale B — acque calme</p>
+            <h1 class="bx-title" id="bx-title">Contatti</h1>
+            <p class="bx-lead">Un porto quieto per collaborazioni, visioni digitali e nuovi progetti.</p>
+            <div class="bx-hero-actions">
+              <a href="#bx-depths" class="bx-pill bx-pill-aqua">Immergiti ↓</a>
+              <button id="btn-return-channel-r-from-b" class="bx-pill bx-pill-glass" type="button" title="Ritorna al Canale R">← Torna al canale R</button>
             </div>
+          </div>
 
-            <h1 class="channel-b-title">CONTATTI</h1>
+          <div class="bx-waves" aria-hidden="true">
+            <svg class="bx-wave bx-wave-back" viewBox="0 0 2880 170" preserveAspectRatio="none"><path d="M0 70 Q 180 30 360 70 T 720 70 T 1080 70 T 1440 70 T 1800 70 T 2160 70 T 2520 70 T 2880 70 V170 H0 Z"/></svg>
+            <svg class="bx-wave bx-wave-mid" viewBox="0 0 2880 170" preserveAspectRatio="none"><path d="M0 95 Q 240 55 480 95 T 960 95 T 1440 95 T 1920 95 T 2400 95 T 2880 95 V170 H0 Z"/></svg>
+            <svg class="bx-wave bx-wave-front" viewBox="0 0 2880 170" preserveAspectRatio="none"><path d="M0 120 Q 180 92 360 120 T 720 120 T 1080 120 T 1440 120 T 1800 120 T 2160 120 T 2520 120 T 2880 120 V170 H0 Z"/></svg>
+          </div>
+        </section>
 
-            <p class="channel-b-quiet-lead">
-              Un porto quieto per collaborazioni, visioni digitali e nuovi progetti.
-            </p>
+        <section class="bx-depths" id="bx-depths" aria-label="Come contattarmi">
+          <div class="bx-rays" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="bx-caustics" aria-hidden="true"></div>
+          <div class="bx-bubbles" id="bx-bubbles" aria-hidden="true"></div>
+          <div class="bx-fishes" aria-hidden="true">
+            <svg class="bx-fish bx-fish-1" viewBox="0 0 120 60"><use href="#bx-fish-shape"/></svg>
+            <svg class="bx-fish bx-fish-2" viewBox="0 0 120 60"><use href="#bx-fish-shape"/></svg>
+            <svg class="bx-fish bx-fish-3" viewBox="0 0 120 60"><use href="#bx-fish-shape"/></svg>
+            <svg class="bx-fish bx-fish-4" viewBox="0 0 120 60"><use href="#bx-fish-shape"/></svg>
+          </div>
+          <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+            <defs>
+              <linearGradient id="bx-fish-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#D8F6FF"/>
+                <stop offset="0.5" stop-color="#5CCBFF"/>
+                <stop offset="1" stop-color="#1679C9"/>
+              </linearGradient>
+              <g id="bx-fish-shape">
+                <path d="M8 30 C 30 6 70 4 96 30 C 70 56 30 54 8 30 Z" fill="url(#bx-fish-grad)"/>
+                <path d="M92 30 L 118 12 L 112 30 L 118 48 Z" fill="#3FB4F5"/>
+                <ellipse cx="44" cy="20" rx="26" ry="6" fill="#FFFFFF" opacity="0.55"/>
+                <circle cx="24" cy="27" r="4" fill="#06305C"/>
+                <circle cx="23" cy="26" r="1.4" fill="#FFFFFF"/>
+              </g>
+            </defs>
+          </svg>
 
-            <div class="channel-b-links-row">
-              <a href="mailto:jacopo@designjack.it" class="channel-b-email-pill" title="Scrivi un'email a Jacopo">
-                <span class="email-drop-icon">💧</span>
+          <div class="bx-panels">
+            <article class="bx-glass bx-panel">
+              <h2>Scrivimi</h2>
+              <p>Il modo più diretto per raggiungermi.</p>
+              <a href="mailto:jacopo@designjack.it" class="bx-mail-pill" title="Scrivi un'email a Jacopo">
+                <span class="bx-mail-icon" aria-hidden="true">✉</span>
                 <span>jacopo@designjack.it</span>
               </a>
-              <button id="btn-return-channel-r-from-b" class="channel-b-return-btn" title="Ritorna al Canale R">
-                ← TORNA AL CANALE R
-              </button>
-            </div>
-          </div>
+              <button type="button" class="bx-pill bx-pill-glass bx-copy" data-copy="jacopo@designjack.it">Copia indirizzo</button>
+            </article>
 
-          <!-- Trigger Flauto Magico posizionato in basso a destra nella sezione B -->
-          <div class="marine-flute-dock">
-            <button id="btn-open-flute" class="marine-flute-trigger-btn" title="Suona il Flauto Magico" aria-label="Apri Flauto Magico">
-              <span class="flute-trigger-icon">🪈</span>
-              <div class="flute-trigger-meta">
-                <span class="flute-trigger-text">FLAUTO MAGICO</span>
-                <span class="flute-trigger-hint">TELETRASPORTO</span>
-              </div>
-            </button>
-          </div>
+            <article class="bx-glass bx-panel">
+              <h2>Messaggio in bottiglia</h2>
+              <form id="bx-bottle-form" class="bx-form">
+                <label class="bx-field">Il tuo nome
+                  <input type="text" name="name" autocomplete="name" placeholder="Come ti chiami?">
+                </label>
+                <label class="bx-field">Messaggio
+                  <textarea name="message" rows="4" placeholder="Raccontami l’idea…" required></textarea>
+                </label>
+                <button type="submit" class="bx-pill bx-pill-aqua">Lancia la bottiglia</button>
+                <p class="bx-form-note">Si apre il tuo programma di posta con il messaggio già scritto.</p>
+              </form>
+            </article>
 
-        </div>
+            <article class="bx-glass bx-panel bx-panel-flute">
+              <h2>Flauto magico</h2>
+              <p>Suona la melodia giusta e ti teletrasporta tra i canali.</p>
+              <button id="btn-open-flute" class="bx-orb" type="button" title="Suona il Flauto Magico" aria-label="Apri Flauto Magico"><span aria-hidden="true">♪</span></button>
+            </article>
+          </div>
+        </section>
 
-        <!-- FOOTER CANALE B -->
-        <footer class="channel-b-footer">
-          <div class="footer-left">
-            <span>designjack // jacopo Febi</span>
-          </div>
-          <div>
-            <span style="color: #90E0EF; font-weight: 700;">Canale B // Calm Marine</span>
-          </div>
+        <footer class="bx-seabed">
+          <svg class="bx-dunes" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+            <path class="bx-dune-1" d="M0 60 C 240 10 420 90 720 50 C 1000 14 1200 80 1440 40 V120 H0 Z"/>
+            <path class="bx-dune-2" d="M0 90 C 300 50 520 110 820 80 C 1080 56 1260 100 1440 76 V120 H0 Z"/>
+          </svg>
+          <p>designjack // jacopo Febi — Canale B</p>
         </footer>
-      </section>
+      </div>
     </div> <!-- Fine #channel-view-b -->
 
   </main>
@@ -760,14 +785,18 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/audio.js?v=2.8"></script>
-  <script src="js/heroSphere.js?v=2.8"></script>
-  <script src="js/hangingCatalog.js?v=2.8"></script>
-  <script src="js/dither.js?v=2.8"></script>
-  <script src="js/crane.js?v=2.8"></script>
-  <script src="js/modal.js?v=2.8"></script>
-  <script src="js/flute.js?v=2.8"></script>
-  <script src="js/main.js?v=2.8"></script>
+  <script src="js/projects.js?v=4.0"></script>
+  <script src="js/audio.js?v=4.0"></script>
+  <script src="js/avatarPilot.js?v=1.1"></script>
+  <script src="js/heroAvatar.js?v=2.0"></script>
+  <script src="js/hangingCatalog.js?v=4.8"></script>
+  <script src="js/dither.js?v=4.1"></script>
+  <script src="js/clawPhysics2D.js?v=4.6"></script>
+  <script src="js/crane2d.js?v=4.7"></script>
+  <script src="js/modal.js?v=4.3"></script>
+  <script src="js/flute.js?v=4.0"></script>
+  <script src="js/channels.js?v=1.0"></script>
+  <script src="js/main.js?v=4.7"></script>
 
 </body>
 </html>

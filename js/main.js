@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initFullscreenInstagramCatalog();
 
   // Initialize subsystem engines
-  if (window.initHeroSphere) window.initHeroSphere();
+  if (window.initHeroAvatar) window.initHeroAvatar();
   if (window.initHangingCatalog) window.initHangingCatalog();
   if (window.initDitherEngines) window.initDitherEngines();
   if (window.initCraneMachine) window.initCraneMachine();
+  if (window.initClaw2D) window.initClaw2D();
   if (window.initModalManager) window.initModalManager();
   if (window.initMagicFlute) window.initMagicFlute();
 });
@@ -97,13 +98,13 @@ function initPreloaderWithCRT() {
   if (!preloader || !jackEl) return;
 
   const fontStyles = [
-    { font: "'Press Start 2P', monospace", color: '#FFB703' },
-    { font: "'Playfair Display', serif", color: '#E63946' },
-    { font: "'JetBrains Mono', monospace", color: '#1D3557' },
-    { font: "'Syne', sans-serif", color: '#FFFFFF' },
-    { font: "'Permanent Marker', cursive", color: '#FFB703' },
-    { font: "'UnifrakturMaguntia', cursive", color: '#E63946' },
-    { font: "'Bungee Shade', cursive", color: '#1D3557' }
+    { font: "'Press Start 2P', monospace", color: '#EEA824' },
+    { font: "'Playfair Display', serif", color: '#D93D2A' },
+    { font: "'JetBrains Mono', monospace", color: '#4F82D6' },
+    { font: "'Syne', sans-serif", color: '#F7F1E4' },
+    { font: "'Permanent Marker', cursive", color: '#EEA824' },
+    { font: "'UnifrakturMaguntia', cursive", color: '#D93D2A' },
+    { font: "'Bungee Shade', cursive", color: '#4F82D6' }
   ];
 
   let step = 0;
@@ -518,6 +519,16 @@ function drawInstagramProjectArtwork(canvas, proj, idx) {
     return;
   }
 
+  // Stessa grafica "manifesto su carta" dei fogli sul filo, ritagliata al quadrato
+  if (window.HangingCatalogWire && window.HangingCatalogWire.prototype.drawSheetGraphic) {
+    const poster = document.createElement('canvas');
+    poster.width = 648; poster.height = 880;
+    window.HangingCatalogWire.prototype.drawSheetGraphic.call(null, poster, proj, idx);
+    const side = poster.width;
+    ctx.drawImage(poster, 0, (poster.height - side) * 0.42, side, side, 0, 0, w, h);
+    return;
+  }
+
   // Background
   ctx.fillStyle = idx % 2 === 0 ? '#0B0B10' : '#101016';
   ctx.fillRect(0, 0, w, h);
@@ -606,7 +617,7 @@ function drawInstagramProjectArtwork(canvas, proj, idx) {
 
   // Minimalist Bauhaus Typo Watermark
   ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-  ctx.font = 'bold 12px "JetBrains Mono", monospace';
+  ctx.font = 'bold 12px "Montserrat", "Helvetica Neue", Arial, sans-serif';
   ctx.fillText(proj.code || `R-0${idx + 1}`, 20, 36);
 
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
