@@ -280,13 +280,16 @@
   /* CANALE B                                                             */
   /* ================================================================== */
 
+  // Bolle su tutta la pagina B: partono dal fondale e risalgono fino al cielo.
+  // Velocità costante (non durata fissa), così restano lente anche su una pagina alta.
   function initBubbles(container) {
     const spawn = (initial) => {
       const b = document.createElement('span');
       b.className = 'bx-bubble';
-      const size = Math.round(10 + Math.random() * 46);
-      const rise = container.clientHeight + 200 || 1200;
-      const dur = (10 + Math.random() * 12).toFixed(1);
+      const size = Math.round(8 + Math.random() * 44);
+      const rise = (container.clientHeight || 3000) + 200;
+      const speed = 45 + Math.random() * 45;            // px al secondo
+      const dur = (rise / speed).toFixed(1);
       b.style.width = b.style.height = `${size}px`;
       b.style.left = `${(2 + Math.random() * 96).toFixed(1)}%`;
       b.style.setProperty('--rise', `${rise}px`);
@@ -304,9 +307,95 @@
       container.appendChild(b);
     };
     return () => {
-      if (container.childElementCount) return;
-      const count = reduceMotion ? 0 : 22;
+      if (container.childElementCount || reduceMotion) return;
+      const h = container.clientHeight || 3000;
+      const count = Math.max(24, Math.min(70, Math.round(h / 1000 * 15)));
       for (let i = 0; i < count; i++) spawn(true);
+    };
+  }
+
+  // La bolla con dentro l'avatar: sale lenta insieme alle altre, oscillando, su tutta
+  // la pagina B. Quando esce dalla parte di pagina che stai guardando riappare dal
+  // basso dello schermo, così la incontri spesso. Si muove finché l'avatar è
+  // intrappolato (classe .is-trapped, gestita da avatarPilot.js).
+  function initAvatarBubble(root) {
+    const home = root.querySelector('.avatar-home--bubble');
+    const site = root.querySelector('.bx-site');
+    if (!home || !site) return { onShow() {}, frame() {} };
+    const st = { baseX: 0, y: 0, t: Math.random() * 10, W: 0, H: 0, size: 190, placed: false };
+
+    const measure = () => {
+      st.W = site.clientWidth;
+      st.H = site.clientHeight;
+      st.size = home.offsetWidth || 190;
+    };
+    const pickX = () => {
+      const min = st.W * 0.05;
+      const max = Math.max(min, st.W * 0.95 - st.size);
+      st.baseX = min + Math.random() * (max - min);
+    };
+    const apply = () => {
+      const x = st.baseX + Math.sin(st.t * 0.7) * 26;
+      home.style.transform = `translate3d(${x.toFixed(1)}px, ${st.y.toFixed(1)}px, 0)`;
+    };
+    // parte di pagina visibile, in coordinate di .bx-site (letta ogni mezzo secondo e allo scroll)
+    const view = { top: 0, bottom: 0 };
+    let queued = false;
+    const readView = () => {
+      queued = false;
+      const r = site.getBoundingClientRect();
+      view.top = -r.top;
+      view.bottom = window.innerHeight - r.top;
+    };
+    const queue = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(readView);
+    };
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', () => { measure(); queue(); });
+
+    const enterFromBottom = () => {
+      pickX();
+      st.y = Math.min(st.H - st.size, view.bottom + 20);
+    };
+
+    // Rimesso in bolla con la X: riappare in basso nella parte visibile e riparte
+    home.addEventListener('avatar-home:before-return', () => {
+      measure();
+      readView();
+      pickX();
+      st.y = Math.max(0, Math.min(st.H - st.size, view.bottom - st.size - 40));
+      apply();
+    });
+
+    return {
+      onShow() {
+        measure();
+        readView();
+        if (!st.placed) {
+          st.placed = true;
+          pickX();
+          st.y = Math.max(0, Math.min(st.H - st.size, view.bottom * 0.62));
+        }
+        apply();
+      },
+      frame(dt) {
+        st.since = (st.since || 0) + dt;
+        if (st.since > 0.5) {
+          st.since = 0;
+          readView();
+        }
+        if (reduceMotion || !home.classList.contains('is-trapped')) return;
+        st.t += dt;
+        st.y -= 34 * dt;
+        // uscita sopra la parte visibile (o rimasta molto sotto): rientra dal basso dello schermo
+        if (st.y + st.size < view.top - 20 || st.y > view.bottom + 400) {
+          measure();
+          enterFromBottom();
+        }
+        apply();
+      }
     };
   }
 
@@ -345,7 +434,14 @@
       });
     }
 
-    return { onShow() { fillBubbles(); }, frame() {} };
+    const avatarBubble = initAvatarBubble(root);
+    return {
+      onShow() {
+        fillBubbles();
+        avatarBubble.onShow();
+      },
+      frame(t, dt) { avatarBubble.frame(dt); }
+    };
   }
 
   /* ================================================================== */
@@ -367,9 +463,14 @@
     new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     sync();
 
+    let last = 0;
     const loop = (ms) => {
       requestAnimationFrame(loop);
-      if (gShown && g && !document.hidden) g.frame(ms / 1000);
+      const dt = last ? Math.min(0.05, (ms - last) / 1000) : 0;
+      last = ms;
+      if (document.hidden) return;
+      if (gShown && g) g.frame(ms / 1000);
+      if (bShown && b) b.frame(ms / 1000, dt);
     };
     requestAnimationFrame(loop);
 

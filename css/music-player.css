@@ -1,0 +1,396 @@
+/* =====================================================================
+   MUSIC PLAYER — disco incastrato nel bordo destro, sotto la barra.
+   Chiuso: si vede solo metà disco che gira. Hover (o tocco): il disco esce
+   e compare il pannello con i comandi. Stile R qui sotto; G e B in fondo.
+   ===================================================================== */
+.music-player {
+  --mp-disc: 64px;
+  --mp-ink: var(--ink, #151413);
+  --mp-paper: var(--paper-light, #F7F1E4);
+  --mp-accent: var(--bauhaus-red, #E63946);
+  position: fixed;
+  top: 72px;
+  right: 0;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  pointer-events: none; /* solo disco e pannello aperto ricevono il mouse */
+}
+
+/* ---------- disco ---------- */
+.mp-disc {
+  position: relative;
+  flex: none;
+  width: var(--mp-disc);
+  height: var(--mp-disc);
+  padding: 0;
+  border: 2px solid var(--mp-ink);
+  border-radius: 50%;
+  background: #111;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: -3px 3px 0 var(--mp-ink);
+  transform: translateX(50%);
+  transition: transform 0.38s cubic-bezier(0.25, 1.4, 0.45, 1), box-shadow 0.2s ease;
+}
+.mp-disc-spin {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  animation: mp-spin 4.5s linear infinite;
+  animation-play-state: paused;
+}
+.music-player.is-playing .mp-disc-spin { animation-play-state: running; }
+.mp-disc-spin img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* solchi del vinile + foro centrale (girano con la copertina) */
+.mp-disc-spin::before,
+.mp-disc-spin::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.mp-disc-spin::before {
+  background: repeating-radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0 2px, rgba(0, 0, 0, 0.13) 2px 3px);
+  -webkit-mask: radial-gradient(circle, transparent 0 30%, #000 31%);
+          mask: radial-gradient(circle, transparent 0 30%, #000 31%);
+}
+.mp-disc-spin::after {
+  background: radial-gradient(circle, #151413 0 7%, var(--mp-paper) 7.5% 10%, transparent 10.5%);
+}
+/* riflesso fisso (non gira: così si capisce che il disco ruota) */
+.mp-disc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: conic-gradient(from 20deg, transparent 0 4%, rgba(255, 255, 255, 0.32) 9%, transparent 15% 50%, rgba(255, 255, 255, 0.22) 59%, transparent 65%);
+}
+.mp-disc:focus-visible { outline: 3px solid var(--mp-accent); outline-offset: 3px; }
+@keyframes mp-spin { to { transform: rotate(360deg); } }
+
+/* ---------- pannello ---------- */
+.mp-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 232px;
+  margin-right: -8px;           /* passa sotto al disco: niente buchi tra i due */
+  padding: 10px 34px 10px 14px;
+  color: var(--mp-ink);
+  background: var(--mp-paper);
+  border: 2px solid var(--mp-ink);
+  box-shadow: 4px 4px 0 var(--mp-ink);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform-origin: 100% 50%;
+  transform: translateX(28px) scale(0.92);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0s linear 0.16s;
+}
+.mp-meta { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.mp-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mp-artist { font-size: 0.68rem; opacity: 0.7; }
+.mp-controls { display: flex; align-items: center; gap: 2px; }
+.mp-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, transform 0.12s ease;
+}
+.mp-btn svg { width: 15px; height: 15px; fill: currentColor; }
+.mp-btn:hover { background: rgba(21, 20, 19, 0.08); }
+.mp-btn:active { transform: scale(0.9); }
+.mp-btn:focus-visible { outline: 2px solid var(--mp-accent); outline-offset: 1px; }
+.mp-play {
+  width: 32px;
+  height: 32px;
+  color: var(--mp-paper);
+  background: var(--mp-accent);
+  border: 2px solid var(--mp-ink);
+}
+.mp-play:hover { background: var(--mp-accent); filter: brightness(1.08); }
+.mp-ico-pause, .mp-ico-muted { display: none; }
+.music-player.is-playing .mp-ico-play { display: none; }
+.music-player.is-playing .mp-ico-pause { display: block; }
+.music-player.is-muted .mp-ico-vol { display: none; }
+.music-player.is-muted .mp-ico-muted { display: block; }
+.mp-sep { width: 1px; height: 18px; margin: 0 4px; background: currentColor; opacity: 0.25; }
+
+/* volume */
+.mp-volume {
+  --vol: 50%;
+  flex: 1;
+  min-width: 0;
+  height: 18px;
+  margin: 0 0 0 2px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+          appearance: none;
+}
+.mp-volume::-webkit-slider-runnable-track {
+  height: 4px;
+  background: linear-gradient(90deg, var(--mp-accent) var(--vol), rgba(21, 20, 19, 0.18) var(--vol));
+}
+.mp-volume::-moz-range-track { height: 4px; background: rgba(21, 20, 19, 0.18); }
+.mp-volume::-moz-range-progress { height: 4px; background: var(--mp-accent); }
+.mp-volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  background: var(--mp-paper);
+  border: 2px solid var(--mp-ink);
+  border-radius: 0;
+}
+.mp-volume::-moz-range-thumb {
+  width: 9px;
+  height: 9px;
+  background: var(--mp-paper);
+  border: 2px solid var(--mp-ink);
+  border-radius: 0;
+}
+.mp-volume:focus-visible { outline: 2px solid var(--mp-accent); outline-offset: 2px; }
+
+/* avanzamento */
+.mp-progress {
+  position: relative;
+  height: 10px;
+  cursor: pointer;
+}
+.mp-progress::before,
+.mp-progress-fill {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 4px;
+  height: 3px;
+}
+.mp-progress::before { background: rgba(21, 20, 19, 0.15); }
+.mp-progress-fill {
+  display: block;
+  background: var(--mp-accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+.mp-progress:focus-visible { outline: 2px solid var(--mp-accent); outline-offset: 1px; }
+
+/* ---------- note che escono dal disco ---------- */
+.mp-notes {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  z-index: -1;              /* nascono dietro al disco */
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.mp-note {
+  --s: 18px;
+  --nc: var(--mp-accent);
+  position: absolute;
+  left: calc(var(--s) / -2);
+  top: calc(var(--s) / -2);
+  width: var(--s);
+  height: var(--s);
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  animation: mp-note-r 2.3s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+.mp-note svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: var(--nc);
+  stroke: var(--mp-ink);
+  stroke-width: 1.4px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+/* R: rosso, blu, giallo Bauhaus, contorno nero, movimento netto */
+.mp-note[data-v="0"] { --nc: var(--bauhaus-red, #E63946); }
+.mp-note[data-v="1"] { --nc: #2B59C3; }
+.mp-note[data-v="2"] { --nc: var(--bauhaus-yellow, #FFB703); }
+@keyframes mp-note-r {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
+  12%  { opacity: 1; transform: translate(calc(var(--dx) * 0.18), calc(var(--dy) * 0.18)) scale(1.15) rotate(calc(var(--r) * 0.3)); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--r)); }
+}
+/* mentre usi il player le note si fanno da parte */
+.music-player:hover .mp-notes,
+.music-player:has(:focus-visible) .mp-notes,
+.music-player.is-open .mp-notes { opacity: 0; }
+
+/* ---------- aperto ---------- */
+.music-player:hover .mp-disc,
+.music-player:has(:focus-visible) .mp-disc,
+.music-player.is-open .mp-disc {
+  transform: translateX(-12px);
+}
+.music-player:hover .mp-panel,
+.music-player:has(:focus-visible) .mp-panel,
+.music-player.is-open .mp-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition: opacity 0.18s ease, transform 0.32s cubic-bezier(0.25, 1.35, 0.45, 1), visibility 0s;
+}
+
+@media (max-width: 640px) {
+  .music-player { --mp-disc: 52px; top: 66px; }
+  .mp-panel { width: 210px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mp-disc-spin { animation: none; }
+  .mp-notes { display: none; }
+  .mp-disc, .mp-panel { transition-duration: 0.01s; }
+}
+
+/* =====================================================================
+   CANALE G — adesivo scuro con bordo lime
+   ===================================================================== */
+body.channel-g-active .music-player {
+  --mp-ink: var(--gx-ink, #06140C);
+  --mp-paper: #F3F7E8;
+  --mp-accent: var(--gx-lime, #B8F23A);
+}
+body.channel-g-active .mp-disc {
+  border-color: var(--gx-lime, #B8F23A);
+  box-shadow: -3px 3px 0 var(--gx-lime, #B8F23A);
+}
+body.channel-g-active .mp-panel {
+  color: #F3F7E8;
+  background: #0E2A18;
+  border-color: var(--gx-lime, #B8F23A);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--gx-lime, #B8F23A);
+}
+body.channel-g-active .mp-btn { border-radius: 999px; }
+body.channel-g-active .mp-btn:hover { background: rgba(184, 242, 58, 0.14); }
+body.channel-g-active .mp-play {
+  color: var(--gx-ink, #06140C);
+  border-color: var(--gx-ink, #06140C);
+}
+body.channel-g-active .mp-volume::-webkit-slider-runnable-track {
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--gx-lime, #B8F23A) var(--vol), rgba(243, 247, 232, 0.2) var(--vol));
+}
+body.channel-g-active .mp-volume::-webkit-slider-thumb { border-radius: 50%; background: var(--gx-lime, #B8F23A); }
+body.channel-g-active .mp-volume::-moz-range-thumb { border-radius: 50%; background: var(--gx-lime, #B8F23A); }
+body.channel-g-active .mp-progress::before { background: rgba(243, 247, 232, 0.18); border-radius: 3px; }
+body.channel-g-active .mp-progress-fill { border-radius: 3px; }
+
+/* note G: tonde, lime e verdi col contorno scuro; ondeggiano e svaniscono come spray */
+body.channel-g-active .mp-note { animation: mp-note-g 2.5s ease-out forwards; }
+body.channel-g-active .mp-note[data-v="0"] { --nc: var(--gx-lime, #B8F23A); }
+body.channel-g-active .mp-note[data-v="1"] { --nc: #6EDB7A; }
+body.channel-g-active .mp-note[data-v="2"] { --nc: #F3F7E8; }
+body.channel-g-active .mp-note svg { stroke-width: 1.8px; }
+@keyframes mp-note-g {
+  0%   { opacity: 0; filter: blur(2px); transform: translate(0, 0) scale(0.4) rotate(0deg); }
+  15%  { opacity: 1; filter: blur(0); transform: translate(calc(var(--dx) * 0.2), calc(var(--dy) * 0.2 - 6px)) scale(1.05) rotate(-12deg); }
+  40%  { transform: translate(calc(var(--dx) * 0.45), calc(var(--dy) * 0.45 + 5px)) scale(1) rotate(10deg); }
+  65%  { opacity: 1; filter: blur(0); transform: translate(calc(var(--dx) * 0.7), calc(var(--dy) * 0.7 - 5px)) scale(1) rotate(-8deg); }
+  100% { opacity: 0; filter: blur(4px); transform: translate(var(--dx), var(--dy)) scale(1.3) rotate(var(--r)); }
+}
+
+/* =====================================================================
+   CANALE B — vetro lucido Frutiger
+   ===================================================================== */
+body.channel-b-active .music-player {
+  --mp-ink: #0A4F8C;
+  --mp-paper: #FFFFFF;
+  --mp-accent: #0A8EDB;
+}
+body.channel-b-active .mp-disc {
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 1px #8CCDF0, 0 6px 18px rgba(0, 70, 140, 0.35);
+}
+body.channel-b-active .mp-panel {
+  color: #0A4F8C;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(233, 248, 255, 0.92) 50%, rgba(212, 240, 255, 0.9) 51%, rgba(236, 249, 255, 0.94) 100%);
+  border: 1px solid #8CCDF0;
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 #FFFFFF, 0 10px 26px rgba(0, 70, 140, 0.25);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+}
+body.channel-b-active .mp-btn { border-radius: 999px; }
+body.channel-b-active .mp-btn:hover { background: rgba(10, 142, 219, 0.12); }
+body.channel-b-active .mp-play {
+  color: #FFFFFF;
+  border: 1px solid #0F6DB5;
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 2px 6px rgba(0, 90, 170, 0.35);
+}
+body.channel-b-active .mp-play:hover {
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+}
+body.channel-b-active .mp-volume::-webkit-slider-runnable-track {
+  border-radius: 4px;
+  background: linear-gradient(90deg, #22B3F5 var(--vol), rgba(10, 79, 140, 0.15) var(--vol));
+}
+body.channel-b-active .mp-volume::-webkit-slider-thumb {
+  border: 1px solid #8CCDF0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFFFFF, #CFEFFF);
+  box-shadow: 0 1px 3px rgba(0, 70, 140, 0.35);
+}
+body.channel-b-active .mp-volume::-moz-range-thumb {
+  border: 1px solid #8CCDF0;
+  border-radius: 50%;
+  background: #FFFFFF;
+}
+body.channel-b-active .mp-progress::before { background: rgba(10, 79, 140, 0.14); border-radius: 3px; }
+body.channel-b-active .mp-progress-fill { border-radius: 3px; background: linear-gradient(90deg, #22B3F5, #0A8EDB); }
+/* note B: dentro bollicine lucide che salgono ondeggiando e scoppiano */
+body.channel-b-active .mp-note {
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #FFFFFF 0 14%, rgba(205, 240, 255, 0.6) 38%, rgba(120, 200, 245, 0.25) 75%);
+  box-shadow: inset 0 -2px 4px rgba(255, 255, 255, 0.45), 0 2px 6px rgba(0, 70, 140, 0.25);
+  animation: mp-note-b 2.6s cubic-bezier(0.3, 0.6, 0.5, 1) forwards;
+}
+body.channel-b-active .mp-note svg { width: 58%; height: 58%; stroke: none; }
+body.channel-b-active .mp-note[data-v="0"] { --nc: #0A8EDB; }
+body.channel-b-active .mp-note[data-v="1"] { --nc: #0A4F8C; }
+body.channel-b-active .mp-note[data-v="2"] { --nc: #22B3F5; }
+@keyframes mp-note-b {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.2); }
+  15%  { opacity: 1; transform: translate(calc(var(--dx) * 0.15 + 3px), calc(var(--dy) * 0.15)) scale(1); }
+  35%  { transform: translate(calc(var(--dx) * 0.35 - 4px), calc(var(--dy) * 0.35)) scale(0.96, 1.05); }
+  55%  { transform: translate(calc(var(--dx) * 0.55 + 4px), calc(var(--dy) * 0.55)) scale(1.05, 0.96); }
+  82%  { opacity: 1; transform: translate(calc(var(--dx) * 0.82 - 3px), calc(var(--dy) * 0.82)) scale(1); }
+  90%  { opacity: 0.85; transform: translate(calc(var(--dx) * 0.9), calc(var(--dy) * 0.9)) scale(1.35); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.7); }
+}

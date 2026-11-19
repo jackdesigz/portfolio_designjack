@@ -6,20 +6,21 @@
   <title>designjack // CANALE R — Portfolio di Jacopo</title>
   <meta name="description" content="Portfolio di Jacopo (designjack) — Communication & Digital Designer. Cyber-Bauhaus, Geometria Sferica 3D, Fogli Appesi al Filo e Toy Candy Claw Machine.">
 
-  <!-- Google Fonts: Montserrat (tutto il sito); gli altri servono solo al ciclo di font di "jack" nel preloader -->
+  <!-- Google Fonts: Jost (canale R); gli altri qui servono solo al ciclo di font di "jack" nel preloader -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=JetBrains+Mono:wght@400;500;600;700;800&family=Montserrat:ital,wght@0,300..900;1,300..900&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700&family=Press+Start+2P&family=Syne:wght@500;600;700;800&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=JetBrains+Mono:wght@400;500;600;700;800&family=Jost:ital,wght@0,300..900;1,300..900&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700&family=Press+Start+2P&family=Syne:wght@500;600;700;800&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 
   <!-- Three.js (r128) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=Hind:wght@300;400;500;600;700&family=Sedgwick+Ave+Display&family=Varela+Round&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=5.0">
-  <link rel="stylesheet" href="css/channel-g.css?v=1.2">
-  <link rel="stylesheet" href="css/channel-b.css?v=1.2">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hind:wght@300;400;500;600;700&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=6.0">
+  <link rel="stylesheet" href="css/channel-g.css?v=1.5">
+  <link rel="stylesheet" href="css/channel-b.css?v=1.7">
+  <link rel="stylesheet" href="css/music-player.css?v=1.2">
 </head>
 <body class="crt-bezel-frame">
 
@@ -65,14 +66,17 @@
     <!-- Selettore Canali RGB Centrato -->
     <div class="nav-center">
       <nav class="channel-selector-group" aria-label="Selettore Canali">
-        <button id="channel-btn-r" class="channel-tab channel-r active" title="Canale R — Works & Playground">
+        <button id="channel-btn-r" class="channel-tab channel-r active" aria-label="Canale R — Realizzazioni e Ricreazione: lavori e playground">
           R
+          <span class="channel-tip" aria-hidden="true"><span><b>R</b>ealizzazioni &amp; <b>R</b>icreazione</span><small>lavori e playground</small></span>
         </button>
-        <button id="channel-btn-g" class="channel-tab channel-g" title="Canale G — jacopo Febi">
+        <button id="channel-btn-g" class="channel-tab channel-g" aria-label="Canale G — Germogli e Graffiti: il mio lato fuori orario">
           G
+          <span class="channel-tip" aria-hidden="true"><span><b>G</b>ermogli &amp; <b>G</b>raffiti</span><small>il mio lato fuori orario</small></span>
         </button>
-        <button id="channel-btn-b" class="channel-tab channel-b" title="Canale B — Contatti">
+        <button id="channel-btn-b" class="channel-tab channel-b" aria-label="Canale B — Bolle e Bottiglie: contatti">
           B
+          <span class="channel-tip" aria-hidden="true"><span><b>B</b>olle &amp; <b>B</b>ottiglie</span><small>contatti e messaggi in bottiglia</small></span>
         </button>
       </nav>
     </div>
@@ -83,6 +87,44 @@
       </button>
     </div>
   </header>
+
+  <!-- MUSIC PLAYER: disco che gira incastrato nel bordo destro; in hover esce e
+       mostra i comandi (js/musicPlayer.js, css/music-player.css) -->
+  <aside class="music-player" id="music-player" aria-label="Lettore musicale: singoli di Ikigai, grafiche di designjack">
+    <div class="mp-panel" id="mp-panel">
+      <div class="mp-meta">
+        <span class="mp-title" id="mp-title">Yūgen (幽玄)</span>
+        <span class="mp-artist">Ikigai · <span id="mp-index">1/2</span></span>
+      </div>
+      <div class="mp-controls">
+        <button type="button" class="mp-btn" id="mp-prev" aria-label="Brano precedente">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9.5 12z"/></svg>
+        </button>
+        <button type="button" class="mp-btn mp-play" id="mp-play" aria-label="Riproduci">
+          <svg class="mp-ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15L19.5 12z"/></svg>
+          <svg class="mp-ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h4.2v15H6zM13.8 4.5H18v15h-4.2z"/></svg>
+        </button>
+        <button type="button" class="mp-btn" id="mp-next" aria-label="Brano successivo">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l10.5-7z"/></svg>
+        </button>
+        <span class="mp-sep" aria-hidden="true"></span>
+        <button type="button" class="mp-btn mp-mute" id="mp-mute" aria-label="Disattiva audio della musica">
+          <svg class="mp-ico-vol" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM15.5 8.5a5 5 0 0 1 0 7l-1.2-1.2a3.3 3.3 0 0 0 0-4.6zM18 6a8.5 8.5 0 0 1 0 12l-1.2-1.2a6.8 6.8 0 0 0 0-9.6z"/></svg>
+          <svg class="mp-ico-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM15.3 9.2l1.2-1.2 2.3 2.3 2.3-2.3 1.2 1.2-2.3 2.3 2.3 2.3-1.2 1.2-2.3-2.3-2.3 2.3-1.2-1.2 2.3-2.3z"/></svg>
+        </button>
+        <input type="range" class="mp-volume" id="mp-volume" min="0" max="1" step="0.01" value="0.22" aria-label="Volume della musica">
+      </div>
+      <div class="mp-progress" id="mp-progress" role="slider" tabindex="0" aria-label="Avanzamento del brano" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="mp-progress-fill" id="mp-progress-fill"></span>
+      </div>
+    </div>
+    <button type="button" class="mp-disc" id="mp-disc" aria-label="Riproduci o metti in pausa la musica">
+      <span class="mp-notes" id="mp-notes" aria-hidden="true"></span>
+      <span class="mp-disc-spin">
+        <img src="Musica/Yugen%3Akokotsu/imgi_12_ab67616d0000aa54c2cddfe4fd2e79257be42212.webp" alt="" width="64" height="64" decoding="async">
+      </span>
+    </button>
+  </aside>
 
   <!-- Notification Toast for Channels -->
   <div id="channel-toast"></div>
@@ -346,9 +388,50 @@
           <span class="bx-cloud bx-cloud-2" aria-hidden="true"></span>
           <span class="bx-cloud bx-cloud-3" aria-hidden="true"></span>
 
+          <!-- Nastri di luce (Frutiger Aero) -->
+          <svg class="bx-swoosh" viewBox="0 0 1440 800" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="bx-sw-a" x1="0" x2="1">
+                <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+                <stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0.95"/>
+                <stop offset="0.7" stop-color="#9FE6FF" stop-opacity="0.85"/>
+                <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="bx-sw-b" x1="0" x2="1">
+                <stop offset="0" stop-color="#BDEFFF" stop-opacity="0"/>
+                <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.85"/>
+                <stop offset="1" stop-color="#BDEFFF" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+              <g class="bx-sw bx-sw-1">
+                <path d="M-40 560 C 260 420 520 640 820 500 S 1300 380 1480 470" stroke="url(#bx-sw-a)" stroke-width="44" opacity="0.16"/>
+                <path d="M-40 560 C 260 420 520 640 820 500 S 1300 380 1480 470" stroke="url(#bx-sw-a)" stroke-width="3"/>
+              </g>
+              <g class="bx-sw bx-sw-2">
+                <path d="M-40 620 C 300 510 560 700 860 570 S 1280 480 1480 550" stroke="url(#bx-sw-b)" stroke-width="28" opacity="0.14"/>
+                <path d="M-40 620 C 300 510 560 700 860 570 S 1280 480 1480 550" stroke="url(#bx-sw-b)" stroke-width="2"/>
+              </g>
+              <g class="bx-sw bx-sw-3">
+                <path d="M-40 470 C 340 380 600 560 940 430 S 1320 330 1480 400" stroke="url(#bx-sw-b)" stroke-width="18" opacity="0.12"/>
+                <path d="M-40 470 C 340 380 600 560 940 430 S 1320 330 1480 400" stroke="url(#bx-sw-b)" stroke-width="1.5"/>
+              </g>
+          </svg>
+
+          <!-- Bokeh -->
+          <span class="bx-bokeh" style="--x:8%;--y:30%;--s:90px;--d:11s" aria-hidden="true"></span>
+          <span class="bx-bokeh" style="--x:22%;--y:62%;--s:46px;--d:9s" aria-hidden="true"></span>
+          <span class="bx-bokeh" style="--x:34%;--y:14%;--s:28px;--d:13s" aria-hidden="true"></span>
+          <span class="bx-bokeh" style="--x:63%;--y:58%;--s:70px;--d:12s" aria-hidden="true"></span>
+          <span class="bx-bokeh" style="--x:74%;--y:40%;--s:32px;--d:8s" aria-hidden="true"></span>
+          <span class="bx-bokeh" style="--x:88%;--y:66%;--s:54px;--d:10s" aria-hidden="true"></span>
+          <span class="bx-bokeh" style="--x:52%;--y:8%;--s:22px;--d:14s" aria-hidden="true"></span>
+
           <div class="bx-surface-inner">
             <p class="bx-glass bx-badge"><span class="bx-dot"></span>Canale B — acque calme</p>
             <h1 class="bx-title" id="bx-title">Contatti</h1>
+            <span class="bx-sparkle" style="--x:16%;--y:30%;--d:3.2s" aria-hidden="true"></span>
+            <span class="bx-sparkle" style="--x:84%;--y:22%;--d:4.1s;--s:22px" aria-hidden="true"></span>
+            <span class="bx-sparkle" style="--x:62%;--y:44%;--d:5s;--s:12px" aria-hidden="true"></span>
             <p class="bx-lead">Un porto quieto per collaborazioni, visioni digitali e nuovi progetti.</p>
             <div class="bx-hero-actions">
               <a href="#bx-depths" class="bx-pill bx-pill-aqua">Immergiti ↓</a>
@@ -359,6 +442,23 @@
           <div class="bx-waves" aria-hidden="true">
             <svg class="bx-wave bx-wave-back" viewBox="0 0 2880 170" preserveAspectRatio="none"><path d="M0 70 Q 180 30 360 70 T 720 70 T 1080 70 T 1440 70 T 1800 70 T 2160 70 T 2520 70 T 2880 70 V170 H0 Z"/></svg>
             <svg class="bx-wave bx-wave-mid" viewBox="0 0 2880 170" preserveAspectRatio="none"><path d="M0 95 Q 240 55 480 95 T 960 95 T 1440 95 T 1920 95 T 2400 95 T 2880 95 V170 H0 Z"/></svg>
+            <!-- Delfino lucido che salta tra le onde -->
+            <svg class="bx-dolphin" viewBox="0 0 200 100" aria-hidden="true">
+              <defs>
+                <linearGradient id="bx-dol" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#E6F8FF"/>
+                  <stop offset="0.45" stop-color="#5FC6F7"/>
+                  <stop offset="1" stop-color="#0B6FC0"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#bx-dol)" d="M34 66 C22 60 12 52 4 46 C10 58 14 64 16 66 C12 70 8 78 4 86 C14 80 24 74 34 68 Z"/>
+              <path fill="url(#bx-dol)" d="M100 36 C104 22 112 14 124 10 C120 20 120 28 124 36 Z"/>
+              <path fill="url(#bx-dol)" d="M30 62 C60 40 110 30 150 38 C165 41 178 46 186 50 C192 52 198 54 199 57 C192 60 182 60 172 60 C150 66 110 72 70 70 C55 69 42 68 30 70 Z"/>
+              <path fill="#0B6FC0" d="M138 62 C134 72 126 80 116 84 C122 76 126 68 128 62 Z"/>
+              <path fill="#FFFFFF" opacity="0.65" d="M60 46 C100 34 140 32 176 46 C140 38 100 40 60 50 Z"/>
+              <circle cx="178" cy="52" r="2.2" fill="#06305C"/>
+              <path d="M186 58 C182 59 178 59 174 58" stroke="#0A4F8C" stroke-width="1.2" fill="none"/>
+            </svg>
             <svg class="bx-wave bx-wave-front" viewBox="0 0 2880 170" preserveAspectRatio="none"><path d="M0 120 Q 180 92 360 120 T 720 120 T 1080 120 T 1440 120 T 1800 120 T 2160 120 T 2520 120 T 2880 120 V170 H0 Z"/></svg>
           </div>
         </section>
@@ -366,7 +466,16 @@
         <section class="bx-depths" id="bx-depths" aria-label="Come contattarmi">
           <div class="bx-rays" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
           <div class="bx-caustics" aria-hidden="true"></div>
-          <div class="bx-bubbles" id="bx-bubbles" aria-hidden="true"></div>
+          <svg class="bx-swoosh bx-swoosh-deep" viewBox="0 0 1440 800" preserveAspectRatio="none" aria-hidden="true">
+            <g class="bx-sw bx-sw-1">
+              <path d="M-40 300 C 300 180 640 420 980 260 S 1340 200 1480 260" stroke="url(#bx-sw-b)" stroke-width="40" opacity="0.1"/>
+              <path d="M-40 300 C 300 180 640 420 980 260 S 1340 200 1480 260" stroke="url(#bx-sw-b)" stroke-width="2"/>
+            </g>
+          </svg>
+          <span class="bx-bokeh bx-bokeh-deep" style="--x:6%;--y:20%;--s:80px;--d:12s" aria-hidden="true"></span>
+          <span class="bx-bokeh bx-bokeh-deep" style="--x:90%;--y:12%;--s:60px;--d:10s" aria-hidden="true"></span>
+          <span class="bx-bokeh bx-bokeh-deep" style="--x:48%;--y:70%;--s:110px;--d:14s" aria-hidden="true"></span>
+          <span class="bx-bokeh bx-bokeh-deep" style="--x:78%;--y:84%;--s:40px;--d:9s" aria-hidden="true"></span>
           <div class="bx-fishes" aria-hidden="true">
             <svg class="bx-fish bx-fish-1" viewBox="0 0 120 60"><use href="#bx-fish-shape"/></svg>
             <svg class="bx-fish bx-fish-2" viewBox="0 0 120 60"><use href="#bx-fish-shape"/></svg>
@@ -390,20 +499,16 @@
             </defs>
           </svg>
 
-          <!-- Casa dell'avatar nel canale B: una bolla da far scoppiare -->
           <div class="bx-trapped">
-            <div class="avatar-home avatar-home--bubble is-trapped" data-avatar-home="b">
-              <span class="bx-trap-glass" aria-hidden="true"></span>
-            </div>
             <p class="bx-glass bx-trapped-label">
-              <span class="when-trapped">Qualcuno è rimasto intrappolato in una bolla… cliccala!</span>
-              <span class="when-free">Bolla vuota. La X sull’avatar lo rimette dentro.</span>
+              <span class="when-trapped">Tra le bolle che salgono c’è qualcuno intrappolato… cliccalo!</span>
+              <span class="when-free">Liberato! La X sull’avatar lo rimette in una bolla.</span>
             </p>
           </div>
 
           <div class="bx-panels">
             <article class="bx-glass bx-panel">
-              <h2>Scrivimi</h2>
+              <h2><span class="bx-icon-orb" aria-hidden="true">✉</span>Scrivimi</h2>
               <p>Il modo più diretto per raggiungermi.</p>
               <a href="mailto:jacopo@designjack.it" class="bx-mail-pill" title="Scrivi un'email a Jacopo">
                 <span class="bx-mail-icon" aria-hidden="true">✉</span>
@@ -413,7 +518,7 @@
             </article>
 
             <article class="bx-glass bx-panel">
-              <h2>Messaggio in bottiglia</h2>
+              <h2><span class="bx-icon-orb" aria-hidden="true">✎</span>Messaggio in bottiglia</h2>
               <form id="bx-bottle-form" class="bx-form">
                 <label class="bx-field">Il tuo nome
                   <input type="text" name="name" autocomplete="name" placeholder="Come ti chiami?">
@@ -427,7 +532,7 @@
             </article>
 
             <article class="bx-glass bx-panel bx-panel-flute">
-              <h2>Flauto magico</h2>
+              <h2><span class="bx-icon-orb" aria-hidden="true">♪</span>Flauto magico</h2>
               <p>Suona la melodia giusta e ti teletrasporta tra i canali.</p>
               <button id="btn-open-flute" class="bx-orb" type="button" title="Suona il Flauto Magico" aria-label="Apri Flauto Magico"><span aria-hidden="true">♪</span></button>
             </article>
@@ -441,6 +546,13 @@
           </svg>
           <p>designjack // jacopo Febi — Canale B</p>
         </footer>
+
+        <!-- Bolle su tutta la pagina B, dal fondale al cielo; tra loro quella con l'avatar
+             (movimento in js/channels.js) -->
+        <div class="bx-bubbles" id="bx-bubbles" aria-hidden="true"></div>
+        <div class="avatar-home avatar-home--bubble is-trapped" data-avatar-home="b">
+          <span class="bx-trap-glass" aria-hidden="true"></span>
+        </div>
       </div>
     </div> <!-- Fine #channel-view-b -->
 
@@ -571,7 +683,7 @@
           </div>
         </div>
 
-        <div id="modal-project-metrics" class="metrics-strip"></div>
+        <div id="modal-project-metrics" class="project-key-strip"></div>
 
         <div class="project-narrative-block">
           <div class="narrative-col">
@@ -595,9 +707,9 @@
           </div>
         </div>
 
-        <div>
-          <h4 style="font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 8px;">TECNOLOGIE</h4>
-          <div id="modal-project-stack" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+        <div class="project-skills-block">
+          <h4 style="font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px;">COMPETENZE</h4>
+          <div id="modal-project-stack" class="skill-row"></div>
         </div>
 
         <div class="modal-footer-nav">
@@ -789,18 +901,20 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/projects.js?v=4.0"></script>
+  <script src="js/projects.js?v=4.3"></script>
+  <script src="js/softwareIcons.js?v=1.1"></script>
   <script src="js/audio.js?v=4.0"></script>
-  <script src="js/avatarPilot.js?v=2.1"></script>
-  <script src="js/heroAvatar.js?v=2.2"></script>
-  <script src="js/hangingCatalog.js?v=4.9"></script>
-  <script src="js/dither.js?v=4.1"></script>
+  <script src="js/avatarPilot.js?v=2.4"></script>
+  <script src="js/musicPlayer.js?v=1.4"></script>
+  <script src="js/heroAvatar.js?v=2.3"></script>
+  <script src="js/hangingCatalog.js?v=5.0"></script>
+  <script src="js/dither.js?v=4.2"></script>
   <script src="js/clawPhysics2D.js?v=4.6"></script>
-  <script src="js/crane2d.js?v=4.7"></script>
-  <script src="js/modal.js?v=4.4"></script>
+  <script src="js/crane2d.js?v=4.8"></script>
+  <script src="js/modal.js?v=4.7"></script>
   <script src="js/flute.js?v=4.0"></script>
-  <script src="js/channels.js?v=1.2"></script>
-  <script src="js/main.js?v=4.7"></script>
+  <script src="js/channels.js?v=1.4"></script>
+  <script src="js/main.js?v=5.0"></script>
 
 </body>
 </html>

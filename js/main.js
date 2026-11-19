@@ -218,7 +218,7 @@ function initChannelSwitcherCRT() {
           if (tabR) tabR.classList.add('active');
           if (brandSuffix) brandSuffix.textContent = 'jack';
 
-          showToast('Canale R // Bauhaus Works & Arcade');
+          showToast('R — Realizzazioni & Ricreazione');
 
           // Wake up 3D viewports and render fresh frame while hidden
           if (window.heroSphere && window.heroSphere.onResize) window.heroSphere.onResize();
@@ -231,14 +231,14 @@ function initChannelSwitcherCRT() {
           document.body.classList.add('channel-g-active');
           if (brandSuffix) brandSuffix.textContent = 'febi';
 
-          showToast('Canale G // Organic & Street');
+          showToast('G — Germogli & Graffiti');
           if (window.audioEngine) window.audioEngine.playSprayCan();
         } else if (target === 'B') {
           if (tabB) tabB.classList.add('active');
           document.body.classList.add('channel-b-active');
           if (brandSuffix) brandSuffix.textContent = 'marine';
 
-          showToast('Canale B // Calm Marine & Contatti');
+          showToast('B — Bolle & Bottiglie');
           if (window.audioEngine) window.audioEngine.playWaterDrop();
           initMarineBubbles();
         }
@@ -460,6 +460,8 @@ function initFullscreenInstagramCatalog() {
     if (!modal) return;
     modal.classList.add('active');
     document.body.classList.add('modal-open');
+    // l'avatar resta con te anche nel catalogo
+    if (window.avatarPilot && window.avatarPilot.pin) window.avatarPilot.pin(true);
     if (window.audioEngine) {
       window.audioEngine.playPaperFlutter();
       window.audioEngine.playBeep(920, 0.05);
@@ -470,6 +472,7 @@ function initFullscreenInstagramCatalog() {
     if (!modal) return;
     modal.classList.remove('active');
     document.body.classList.remove('modal-open');
+    if (window.avatarPilot && window.avatarPilot.pin) window.avatarPilot.pin(false);
     if (window.audioEngine) window.audioEngine.playBeep(520, 0.04);
   };
 
@@ -617,7 +620,7 @@ function drawInstagramProjectArtwork(canvas, proj, idx) {
 
   // Minimalist Bauhaus Typo Watermark
   ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-  ctx.font = 'bold 12px "Montserrat", "Helvetica Neue", Arial, sans-serif';
+  ctx.font = 'bold 12px "Jost", "Helvetica Neue", Arial, sans-serif';
   ctx.fillText(proj.code || `R-0${idx + 1}`, 20, 36);
 
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';

@@ -307,12 +307,13 @@
       this.postMat.uniforms.uBlock.value = this.pixel * this.renderer.getPixelRatio();
     }
 
-    // R: solo pixel e scanline, senza tinta. G: verde. B: blu.
+    // In tutti i canali: solo pixel e scanline, senza tinta di colore.
+    // (per ridare una tinta a un canale basta alzare il suo mix, es. 0.26)
     setTint(channel) {
       const tints = {
         r: { c: [1, 1, 1], mix: 0 },
-        g: { c: [0.55, 1.0, 0.42], mix: 0.26 },
-        b: { c: [0.42, 0.76, 1.0], mix: 0.26 }
+        g: { c: [1, 1, 1], mix: 0 },
+        b: { c: [1, 1, 1], mix: 0 }
       };
       const t = tints[channel] || tints.r;
       if (!this.postMat) return;

@@ -143,7 +143,7 @@
       g.fillStyle = INK;
       for (let x = -20; x < hx + 20; x += 18) { g.beginPath(); g.moveTo(x, this.Y0); g.lineTo(x + 9, this.Y0); g.lineTo(x + 21, this.Y0 + 12); g.lineTo(x + 12, this.Y0 + 12); g.closePath(); g.fill(); }
       g.restore();
-      g.fillStyle = 'rgba(238,168,36,0.85)'; g.font = '700 11px "Montserrat", "Helvetica Neue", Arial, sans-serif'; g.textAlign = 'center';
+      g.fillStyle = 'rgba(238,168,36,0.85)'; g.font = '700 11px "Jost", "Helvetica Neue", Arial, sans-serif'; g.textAlign = 'center';
       g.save(); g.translate(hx / 2, (this.Y0 + this.playBottom) / 2 + 8); g.fillText('PREMI ↓', 0, 4); g.restore();
 
       // --- paratia in acrilico
@@ -172,7 +172,7 @@
       g.fillStyle = RED; g.fillRect(0, 0, W, this.mh);
       g.fillStyle = INK; g.fillRect(0, this.mh - 4, W, 4);
       const fs = Math.round(this.mh * 0.46);
-      g.font = `700 ${fs}px "Montserrat", "Helvetica Neue", Arial, sans-serif`;
+      g.font = `700 ${fs}px "Jost", "Helvetica Neue", Arial, sans-serif`;
       g.textAlign = 'left'; g.textBaseline = 'middle';
       const tX = Math.max(18, W * 0.03), tY = this.mh * 0.46;
       g.fillStyle = PAPER; g.fillText("JACK'S CLAW", tX, tY);
@@ -184,7 +184,7 @@
         g.fillStyle = BLU; g.fillRect(sx0 + sz * 2.8, tY - sz / 2, sz, sz);
       }
       if (W > 560) {
-        g.font = '700 12px "Montserrat", "Helvetica Neue", Arial, sans-serif'; g.textAlign = 'right';
+        g.font = '700 12px "Jost", "Helvetica Neue", Arial, sans-serif'; g.textAlign = 'right';
         g.fillStyle = PAPER; g.fillText('PESCA UN PROGETTO', W - Math.max(18, W * 0.03), tY);
       }
       // lampadine: posizioni (disegnate a ogni fotogramma)

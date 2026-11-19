@@ -9,7 +9,7 @@
  * 2. FOGLI SUL FILO IN 1-BIT
  *    Per ogni foglio viene calcolata una versione a 1 bit (inchiostro su carta)
  *    dell'immagine o della grafica. In hover viene svelata con una scansione
- *    dall'alto, insieme all'etichetta [ HOVER_DETECTED // CLICK TO INSPECT ].
+ *    dall'alto.
  */
 (function () {
   'use strict';
@@ -258,17 +258,9 @@
   function enhanceSheet(sheet) {
     if (sheet.dataset.dither === '1') return;
     const wrap = sheet.querySelector('.sheet-media-wrapper');
-    const overlay = sheet.querySelector('.sheet-hover-overlay');
     const media = sheet.querySelector('.sheet-photo-media, .sheet-photo-canvas');
     if (!wrap || !media) return;
     sheet.dataset.dither = '1';
-
-    if (overlay && !overlay.querySelector('.sheet-hover-label')) {
-      const label = document.createElement('div');
-      label.className = 'sheet-hover-label';
-      label.textContent = '[ HOVER_DETECTED // CLICK TO INSPECT ]';
-      overlay.insertBefore(label, overlay.firstChild);
-    }
 
     const build = () => {
       const W = 162, H = 220;                 // il foglio è 324×440

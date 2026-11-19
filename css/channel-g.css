@@ -52,12 +52,6 @@ body.channel-b-active #main-app {
   gap: 0;
 }
 
-body.channel-g-active .channel-tab::before,
-body.channel-g-active .channel-tab::after,
-body.channel-b-active .channel-tab::before,
-body.channel-b-active .channel-tab::after {
-  content: none !important;
-}
 
 /* ---------------------------------------------------------------------
    Pagina, nav e toast del canale G
@@ -75,7 +69,8 @@ body.channel-g-active #main-nav {
   box-shadow: none !important;
 }
 body.channel-g-active .brand-name { color: var(--gx-mint) !important; }
-body.channel-g-active .brand-name .brand-jack {
+body.channel-g-active .brand-name .brand-jack,
+body.channel-g-active #nav-brand-suffix {
   color: var(--gx-lime) !important;
   font-family: 'Sedgwick Ave Display', 'Permanent Marker', cursive !important;
   font-size: 1.35em;
@@ -86,7 +81,6 @@ body.channel-g-active .nav-left::after {
   content: 'febi // organico × strada' !important;
   color: var(--gx-sage) !important;
   border-color: rgba(157, 191, 158, 0.4) !important;
-  font-family: 'Bricolage Grotesque', system-ui, sans-serif !important;
   letter-spacing: 0.02em !important;
 }
 body.channel-g-active .channel-selector-group {
@@ -100,9 +94,10 @@ body.channel-g-active .channel-tab {
   border-radius: 999px !important;
   background: transparent !important;
   box-shadow: none !important;
-  font-family: 'Bricolage Grotesque', system-ui, sans-serif !important;
 }
-body.channel-g-active .channel-tab:hover:not(.active) { color: var(--gx-lime) !important; }
+body.channel-g-active .channel-tab.channel-r:hover:not(.active) { color: #FF5A4E !important; }
+body.channel-g-active .channel-tab.channel-g:hover:not(.active) { color: var(--gx-lime) !important; }
+body.channel-g-active .channel-tab.channel-b:hover:not(.active) { color: #4FC3FF !important; }
 body.channel-g-active .channel-tab.channel-g.active {
   background: var(--gx-lime) !important;
   color: var(--gx-ink) !important;
@@ -116,36 +111,115 @@ body.channel-g-active .nav-btn {
 }
 body.channel-g-active .nav-btn:hover { border-color: var(--gx-lime) !important; color: var(--gx-lime) !important; }
 
+/* etichetta dei tab R/G/B: adesivo spray (colore della lettera), si compone come un graffito */
+body.channel-g-active .channel-tip {
+  --tip-fg: var(--gx-ink);
+  border: 2px solid var(--gx-ink);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--gx-ink);
+}
+body.channel-g-active #channel-btn-r .channel-tip { --tip-bg: #FF5A4E; }
+body.channel-g-active #channel-btn-g .channel-tip { --tip-bg: var(--gx-lime); }
+body.channel-g-active #channel-btn-b .channel-tip { --tip-bg: #4FC3FF; }
+body.channel-g-active .channel-tip b { color: var(--gx-ink); }
+/* nebulizzato attorno al box */
+body.channel-g-active .channel-tip::before {
+  content: '';
+  position: absolute;
+  inset: -9px -11px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 4% 30%, var(--tip-bg) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 9% 88%, var(--tip-bg) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 22% 4%, var(--tip-bg) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 47% 97%, var(--tip-bg) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 63% 3%, var(--tip-bg) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 81% 95%, var(--tip-bg) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 96% 20%, var(--tip-bg) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 98% 70%, var(--tip-bg) 0 1px, transparent 1.5px);
+}
+/* colatura */
+body.channel-g-active .channel-tip::after {
+  content: '';
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 28%;
+  width: 7px;
+  height: 14px;
+  background: var(--tip-bg);
+  border: 2px solid var(--gx-ink);
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+}
+body.channel-g-active .channel-tab:hover .channel-tip,
+body.channel-g-active .channel-tab:focus-visible .channel-tip {
+  transform-origin: 0 50%;
+  animation: tip-g-spray 0.75s cubic-bezier(0.35, 0.1, 0.45, 1) both;
+}
+body.channel-g-active .channel-tab:hover .channel-tip::before,
+body.channel-g-active .channel-tab:focus-visible .channel-tip::before {
+  animation: tip-g-overspray 0.3s 0.7s ease-out both;
+}
+body.channel-g-active .channel-tab:hover .channel-tip::after,
+body.channel-g-active .channel-tab:focus-visible .channel-tip::after {
+  animation: tip-g-drip 0.6s 0.7s cubic-bezier(0.5, 0, 0.6, 1) both;
+}
+/* passata di bomboletta da sinistra a destra: bordo morbido e sfocato che si mette a fuoco */
+@keyframes tip-g-spray {
+  0% {
+    -webkit-mask-image: linear-gradient(90deg, #000 42%, rgba(0,0,0,0.45) 48%, rgba(0,0,0,0.15) 53%, transparent 58%);
+            mask-image: linear-gradient(90deg, #000 42%, rgba(0,0,0,0.45) 48%, rgba(0,0,0,0.15) 53%, transparent 58%);
+    -webkit-mask-size: 320% 100%; mask-size: 320% 100%;
+    -webkit-mask-position: 100% 0; mask-position: 100% 0;
+    filter: blur(6px);
+    transform: rotate(-4deg) scale(0.94);
+  }
+  75% {
+    -webkit-mask-position: 0 0; mask-position: 0 0;
+    filter: blur(1.5px);
+  }
+  96% {
+    -webkit-mask-image: linear-gradient(90deg, #000 42%, rgba(0,0,0,0.45) 48%, rgba(0,0,0,0.15) 53%, transparent 58%);
+            mask-image: linear-gradient(90deg, #000 42%, rgba(0,0,0,0.45) 48%, rgba(0,0,0,0.15) 53%, transparent 58%);
+    -webkit-mask-size: 320% 100%; mask-size: 320% 100%;
+    -webkit-mask-position: 0 0; mask-position: 0 0;
+  }
+  100% {
+    -webkit-mask-image: none; mask-image: none;
+    filter: blur(0);
+    transform: rotate(-1.5deg) scale(1);
+  }
+}
+@keyframes tip-g-overspray { from { opacity: 0; transform: scale(0.9); } to { opacity: 0.85; transform: scale(1); } }
+@keyframes tip-g-drip {
+  0%   { transform: scaleY(0); }
+  70%  { transform: scaleY(1.15); }
+  100% { transform: scaleY(1); }
+}
+
 body.channel-g-active #channel-toast {
   background: var(--gx-lime);
   color: var(--gx-ink);
   border: 3px solid var(--gx-ink);
   border-radius: 999px;
   box-shadow: 5px 5px 0 var(--gx-ink);
-  font-family: 'Bricolage Grotesque', system-ui, sans-serif !important;
   font-weight: 700;
 }
 
 /* ---------------------------------------------------------------------
-   Tipografia: tre voci, nessuna in comune con il canale R
+   Tipografia: Bricolage Grotesque ovunque (via --font-main in styles.css);
+   Sedgwick Ave Display solo per i graffiti decorativi
    --------------------------------------------------------------------- */
-#channel-view-g,
-#channel-view-g * {
-  font-family: 'Bricolage Grotesque', system-ui, sans-serif !important;
-}
 #channel-view-g .gx-tag-word,
 #channel-view-g .gx-num,
 #channel-view-g .gx-footer-tag,
 #channel-view-g .gx-st-tape,
 #channel-view-g .gx-wall-empty {
   font-family: 'Sedgwick Ave Display', 'Permanent Marker', cursive !important;
-}
-#channel-view-g .gx-name,
-#channel-view-g .gx-h2,
-#channel-view-g .gx-h2 *,
-#channel-view-g .gx-points p,
-#channel-view-g .gx-points p * {
-  font-family: 'Fraunces', Georgia, serif !important;
 }
 
 /* ---------------------------------------------------------------------
@@ -292,8 +366,8 @@ body.channel-g-active #channel-toast {
 .gx-name {
   margin: 34px 0 6px;
   font-size: clamp(1.6rem, 3.2vw, 2.4rem);
-  font-style: italic;
-  font-weight: 500;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--gx-mint);
 }
 .gx-lede {
@@ -458,11 +532,11 @@ body.channel-g-active #channel-toast {
 .gx-h2 {
   margin: 0 0 28px;
   font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
 }
-.gx-h2 em { font-style: italic; font-weight: 400; color: var(--gx-fern); }
+.gx-h2 em { font-style: normal; font-weight: 400; color: var(--gx-fern); }
 .gx-wall-head .gx-h2 em { color: var(--gx-lime); }
 
 .gx-points {
@@ -488,11 +562,12 @@ body.channel-g-active #channel-toast {
 }
 .gx-points p {
   margin: 0;
-  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  line-height: 1.38;
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  line-height: 1.42;
 }
 .gx-points em {
-  font-style: italic;
+  font-style: normal;
+  font-weight: 700;
   background: linear-gradient(transparent 58%, rgba(184, 242, 58, 0.75) 58%);
   padding: 0 2px;
 }

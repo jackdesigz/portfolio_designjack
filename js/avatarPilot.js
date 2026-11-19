@@ -29,11 +29,26 @@
     ['#channel-btn-g', 'Canale G: il mio lato organico e street.'],
     ['#channel-btn-b', 'Canale B: contatti. Scrivimi!'],
     ['#hud-audio-toggle', 'Accendi l’audio: i bip sono la mia voce.'],
+    ['.music-player', 'Ho collaborato con Ikigai alle grafiche di questi singoli.'],
     ['.hero-cta-btn.primary', 'I progetti stesi ad asciugare sul filo.'],
     ['a[href="#claw2d-window"]', 'La claw machine! Io ci perdo sempre.'],
     ['#btn-wire-scroll-left', 'Torna indietro, c’era roba bella.'],
     ['#btn-wire-scroll-right', 'Avanti, il filo continua.'],
     ['#btn-open-full-catalog', 'Tutto l’archivio, in griglia.'],
+    // Catalogo completo
+    ['.insta-project-card', (el) => {
+      const t = el.querySelector('.insta-overlay-title');
+      const name = t ? t.textContent.trim() : '';
+      const lines = name
+        ? [`“${name}”: cliccalo, c’è la scheda.`, `“${name}”: uno dei miei preferiti.`, `“${name}”: ci ho messo il cuore.`]
+        : ['Cliccalo, c’è la scheda completa.'];
+      return lines[Math.floor(Math.random() * lines.length)];
+    }],
+    ['.insta-filter-pill', (el) => {
+      const f = el.getAttribute('data-filter') || 'all';
+      return f === 'all' ? 'Tutto quanto, senza filtri.' : `Solo ${f}? Si illuminano quelli giusti.`;
+    }],
+    ['#btn-close-full-catalog', 'Già finito? Torniamo al filo.'],
     ['#claw2d-drop', 'Ora! Pesca!'],
     ['#claw2d-left, #claw2d-right', 'Mira bene, sopra la capsula.'],
     ['#claw2d-section', 'Ogni capsula è un progetto. Prova!'],
@@ -202,7 +217,7 @@
           }, 700);
         }
 
-        if (this.channel === 'b') return;
+        if (this.channel === 'b' || this.pinned) return;
         if (r.top < 0 && visiblePart < 0.3) {
           if (!this.dismissed) this.setDocked(true);
         } else if (visiblePart >= 0.45) {
@@ -254,8 +269,30 @@
       ], { duration: 560, easing: 'cubic-bezier(.2, .9, .25, 1.12)' });
     }
 
+    // Catalogo a schermo intero: l'avatar si aggancia in basso a sinistra e resta lì
+    // sopra al catalogo; alla chiusura torna com'era.
+    pin(on) {
+      if (on === !!this.pinned) return;
+      this.pinned = on;
+      document.body.classList.toggle('avatar-pinned', on);
+      if (on) {
+        this.dockedBeforePin = this.docked;
+        if (this.trapped) this.setTrapped(false);
+        if (!this.docked) this.setDocked(true);
+        this.lastTarget = null;
+        this.avatar.say('Ecco tutto l’archivio. Passa sopra ai progetti!', { autoHide: 3200 });
+      } else {
+        if (!this.dockedBeforePin) this.setDocked(false);
+        if (this.channel === 'b' && !this.docked) this.setTrapped(true);
+        this.queueCheck && this.queueCheck();
+      }
+    }
+
     dismiss() {
+      if (this.pinned) return;
       if (this.channel === 'b') {
+        // avvisa la bolla prima del rientro, così si riposiziona prima dell'animazione
+        if (this.homes.b) this.homes.b.dispatchEvent(new CustomEvent('avatar-home:before-return'));
         this.setDocked(false);
         this.setTrapped(true);
         this.avatar.say(RETRAPPED, { autoHide: 3500 });
@@ -276,8 +313,9 @@
         const el = e.target.closest && e.target.closest(SELECTOR);
         if (!el || el === this.lastTarget || this.pilot.contains(el)) return;
         if (!this.canComment()) return;
-        // intrappolato non commenta: chiede aiuto e basta
-        if (this.trapped) return;
+        // intrappolato non commenta (chiede aiuto e basta), tranne che sulla musica
+        const isMusic = el.matches('.music-player');
+        if (this.trapped && !isMusic) return;
         const now = performance.now();
         if (now - this.lastCommentAt < 900) return;
         const entry = COMMENTS.find(([sel]) => el.matches(sel));
@@ -285,7 +323,7 @@
         const text = typeof entry[1] === 'function' ? entry[1](el) : entry[1];
         this.lastTarget = el;
         this.lastCommentAt = now;
-        this.avatar.say(text, { quiet: true, autoHide: 3200 });
+        this.avatar.say(text, { quiet: true, autoHide: isMusic ? 4200 : 3200 });
       });
     }
   }

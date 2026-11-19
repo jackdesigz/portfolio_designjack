@@ -407,26 +407,67 @@ class ModalManager {
     if (modalDesc) modalDesc.textContent = project.description;
     if (modalDetails) modalDetails.textContent = project.details;
 
+    // Intestazione uguale per tutti i progetti:
+    // software (sinistra) — palette a quadrati (centro) — stile (destra)
+    const getIcon = window.softwareIcon || (() => null);
+    const stack = project.stack || [];
+    const softwareNames = project.software || stack.filter((t) => getIcon(t));
+    const software = softwareNames.map((t) => getIcon(t) || { label: t, svg: '' });
+    const skills = stack.filter((t) => !getIcon(t) && softwareNames.indexOf(t) === -1);
+
+    if (modalMetrics) {
+      modalMetrics.className = 'project-key-strip';
+      modalMetrics.innerHTML = '';
+
+      const col = (cls, label) => {
+        const box = document.createElement('div');
+        box.className = `key-card ${cls}`;
+        box.innerHTML = `<div class="key-label">${label}</div><div class="key-body"></div>`;
+        modalMetrics.appendChild(box);
+        return box.querySelector('.key-body');
+      };
+
+      const swBody = col('key-software', 'SOFTWARE');
+      if (software.length) {
+        software.forEach((icon) => {
+          const tile = document.createElement('span');
+          tile.className = 'software-tile';
+          tile.title = icon.label;
+          tile.innerHTML = `${icon.svg}<span class="software-name">${icon.label}</span>`;
+          tile.setAttribute('data-avatar-say', `Qui ho usato ${icon.label}.`);
+          swBody.appendChild(tile);
+        });
+      } else {
+        swBody.innerHTML = '<span class="key-empty">—</span>';
+      }
+
+      const palBody = col('key-palette', 'PALETTE');
+      const palette = project.palette
+        || (project.gallery && project.gallery.palette && project.gallery.palette.colors.map((c) => c.hex))
+        || [project.colorHex || '#E63946'];
+      palette.forEach((hex) => {
+        const sq = document.createElement('span');
+        sq.className = 'palette-square';
+        sq.style.setProperty('--sw', hex);
+        sq.title = hex;
+        sq.setAttribute('aria-label', `Colore ${hex}`);
+        palBody.appendChild(sq);
+      });
+
+      const styleBody = col('key-style', 'STILE');
+      styleBody.textContent = project.style || project.category;
+    }
+
+    // in fondo restano le competenze (il resto dello stack)
     if (modalStack) {
       modalStack.innerHTML = '';
-      (project.stack || []).forEach(t => {
+      const block = modalStack.closest('.project-skills-block');
+      if (block) block.style.display = skills.length ? '' : 'none';
+      skills.forEach((t) => {
         const badge = document.createElement('span');
         badge.className = 'tech-badge';
         badge.textContent = t;
         modalStack.appendChild(badge);
-      });
-    }
-
-    if (modalMetrics && project.metrics) {
-      modalMetrics.innerHTML = '';
-      Object.entries(project.metrics).forEach(([k, v]) => {
-        const mBox = document.createElement('div');
-        mBox.className = 'metric-card';
-        mBox.innerHTML = `
-          <div class="metric-value">${v}</div>
-          <div class="metric-label">${k}</div>
-        `;
-        modalMetrics.appendChild(mBox);
       });
     }
 
@@ -482,15 +523,32 @@ class ModalManager {
 
       const g = project.gallery;
       let html = '';
+      let step = 0;
+      const tag = (label) => {
+        step += 1;
+        return `<div class="project-section-tag"><span class="step-num">${String(step).padStart(2, '0')}</span><span>${label}</span></div>`;
+      };
+      const lead = (text) => (text ? `<p class="section-lead-text">${text}</p>` : '');
+      // riquadro immagine + didascalia (mockup, slide, moodboard): si apre a schermo intero
+      const card = (item, kind, holderClass = '') => `
+        <div class="mockup-display-card zoomable-trigger" data-img-src="${item.src}" data-img-caption="${item.title ? `${item.title} — ${item.desc || ''}` : (item.caption || item.alt)}">
+          <div class="mockup-img-holder ${holderClass}">
+            <img src="${item.src}" alt="${item.alt}" class="mockup-thumb" loading="lazy" />
+            <div class="card-hover-overlay"><span>🔍 VEDI A SCHERMO INTERO</span></div>
+          </div>
+          ${item.title || item.desc || kind ? `
+          <div class="mockup-card-info">
+            ${kind ? `<div class="mockup-kind-tag">${kind}</div>` : ''}
+            ${item.title ? `<h4 class="mockup-item-title">${item.title}</h4>` : ''}
+            ${item.desc ? `<p class="mockup-item-desc">${item.desc}</p>` : ''}
+          </div>` : ''}
+        </div>`;
 
       // 1. POSTER IN PRIMO PIANO
       if (g.poster) {
         html += `
           <div class="gallery-block poster-hero-block">
-            <div class="project-section-tag">
-              <span class="step-num">01</span>
-              <span>IL MANIFESTO</span>
-            </div>
+            ${tag('IL MANIFESTO')}
             <div class="poster-hero-container zoomable-trigger" data-img-src="${g.poster.src}" data-img-caption="${g.poster.caption || project.title}">
               <div class="poster-image-box">
                 <img src="${g.poster.src}" alt="${g.poster.alt || 'Poster'}" class="poster-hero-image" loading="lazy" />
@@ -507,16 +565,55 @@ class ModalManager {
         `;
       }
 
-      // 2. ILLUSTRAZIONI QUA E LÀ NELLA PAGINA
+      // MOODBOARD
+      if (g.moodboard) {
+        html += `
+          <div class="gallery-block moodboard-block">
+            ${tag(g.moodboard.label || 'MOODBOARD & RIFERIMENTI')}
+            ${lead(g.moodboard.lead)}
+            <div class="mockups-duo-grid is-single">${card(g.moodboard, '', 'is-slide')}</div>
+          </div>
+        `;
+      }
+
+      // BOZZE / PROCESSO
+      if (g.sketches) {
+        html += `
+          <div class="gallery-block sketches-block">
+            ${tag(g.sketches.label || 'BOZZE DI PROGETTAZIONE')}
+            ${lead(g.sketches.lead)}
+            <div class="mockups-duo-grid is-single">${card(g.sketches, '', 'is-slide')}</div>
+          </div>
+        `;
+      }
+
+      // PALETTE
+      if (g.palette && g.palette.colors && g.palette.colors.length) {
+        html += `
+          <div class="gallery-block palette-block">
+            ${tag(g.palette.label || 'COLOR PALETTE')}
+            ${lead(g.palette.lead)}
+            <div class="project-palette-strip">
+              ${g.palette.colors.map((c) => `
+                <div class="palette-swatch" style="--sw: ${c.hex};">
+                  <span class="palette-chip"></span>
+                  <span class="palette-hex">${c.hex}</span>
+                  ${c.name ? `<span class="palette-name">${c.name}</span>` : ''}
+                  ${c.cmyk ? `<span class="palette-cmyk">${c.cmyk}</span>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // ILLUSTRAZIONI QUA E LÀ NELLA PAGINA
       if (g.illustrations && g.illustrations.length) {
         html += `
           <div class="gallery-block illustrations-block">
-            <div class="project-section-tag">
-              <span class="step-num">02</span>
-              <span>ELEMENTI GRAFICI & VETTORIALI</span>
-            </div>
+            ${tag(g.illustrationsLabel || 'ELEMENTI GRAFICI & VETTORIALI')}
             <p class="section-lead-text">
-              Elementi figurativi, onde cromatiche e curve d'ispirazione POP e psichedelica composti con <strong>Adobe Illustrator</strong>:
+              ${g.illustrationsLead || 'Elementi figurativi, onde cromatiche e curve d\'ispirazione POP e psichedelica composti con <strong>Adobe Illustrator</strong>:'}
             </p>
             <div class="illustrations-gallery-grid">
               ${g.illustrations.map((ill, i) => `
@@ -538,34 +635,46 @@ class ModalManager {
         `;
       }
 
-      // 3. GALLERIA DI MOCKUP A FINE PAGINA
+      // CONCEPT: slide della presentazione con il ragionamento
+      if (g.concept && g.concept.slides && g.concept.slides.length) {
+        html += `
+          <div class="gallery-block concept-block">
+            ${tag(g.concept.label || 'IL CONCEPT')}
+            ${lead(g.concept.lead)}
+            <div class="mockups-duo-grid is-slides">
+              ${g.concept.slides.map((sl, i) => card(sl, sl.kind || `SLIDE ${String(i + 1).padStart(2, '0')}`, 'is-slide')).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // GALLERIA DI MOCKUP A FINE PAGINA
       if (g.mockups && g.mockups.length) {
         html += `
           <div class="gallery-block mockups-block">
-            <div class="project-section-tag">
-              <span class="step-num">03</span>
-              <span>GALLERIA MOCKUP & AMBIENTAZIONI</span>
-            </div>
+            ${tag(g.mockupsLabel || 'GALLERIA MOCKUP & AMBIENTAZIONI')}
             <p class="section-lead-text">
-              Applicazione del manifesto grafico in contesti urbani reali e declinazione per i canali social:
+              ${g.mockupsLead || 'Applicazione del manifesto grafico in contesti urbani reali e declinazione per i canali social:'}
             </p>
-            <div class="mockups-duo-grid">
-              ${g.mockups.map((m, i) => `
-                <div class="mockup-display-card zoomable-trigger" data-img-src="${m.src}" data-img-caption="${m.title} — ${m.desc}">
-                  <div class="mockup-img-holder">
-                    <img src="${m.src}" alt="${m.alt}" class="mockup-thumb" loading="lazy" />
-                    <div class="card-hover-overlay">
-                      <span>🔍 VEDI A SCHERMO INTERO</span>
-                    </div>
-                  </div>
-                  <div class="mockup-card-info">
-                    <div class="mockup-kind-tag">MOCKUP // ${i === 0 ? 'AFFISSIONE OOH' : 'INSTAGRAM FEED'}</div>
-                    <h4 class="mockup-item-title">${m.title}</h4>
-                    <p class="mockup-item-desc">${m.desc}</p>
-                  </div>
-                </div>
-              `).join('')}
+            <div class="mockups-duo-grid${g.mockups.every((m) => m.ratio) ? ' is-fit' : ''}">
+              ${g.mockups.map((m, i) => {
+                const html = card(m, `MOCKUP // ${m.kind || (i === 0 ? 'AFFISSIONE OOH' : 'INSTAGRAM FEED')}`);
+                // con il rapporto larghezza/altezza ogni mockup prende lo spazio che gli serve: tutti interi e alti uguali
+                return m.ratio ? html.replace('class="mockup-display-card', `style="--ar: ${m.ratio};" class="mockup-display-card`) : html;
+              }).join('')}
             </div>
+          </div>
+        `;
+      }
+
+      // presentazione completa da scaricare
+      if (g.download) {
+        html += `
+          <div class="gallery-block download-block">
+            <a class="project-download-link" href="${g.download.href}" target="_blank" rel="noopener">
+              <span class="dl-icon" aria-hidden="true">↓</span>
+              <span class="dl-text"><strong>${g.download.label}</strong>${g.download.meta ? `<small>${g.download.meta}</small>` : ''}</span>
+            </a>
           </div>
         `;
       }

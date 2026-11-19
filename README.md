@@ -12,8 +12,8 @@ Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri
 - Nella hero, senza finestra, c'è la **testa low-poly di Jacopo** (`js/heroAvatar.js`): il ritratto `assets/avatar/jacopo-avatar.png` è montato come texture su un rilievo 3D (cranio, viso, naso, orbite), quindi ruota con parallasse vera.
 - Fluttua, gira verso il cursore, sbatte le palpebre; **trascinala** per girarla (torna frontale a molla), **cliccala** per farla parlare (fumetto pixel-art, bip, bocca animata). Frasi in `MESSAGES`.
 - **Avatar pilota** (`js/avatarPilot.js`): scrollando oltre la hero vola in basso a sinistra e commenta ciò su cui passi il cursore (mappa `COMMENTS`, oppure attributo `data-avatar-say="..."` su qualsiasi elemento). Passandoci sopra compare una **X** che lo rimanda al suo posto nella hero; tornando in cima alla pagina si riattiva e al prossimo scroll si riaggancia.
-- **Una casa per canale** (`data-avatar-home` in `index.html`): in R sta nella hero, in G accanto al manifesto (stesso comportamento: si aggancia scrollando, la X lo rimanda a casa), in B è **intrappolato in una bolla**: cliccandola scoppia, lui ringrazia e va in basso a sinistra; la X lo rimette nella bolla. Frasi e saluti per canale in `MESSAGES` / `GREETING` di `js/avatarPilot.js`.
-- **Filtro CRT pixelato** leggero sulla testa (render a metà risoluzione + scanline + maschera RGB), tinto di rosso in R, verde in G, blu in B (`setTint` in `js/heroAvatar.js`).
+- **Una casa per canale** (`data-avatar-home` in `index.html`): in R sta nella hero, in G accanto al manifesto (stesso comportamento: si aggancia scrollando, la X lo rimanda a casa), in B è **intrappolato in una delle bolle che salgono su tutta la pagina**, dal fondale al cielo (più grande delle altre, sale lenta e quando esce dallo schermo rientra dal basso): cliccandola scoppia, lui ringrazia e va in basso a sinistra; la X lo rimette nella bolla. Frasi e saluti per canale in `MESSAGES` / `GREETING` di `js/avatarPilot.js`.
+- **Filtro CRT pixelato** leggero sulla testa (render a metà risoluzione + scanline + maschera RGB), senza tinte di colore in tutti i canali (`setTint` in `js/heroAvatar.js`).
 - Versioni precedenti: `archive/heroSphere.js` (sfera) e `archive/heroAvatar-procedurale.js` (testa procedurale).
 
 ### 2. "Mostra Intero Catalogo" — Fogli Appesi al Filo con Fisica
@@ -24,6 +24,7 @@ Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri
   - **Interazione al mouse (Hover):** passando il cursore sopra un foglio, questo si solleva verso lo spettatore (`scale: 1.14`, rotazione in avanti, ombra profonda e svelamento dei dettagli) accompagnato dal suono di fruscio di carta e vibrazione del cavo (`playPaperFlutter()`, `playCableTwang()`).
   - **Click:** cliccando su qualsiasi foglio appeso si apre direttamente il modal di ispezione del case study!
   - Include pulsanti di scorrimento laterale `[ ◄ SCORRI FILO ]` / `[ SCORRI FILO ► ]` e supporto wheel orizzontale.
+- **Catalogo completo a griglia:** riquadri compatti (min 178px, 6 colonne su un portatile, 2 su telefono) così si vedono tutti i progetti insieme. L'avatar resta agganciato in basso a sinistra anche col catalogo aperto (senza la X) e commenta progetti e filtri; alla chiusura torna dov'era (`AvatarPilot.pin()`).
 
 ### 3. Catalogo Progetti Espandibile (6 Categorie & Dither Smolecola Rosso)
 - Suddiviso nelle 6 categorie ufficiali:
@@ -35,6 +36,13 @@ Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri
   6. `Personal Projects`
 - **Dithering con Smolecolamento in Pixel Rossi:** al passaggio del mouse su ciascuna scheda, l'artwork si ditherizza a matrice di Bayer e si **"smolecola"** in una scia di particelle pixel rosse fluorescenti con moto parabolico e dissolvenza.
 - Tasto di espansione griglia per visualizzare l'intero catalogo o tornare alla vista curata.
+
+### Progetti con pagina completa
+I progetti con `gallery` in `js/projects.js` mostrano asset reali nella pagina progetto (`renderProjectGallery` in `js/modal.js`). Sezioni opzionali, numerate in automatico: `poster`, `moodboard`, `sketches` (bozze), `illustrations`, `concept.slides` (slide della presentazione), `mockups` (con `kind`), `download` (link alla presentazione PDF).
+- **La Fanciulla del West** (R-13, Graphic Design): manifesto per l'opera di Puccini. Immagini estratte dai PDF in `Progetti/Graphic Design/La Fanciulla del West/` e salvate in `assets/projects/la-fanciulla-del-west/` (poster, moodboard, bozze, slide di concept, due mockup ritagliati dalla slide dei mockup).
+- **Echo Sound Festival** (R-06): poster, illustrazioni, mockup.
+- **Intestazione uguale per tutti i progetti:** in alto a sinistra i software con la loro icona (`software` del progetto, oppure le voci dello `stack` che hanno un'icona in `js/softwareIcons.js`), al centro la palette a quadrati (`palette`, codice HEX solo al passaggio del mouse), a destra lo stile (`style`). In fondo restano le altre voci dello stack come competenze. Il campo `metrics` non viene più mostrato nella scheda.
+- **Mockup affiancati:** se ogni mockup ha `ratio` (larghezza/altezza), stanno sulla stessa riga alla stessa altezza e interi, senza ritagli (su telefono vanno uno sotto l'altro).
 
 ### 4. Toy Claw Machine 3D (fisica reale)
 - **Motore fisico dedicato** (`js/clawPhysics.js`, 240 Hz, nessuna dipendenza): capsule e palline sono sfere rigide con urti, attrito e rotolamento; l'artiglio è un pendolo appeso al cavo.
@@ -51,10 +59,19 @@ Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri
 
 ---
 
+### Tab R / G / B
+Al passaggio del mouse sotto ogni lettera compare un box con due parole con la stessa iniziale (anche negli avvisi di cambio canale): **R — Realizzazioni & Ricreazione** (lavori e playground), **G — Germogli & Graffiti** (il lato fuori orario), **B — Bolle & Bottiglie** (contatti e messaggi in bottiglia). Testi in `index.html` (`.channel-tip`), toast in `js/main.js`. Il colore del box segue la lettera (R rosso, G verde, B blu) in ogni sezione; la forma e l’animazione seguono la sezione: in R scende dall’alto come una tendina, in G si compone come un graffito (passata spray, nebulizzato, colatura), in B nasce come una bolla che sale e ondeggia.
+
+### Music player
+In alto a destra, sotto la barra, metà disco con la copertina gira incastrato nel bordo dello schermo. In hover (o al tocco su mobile) il disco esce e compare il pannello: brano precedente/successivo, play/pausa, muto e volume, barra di avanzamento cliccabile. Brani e copertina sono in `Musica/` (singoli di Ikigai, grafiche di designjack); l'avatar lo dice quando passi sopra al player. La musica parte appena entri, a volume basso (`DEFAULT_VOLUME` 0.22) e in dissolvenza; se il browser blocca l'audio prima di un'interazione, il brano parte in muto (il disco gira) e il suono arriva al primo clic, tasto o tocco (`AUTOSTART` in `js/musicPlayer.js`). Il pannello si vede solo in hover. Mentre la musica si sente, dal disco escono note che svaniscono, nello stile del canale: in R quadrate rosso/blu/giallo, in G tonde lime che ondeggiano e sfumano come spray, in B dentro bollicine che salgono e scoppiano. Spariscono mentre usi il player, a scheda nascosta, in muto e con "riduci movimento". Volume, brano e pausa sono ricordati nel browser. Stile per canale in `css/music-player.css`.
+
+### Font
+Un font principale per canale (variabile `--font-main` in `css/styles.css`): **Jost** in R (geometrico erede del Futura, il carattere del Bauhaus), **Bricolage Grotesque** in G, **Hind** in B (umanista vicino al Frutiger). Eccezioni solo decorative: Sedgwick Ave Display per i graffiti di G e il ciclo di font di "jack" nel preloader.
+
 ### 6. Canali G e B: due siti a sé
 Quando si passa a G o B la cornice del canale R sparisce (niente scanline CRT, niente carta crema, nav e toast restilizzati); resta solo la transizione CRT come "cambio canale".
-- **Canale G — "febi"** (`css/channel-g.css`): organico × graffiti, tutto verde. Muro notturno con blob che respirano, tag spray con colature, adesivi da trascinare, nastro che scorre, manifesto su carta organica e **muro libero** da dipingere con la bomboletta (colori verdi, colature se tieni fermo il tratto). Font: Sedgwick Ave Display, Fraunces, Bricolage Grotesque.
-- **Canale B — "Frutiger Marine"** (`css/channel-b.css`): contatti in stile Frutiger Aero oceanico, tutto blu. Cielo con sole e riflessi, onde animate, discesa sott'acqua con raggi di luce, caustiche, bolle che scoppiano e pesci; pannelli di vetro lucido con email (e tasto copia), **messaggio in bottiglia** (prepara una mail) e il flauto magico. Font: Varela Round, Hind.
+- **Canale G — "febi"** (`css/channel-g.css`): organico × graffiti, tutto verde. Muro notturno con blob che respirano, tag spray con colature, adesivi da trascinare, nastro che scorre, manifesto su carta organica e **muro libero** da dipingere con la bomboletta (colori verdi, colature se tieni fermo il tratto). Font: Bricolage Grotesque (Sedgwick Ave Display solo per i graffiti decorativi).
+- **Canale B — "Frutiger Marine"** (`css/channel-b.css`): contatti in stile Frutiger Aero oceanico, tutto blu. Cielo con sole e riflessi, onde animate, discesa sott'acqua con raggi di luce, caustiche, bolle che scoppiano e pesci; pannelli di vetro lucido con gocce d’acqua e icone a sfera, email (e tasto copia), **messaggio in bottiglia** (prepara una mail) e il flauto magico; in superficie nastri di luce, bokeh, scintille, titolo riflesso e un delfino lucido che salta tra le onde. Font: Hind.
 - Logica di entrambi in `js/channels.js` (le animazioni girano solo con il canale attivo).
 
 ---

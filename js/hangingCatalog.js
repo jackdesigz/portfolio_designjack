@@ -21,9 +21,9 @@ class HangingCatalogWire {
     this.renderSheets();
     this.setupControls();
     this.startPhysicsLoop();
-    // le didascalie dei manifesti usano Montserrat: ridisegna quando il font è pronto
+    // le didascalie dei manifesti usano Jost: ridisegna quando il font è pronto
     if (document.fonts && document.fonts.load) {
-      Promise.all([document.fonts.load('700 22px Montserrat'), document.fonts.load('500 16px Montserrat')]).then(() => {
+      Promise.all([document.fonts.load('700 22px Jost'), document.fonts.load('500 16px Jost')]).then(() => {
         const projects = window.PROJECT_REGISTRY || [];
         this.wireTrack.querySelectorAll('.hanging-sheet').forEach((sheet, idx) => {
           const cvs = sheet.querySelector('.sheet-photo-canvas');
@@ -245,10 +245,10 @@ class HangingCatalogWire {
     // 3. Didascalia tipografica da manifesto
     const code = String(idx + 1).padStart(2, '0');
     ctx.fillStyle = INK;
-    ctx.font = '700 22px "Montserrat", "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '700 22px "Jost", "Helvetica Neue", Arial, sans-serif';
     ctx.textBaseline = 'alphabetic';
     ctx.fillText('R-' + code, 36, h - 40);
-    ctx.font = '500 16px "Montserrat", "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '500 16px "Jost", "Helvetica Neue", Arial, sans-serif';
     ctx.textAlign = 'right';
     ctx.fillText(String(proj.category || '').toUpperCase().slice(0, 24) + ' · ' + (proj.year || ''), w - 36, h - 40);
     ctx.textAlign = 'left';
