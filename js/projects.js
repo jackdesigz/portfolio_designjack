@@ -190,7 +190,7 @@ window.PROJECT_REGISTRY = [
     capsuleColor: 'red',
     style: 'Pop & Psichedelico',
     palette: ['#EFEA16', '#D68DC1', '#6DC8AB', '#0E74BA', '#070707'],
-    stack: ['Adobe Illustrator', 'Poster Design', 'Pop Art', 'Illustrazione Vettoriale', 'Mockup Design'],
+    stack: ['Adobe Illustrator', 'Adobe Photoshop', 'Poster Design', 'Pop Art', 'Illustrazione Vettoriale', 'Mockup Design'],
     description: 'Esercizio di grafica vettoriale e visual design composto con Adobe Illustrator: una serie di illustrazioni che vanno a comporre un poster grafico ispirato a grafiche psichedeliche e POP, corredato da mockup.',
     metrics: { software: 'Illustrator', stile: 'POP / Psychedelic', output: 'Poster & Mockup' },
     details: 'Un lavoro di composizione e ritmo visivo sviluppato interamente in vettoriale. Le singole illustrazioni, ricche di curve organiche e palette sature a contrasto, si intrecciano per dare vita al poster ufficiale dell’Echo Sound Festival e alle sue declinazioni promozionali.',
