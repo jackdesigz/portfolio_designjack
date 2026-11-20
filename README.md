@@ -112,3 +112,34 @@ Apri nel browser:
 - **Ovunque sia l'avatar:** funziona nella hero, agganciato in basso a sinistra o nella bolla del canale B. Se è fuori schermo viene richiamato in basso a sinistra; se è coperto da una scheda aperta il "!" compare al centro.
 - **Audio:** il suono rispetta il tasto AUDIO della barra e abbassa la musica per un attimo.
 - **Attenzione alle maiuscole:** la cartella si chiama `Immagini` con la I maiuscola. Su un server online le maiuscole contano, quindi se la rinomini va aggiornato `IMG` in `js/konami.js`.
+
+### Claw machine con i progetti veri
+- **Quali progetti:** nella vasca ci sono solo i progetti con `capsuleImage` in `js/projects.js`, cioè quelli veri: Campari Champ-AR, La Fanciulla del West ed Echo Sound Festival. Se nessun progetto ha l'immagine, la macchina torna a usarli tutti.
+- **Dentro la capsula:** l'immagine (`assets/projects/<progetto>/capsule.png`, quadrata 256 px) è disegnata come un adesivo tondo dietro la plastica colorata. Resta dritta mentre la capsula rotola, così si legge sempre.
+- **Colori:** le capsule hanno colori diversi: Campari rossa, Fanciulla gialla, Echo blu.
+- **Capsula vinta:** quando si apre (il 3D in `js/modal.js`) esce un gettone tondo con la stessa immagine, che oscilla verso chi guarda, al posto della forma geometrica.
+- **Aggiungere un progetto:** salva un ritaglio quadrato come `capsule.png` nella sua cartella e aggiungi `capsuleImage` alla sua voce in `js/projects.js`.
+- **Server locale:** l'immagine nella capsula 3D si vede solo aprendo il sito da un server (`http://…`). Aperto come file (`file://`) il browser non permette a WebGL di usare le immagini.
+
+
+### Progetti di Brand Design: Teatro Salone Ablondi e Melagoccio
+Due layout dedicati in `js/projectBrand.js` + `css/project-brand.css` (`gallery.layout: 'ablondi'` e `'melagoccio'`). Ognuno segue le linee guida del suo marchio. Asset in `assets/projects/teatro-ablondi/` e `assets/projects/melagoccio/`, presi da `Progetti/Brand Design/`.
+
+**Teatro Salone Ablondi (R-15)**
+- **Apertura:** un sipario di velluto viola si apre e mostra il marchio sotto l'occhio di bue.
+- **Il simbolo:** dalle prime variazioni alla versione finale.
+- **Costruzione:** il marchio è ridisegnato con le guide e le proporzioni delle linee guida (ABLONDI = 2,42 × TEATRO SALONE; y = 2,546 × x).
+- **Palette:** quattro colori con il marchio su ognuno; passandoci sopra il riquadro si allarga.
+- **Tipografia:** Montserrat Regular e Radlush SemiBold.
+- **Applicazioni:** le magliette.
+- **Asset:** il simbolo è in quattro SVG senza scritte (`simbolo-black/viola/bianco/crema.svg`); TEATRO SALONE e ABLONDI sono scritti in HTML con i font veri. Montserrat arriva da Google Fonts, Radlush da `assets/fonts/Radlush-SemiBold.ttf`.
+
+**Melagoccio (R-16)**
+- **Apertura:** su sfondo menta con le scritte ripetute delle figurine, il logo ondeggia; sotto scorre la striscia "ONE SHOT ✦ ONE SPIKE".
+- **Il brand:** palette a bollini e la mascotte.
+- **La felpa:** si gira con un clic tra fronte e retro (fa un giro da sola la prima volta che compare).
+- **Le figurine:** i quattro giocatori distribuiti a ventaglio come un mazzo.
+- **Social:** il banner di Instagram si compone dai suoi tre post.
+- **Font:** Bungee e Rubik (Google Fonts).
+
+**Copertine e capsule:** entrambi hanno `coverImage` (catalogo e filo) e `capsuleImage`, quindi sono anche nella claw machine (capsula viola e verde).

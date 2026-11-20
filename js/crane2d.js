@@ -12,6 +12,26 @@
   const INK = '#151413', PAPER = '#F7F1E4', PAPER_D = '#E2D6BD';
   const RED = '#D93D2A', YEL = '#EEA824', BLU = '#1D3557', GREEN = '#3CCB6E';
   const CAP = { red: '#D2381F', yellow: '#F0A51C', blue: '#2B62C9', green: '#18A58F', purple: '#6E36C9' };
+
+  // nella macchina ci sono solo i progetti veri: quelli con un'immagine per la capsula
+  const clawProjects = () => {
+    const all = window.PROJECT_REGISTRY || [];
+    const real = all.filter(p => p.capsuleImage);
+    return real.length ? real : all;
+  };
+
+  // immagini delle capsule, caricate una volta sola
+  const capImages = new Map();
+  const capImage = (p) => {
+    if (!p || !p.capsuleImage) return null;
+    let im = capImages.get(p.id);
+    if (!im) {
+      im = new Image();
+      im.src = p.capsuleImage;
+      capImages.set(p.id, im);
+    }
+    return im.complete && im.naturalWidth ? im : null;
+  };
   const FILL = ['#EEE6D3', '#EEA824', '#D93D2A', '#2B62C9', '#151413', '#EEE6D3'];
 
   const STATUS = {
@@ -201,7 +221,8 @@
       this.dots = new Map();
       if (!this.collectionEl) return;
       this.collectionEl.innerHTML = '';
-      (window.PROJECT_REGISTRY || []).forEach(p => {
+      clawProjects().forEach(p => {
+        capImage(p); // precarica
         const d = document.createElement('span');
         d.className = 'claw2d-dot';
         d.style.setProperty('--dot', CAP[p.capsuleColor] || RED);
@@ -314,7 +335,7 @@
       let capsNow = 0;
       this.ents.forEach(e => { if (e.project) capsNow++; });
       capsNow += this.queue.filter(q => q.kind === 'capsule').length;
-      const free = (window.PROJECT_REGISTRY || []).filter(p => !this.collected.has(p.id) && !present.has(p.id));
+      const free = clawProjects().filter(p => !this.collected.has(p.id) && !present.has(p.id));
       for (let i = free.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [free[i], free[j]] = [free[j], free[i]]; }
       const add = Math.max(0, Math.min(free.length, cap.capsules - capsNow));
       for (let i = 0; i < add; i++) this.queue.push({ kind: 'capsule', r: 0.55, project: free[i] });
@@ -390,7 +411,7 @@
         this.pendingWin = null;
       }
       this.keys.left = this.keys.right = false;
-      const all = (window.PROJECT_REGISTRY || []).length;
+      const all = clawProjects().length;
       if (this.collected.size >= all) {
         this.collected.clear();
         this.dots.forEach(d => d.classList.remove('won'));
@@ -546,12 +567,34 @@
         g.restore(); return;
       }
       const col = CAP[e.project.capsuleColor] || RED;
-      // metà inferiore colorata, metà superiore trasparente
-      g.fillStyle = col; g.beginPath(); g.arc(0, 0, r, 0, Math.PI); g.closePath(); g.fill();
-      g.fillStyle = PAPER; g.beginPath(); g.arc(0, 0, r, Math.PI, Math.PI * 2); g.closePath(); g.fill();
-      // gettone del progetto dentro la cupola
-      this.drawToken(g, e.project.shapeName, 0, -r * 0.42, r * 0.3, col);
-      g.fillStyle = INK; g.fillRect(-r, -r * 0.05, r * 2, r * 0.1);
+      const img = capImage(e.project);
+      if (img) {
+        // capsula trasparente con dentro l'immagine del progetto, come un adesivo tondo;
+        // la metà inferiore è plastica colorata semitrasparente
+        g.fillStyle = PAPER; g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill();
+        g.save();
+        g.beginPath(); g.arc(0, 0, r * 0.94, 0, Math.PI * 2); g.clip();
+        // l'immagine resta dritta mentre il guscio rotola: si legge sempre
+        g.rotate(a);
+        g.drawImage(img, -r * 0.94, -r * 0.94, r * 1.88, r * 1.88);
+        g.restore();
+        g.save();
+        g.globalAlpha = 0.3;
+        g.fillStyle = col; g.beginPath(); g.arc(0, 0, r, 0, Math.PI); g.closePath(); g.fill();
+        g.restore();
+        // riflesso sulla cupola
+        g.strokeStyle = 'rgba(255,255,255,0.75)'; g.lineWidth = Math.max(1.5, r * 0.09); g.lineCap = 'round';
+        g.beginPath(); g.arc(0, 0, r * 0.72, Math.PI * 1.15, Math.PI * 1.45); g.stroke();
+        g.lineCap = 'butt';
+        g.fillStyle = col; g.fillRect(-r, -r * 0.05, r * 2, r * 0.1);
+      } else {
+        // metà inferiore colorata, metà superiore trasparente
+        g.fillStyle = col; g.beginPath(); g.arc(0, 0, r, 0, Math.PI); g.closePath(); g.fill();
+        g.fillStyle = PAPER; g.beginPath(); g.arc(0, 0, r, Math.PI, Math.PI * 2); g.closePath(); g.fill();
+        // gettone del progetto dentro la cupola
+        this.drawToken(g, e.project.shapeName, 0, -r * 0.42, r * 0.3, col);
+        g.fillStyle = INK; g.fillRect(-r, -r * 0.05, r * 2, r * 0.1);
+      }
       g.strokeStyle = INK; g.lineWidth = 2.2;
       g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.stroke();
       g.beginPath(); g.moveTo(-r, 0); g.lineTo(r, 0); g.stroke();

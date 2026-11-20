@@ -134,6 +134,25 @@ class CapsuleOpeningStage {
   }
 
   buildTokenMesh(project, size) {
+    // progetto vero: dalla capsula esce un gettone tondo con la sua immagine
+    if (project.capsuleImage) {
+      const group = new THREE.Group();
+      const tex = new THREE.TextureLoader().load(project.capsuleImage);
+      if (THREE.sRGBEncoding) tex.encoding = THREE.sRGBEncoding;
+      const face = new THREE.Mesh(
+        new THREE.CircleGeometry(size, 48),
+        new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide })
+      );
+      const rim = new THREE.Mesh(
+        new THREE.CylinderGeometry(size * 1.08, size * 1.08, size * 0.12, 48, 1, true),
+        new THREE.MeshStandardMaterial({ color: project.colorHex || 0xE63946, roughness: 0.3, metalness: 0.4, side: THREE.DoubleSide })
+      );
+      rim.rotation.x = Math.PI / 2;
+      group.add(face, rim);
+      group.userData.flat = true;
+      return group;
+    }
+
     let geo;
     let mat = new THREE.MeshStandardMaterial({
       color: project.colorHex || 0xE63946,
@@ -222,8 +241,15 @@ class CapsuleOpeningStage {
     if (overlay && !overlay.classList.contains('active')) return;
 
     if (this.tokenMesh) {
-      this.tokenMesh.rotation.y += 0.025;
-      this.tokenMesh.rotation.x += 0.015;
+      if (this.tokenMesh.userData.flat) {
+        // il gettone con l'immagine oscilla verso chi guarda, così si vede sempre
+        this.tokenT = (this.tokenT || 0) + 0.016;
+        this.tokenMesh.rotation.y = Math.sin(this.tokenT * 1.6) * 0.55;
+        this.tokenMesh.rotation.x = Math.sin(this.tokenT * 1.1) * 0.12;
+      } else {
+        this.tokenMesh.rotation.y += 0.025;
+        this.tokenMesh.rotation.x += 0.015;
+      }
     }
 
     if (this.particleGroup && this.particleGroup.visible) {

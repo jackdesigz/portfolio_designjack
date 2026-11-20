@@ -5,6 +5,117 @@
 
 window.PROJECT_REGISTRY = [
   {
+    id: 'r-16',
+    code: 'R-16 // BRAND-MELAGOCCIO',
+    title: 'MELAGOCCIO',
+    category: 'Brand Design',
+    year: '2025',
+    shapeName: 'Mint Torus',
+    colorHex: '#02AF91',
+    capsuleColor: 'green',
+    style: 'Cartoon & Sportivo',
+    palette: ['#CDEEE9', '#02AF91', '#C7609C', '#EDD6E5', '#0B0F14'],
+    software: ['Adobe Illustrator', 'Adobe Photoshop'],
+    stack: ['Adobe Illustrator', 'Adobe Photoshop', 'Logo Design', 'Mascotte', 'Merchandising', 'Social Media'],
+    description: 'Identità visiva per i Melagoccio, squadra amatoriale mista di pallavolo: un logo con la mascotte, la grafica della felpa, le figurine dei giocatori e il banner per Instagram.',
+    details: 'Il marchio è un badge tondo con la mascotte rosa al centro e il nome che gira tutto intorno in lettere a blocchi. Rosa e verde menta tengono insieme ogni pezzo, dalle figurine al profilo social. Sulla felpa grigia il logo sta sul petto, mentre il retro porta la mascotte con pallone e boccale e lo slogan “One shot, one spike”. Ogni giocatore ha la sua figurina con numero, firma e soprannome.',
+    coverImage: 'assets/projects/melagoccio/cover.jpg',
+    capsuleImage: 'assets/projects/melagoccio/capsule.png',
+    gallery: {
+      layout: 'melagoccio',
+      base: 'assets/projects/melagoccio/',
+      kicker: 'Brand Design // Squadra amatoriale mista',
+      lead: 'Pallavolo, amici e una mascotte rosa: l’identità di una squadra che gioca per divertirsi.',
+      slogan: 'ONE SHOT ✦ ONE SPIKE ✦',
+      brandTitle: 'Il brand',
+      brandText: [
+        'Il logo è un <strong>badge tondo</strong>: la mascotte al centro e il nome MELAGOCCIO che le gira intorno in lettere a blocchi, come lo stemma di una squadra.',
+        'La palette mette insieme il <strong>rosa</strong> della mascotte e il <strong>verde menta</strong>, con il nero per i contorni: colori pop che si riconoscono da lontano, sul campo e sui social.'
+      ],
+      colors: [
+        { name: 'Menta', hex: '#CDEEE9' },
+        { name: 'Verde', hex: '#02AF91', text: '#FFFFFF' },
+        { name: 'Rosa', hex: '#C7609C', text: '#FFFFFF' },
+        { name: 'Rosa chiaro', hex: '#EDD6E5' },
+        { name: 'Inchiostro', hex: '#0B0F14', text: '#FFFFFF' }
+      ],
+      hoodieTitle: 'La felpa',
+      hoodieText: 'Sul petto il logo, sul retro la mascotte con pallone e boccale e lo slogan <strong>“One shot, one spike”</strong>. Gira la felpa per vedere entrambi i lati.',
+      cardsTitle: 'Le figurine',
+      cardsText: 'Una figurina per ogni giocatore: foto con la divisa, numero, soprannome firmato a mano e nome in lettere a blocchi, sullo sfondo a scritte del brand.',
+      players: [
+        { src: 'giocatore-1.jpg', caption: 'Figurina // #42 Marta Parabito' },
+        { src: 'giocatore-2.jpg', caption: 'Figurina // #40 Azzurra Pagani' },
+        { src: 'giocatore-3.jpg', caption: 'Figurina // #69 Andrea Meinardi' },
+        { src: 'giocatore-4.jpg', caption: 'Figurina // #18 Sara Sabetta' }
+      ],
+      banner: {
+        title: 'Social',
+        text: 'Sul profilo Instagram il banner “Squadra amatoriale mista” è diviso in <strong>tre post</strong> che, uno accanto all’altro, ricompongono l’immagine intera.',
+        src: 'banner-instagram.jpg',
+        ratio: 1600 / 768,
+        caption: 'Instagram // Il banner diviso in tre post'
+      }
+    }
+  },
+  {
+    id: 'r-15',
+    code: 'R-15 // BRAND-ABLONDI',
+    title: 'TEATRO SALONE ABLONDI',
+    category: 'Brand Design',
+    year: '2025',
+    shapeName: 'Velvet Prism',
+    colorHex: '#440096',
+    capsuleColor: 'purple',
+    style: 'Elegante & Teatrale',
+    palette: ['#FFFFFF', '#F5EBDD', '#000000', '#440096'],
+    software: ['Adobe Illustrator', 'Adobe Photoshop'],
+    stack: ['Adobe Illustrator', 'Adobe Photoshop', 'Logo Design', 'Brand Guidelines', 'Tipografia', 'Mockup Design'],
+    description: 'Identità visiva per il Teatro Salone Ablondi: un simbolo nato dalla A del nome, un marchio con due caratteri in proporzione fissa e le linee guida per usarlo.',
+    details: 'Il simbolo parte dalla A di Ablondi: due archi la racchiudono come le quinte di un sipario e tre linee curve, sotto, disegnano il palco. Ci si è arrivati per variazioni successive, semplificando il segno a ogni passaggio. Il marchio unisce Montserrat Regular per TEATRO SALONE e Radlush SemiBold per ABLONDI, in proporzioni fissate dalle linee guida. La palette ha quattro colori (bianco, crema, nero e un viola profondo) e il marchio funziona su ognuno. Le linee guida chiudono con le applicazioni sulle magliette.',
+    coverImage: 'assets/projects/teatro-ablondi/cover.jpg',
+    capsuleImage: 'assets/projects/teatro-ablondi/capsule.png',
+    gallery: {
+      layout: 'ablondi',
+      base: 'assets/projects/teatro-ablondi/',
+      stageCaption: 'Si apre il sipario',
+      symbolTitle: 'Il simbolo',
+      symbolText: [
+        'Il simbolo parte dalla <strong>A di Ablondi</strong>: due archi la racchiudono come le quinte di un sipario e tre linee curve, sotto, disegnano il palco.',
+        'Ci si è arrivati per variazioni successive, togliendo a ogni passaggio quello che non serviva.'
+      ],
+      process: [
+        { src: 'variazioni-prime.png', title: 'Prime variazioni', desc: 'Le prime idee: gradini, la A tagliata, il cerchio' },
+        { src: 'variazioni-ultime.png', title: 'Ultime variazioni', desc: 'Il segno si stringe attorno alla A e al palco' },
+        { title: 'Versione finale', desc: 'Il simbolo definitivo', final: true }
+      ],
+      buildTitle: 'Costruzione',
+      facts: [
+        { value: '× 2,42', label: 'ABLONDI è 2,42 volte più grande di TEATRO SALONE.' },
+        { value: '× 2,546', label: 'L’altezza y è 2,546 volte l’altezza x.' }
+      ],
+      paletteTitle: 'Palette',
+      colors: [
+        { name: 'Bianco', hex: '#FFFFFF', cmyk: 'C0 M0 Y0 K0', ink: '#000000', logo: 'black' },
+        { name: 'Crema', hex: '#F5EBDD', cmyk: 'C3 M6 Y12 K0', ink: '#440096', logo: 'viola' },
+        { name: 'Nero', hex: '#000000', cmyk: 'C60 M40 Y40 K100', ink: '#FFFFFF', logo: 'bianco' },
+        { name: 'Viola', hex: '#440096', cmyk: 'C89 M100 Y2 K3', ink: '#F5EBDD', logo: 'crema' }
+      ],
+      typeTitle: 'Tipografia',
+      fonts: [
+        { cls: 'is-montserrat', use: 'TEATRO SALONE', name: 'Montserrat Regular', sample: 'TEATRO SALONE' },
+        { cls: 'is-radlush', use: 'ABLONDI', name: 'Radlush SemiBold', sample: 'ABLONDI' }
+      ],
+      mockup: {
+        title: 'Applicazioni',
+        lead: 'Il marchio sulle magliette: in <strong>bianco sul nero</strong> e in <strong>nero sul bianco</strong>, piccolo sul petto.',
+        src: 'mockup-tshirt.jpg',
+        alt: 'Magliette nera e bianca con il marchio del Teatro Salone Ablondi',
+        caption: 'Mockup // Il marchio sulle magliette'
+      }
+    }
+  },
+  {
     id: 'r-14',
     code: 'R-14 // AR-CAMPARI',
     title: 'CAMPARI CHAMP-AR',
@@ -20,6 +131,7 @@ window.PROJECT_REGISTRY = [
     description: 'Un gioco in realtà aumentata e un packaging in edizione limitata per Campari. “Champ-AR” unisce “Champ” e “AR” (Augmented Reality) e porta dentro un cabinato arcade da scaffale l’interazione che il brand ha sempre cercato nelle sue campagne.',
     details: 'Lo spiritello ha rubato il Campari e farà di tutto per tenerselo: l’eroe in stile Depero deve saltare le arance e recuperare la bottiglia. Packaging ed etichetta richiamano i cabinati dei videogiochi anni ’80 e ’90 e parlano a chi ha vissuto i primi giochi arcade, con un target tra i 20 e i 35 anni. La pixel art si unisce all’estetica minimale con pattern delle scatole di alcolici. Il gioco gira nel browser con A-Frame e MindAR: inquadrando la scatola parte la sfida. Progetto del secondo anno di Communication Design, Istituto Modartech.',
     coverImage: 'assets/projects/campari-champ-ar/showcase.jpg',
+    capsuleImage: 'assets/projects/campari-champ-ar/capsule.png',
     gallery: {
       layout: 'champar',
       base: 'assets/projects/campari-champ-ar/',
@@ -111,7 +223,7 @@ window.PROJECT_REGISTRY = [
     year: '2025',
     shapeName: 'Crimson Octahedron',
     colorHex: '#BF2025',
-    capsuleColor: 'red',
+    capsuleColor: 'yellow',
     style: 'Art Déco & Pop Art',
     palette: ['#BF2025', '#E7C42F', '#000000', '#FFFFFF'],
     stack: ['Adobe Illustrator', 'Adobe Photoshop', 'Poster Design', 'Art Déco', 'Pop Art', 'Mockup Design'],
@@ -119,6 +231,7 @@ window.PROJECT_REGISTRY = [
     metrics: { formato: 'Manifesto', palette: 'Rosso / Oro / Nero', stile: 'Art Déco & Pop Art' },
     details: 'La protagonista è disegnata come la regina di cuori di un mazzo da gioco: lo sguardo assorto richiama la partita a carte in cui si gioca il destino suo e dell’uomo che ama. Nella parte bassa, sagome poligonali bicromatiche raccontano gli elementi chiave dell’opera e la loro posizione ha un significato: l’amato ferito è sul cuore di lei, lo sceriffo dal lato opposto, e la mano inserita è la “mano del morto”, leggenda del Far West. Lo stile prende da Saul Bass, dall’opening di Casino Royale e dalle cinematiche di Deathloop; il titolo è composto in Decondol Regular. Progetto d’esame di progettazione grafica, Istituto Modartech (2025).',
     coverImage: 'assets/projects/la-fanciulla-del-west/poster.jpg',
+    capsuleImage: 'assets/projects/la-fanciulla-del-west/capsule.png',
     gallery: {
       poster: {
         src: 'assets/projects/la-fanciulla-del-west/poster.jpg',
@@ -286,7 +399,7 @@ window.PROJECT_REGISTRY = [
     year: '2025',
     shapeName: 'Double Pyramid',
     colorHex: '#FF5E7E',
-    capsuleColor: 'red',
+    capsuleColor: 'blue',
     style: 'Pop & Psichedelico',
     palette: ['#EFEA16', '#D68DC1', '#6DC8AB', '#0E74BA', '#070707'],
     stack: ['Adobe Illustrator', 'Adobe Photoshop', 'Poster Design', 'Pop Art', 'Illustrazione Vettoriale', 'Mockup Design'],
@@ -294,6 +407,7 @@ window.PROJECT_REGISTRY = [
     metrics: { software: 'Illustrator', stile: 'POP / Psychedelic', output: 'Poster & Mockup' },
     details: 'Un lavoro di composizione e ritmo visivo sviluppato interamente in vettoriale. Le singole illustrazioni, ricche di curve organiche e palette sature a contrasto, si intrecciano per dare vita al poster ufficiale dell’Echo Sound Festival e alle sue declinazioni promozionali.',
     coverImage: 'assets/projects/echo-sound-festival/poster.png',
+    capsuleImage: 'assets/projects/echo-sound-festival/capsule.png',
     gallery: {
       poster: {
         src: 'assets/projects/echo-sound-festival/poster.png',
