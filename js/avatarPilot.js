@@ -35,6 +35,7 @@
     ['#btn-wire-scroll-left', 'Torna indietro, c’era roba bella.'],
     ['#btn-wire-scroll-right', 'Avanti, il filo continua.'],
     ['#btn-open-full-catalog', 'Tutto l’archivio, in griglia.'],
+    ['#nav-open-catalog', 'Tutti i miei progetti, in un clic.'],
     // Catalogo completo
     ['.insta-project-card', (el) => {
       const t = el.querySelector('.insta-overlay-title');
@@ -167,6 +168,15 @@
       this.avatar.setTint(ch);
       this.avatar.setMessages(MESSAGES[ch]);
       this.avatar.onResize();
+      // cambio stile dal catalogo: l'avatar resta agganciato sopra al catalogo
+      if (this.pinned) {
+        if (this.trapped) this.setTrapped(false);
+        this.dockedBeforePin = false;
+        document.body.appendChild(this.pilot);
+        this.pilot.classList.add('is-docked');
+        this.docked = true;
+        return;
+      }
       this.queueCheck && this.queueCheck();
     }
 

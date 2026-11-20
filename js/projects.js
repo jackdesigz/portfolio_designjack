@@ -5,6 +5,105 @@
 
 window.PROJECT_REGISTRY = [
   {
+    id: 'r-14',
+    code: 'R-14 // AR-CAMPARI',
+    title: 'CAMPARI CHAMP-AR',
+    category: 'Interaction Design',
+    year: '2026',
+    shapeName: 'Crimson Cube',
+    colorHex: '#EC2027',
+    capsuleColor: 'red',
+    style: 'Pixel Art & Arcade anni ’80',
+    palette: ['#EC2027', '#2D2D2D', '#FFD252', '#FFFFFF'],
+    software: ['Adobe Illustrator', 'Adobe Photoshop', 'JavaScript'],
+    stack: ['Adobe Illustrator', 'Adobe Photoshop', 'JavaScript', 'A-Frame', 'MindAR', 'Realtà Aumentata', 'Pixel Art', 'Packaging Design', 'Social Campaign'],
+    description: 'Un gioco in realtà aumentata e un packaging in edizione limitata per Campari. “Champ-AR” unisce “Champ” e “AR” (Augmented Reality) e porta dentro un cabinato arcade da scaffale l’interazione che il brand ha sempre cercato nelle sue campagne.',
+    details: 'Lo spiritello ha rubato il Campari e farà di tutto per tenerselo: l’eroe in stile Depero deve saltare le arance e recuperare la bottiglia. Packaging ed etichetta richiamano i cabinati dei videogiochi anni ’80 e ’90 e parlano a chi ha vissuto i primi giochi arcade, con un target tra i 20 e i 35 anni. La pixel art si unisce all’estetica minimale con pattern delle scatole di alcolici. Il gioco gira nel browser con A-Frame e MindAR: inquadrando la scatola parte la sfida. Progetto del secondo anno di Communication Design, Istituto Modartech.',
+    coverImage: 'assets/projects/campari-champ-ar/showcase.jpg',
+    gallery: {
+      layout: 'champar',
+      base: 'assets/projects/campari-champ-ar/',
+      hero: {
+        kicker: 'Interaction Design // Realtà aumentata',
+        lead: 'Gioco in realtà aumentata e packaging in edizione limitata: la scatola diventa un cabinato arcade.',
+        tagline: 'Accetti la sfida?'
+      },
+      story: {
+        title: 'La storia',
+        paragraphs: [
+          'Il gioco è un tributo al brand e alla sua storia: <strong>lo spiritello ha rubato il Campari</strong> e farà di tutto per tenerselo.',
+          'L’eroe in stile Depero deve saltare le arance che gli vengono lanciate contro e <strong>recuperare la bottiglia</strong>. Le grafiche citano i classici arcade come Donkey Kong e Pac-Man.'
+        ],
+        cast: [
+          { sprite: 'player', name: 'L’eroe', text: 'In stile Depero, con movimenti rigidi e geometrici.' },
+          { sprite: 'spirit', name: 'Lo spiritello', text: 'Dal manifesto di Cappiello del 1921, con movimenti giocosi e scomposti.' },
+          { sprite: 'orange', name: 'L’arancia', text: 'Dalla scorza che avvolge lo spiritello di Cappiello, diventata la sua arma.' }
+        ]
+      },
+      packaging: {
+        title: 'Il packaging',
+        faceCaption: 'Il fronte del packaging — l’etichetta come lo schermo di un cabinato',
+        paragraphs: [
+          'Packaging ed etichetta rimandano ai <strong>cabinati per videogiochi anni ’80 e ’90</strong> e si rivolgono a un pubblico che ha vissuto il periodo dei primi giochi arcade.',
+          'Sul fronte c’è il livello del gioco con le travi e le scale, e un QR code con la domanda <strong>“Accetti la sfida?”</strong>.'
+        ],
+        aestheticsTitle: 'L’estetica',
+        aesthetics: [
+          'L’estetica cult di quegli anni, la <strong>pixel art</strong>, si unisce a quella dei packaging minimali con pattern, molto usata per le scatole degli alcolici.',
+          'Nelle sprite sheet le animazioni rispecchiano il carattere dei personaggi: movimenti giocosi per lo spiritello, rigidi e geometrici per l’eroe.'
+        ],
+        fonts: [
+          { use: 'Per il web', name: 'Upheaval TT (BRK)', pixel: true },
+          { use: 'Per la stampa', name: 'Rajdhani' }
+        ]
+      },
+      showcase: {
+        title: 'Showcase',
+        lead: 'I lati del packaging, con i personaggi del gioco che escono dalle scatole.',
+        src: 'showcase.jpg',
+        alt: 'Tre scatole Campari Champ-AR con l’eroe e lo spiritello in pixel art',
+        caption: 'Showcase // I lati del packaging Campari Champ-AR'
+      },
+      campaignTitle: 'La campagna',
+      campaignLead: 'Il lancio passa dai social, in tre momenti.',
+      campaign: [
+        {
+          title: 'Lancio e hype',
+          text: 'Il lancio è preceduto da storie che generano hype: messaggi criptici e misteriosi annunciano la <strong>scomparsa dell’amata bevanda</strong>.',
+          phones: [
+            { src: 'phone-01.png', caption: 'Storia // Cessata la produzione' },
+            { src: 'phone-02.png', caption: 'Storia // Il Campari è stato rubato' }
+          ]
+        },
+        {
+          title: 'La sfida',
+          text: 'Poi arriva la sfida: emerge un <strong>QR code</strong> che porta al gioco, ancora senza la realtà aumentata. Subito dopo un reel di lancio svela l’edizione limitata.',
+          phones: [
+            { src: 'phone-03.png', caption: 'Storia // Recuperalo! Insert coin' },
+            { src: 'phone-04.png', caption: 'Reel // L’edizione limitata' }
+          ]
+        },
+        {
+          title: 'Il post lancio',
+          text: 'Dopo il lancio, sui social escono le <strong>classifiche dei punteggi migliori</strong>: gli utenti sono spinti a condividere i risultati con l’hashtag <strong>#champar</strong>.',
+          oranges: true,
+          phones: [
+            { src: 'phone-05.png', caption: 'Il gioco // Il livello su smartphone' }
+          ]
+        }
+      ],
+      game: {
+        title: 'Gioca',
+        lead: 'Una versione endless del gioco: lo spiritello lancia le arance, tu saltale. Premi <strong>SALTA</strong> per iniziare.'
+      },
+      repo: {
+        href: 'https://github.com/jackdesigz/champar',
+        label: 'Il codice del gioco AR su GitHub',
+        meta: 'A-Frame + MindAR, jackdesigz/champar'
+      }
+    }
+  },
+  {
     id: 'r-13',
     code: 'R-13 // GRAPHIC-PUCCINI',
     title: 'LA FANCIULLA DEL WEST',

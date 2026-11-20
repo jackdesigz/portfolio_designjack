@@ -479,10 +479,20 @@ class ModalManager {
     }
   }
 
+  teardownLayout() {
+    if (this.layoutCleanup) {
+      try { this.layoutCleanup(); } catch (e) { /* niente */ }
+      this.layoutCleanup = null;
+    }
+  }
+
   closeProjectModal() {
+    // ferma il gioco/animazioni del layout dedicato
+    this.teardownLayout();
     if (this.projectModal) {
       this.projectModal.classList.remove('active');
-      document.body.classList.remove('modal-open');
+      // se sotto c'è ancora il catalogo la pagina deve restare bloccata
+      if (!document.body.classList.contains('catalog-open')) document.body.classList.remove('modal-open');
     }
   }
 
@@ -515,6 +525,21 @@ class ModalManager {
     const canvasFallback = document.getElementById('modal-project-canvas-fallback');
 
     if (!galleryShowcase) return;
+
+    // un layout dedicato (es. gioco) si smonta prima di disegnare il progetto successivo
+    this.teardownLayout();
+    galleryShowcase.removeAttribute('data-layout');
+
+    const layoutName = project.gallery && project.gallery.layout;
+    const customLayout = layoutName && window.PROJECT_LAYOUTS && window.PROJECT_LAYOUTS[layoutName];
+    if (customLayout) {
+      if (canvasFallback) canvasFallback.style.display = 'none';
+      galleryShowcase.style.display = 'flex';
+      galleryShowcase.setAttribute('data-layout', layoutName);
+      galleryShowcase.innerHTML = '';
+      this.layoutCleanup = customLayout(galleryShowcase, project) || null;
+      return;
+    }
 
     if (project.gallery) {
       // Progetto con asset reali (Poster, Illustrazioni, Mockup)

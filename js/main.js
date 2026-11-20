@@ -459,7 +459,7 @@ function initFullscreenInstagramCatalog() {
   const openModal = () => {
     if (!modal) return;
     modal.classList.add('active');
-    document.body.classList.add('modal-open');
+    document.body.classList.add('modal-open', 'catalog-open');
     // l'avatar resta con te anche nel catalogo
     if (window.avatarPilot && window.avatarPilot.pin) window.avatarPilot.pin(true);
     if (window.audioEngine) {
@@ -471,7 +471,7 @@ function initFullscreenInstagramCatalog() {
   const closeModal = () => {
     if (!modal) return;
     modal.classList.remove('active');
-    document.body.classList.remove('modal-open');
+    document.body.classList.remove('modal-open', 'catalog-open');
     if (window.avatarPilot && window.avatarPilot.pin) window.avatarPilot.pin(false);
     if (window.audioEngine) window.audioEngine.playBeep(520, 0.04);
   };
@@ -483,11 +483,51 @@ function initFullscreenInstagramCatalog() {
     });
   }
 
+  // pulsante nella barra in alto: c'è in R, G e B
+  document.querySelectorAll('[data-open-catalog]').forEach((b) => {
+    const count = b.querySelector('.ncb-count');
+    if (count) count.textContent = projects.length;
+    b.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
   if (btnClose) {
     btnClose.addEventListener('click', (e) => {
       e.preventDefault();
       closeModal();
     });
+  }
+
+  // 4. Switch R / G / B in alto a destra: cambia lo stile di tutto il sito
+  const styleBtns = modal ? Array.from(modal.querySelectorAll('[data-style-channel]')) : [];
+  const currentStyle = () => {
+    const c = document.body.classList;
+    if (c.contains('channel-g-active')) return 'G';
+    if (c.contains('channel-b-active')) return 'B';
+    return 'R';
+  };
+  const syncStyleBtns = () => {
+    const cur = currentStyle();
+    styleBtns.forEach((b) => {
+      const on = b.getAttribute('data-style-channel') === cur;
+      b.classList.toggle('is-current', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  };
+  styleBtns.forEach((b) => {
+    b.addEventListener('click', () => {
+      const target = b.getAttribute('data-style-channel');
+      if (target === currentStyle() || !window.switchChannel) return;
+      document.body.classList.add('channel-switching');
+      window.switchChannel(target);
+      setTimeout(() => document.body.classList.remove('channel-switching'), 1500);
+    });
+  });
+  if (styleBtns.length) {
+    syncStyleBtns();
+    new MutationObserver(syncStyleBtns).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
 
   document.addEventListener('keydown', (e) => {

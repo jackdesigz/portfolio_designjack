@@ -111,7 +111,9 @@
       this.camera = new THREE.PerspectiveCamera(28, w / h, 0.1, 50);
       this.camera.position.set(0, -0.14, 5.5);
 
-      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      // niente antialias: la scena passa dal buffer pixelato (vedi buildPost), quindi non si vedrebbe,
+      // e con l'antialias ogni ridimensionamento (aggancio in basso a sinistra) costava ~200 ms
+      this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
       this.renderer.setSize(w, h);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       this.container.innerHTML = '';
@@ -343,6 +345,10 @@
       const w = this.container.clientWidth;
       const h = this.container.clientHeight;
       if (w <= 0 || h <= 0) return;
+      // il ResizeObserver richiama dopo l'aggancio con la stessa misura: niente lavoro doppio
+      if (w === this.lastW && h === this.lastH) return;
+      this.lastW = w;
+      this.lastH = h;
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h);

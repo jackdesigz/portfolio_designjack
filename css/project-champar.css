@@ -1,0 +1,948 @@
+/* =====================================================================
+   PROGETTO "CAMPARI CHAMP-AR" — layout dedicato (js/projectChampar.js)
+   Colori e font del progetto: rosso #EC2027, antracite #2D2D2D,
+   giallo #FFD252, bianco. Upheaval TT per il web, Rajdhani per la stampa.
+   ===================================================================== */
+
+@font-face {
+  font-family: 'Upheaval';
+  src: url('../assets/fonts/upheavtt.ttf') format('truetype');
+  font-display: swap;
+}
+
+.project-media-showcase[data-layout="champar"] {
+  gap: 0;
+  margin: 0;
+}
+
+.champar {
+  --cz-red: #EC2027;
+  --cz-red-dark: #B5161C;
+  --cz-ink: #2D2D2D;
+  --cz-ink-2: #232323;
+  --cz-black: #151515;
+  --cz-yellow: #FFD252;
+  --cz-white: #FFFFFF;
+  --cz-pad: clamp(20px, 4vw, 56px);
+  --cz-bounce: cubic-bezier(.34, 1.56, .64, 1);
+  /* il font globale del sito passa da --font-main: qui diventa Rajdhani */
+  --font-main: 'Rajdhani', 'Hind', 'Helvetica Neue', Arial, sans-serif;
+
+  position: relative;
+  /* esce dal padding della scheda: la pagina va da bordo a bordo */
+  margin: 110px calc(-1 * clamp(24px, 3.8vw, 48px)) 8px;
+  color: var(--cz-white);
+  background: var(--cz-ink);
+  overflow-x: clip;
+}
+
+.champar .cz-pixel {
+  --font-main: 'Upheaval', 'Press Start 2P', monospace;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+/* pattern a quadretti come la carta del packaging */
+.champar .cz-hero,
+.champar .cz-game {
+  background-color: var(--cz-red);
+  background-image:
+    repeating-conic-gradient(rgba(0, 0, 0, 0.07) 0 25%, transparent 0 50%);
+  background-size: 28px 28px;
+}
+
+/* ---------- comparsa allo scroll ---------- */
+.champar .cz-reveal {
+  transition:
+    transform 0.9s var(--cz-bounce),
+    opacity 0.5s ease;
+  transition-delay: calc(var(--i, 0) * 0.12s);
+}
+
+/* ---------- sprite animati (fogli di frame affiancati) ---------- */
+.champar .cz-sprite {
+  display: inline-block;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.champar .cz-sprite-player {
+  width: 96px;
+  height: 96px;
+  background-image: url('../assets/projects/campari-champ-ar/player-run.png');
+  background-size: 400% 100%;
+  animation: cz-run 0.5s steps(4) infinite;
+}
+
+.champar .cz-sprite-spirit {
+  width: 124px;
+  height: 124px;
+  background-image: url('../assets/projects/campari-champ-ar/spiritello.png');
+  background-size: 300% 100%;
+  animation: cz-throw 1.5s step-end infinite;
+  /* lo sprite originale guarda a destra: va girato verso sinistra */
+  scale: -1 1;
+}
+
+@keyframes cz-run {
+  from { background-position: 0 0; }
+  to { background-position: 133.333% 0; }
+}
+
+@keyframes cz-throw {
+  0% { background-position: 0 0; }
+  55% { background-position: 50% 0; }
+  68% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* =====================================================================
+   HERO
+   ===================================================================== */
+.champar .cz-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  min-height: 470px;
+  padding: 54px var(--cz-pad) 0;
+}
+
+.champar .cz-hero-copy {
+  position: relative;
+  z-index: 3;
+  align-self: center;
+  padding-bottom: 96px;
+}
+
+.champar .cz-kicker {
+  display: inline-block;
+  background: var(--cz-black);
+  color: var(--cz-yellow);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  margin-bottom: 18px;
+}
+
+.champar .cz-logo {
+  margin: 0;
+  line-height: 0.82;
+}
+
+.champar .cz-logo span {
+  display: block;
+  font-size: clamp(3.4rem, 9.5vw, 7.6rem);
+  color: var(--cz-white);
+  text-shadow: 6px 6px 0 var(--cz-black);
+}
+
+.champar .cz-logo em {
+  display: block;
+  font-style: normal;
+  font-size: clamp(1.7rem, 4.4vw, 3.3rem);
+  color: var(--cz-yellow);
+  text-shadow: 4px 4px 0 var(--cz-black);
+  margin-top: 10px;
+}
+
+.champar .cz-hero-lead {
+  max-width: 34ch;
+  margin: 22px 0 0;
+  font-size: 1.22rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--cz-white);
+}
+
+.champar .cz-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 22px;
+  margin-top: 26px;
+}
+
+.champar .cz-coin {
+  appearance: none;
+  border: 3px solid var(--cz-black);
+  background: var(--cz-yellow);
+  color: var(--cz-black);
+  font-size: 1.15rem;
+  padding: 12px 18px 10px;
+  box-shadow: 5px 5px 0 var(--cz-black);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  animation: cz-blink 1.1s step-end infinite;
+}
+
+.champar .cz-coin:hover,
+.champar .cz-coin:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--cz-black);
+  animation: none;
+  outline: none;
+}
+
+.champar .cz-challenge {
+  font-size: 1.15rem;
+  color: var(--cz-black);
+}
+
+@keyframes cz-blink {
+  50% { background: var(--cz-white); }
+}
+
+/* la scatola esce dal bordo alto del riquadro e poggia sul pavimento */
+.champar .cz-hero-stage {
+  position: relative;
+  min-height: 340px;
+}
+
+.champar .cz-box-wrap {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: -10px;
+  height: calc(100% + 170px);
+  translate: 0 var(--cz-par, 0px);
+  transform: translate(-50%, 45%) rotate(14deg);
+  opacity: 0;
+  transform-origin: 50% 100%;
+}
+
+.champar .cz-box-wrap.is-in {
+  transform: translate(-50%, 0) rotate(-6deg);
+  opacity: 1;
+}
+
+.champar .cz-box {
+  display: block;
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 22px 26px rgba(0, 0, 0, 0.38));
+  animation: cz-float 4.6s ease-in-out infinite;
+}
+
+@keyframes cz-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -12px; }
+}
+
+/* lo spiritello spunta da dietro la scatola */
+.champar .cz-peek-spirit {
+  position: absolute;
+  z-index: 1;
+  width: 160px;
+  height: 160px;
+  left: calc(50% - 70px);
+  top: 4%;
+  /* translate/rotate e non transform: così non vengono ribaltati dallo scale -1 dello sprite */
+  translate: -30px 0;
+  rotate: 0deg;
+  opacity: 0;
+  transition:
+    translate 0.9s var(--cz-bounce) 0.6s,
+    rotate 0.9s var(--cz-bounce) 0.6s,
+    opacity 0.5s ease 0.6s;
+}
+
+.champar .cz-peek-spirit.is-in {
+  translate: 118px 0;
+  rotate: -8deg;
+  opacity: 1;
+}
+
+/* pavimento: l'eroe corre e salta l'arancia che rotola */
+.champar .cz-hero-floor {
+  position: relative;
+  z-index: 4;
+  grid-column: 1 / -1;
+  height: 14px;
+  margin: 0 calc(-1 * var(--cz-pad));
+  background: var(--cz-ink);
+  border-top: 12px solid var(--cz-red-dark);
+  box-shadow: 0 -4px 0 var(--cz-black);
+}
+
+/* i piedi stanno a 86/128 del frame: così poggia sulla trave rossa */
+.champar .cz-floor-runner {
+  position: absolute;
+  left: 8%;
+  bottom: calc(100% + 12px - 34px);
+  width: 104px;
+  height: 104px;
+  animation:
+    cz-run 0.45s steps(4) infinite,
+    cz-hop 4.2s ease-in-out infinite;
+}
+
+.champar .cz-floor-orange {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 100%;
+  width: 34px;
+  height: 34px;
+  image-rendering: pixelated;
+  animation: cz-roll 4.2s linear infinite;
+}
+
+@keyframes cz-roll {
+  from { left: 100%; rotate: 0deg; }
+  to { left: -6%; rotate: -900deg; }
+}
+
+@keyframes cz-hop {
+  0%, 76% { translate: 0 0; }
+  84% { translate: 0 -78px; }
+  92%, 100% { translate: 0 0; }
+}
+
+/* =====================================================================
+   SEZIONI
+   ===================================================================== */
+.champar .cz-sec {
+  position: relative;
+  padding: clamp(48px, 7vw, 96px) var(--cz-pad);
+}
+
+.champar .cz-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.champar .cz-num {
+  flex: none;
+  color: var(--cz-yellow);
+  font-size: 1.05rem;
+  border: 3px solid currentColor;
+  padding: 6px 7px 4px;
+  line-height: 1;
+}
+
+.champar .cz-title {
+  margin: 0;
+  color: var(--cz-red);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 0.9;
+  text-shadow: 4px 4px 0 var(--cz-black);
+}
+
+.champar .cz-text {
+  margin: 0 0 14px;
+  max-width: 62ch;
+  font-size: 1.16rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #F1F1F1;
+}
+
+.champar .cz-text strong {
+  color: var(--cz-yellow);
+  font-weight: 700;
+}
+
+.champar .cz-lead {
+  margin-bottom: 30px;
+}
+
+.champar .cz-sub {
+  margin: 26px 0 10px;
+  font-size: 1.6rem;
+  color: var(--cz-yellow);
+}
+
+/* ---------- 01 storia + cast ---------- */
+.champar .cz-story-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+}
+
+.champar .cz-cast {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.champar .cz-card {
+  background: var(--cz-ink-2);
+  border: 3px solid var(--cz-black);
+  box-shadow: 6px 6px 0 var(--cz-red);
+  padding: 12px 12px 14px;
+  transform: translateY(46px) scale(0.92);
+  opacity: 0;
+}
+
+.champar .cz-card.is-in {
+  transform: none;
+  opacity: 1;
+}
+
+.champar .cz-card:nth-child(2) { box-shadow: 6px 6px 0 var(--cz-yellow); }
+
+.champar .cz-card-screen {
+  display: grid;
+  place-items: center;
+  height: 138px;
+  margin-bottom: 12px;
+  background:
+    repeating-conic-gradient(rgba(255, 255, 255, 0.035) 0 25%, transparent 0 50%) 0 0 / 16px 16px,
+    #1B1B1B;
+  border-bottom: 6px solid var(--cz-red);
+  overflow: hidden;
+}
+
+.champar .cz-card-screen .cz-sprite-spirit {
+  width: 120px;
+  height: 120px;
+}
+
+.champar .cz-card-orange {
+  width: 52px;
+  height: 52px;
+  image-rendering: pixelated;
+  animation: cz-card-roll 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes cz-card-roll {
+  from { translate: 46px 0; rotate: 0deg; }
+  to { translate: -46px 0; rotate: -360deg; }
+}
+
+.champar .cz-card h4 {
+  margin: 0 0 6px;
+  font-size: 1.3rem;
+  color: var(--cz-white);
+}
+
+.champar .cz-card p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #CFCFCF;
+}
+
+/* ---------- 02 packaging ---------- */
+.champar .cz-pack {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+  background: var(--cz-ink-2);
+}
+
+.champar .cz-face-col {
+  --face-h: 640px;
+  /* il fronte è alto 2717 px e largo 685: la larghezza segue l'altezza */
+  --face-w: calc(var(--face-h) * 0.252 + 8px);
+  position: relative;
+  min-height: var(--face-h);
+}
+
+/* il fronte entra dal bordo sinistro della pagina */
+.champar .cz-face-wrap {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 6%;
+  height: 100%;
+  transform: translateX(-130%) rotate(-14deg);
+  opacity: 0;
+}
+
+.champar .cz-face-wrap.is-in {
+  transform: translateX(0) rotate(-4deg);
+  opacity: 1;
+}
+
+.champar .cz-face-wrap img {
+  display: block;
+  height: 100%;
+  width: auto;
+  border: 4px solid var(--cz-black);
+  box-shadow: 12px 12px 0 var(--cz-red);
+  cursor: zoom-in;
+}
+
+/* l'eroe spunta da dietro il fronte */
+.champar .cz-peek-player {
+  position: absolute;
+  z-index: 1;
+  top: 34%;
+  left: calc(6% + var(--face-w) - 90px);
+  width: 104px;
+  height: 104px;
+  transform: translateX(0);
+  opacity: 0;
+  transition-delay: 0.7s;
+}
+
+.champar .cz-peek-player.is-in {
+  transform: translateX(78px) rotate(6deg);
+  opacity: 1;
+}
+
+.champar .cz-fonts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 560px;
+  margin-top: 24px;
+}
+
+.champar .cz-font-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--cz-ink);
+  border: 3px solid var(--cz-black);
+  border-left: 8px solid var(--cz-red);
+  transform: translateY(24px);
+  opacity: 0;
+}
+
+.champar .cz-font-card + .cz-font-card {
+  border-left-color: var(--cz-yellow);
+  transition-delay: 0.12s;
+}
+
+.champar .cz-font-card.is-in {
+  transform: none;
+  opacity: 1;
+}
+
+.champar .cz-font-use {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #BDBDBD;
+}
+
+.champar .cz-font-sample {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cz-white);
+}
+
+.champar .cz-font-sample.cz-pixel {
+  color: var(--cz-red);
+}
+
+.champar .cz-font-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cz-yellow);
+}
+
+/* ---------- 03 showcase ---------- */
+.champar .cz-show {
+  position: relative;
+  margin: 0;
+  transform: translateY(40px) scale(0.95);
+  opacity: 0;
+}
+
+.champar .cz-show.is-in {
+  transform: none;
+  opacity: 1;
+}
+
+.champar .cz-show > div {
+  position: relative;
+  z-index: 1;
+  cursor: zoom-in;
+}
+
+.champar .cz-show-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 4px solid var(--cz-black);
+  box-shadow: 14px 14px 0 var(--cz-red);
+  transition: transform 0.35s var(--cz-bounce);
+}
+
+.champar .cz-show > div:hover .cz-show-img {
+  transform: scale(1.012) rotate(-0.4deg);
+}
+
+.champar .cz-show figcaption {
+  margin-top: 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #BDBDBD;
+}
+
+/* arance che spuntano da dietro l'immagine */
+.champar .cz-show-orange {
+  position: absolute;
+  z-index: 0;
+  width: 78px;
+  image-rendering: pixelated;
+  animation: cz-bob 3.2s ease-in-out infinite;
+}
+
+.champar .cz-show-orange-a { top: -46px; right: 14%; }
+.champar .cz-show-orange-b { right: -30px; bottom: 18%; width: 64px; animation-delay: -1.4s; }
+
+@keyframes cz-bob {
+  0%, 100% { translate: 0 0; rotate: -8deg; }
+  50% { translate: 0 -10px; rotate: 8deg; }
+}
+
+/* ---------- 04 campagna sui telefoni ---------- */
+.champar .cz-campaign {
+  background: var(--cz-ink-2);
+}
+
+.champar .cz-steps {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 7vw, 90px);
+}
+
+.champar .cz-step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 4vw, 60px);
+  align-items: center;
+}
+
+.champar .cz-step.is-flip .cz-step-copy { order: 2; }
+
+.champar .cz-step-num {
+  display: block;
+  font-size: clamp(3rem, 7vw, 5rem);
+  line-height: 0.8;
+  color: var(--cz-yellow);
+  text-shadow: 4px 4px 0 var(--cz-black);
+}
+
+.champar .cz-step-copy h4 {
+  margin: 8px 0 12px;
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  color: var(--cz-red);
+  text-shadow: 3px 3px 0 var(--cz-black);
+}
+
+.champar .cz-phones {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 0;
+}
+
+.champar .cz-phone {
+  position: relative;
+  z-index: 1;
+  width: clamp(140px, 17vw, 210px);
+  transform: translateY(90px) rotate(0deg);
+  opacity: 0;
+  cursor: zoom-in;
+}
+
+.champar .cz-phone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(10px 12px 0 rgba(0, 0, 0, 0.45));
+  transition: transform 0.35s var(--cz-bounce);
+}
+
+.champar .cz-phone:hover img {
+  transform: translateY(-10px) scale(1.03);
+}
+
+.champar .cz-phones[data-count="2"] .cz-phone:first-of-type.is-in { transform: rotate(-6deg); opacity: 1; }
+.champar .cz-phones[data-count="2"] .cz-phone:last-of-type { margin-left: -14px; }
+.champar .cz-phones[data-count="2"] .cz-phone:last-of-type.is-in { transform: translateY(26px) rotate(5deg); opacity: 1; }
+.champar .cz-phones[data-count="1"] .cz-phone.is-in { transform: rotate(-3deg); opacity: 1; }
+
+/* arance attorno all'ultimo telefono, come nella slide del post lancio */
+.champar .cz-phone-orange {
+  position: absolute;
+  z-index: 0;
+  width: 70px;
+  image-rendering: pixelated;
+  animation: cz-bob 3.4s ease-in-out infinite;
+}
+
+.champar .cz-po-a { left: 12%; top: 8%; }
+.champar .cz-po-b { right: 10%; bottom: 10%; width: 86px; animation-delay: -1.7s; }
+
+/* =====================================================================
+   05 GIOCO
+   ===================================================================== */
+.champar .cz-game .cz-title {
+  color: var(--cz-white);
+}
+
+.champar .cz-game .cz-num {
+  color: var(--cz-black);
+}
+
+.champar .cz-game .cz-text {
+  color: var(--cz-white);
+  font-weight: 600;
+}
+
+.champar .cz-cabinet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: 18px;
+  padding: 16px;
+  background: var(--cz-black);
+  border-radius: 20px;
+  box-shadow:
+    0 10px 0 #7A0C11,
+    0 22px 40px rgba(0, 0, 0, 0.35);
+}
+
+.champar .cz-screen {
+  position: relative;
+  overflow: hidden;
+  border: 4px solid #000;
+  border-radius: 10px;
+  background: var(--cz-ink);
+}
+
+.champar .cz-screen::after {
+  /* righe da monitor arcade */
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.13) 0 1px, transparent 1px 3px);
+}
+
+.champar .cz-screen.is-hit {
+  animation: cz-shake 0.4s ease;
+}
+
+@keyframes cz-shake {
+  0%, 100% { translate: 0 0; }
+  20% { translate: -8px 2px; }
+  40% { translate: 7px -2px; }
+  60% { translate: -5px 1px; }
+  80% { translate: 3px 0; }
+}
+
+.champar .cz-canvas {
+  display: block;
+  width: 100%;
+  height: 300px;
+  touch-action: manipulation;
+}
+
+.champar .cz-hud {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.05rem;
+  color: var(--cz-white);
+  pointer-events: none;
+}
+
+.champar .cz-hud b {
+  font-weight: 400;
+  color: var(--cz-yellow);
+}
+
+.champar .cz-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.champar .cz-jump {
+  appearance: none;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  border: 6px solid #000;
+  background: radial-gradient(circle at 34% 28%, #FF6A6F 0%, var(--cz-red) 48%, #A3121A 100%);
+  color: var(--cz-white);
+  font-size: 1.7rem;
+  cursor: pointer;
+  box-shadow:
+    0 10px 0 #6E0A0F,
+    0 16px 26px rgba(0, 0, 0, 0.5),
+    inset 0 -6px 0 rgba(0, 0, 0, 0.18);
+  transition: transform 0.07s ease, box-shadow 0.07s ease;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.champar .cz-jump span {
+  display: block;
+  text-shadow: 3px 3px 0 #000;
+}
+
+.champar .cz-jump.is-down {
+  transform: translateY(8px);
+  box-shadow:
+    0 2px 0 #6E0A0F,
+    0 4px 10px rgba(0, 0, 0, 0.5),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18);
+}
+
+.champar .cz-jump:focus-visible {
+  outline: 4px solid var(--cz-yellow);
+  outline-offset: 6px;
+}
+
+.champar .cz-cabinet:not(.is-playing) .cz-jump:not(.is-down) {
+  animation: cz-pulse 1.3s ease-in-out infinite;
+}
+
+@keyframes cz-pulse {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.06; }
+}
+
+.champar .cz-hint {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: #BDBDBD;
+}
+
+.champar .cz-repo {
+  margin-top: 34px;
+  background: var(--cz-black);
+  color: var(--cz-white);
+  border-color: var(--cz-black);
+}
+
+/* =====================================================================
+   SCHERMI PICCOLI
+   ===================================================================== */
+@media (max-width: 860px) {
+  .champar .cz-story-grid,
+  .champar .cz-step {
+    grid-template-columns: 1fr;
+  }
+
+  .champar .cz-step.is-flip .cz-step-copy { order: 0; }
+
+  .champar .cz-pack {
+    grid-template-columns: 1fr;
+  }
+
+  .champar .cz-face-col {
+    --face-h: 480px;
+    min-height: 480px;
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .champar {
+    margin-top: 80px;
+  }
+
+  .champar .cz-hero {
+    grid-template-columns: 1fr;
+    padding-top: 40px;
+  }
+
+  .champar .cz-hero-copy {
+    padding-bottom: 20px;
+  }
+
+  .champar .cz-hero-stage {
+    min-height: 380px;
+  }
+
+  .champar .cz-box-wrap {
+    height: calc(100% + 40px);
+  }
+
+  .champar .cz-cast {
+    grid-template-columns: 1fr;
+  }
+
+  .champar .cz-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 4px 14px;
+    align-items: center;
+  }
+
+  .champar .cz-card-screen {
+    grid-row: span 2;
+    height: 110px;
+    margin: 0;
+  }
+
+  .champar .cz-fonts {
+    grid-template-columns: 1fr;
+  }
+
+  .champar .cz-cabinet {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .champar .cz-canvas {
+    height: 240px;
+  }
+
+  .champar .cz-panel {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .champar .cz-jump {
+    width: 112px;
+    height: 112px;
+    font-size: 1.35rem;
+  }
+}
+
+/* ---------- movimento ridotto ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .champar .cz-reveal { transition: none; }
+  .champar .cz-sprite,
+  .champar .cz-box,
+  .champar .cz-coin,
+  .champar .cz-floor-runner,
+  .champar .cz-floor-orange,
+  .champar .cz-card-orange,
+  .champar .cz-show-orange,
+  .champar .cz-phone-orange,
+  .champar .cz-cabinet:not(.is-playing) .cz-jump:not(.is-down) {
+    animation: none;
+  }
+  .champar .cz-floor-orange { left: 60%; }
+}
+
+/* sul rosso il grassetto resta leggibile in nero */
+.champar .cz-game .cz-text strong {
+  color: var(--cz-black);
+}

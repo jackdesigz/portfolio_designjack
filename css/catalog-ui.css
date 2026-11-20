@@ -1,0 +1,689 @@
+/* =====================================================================
+   FINESTRE IN OVERLAY E CATALOGO
+   - X di chiusura ben visibile su scheda progetto e capsula (le forme
+     cerchio/triangolo/quadrato restano solo nelle finestre del canale R)
+   - Switch R/G/B in alto a destra nel catalogo
+   - Catalogo senza flicker: fondo pieno, niente backdrop-filter, sito
+     sotto nascosto mentre il catalogo è aperto
+   - Catalogo negli stili G e B
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   X DI CHIUSURA
+   --------------------------------------------------------------------- */
+.modal-x {
+  position: fixed;
+  z-index: 5;
+  top: clamp(10px, 2vw, 22px);
+  right: clamp(10px, 2vw, 22px);
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  appearance: none;
+  cursor: pointer;
+  background: var(--paper-light, #F7F1E4);
+  border: 2.5px solid var(--ink, #151413);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--ink, #151413);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+/* la X disegnata con due barrette: nitida con qualsiasi font */
+.modal-x span,
+.modal-x span::before {
+  display: block;
+  width: 26px;
+  height: 4px;
+  background: var(--ink, #151413);
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+.modal-x span::before {
+  content: '';
+  transform: rotate(90deg);
+}
+
+.modal-x:hover,
+.modal-x:focus-visible {
+  background: var(--bauhaus-red, #D93D2A);
+  transform: translate(-2px, -2px) rotate(-4deg);
+  box-shadow: 6px 6px 0 var(--ink, #151413);
+  outline: none;
+}
+
+.modal-x:hover span,
+.modal-x:hover span::before,
+.modal-x:focus-visible span,
+.modal-x:focus-visible span::before {
+  background: #FFFFFF;
+}
+
+.modal-x:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink, #151413);
+}
+
+/* entra con un piccolo rimbalzo quando si apre la finestra */
+.modal-overlay.active .modal-x {
+  animation: modal-x-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes modal-x-in {
+  from { opacity: 0; scale: 0.4; rotate: -90deg; }
+  to { opacity: 1; scale: 1; rotate: 0deg; }
+}
+
+@media (max-width: 640px) {
+  .modal-x {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+/* G: cerchio lime come un tappo di bomboletta */
+body.channel-g-active .modal-x {
+  background: var(--gx-lime);
+  border: 2px solid var(--gx-ink);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(184, 242, 58, 0.25);
+}
+body.channel-g-active .modal-x span,
+body.channel-g-active .modal-x span::before { background: var(--gx-ink); }
+body.channel-g-active .modal-x:hover,
+body.channel-g-active .modal-x:focus-visible {
+  background: var(--gx-acid);
+  box-shadow: 0 0 0 8px rgba(184, 242, 58, 0.25);
+  transform: rotate(90deg) scale(1.05);
+}
+body.channel-g-active .modal-x:hover span,
+body.channel-g-active .modal-x:hover span::before { background: var(--gx-ink); }
+
+/* B: bolla di vetro lucida */
+body.channel-b-active .modal-x {
+  border: 1px solid #056BB0;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.7), 0 6px 18px rgba(0, 60, 130, 0.4);
+}
+body.channel-b-active .modal-x span,
+body.channel-b-active .modal-x span::before { background: #FFFFFF; }
+body.channel-b-active .modal-x:hover,
+body.channel-b-active .modal-x:focus-visible {
+  background: linear-gradient(180deg, #B5EFFF 0%, #3CC0F8 50%, #0A8EDB 51%, #5AD6FF 100%);
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.8), 0 10px 24px rgba(0, 60, 130, 0.45);
+}
+
+/* il titolo della barra resta da solo: centrato */
+#project-modal-overlay .window-topbar,
+#capsule-modal-overlay .window-topbar {
+  padding-right: 70px;
+}
+
+/* ---------------------------------------------------------------------
+   CATALOGO: niente flicker
+   --------------------------------------------------------------------- */
+.fullscreen-catalog-modal {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  isolation: isolate;
+}
+
+/* mentre il catalogo è aperto il sito sotto non viene disegnato:
+   nessun fotogramma del sito può più comparire dietro */
+body.catalog-open #main-app,
+body.catalog-open #music-player,
+body.catalog-open #crt-screen-overlay,
+body.catalog-open #crt-roll-bar {
+  visibility: hidden;
+}
+
+/* ---------------------------------------------------------------------
+   SWITCH R / G / B NEL CATALOGO
+   --------------------------------------------------------------------- */
+.fullscreen-catalog-topbar .topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.catalog-style-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 4px 12px;
+  background: var(--paper-light, #F7F1E4);
+  border: 2px solid var(--ink, #151413);
+  box-shadow: 3px 3px 0 var(--ink, #151413);
+}
+
+.catalog-style-label {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft, #4A443B);
+  margin-right: 4px;
+}
+
+.catalog-style-btn {
+  --c: #E63946;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  appearance: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--c);
+  background: transparent;
+  border: 2px solid transparent;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.catalog-style-btn.is-r { --c: #E63946; }
+.catalog-style-btn.is-g { --c: #23965A; }
+.catalog-style-btn.is-b { --c: #1D5FC2; }
+
+.catalog-style-btn:hover,
+.catalog-style-btn:focus-visible {
+  border-color: var(--c);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.catalog-style-btn.is-current {
+  background: var(--c);
+  color: #FFFFFF;
+  border-color: var(--ink, #151413);
+}
+
+body.channel-switching .catalog-style-btn {
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .fullscreen-catalog-topbar {
+    padding: 0 12px !important;
+    gap: 10px;
+  }
+  .fullscreen-catalog-topbar .topbar-title {
+    display: none;
+  }
+  .catalog-style-label {
+    display: none;
+  }
+  .catalog-style-switch {
+    padding: 3px;
+  }
+  .catalog-style-btn {
+    width: 30px;
+    height: 30px;
+  }
+  .btn-close-fullscreen {
+    padding: 8px 12px !important;
+    font-size: 0.72rem !important;
+  }
+}
+
+/* =====================================================================
+   CATALOGO — STILE G (organico × graffiti)
+   ===================================================================== */
+body.channel-g-active .fullscreen-catalog-modal {
+  background-color: var(--gx-deep);
+  background-image: var(--gx-noise), var(--gx-bricks);
+  background-size: 220px 220px, 96px 48px;
+}
+
+body.channel-g-active .fullscreen-catalog-topbar {
+  background: rgba(8, 26, 17, 0.96);
+  background-image: none;
+  border-bottom: 2px solid var(--gx-lime);
+}
+
+body.channel-g-active .topbar-branding,
+body.channel-g-active .topbar-title {
+  background: transparent;
+}
+
+body.channel-g-active .topbar-title {
+  color: var(--gx-mint);
+  /* il font globale passa da --font-main (regola !important in styles.css) */
+  --font-main: 'Sedgwick Ave Display', 'Permanent Marker', cursive;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+  transform: rotate(-1.5deg);
+}
+
+body.channel-g-active .btn-close-fullscreen {
+  background: transparent;
+  color: var(--gx-mint);
+  border: 2px solid rgba(157, 191, 158, 0.55);
+  border-radius: 999px;
+  box-shadow: none;
+}
+body.channel-g-active .btn-close-fullscreen:hover {
+  background: var(--gx-lime);
+  color: var(--gx-ink);
+  border-color: var(--gx-lime);
+  transform: rotate(-2deg);
+  box-shadow: none;
+}
+
+body.channel-g-active .catalog-style-switch {
+  background: transparent;
+  border: 2px dashed rgba(157, 191, 158, 0.55);
+  border-radius: 999px;
+  box-shadow: none;
+}
+body.channel-g-active .catalog-style-label { color: var(--gx-sage); }
+body.channel-g-active .catalog-style-btn { border-radius: 50%; }
+body.channel-g-active .catalog-style-btn.is-r { --c: #FF5A4E; }
+body.channel-g-active .catalog-style-btn.is-g { --c: var(--gx-lime); }
+body.channel-g-active .catalog-style-btn.is-b { --c: #4FC3FF; }
+body.channel-g-active .catalog-style-btn.is-current {
+  color: var(--gx-ink);
+  border-color: transparent;
+}
+
+body.channel-g-active .fullscreen-filters-bar {
+  background: var(--gx-wall);
+  border-bottom: 2px dashed rgba(157, 191, 158, 0.35);
+}
+body.channel-g-active .filters-heading { color: var(--gx-sage); }
+
+body.channel-g-active .insta-filter-pill {
+  background: transparent;
+  color: var(--gx-mint);
+  border: 2px solid rgba(157, 191, 158, 0.5);
+  border-radius: 999px;
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.78rem;
+}
+body.channel-g-active .insta-filter-pill:hover {
+  background: rgba(184, 242, 58, 0.12);
+  color: var(--gx-lime);
+  border-color: var(--gx-lime);
+  transform: rotate(-2deg);
+  box-shadow: none;
+}
+body.channel-g-active .insta-filter-pill.active {
+  background: var(--gx-lime);
+  color: var(--gx-ink);
+  border-color: var(--gx-lime);
+  transform: rotate(-2deg);
+}
+
+body.channel-g-active .fullscreen-grid-hint { color: var(--gx-sage); }
+
+/* riquadri come adesivi attaccati al muro, un po' storti */
+body.channel-g-active .insta-project-card {
+  border: 3px solid var(--gx-paper);
+  border-radius: 26px 18px 30px 20px;
+  background: var(--gx-wall);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  rotate: -1.2deg;
+}
+body.channel-g-active .insta-project-card:nth-child(3n + 2) { rotate: 1deg; }
+body.channel-g-active .insta-project-card:nth-child(3n) { rotate: -0.4deg; }
+body.channel-g-active .insta-project-card:hover {
+  rotate: 0deg;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 4px var(--gx-lime), 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+body.channel-g-active .insta-card-overlay {
+  background: linear-gradient(to top, rgba(6, 20, 12, 0.96) 0%, rgba(8, 26, 17, 0.88) 60%, rgba(8, 26, 17, 0.55) 100%);
+  color: var(--gx-mint);
+}
+body.channel-g-active .insta-overlay-cat {
+  background: var(--gx-lime);
+  color: var(--gx-ink) !important;
+  border: 0 !important;
+  border-radius: 999px;
+  rotate: -3deg;
+}
+body.channel-g-active .insta-overlay-title { color: var(--gx-mint); }
+body.channel-g-active .insta-overlay-desc { color: var(--gx-sage); }
+body.channel-g-active .insta-overlay-btn {
+  background: transparent;
+  color: var(--gx-lime);
+  border: 2px solid var(--gx-lime);
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+body.channel-g-active .insta-project-card.filter-illuminated {
+  box-shadow: 0 0 0 4px var(--gx-lime), 0 0 36px rgba(184, 242, 58, 0.7) !important;
+}
+
+/* =====================================================================
+   CATALOGO — STILE B (Frutiger Marine)
+   ===================================================================== */
+body.channel-b-active .fullscreen-catalog-modal {
+  background-color: var(--bx-abyss);
+  background-image:
+    var(--bx-caustic),
+    linear-gradient(180deg, #CFF1FF 0%, #6CCBF5 22%, #1E86CC 55%, #0A4F8C 78%, #03204D 100%);
+  background-size: 420px 420px, 100% 100%;
+  background-blend-mode: soft-light, normal;
+}
+
+body.channel-b-active .fullscreen-catalog-topbar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(232, 248, 255, 0.97) 49%, rgba(200, 236, 255, 0.97) 51%, rgba(224, 246, 255, 0.97) 100%);
+  background-image: none;
+  border-bottom: 1px solid #7CC6EE;
+  box-shadow: 0 4px 18px rgba(0, 80, 150, 0.18);
+}
+
+body.channel-b-active .topbar-branding,
+body.channel-b-active .topbar-title {
+  background: transparent;
+}
+body.channel-b-active .topbar-title {
+  color: var(--bx-navy);
+  letter-spacing: 0.06em;
+}
+
+body.channel-b-active .btn-close-fullscreen {
+  background: linear-gradient(180deg, #FFFFFF 0%, #DDF3FF 100%);
+  color: var(--bx-navy);
+  border: 1px solid #8CCDF0;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(0, 80, 150, 0.15);
+}
+body.channel-b-active .btn-close-fullscreen:hover {
+  color: #FFFFFF;
+  border-color: #056BB0;
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 10px rgba(0, 90, 170, 0.35);
+}
+
+body.channel-b-active .catalog-style-switch {
+  background: linear-gradient(180deg, #FFFFFF 0%, #D7F1FF 100%);
+  border: 1px solid #8CCDF0;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(0, 80, 150, 0.15);
+}
+body.channel-b-active .catalog-style-label { color: #3C7FB5; }
+body.channel-b-active .catalog-style-btn { border-radius: 50%; }
+body.channel-b-active .catalog-style-btn.is-r { --c: #E03A3A; }
+body.channel-b-active .catalog-style-btn.is-g { --c: #2FAE3E; }
+body.channel-b-active .catalog-style-btn.is-b { --c: #0A8EDB; }
+body.channel-b-active .catalog-style-btn.is-current {
+  border-color: transparent;
+  text-shadow: 0 1px 1px rgba(0, 40, 90, 0.4);
+  background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.85) 0 18%, transparent 42%), var(--c);
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 70, 140, 0.35);
+}
+
+body.channel-b-active .fullscreen-filters-bar {
+  background: rgba(255, 255, 255, 0.32);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+}
+body.channel-b-active .filters-heading { color: var(--bx-ink); }
+
+body.channel-b-active .insta-filter-pill {
+  background: linear-gradient(180deg, #FFFFFF 0%, #DDF3FF 100%);
+  color: var(--bx-navy);
+  border: 1px solid #8CCDF0;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 6px rgba(0, 80, 150, 0.15);
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 0.8rem;
+}
+body.channel-b-active .insta-filter-pill:hover {
+  color: #0A8EDB;
+  border-color: #28C3FF;
+  background: linear-gradient(180deg, #FFFFFF 0%, #C8EEFF 100%);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 #fff, 0 6px 14px rgba(0, 80, 150, 0.25);
+}
+body.channel-b-active .insta-filter-pill.active {
+  color: #FFFFFF;
+  text-shadow: 0 1px 1px rgba(0, 60, 120, 0.5);
+  border-color: #056BB0;
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 2px 6px rgba(0, 90, 170, 0.4);
+}
+
+body.channel-b-active .fullscreen-grid-hint {
+  color: var(--bx-ink);
+}
+
+/* riquadri come pannelli di vetro lucido */
+body.channel-b-active .insta-project-card {
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 22px;
+  background: var(--bx-navy);
+  box-shadow: 0 10px 26px rgba(0, 50, 110, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+body.channel-b-active .insta-project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 52% 0;
+  border-radius: 22px 22px 60% 60% / 22px 22px 22px 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.06) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+body.channel-b-active .insta-project-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 18px 36px rgba(0, 50, 110, 0.45), 0 0 0 3px #28C3FF;
+}
+
+body.channel-b-active .insta-card-overlay {
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(10, 79, 140, 0.55) 0%, rgba(3, 32, 77, 0.94) 100%);
+  color: #FFFFFF;
+}
+body.channel-b-active .insta-overlay-cat {
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+}
+body.channel-b-active .insta-overlay-title { color: #FFFFFF; }
+body.channel-b-active .insta-overlay-desc { color: var(--bx-foam); }
+body.channel-b-active .insta-overlay-btn {
+  color: #FFFFFF;
+  border: 1px solid #056BB0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+body.channel-b-active .insta-project-card.filter-illuminated {
+  box-shadow: 0 0 0 3px #28C3FF, 0 0 36px rgba(40, 195, 255, 0.75) !important;
+}
+
+/* ---------------------------------------------------------------------
+   Schede su carta aperte dai canali G e B (ora raggiungibili dal catalogo):
+   il testo resta inchiostro, non prende il colore chiaro del canale
+   --------------------------------------------------------------------- */
+body.channel-g-active .project-modal-card,
+body.channel-g-active .capsule-modal-card,
+body.channel-b-active .project-modal-card,
+body.channel-b-active .capsule-modal-card {
+  color: var(--ink, #151413);
+}
+
+/* =====================================================================
+   PULSANTE "CATALOGO" NELLA BARRA IN ALTO (R, G e B)
+   Sempre visibile perché la barra è fissa; pieno di colore per staccare
+   da tutto il resto, con il numero dei progetti.
+   ===================================================================== */
+.nav-catalog-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 36px;
+  padding: 0 14px 0 11px;
+  appearance: none;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
+  background: var(--bauhaus-red, #D93D2A);
+  border: 2px solid var(--ink, #151413);
+  box-shadow: 3px 3px 0 var(--ink, #151413);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  animation: ncb-in 0.6s 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; /* backwards: dopo l'entrata non blocca il transform dell'hover */
+}
+
+.nav-catalog-btn:hover,
+.nav-catalog-btn:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink, #151413);
+  outline: none;
+}
+
+.nav-catalog-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink, #151413);
+}
+
+/* icona: griglia 2×2 di riquadri, come il catalogo */
+.ncb-icon {
+  display: grid;
+  grid-template-columns: repeat(2, 6px);
+  gap: 2px;
+}
+
+.ncb-icon i {
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+}
+
+.ncb-icon i:first-child {
+  background: var(--bauhaus-yellow, #EEA824);
+}
+
+/* numero dei progetti, con un piccolo "ping" che richiama l'occhio */
+.ncb-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: var(--ink, #151413);
+  background: var(--bauhaus-yellow, #EEA824);
+  border: 2px solid var(--ink, #151413);
+  border-radius: 999px;
+}
+
+.ncb-count:empty {
+  display: none;
+}
+
+.ncb-count::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid var(--bauhaus-yellow, #EEA824);
+  animation: ncb-ping 2.6s ease-out 1.6s infinite;
+  pointer-events: none;
+}
+
+@keyframes ncb-in {
+  from { opacity: 0; transform: translateY(-14px) scale(0.8); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes ncb-ping {
+  0% { opacity: 0.9; transform: scale(1); }
+  45%, 100% { opacity: 0; transform: scale(1.9); }
+}
+
+/* G: tappo di bomboletta lime, un po' storto */
+body.channel-g-active .nav-catalog-btn {
+  color: var(--gx-ink);
+  background: var(--gx-lime);
+  border: 0;
+  border-radius: 999px;
+  rotate: -2deg;
+  box-shadow: 0 0 0 3px rgba(184, 242, 58, 0.22), 0 0 22px rgba(184, 242, 58, 0.35);
+}
+body.channel-g-active .nav-catalog-btn:hover,
+body.channel-g-active .nav-catalog-btn:focus-visible {
+  transform: scale(1.06);
+  rotate: 0deg;
+  background: var(--gx-acid);
+  box-shadow: 0 0 0 5px rgba(184, 242, 58, 0.3), 0 0 30px rgba(184, 242, 58, 0.5);
+}
+body.channel-g-active .ncb-icon i { border-radius: 50%; }
+body.channel-g-active .ncb-icon i:first-child { background: #FF5A4E; }
+body.channel-g-active .ncb-count {
+  color: var(--gx-lime);
+  background: var(--gx-ink);
+  border-color: var(--gx-lime);
+}
+body.channel-g-active .ncb-count::after { border-color: var(--gx-lime); }
+
+/* B: pillola gel acquamarina */
+body.channel-b-active .nav-catalog-btn {
+  color: #FFFFFF;
+  text-shadow: 0 1px 1px rgba(0, 60, 120, 0.5);
+  border: 1px solid #056BB0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 3px 10px rgba(0, 90, 170, 0.45);
+}
+body.channel-b-active .nav-catalog-btn:hover,
+body.channel-b-active .nav-catalog-btn:focus-visible {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #B5EFFF 0%, #3CC0F8 50%, #0A8EDB 51%, #5AD6FF 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 18px rgba(0, 90, 170, 0.5);
+}
+body.channel-b-active .ncb-icon i { border-radius: 2px; background: #FFFFFF; }
+body.channel-b-active .ncb-icon i:first-child { background: #FFE27A; }
+body.channel-b-active .ncb-count {
+  color: var(--bx-navy);
+  background: #FFFFFF;
+  border: 1px solid #8CCDF0;
+}
+body.channel-b-active .ncb-count::after { border-color: #FFFFFF; }
+
+@media (max-width: 760px) {
+  .nav-catalog-btn {
+    height: 32px;
+    padding: 0 9px;
+    gap: 0;
+  }
+  .ncb-label {
+    display: none;
+  }
+  .ncb-count {
+    top: -8px;
+    right: -9px;
+    min-width: 19px;
+    height: 19px;
+    font-size: 0.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-catalog-btn { animation: none; }
+  .ncb-count::after { animation: none; display: none; }
+}

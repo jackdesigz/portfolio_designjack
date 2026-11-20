@@ -25,6 +25,10 @@ Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri
   - **Click:** cliccando su qualsiasi foglio appeso si apre direttamente il modal di ispezione del case study!
   - Include pulsanti di scorrimento laterale `[ ◄ SCORRI FILO ]` / `[ SCORRI FILO ► ]` e supporto wheel orizzontale.
 - **Catalogo completo a griglia:** riquadri compatti (min 178px, 6 colonne su un portatile, 2 su telefono) così si vedono tutti i progetti insieme. L'avatar resta agganciato in basso a sinistra anche col catalogo aperto (senza la X) e commenta progetti e filtri; alla chiusura torna dov'era (`AvatarPilot.pin()`).
+- **Pulsante CATALOGO nella barra in alto:** c'è in R, G e B (`#nav-open-catalog`, qualsiasi elemento con `data-open-catalog` apre il catalogo). La barra è fissa, quindi è sempre visibile; è pieno di colore per staccare dal resto (rosso Bauhaus in R, lime in G, gel acquamarina in B) e ha il numero dei progetti con un piccolo "ping". Su telefono resta l'icona con il numero.
+- **Switch R / G / B nel catalogo:** in alto a destra, accanto a "Chiudi". Cambia lo stile di tutto il sito (stessa transizione CRT dei tab) e il catalogo si ridisegna nello stile scelto: carta Bauhaus (R), muro verde con adesivi storti (G), vetro lucido marino (B). Stili in `css/catalog-ui.css`; l'avatar resta agganciato anche dopo il cambio.
+- **Niente flicker nel catalogo:** il catalogo ha un fondo pieno senza `backdrop-filter`, e mentre è aperto il sito sotto è nascosto (`body.catalog-open`), quindi non può più comparire dietro. Chiudendo una scheda aperta dal catalogo la pagina resta bloccata (`modal-open` resta finché il catalogo è aperto).
+- **Chiusura delle finestre:** cerchio, triangolo e quadrato restano solo sulle finestre principali del canale R (Chi sono, Progetti su filo, Toy Claw Machine). Scheda progetto e capsula si chiudono con una **X in overlay** in alto a destra (`.modal-x`), nello stile del canale attivo, oltre che con Esc.
 
 ### 3. Catalogo Progetti Espandibile (6 Categorie & Dither Smolecola Rosso)
 - Suddiviso nelle 6 categorie ufficiali:
@@ -43,6 +47,10 @@ I progetti con `gallery` in `js/projects.js` mostrano asset reali nella pagina p
 - **Echo Sound Festival** (R-06): poster, illustrazioni, mockup.
 - **Intestazione uguale per tutti i progetti:** in alto a sinistra i software con la loro icona (`software` del progetto, oppure le voci dello `stack` che hanno un'icona in `js/softwareIcons.js`), al centro la palette a quadrati (`palette`, codice HEX solo al passaggio del mouse), a destra lo stile (`style`). In fondo restano le altre voci dello stack come competenze. Il campo `metrics` non viene più mostrato nella scheda.
 - **Mockup affiancati:** se ogni mockup ha `ratio` (larghezza/altezza), stanno sulla stessa riga alla stessa altezza e interi, senza ritagli (su telefono vanno uno sotto l'altro).
+- **Layout dedicati:** con `gallery.layout` un progetto usa un'impaginazione tutta sua, registrata in `window.PROJECT_LAYOUTS` (la funzione disegna la pagina e restituisce la pulizia, chiamata alla chiusura o al cambio progetto).
+  - `champar` (`js/projectChampar.js` + `css/project-champar.css`), per **Campari Champ-AR**: hero con la scatola che sbuca e lo spiritello (sprite girato verso sinistra) che spunta da dietro, storia con gli sprite animati, packaging, showcase, campagna sui telefoni e in fondo il mini gioco endless.
+  - **Il gioco:** si parte con il tasto **SALTA** (oppure Spazio o ↑). Lo spiritello lancia le arance, che rotolano da destra a sinistra, e l'eroe (4 frame) le salta. Il record si salva nel browser (`dj-champar-best`). Gira solo quando è in vista.
+  - **Asset:** stanno in `assets/projects/campari-champ-ar/`; il font Upheaval TT è in `assets/fonts/`.
 
 ### 4. Toy Claw Machine 3D (fisica reale)
 - **Motore fisico dedicato** (`js/clawPhysics.js`, 240 Hz, nessuna dipendenza): capsule e palline sono sfere rigide con urti, attrito e rotolamento; l'artiglio è un pendolo appeso al cavo.
@@ -91,3 +99,9 @@ Apri nel browser:
 ### 🎮 Controlli
 - **Claw machine:** `WASD` o `Frecce` per muovere il carrello, `Spazio` o `Invio` per pescare, trascina sul vetro per ruotare la vista; `Esc` chiude i modal. I tasti sono attivi solo quando la macchina è in vista.
 - **Fogli al Filo:** Clicca `[ MOSTRA INTERO CATALOGO ]` per srotolare i fogli lungo il cavo con fisica pendolare.
+
+### Prestazioni dello scroll
+- **Avatar:** il renderer WebGL dell'avatar non usa l'antialias. La scena passa comunque dal buffer pixelato, quindi non cambia nulla a vista, ma con l'antialias ogni ridimensionamento del canvas (l'avatar che si aggancia o si sgancia scrollando, o la bolla del canale B) costava ~200 ms e dava scatti e lampi. Ora costa 3–10 ms. `onResize` salta anche le chiamate con la stessa misura (il ResizeObserver lo richiamava due volte).
+- **Barra in alto:** non ha più il `backdrop-filter`. Lo sfondo era già quasi pieno, ma la sfocatura di ciò che scorre sotto veniva ricalcolata a ogni frame.
+- **Misura:** scroll automatico dall'alto in basso, schermo Retina, due passate per canale. Prima: R e G con picchi di 150–250 ms, B intorno ai 30 fps con frame fino a 600 ms. Dopo: 60 fps fissi in tutti e tre i canali.
+

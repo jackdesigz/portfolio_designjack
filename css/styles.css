@@ -422,8 +422,8 @@ body {
   width: 100%;
   height: 54px;
   background: rgba(244, 244, 240, 0.94);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* niente backdrop-filter: lo sfondo è già quasi pieno, e la sfocatura di ciò che
+     scorre sotto (canvas 3D compresi) a ogni frame causava lag e flicker */
   border-bottom: 2px solid var(--border-line);
   z-index: 1000;
   display: flex;
