@@ -105,3 +105,10 @@ Apri nel browser:
 - **Barra in alto:** non ha più il `backdrop-filter`. Lo sfondo era già quasi pieno, ma la sfocatura di ciò che scorre sotto veniva ricalcolata a ogni frame.
 - **Misura:** scroll automatico dall'alto in basso, schermo Retina, due passate per canale. Prima: R e G con picchi di 150–250 ms, B intorno ai 30 fps con frame fino a 600 ms. Dopo: 60 fps fissi in tutti e tre i canali.
 
+
+### Easter egg: Konami code
+- **Codice:** ↑ ↑ ↓ ↓ ← → ← → B A da tastiera; su telefono gli stessi swipe seguiti da due tap. `js/konami.js` + `css/easter-egg.css`; si prova anche dalla console con `konamiAlert()`.
+- **Cosa succede:** l'avatar si spaventa (`HeroAvatar.surprise()`: salto, sussulto, bocca aperta, niente battito di ciglia). Sopra la testa scatta il punto esclamativo `assets/Immagini/alert.png` e parte il suono `assets/sfx/Metal Gear Solid Alert Sound Effect.mp3`. Poi l'avatar commenta.
+- **Ovunque sia l'avatar:** funziona nella hero, agganciato in basso a sinistra o nella bolla del canale B. Se è fuori schermo viene richiamato in basso a sinistra; se è coperto da una scheda aperta il "!" compare al centro.
+- **Audio:** il suono rispetta il tasto AUDIO della barra e abbassa la musica per un attimo.
+- **Attenzione alle maiuscole:** la cartella si chiama `Immagini` con la I maiuscola. Su un server online le maiuscole contano, quindi se la rinomini va aggiornato `IMG` in `js/konami.js`.

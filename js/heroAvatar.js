@@ -241,6 +241,21 @@
       }, 34);
     }
 
+    // Sorpresa (easter egg del Konami code): salto secco, sussulto, bocca aperta,
+    // occhi spalancati (niente battito di ciglia finché dura)
+    surprise(duration = 1.1) {
+      this.hideBubble();
+      this.hopVel = 0.11;
+      this.shock = duration;
+      this.spinVel += (Math.random() < 0.5 ? -1 : 1) * 0.05;
+      this.blink.closing = 0;
+      this.blink.t = 0;
+      this.blink.next = duration + 1.5;
+      this.talk.target = 0.85;
+      clearTimeout(this.shockTimer);
+      this.shockTimer = setTimeout(() => { if (!this.typing) this.talk.target = 0; }, duration * 1000);
+    }
+
     hideBubble() {
       clearInterval(this.typing);
       clearTimeout(this.hideTimer);
@@ -438,6 +453,14 @@
       this.hop += this.hopVel;
 
       this.root.position.y = Math.sin(t * 1.4) * 0.05 + this.hop;
+      // sussulto della sorpresa: tremolio che si spegne
+      if (this.shock > 0) {
+        this.shock = Math.max(0, this.shock - dt);
+        const k = Math.min(1, this.shock * 2);
+        this.root.position.x = Math.sin(t * 70) * 0.03 * k;
+      } else if (this.root.position.x !== 0) {
+        this.root.position.x = 0;
+      }
       this.root.rotation.z = Math.sin(t * 0.9) * 0.02;
       this.head.rotation.y = clamp(this.spin + clamp(m.x, -1.2, 1.2) * 0.36, -0.85, 0.85);
       this.head.rotation.x = clamp(m.y, -1.2, 1.2) * 0.16 + Math.sin(t * 1.1) * 0.015;

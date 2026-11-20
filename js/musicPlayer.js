@@ -88,7 +88,9 @@
       const start = performance.now();
       audio.volume = 0;
       const step = (t) => {
-        const k = Math.min(1, (t - start) / 1200);
+        // il tempo del frame può essere di poco precedente a start: senza il max il volume
+        // diventava negativo, il browser lanciava un errore e la musica restava muta
+        const k = Math.max(0, Math.min(1, (t - start) / 1200));
         audio.volume = target * k;
         if (k < 1) fadeRaf = requestAnimationFrame(step);
       };

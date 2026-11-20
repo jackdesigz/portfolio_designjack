@@ -1,0 +1,68 @@
+/* =====================================================================
+   EASTER EGG — Konami code (js/konami.js)
+   Il punto esclamativo spunta sopra la testa dell'avatar, ovunque sia
+   (nella hero, agganciato in basso a sinistra o nella bolla del canale B).
+   ===================================================================== */
+.mgs-alert {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  /* appena sopra la testa: la testa occupa quasi tutta l'altezza del viewport */
+  bottom: calc(var(--avatar-h, 170px) * 0.97);
+  width: clamp(26px, calc(var(--avatar-h, 170px) * 0.17), 64px);
+  height: auto;
+  margin-left: calc(clamp(26px, calc(var(--avatar-h, 170px) * 0.17), 64px) / -2);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  opacity: 0;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.35));
+}
+
+/* agganciato in basso a sinistra il riquadro è piccolo: un filo più su */
+.avatar-pilot.is-docked .mgs-alert {
+  bottom: calc(100% - 4px);
+  width: 30px;
+  margin-left: -15px;
+}
+
+/* nella bolla del canale B la bolla taglia ciò che sborda: resta dentro */
+.avatar-home--bubble .mgs-alert {
+  bottom: calc(100% - 4px);
+  width: 34px;
+  margin-left: -17px;
+}
+
+.mgs-alert.is-on {
+  animation: mgs-pop 1.5s linear both;
+}
+
+/* scatta fuori di colpo, rimbalza un attimo, resta, poi sparisce */
+@keyframes mgs-pop {
+  0%   { opacity: 0; transform: translateY(18px) scale(0.3, 0.5); }
+  6%   { opacity: 1; transform: translateY(-8px) scale(1.18, 0.92); }
+  12%  { transform: translateY(2px) scale(0.94, 1.06); }
+  18%  { transform: translateY(0) scale(1); }
+  82%  { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-10px) scale(1); }
+}
+
+/* avatar coperto (scheda aperta): al centro dello schermo, sopra a tutto */
+.mgs-alert.is-floating {
+  position: fixed;
+  z-index: 100001;
+  left: 50%;
+  top: 50%;
+  bottom: auto;
+  width: 90px;
+  margin: -60px 0 0 -45px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mgs-alert.is-on {
+    animation: mgs-fade 1.5s linear both;
+  }
+  @keyframes mgs-fade {
+    0%, 85% { opacity: 1; transform: none; }
+    100% { opacity: 0; }
+  }
+}
