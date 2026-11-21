@@ -164,7 +164,6 @@ function initChannelSwitcherCRT() {
   const btnReturnG = document.getElementById('btn-return-channel-r-from-g');
   const btnReturnB = document.getElementById('btn-return-channel-r-from-b');
   const toast = document.getElementById('channel-toast');
-  const brandSuffix = document.getElementById('nav-brand-suffix');
 
   const viewR = document.getElementById('channel-view-r');
   const viewG = document.getElementById('channel-view-g');
@@ -216,7 +215,6 @@ function initChannelSwitcherCRT() {
 
         if (target === 'R') {
           if (tabR) tabR.classList.add('active');
-          if (brandSuffix) brandSuffix.textContent = 'jack';
 
           showToast('R — Realizzazioni & Ricreazione');
 
@@ -229,14 +227,12 @@ function initChannelSwitcherCRT() {
         } else if (target === 'G') {
           if (tabG) tabG.classList.add('active');
           document.body.classList.add('channel-g-active');
-          if (brandSuffix) brandSuffix.textContent = 'febi';
 
           showToast('G — Germogli & Graffiti');
           if (window.audioEngine) window.audioEngine.playSprayCan();
         } else if (target === 'B') {
           if (tabB) tabB.classList.add('active');
           document.body.classList.add('channel-b-active');
-          if (brandSuffix) brandSuffix.textContent = 'marine';
 
           showToast('B — Bolle & Bottiglie');
           if (window.audioEngine) window.audioEngine.playWaterDrop();

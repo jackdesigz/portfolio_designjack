@@ -31,7 +31,7 @@
   const MOUTH_U = L.mouth.x / TEX_W;
 
   const MESSAGES = [
-    'Ciao! Sono Jacopo, designjack.',
+    'Ciao! Sono Jacopo “Jack” Febi.',
     'Disegno grafica, interfacce e cose in 3D.',
     'Sfoglia i progetti appesi al filo qui sotto.',
     'Oppure pesca una capsula dalla claw machine!',

@@ -53,7 +53,7 @@
     ['#claw2d-drop', 'Ora! Pesca!'],
     ['#claw2d-left, #claw2d-right', 'Mira bene, sopra la capsula.'],
     ['#claw2d-section', 'Ogni capsula è un progetto. Prova!'],
-    ['.hero-title', 'La forma segue la funzione. Sempre.'],
+    ['.hero-title', 'Prima l’idea, poi la forma. Poi si gioca.'],
     // Canale G
     ['.gx-sticker', 'Staccalo pure, tanto si riattacca.'],
     ['.gx-can', 'Scegli il tuo verde.'],
@@ -74,7 +74,7 @@
   // Frasi quando lo clicchi, diverse per canale
   const MESSAGES = {
     r: [
-      'Ciao! Sono Jacopo, designjack.',
+      'Ciao! Sono Jacopo “Jack” Febi.',
       'Disegno grafica, interfacce e cose in 3D.',
       'Sfoglia i progetti appesi al filo qui sotto.',
       'Oppure pesca una capsula dalla claw machine!',

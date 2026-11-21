@@ -51,7 +51,7 @@ class MagicFlute {
       },
       {
         channel: 'G',
-        name: 'Canale G (Jacopo Febi // Organic & Street)',
+        name: 'Canale G (Germogli & Graffiti // Organic & Street)',
         sequence: ['T', 'Y', 'U', 'T'],
         sheetEl: this.sheetCards.g
       },

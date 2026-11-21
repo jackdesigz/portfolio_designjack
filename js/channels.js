@@ -1,7 +1,7 @@
 /**
  * designjack — logica dei canali G e B
  *
- * Canale G ("febi"): blob organici che respirano, adesivi da staccare e
+ * Canale G: blob organici che respirano, adesivi da staccare e
  * spostare, muro libero da dipingere con la bomboletta (con colature).
  * Canale B ("Frutiger Marine"): bolle che salgono e scoppiano, copia
  * dell'indirizzo email, "messaggio in bottiglia" che prepara una mail.

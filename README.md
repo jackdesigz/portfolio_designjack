@@ -1,173 +1,185 @@
-# designjack // Canale [R] — Prototipo Interattivo Cyber-Bauhaus & CRT
+# designjack — portfolio
 
-Prototipo interattivo completo per la sezione principale (**Canale R**) del portfolio di **Jacopo (designjack)**, Communication & Digital Designer. 
+Portfolio di **Jacopo “Jack” Febi**, Communication & Digital Designer.
 
-Il sito unisce estetica cyber-informatica, rigore costruttivista Bauhaus, filtri a monitor **CRT**, **Geometria Sferica 3D** nella Hero, il sistema con **fogli appesi al filo con fisica pendolare**, effetto di **dithering con smolecolamento di pixel rossi** al passaggio del cursore e una **Toy Candy Claw Machine 3D standalone** (ispirata alla classica candy grabber da tavolo) con 42 caramelle metalliche riflettenti, leve ball-top e capsule Gashapon apribili.
+Il sito è statico: HTML, CSS e JavaScript senza build. Three.js r128 arriva da CDN, i font in parte da Google Fonts e in parte da `assets/fonts/`.
 
----
-
-## 🕹️ Novità & Funzionalità Implementate
-
-### 1. Hero Section con Avatar 3D Low-Poly
-- Nella hero, senza finestra, c'è la **testa low-poly di Jacopo** (`js/heroAvatar.js`): il ritratto `assets/avatar/jacopo-avatar.png` è montato come texture su un rilievo 3D (cranio, viso, naso, orbite), quindi ruota con parallasse vera.
-- Fluttua, gira verso il cursore, sbatte le palpebre; **trascinala** per girarla (torna frontale a molla), **cliccala** per farla parlare (fumetto pixel-art, bip, bocca animata). Frasi in `MESSAGES`.
-- **Avatar pilota** (`js/avatarPilot.js`): scrollando oltre la hero vola in basso a sinistra e commenta ciò su cui passi il cursore (mappa `COMMENTS`, oppure attributo `data-avatar-say="..."` su qualsiasi elemento). Passandoci sopra compare una **X** che lo rimanda al suo posto nella hero; tornando in cima alla pagina si riattiva e al prossimo scroll si riaggancia.
-- **Una casa per canale** (`data-avatar-home` in `index.html`): in R sta nella hero, in G accanto al manifesto (stesso comportamento: si aggancia scrollando, la X lo rimanda a casa), in B è **intrappolato in una delle bolle che salgono su tutta la pagina**, dal fondale al cielo (più grande delle altre, sale lenta e quando esce dallo schermo rientra dal basso): cliccandola scoppia, lui ringrazia e va in basso a sinistra; la X lo rimette nella bolla. Frasi e saluti per canale in `MESSAGES` / `GREETING` di `js/avatarPilot.js`.
-- **Filtro CRT pixelato** leggero sulla testa (render a metà risoluzione + scanline + maschera RGB), senza tinte di colore in tutti i canali (`setTint` in `js/heroAvatar.js`).
-- Versioni precedenti: `archive/heroSphere.js` (sfera) e `archive/heroAvatar-procedurale.js` (testa procedurale).
-
-### 2. "Mostra Intero Catalogo" — Fogli Appesi al Filo con Fisica
-- Cliccando sul pulsante **`[ ⤢ MOSTRA INTERO CATALOGO // APRI FILO DA STUDIO ]`**:
-  - Compare un cavo in acciaio orizzontale teso con tenditori laterali.
-  - Da sinistra a destra scorrono i **fogli di progetto editoriali (stampati riso/proof)** appesi con mollette al filo.
-  - **Fisica Pendolare Reale:** durante la corsa e l'arresto, i fogli oscillano avanti e indietro con inerzia, attrito e naturale flessione del cavo (*catenary sag*).
-  - **Interazione al mouse (Hover):** passando il cursore sopra un foglio, questo si solleva verso lo spettatore (`scale: 1.14`, rotazione in avanti, ombra profonda e svelamento dei dettagli) accompagnato dal suono di fruscio di carta e vibrazione del cavo (`playPaperFlutter()`, `playCableTwang()`).
-  - **Click:** cliccando su qualsiasi foglio appeso si apre direttamente il modal di ispezione del case study!
-  - Include pulsanti di scorrimento laterale `[ ◄ SCORRI FILO ]` / `[ SCORRI FILO ► ]` e supporto wheel orizzontale.
-- **Catalogo completo a griglia:** riquadri compatti (min 178px, 6 colonne su un portatile, 2 su telefono) così si vedono tutti i progetti insieme. L'avatar resta agganciato in basso a sinistra anche col catalogo aperto (senza la X) e commenta progetti e filtri; alla chiusura torna dov'era (`AvatarPilot.pin()`).
-- **Pulsante CATALOGO nella barra in alto:** c'è in R, G e B (`#nav-open-catalog`, qualsiasi elemento con `data-open-catalog` apre il catalogo). La barra è fissa, quindi è sempre visibile; è pieno di colore per staccare dal resto (rosso Bauhaus in R, lime in G, gel acquamarina in B) e ha il numero dei progetti con un piccolo "ping". Su telefono resta l'icona con il numero.
-- **Switch R / G / B nel catalogo:** in alto a destra, accanto a "Chiudi". Cambia lo stile di tutto il sito (stessa transizione CRT dei tab) e il catalogo si ridisegna nello stile scelto: carta Bauhaus (R), muro verde con adesivi storti (G), vetro lucido marino (B). Stili in `css/catalog-ui.css`; l'avatar resta agganciato anche dopo il cambio.
-- **Niente flicker nel catalogo:** il catalogo ha un fondo pieno senza `backdrop-filter`, e mentre è aperto il sito sotto è nascosto (`body.catalog-open`), quindi non può più comparire dietro. Chiudendo una scheda aperta dal catalogo la pagina resta bloccata (`modal-open` resta finché il catalogo è aperto).
-- **Chiusura delle finestre:** cerchio, triangolo e quadrato restano solo sulle finestre principali del canale R (Chi sono, Progetti su filo, Toy Claw Machine). Scheda progetto e capsula si chiudono con una **X in overlay** in alto a destra (`.modal-x`), nello stile del canale attivo, oltre che con Esc.
-
-### 3. Catalogo Progetti Espandibile (6 Categorie & Dither Smolecola Rosso)
-- Suddiviso nelle 6 categorie ufficiali:
-  1. `Graphic Design`
-  2. `Interaction Design`
-  3. `Editorial Design`
-  4. `Web Design`
-  5. `Brand Design`
-  6. `Personal Projects`
-- **Dithering con Smolecolamento in Pixel Rossi:** al passaggio del mouse su ciascuna scheda, l'artwork si ditherizza a matrice di Bayer e si **"smolecola"** in una scia di particelle pixel rosse fluorescenti con moto parabolico e dissolvenza.
-- Tasto di espansione griglia per visualizzare l'intero catalogo o tornare alla vista curata.
-
-### Progetti con pagina completa
-I progetti con `gallery` in `js/projects.js` mostrano asset reali nella pagina progetto (`renderProjectGallery` in `js/modal.js`). Sezioni opzionali, numerate in automatico: `poster`, `moodboard`, `sketches` (bozze), `illustrations`, `concept.slides` (slide della presentazione), `mockups` (con `kind`), `download` (link alla presentazione PDF).
-- **La Fanciulla del West** (R-13, Graphic Design): manifesto per l'opera di Puccini. Immagini estratte dai PDF in `Progetti/Graphic Design/La Fanciulla del West/` e salvate in `assets/projects/la-fanciulla-del-west/` (poster, moodboard, bozze, slide di concept, due mockup ritagliati dalla slide dei mockup).
-- **Echo Sound Festival** (R-06): poster, illustrazioni, mockup.
-- **Intestazione uguale per tutti i progetti:** in alto a sinistra i software con la loro icona (`software` del progetto, oppure le voci dello `stack` che hanno un'icona in `js/softwareIcons.js`), al centro la palette a quadrati (`palette`, codice HEX solo al passaggio del mouse), a destra lo stile (`style`). In fondo restano le altre voci dello stack come competenze. Il campo `metrics` non viene più mostrato nella scheda.
-- **Mockup affiancati:** se ogni mockup ha `ratio` (larghezza/altezza), stanno sulla stessa riga alla stessa altezza e interi, senza ritagli (su telefono vanno uno sotto l'altro).
-- **Layout dedicati:** con `gallery.layout` un progetto usa un'impaginazione tutta sua, registrata in `window.PROJECT_LAYOUTS` (la funzione disegna la pagina e restituisce la pulizia, chiamata alla chiusura o al cambio progetto).
-  - `champar` (`js/projectChampar.js` + `css/project-champar.css`), per **Campari Champ-AR**: hero con la scatola che sbuca e lo spiritello (sprite girato verso sinistra) che spunta da dietro, storia con gli sprite animati, packaging, showcase, campagna sui telefoni e in fondo il mini gioco endless.
-  - **Il gioco:** si parte con il tasto **SALTA** (oppure Spazio o ↑). Lo spiritello lancia le arance, che rotolano da destra a sinistra, e l'eroe (4 frame) le salta. Il record si salva nel browser (`dj-champar-best`). Gira solo quando è in vista.
-  - **Asset:** stanno in `assets/projects/campari-champ-ar/`; il font Upheaval TT è in `assets/fonts/`.
-
-### 4. Toy Claw Machine 3D (fisica reale)
-- **Motore fisico dedicato** (`js/clawPhysics.js`, 240 Hz, nessuna dipendenza): capsule e palline sono sfere rigide con urti, attrito e rotolamento; l'artiglio è un pendolo appeso al cavo.
-- **La presa non è decisa a tavolino:** le tre dita si chiudono finché la capsula non può più spostarsi. Se sei in asse la capsula resta in gabbia, altrimenti scivola via.
-- **Luce di mira e mirino a terra:** diventano verdi quando l'artiglio è allineato a una capsula.
-- **Scivolo fisico:** la capsula cade davvero nella buca e rotola nella vaschetta `PREMI`, poi si apre la scheda del progetto. Le capsule vinte non tornano in vasca: finite le 12, arriva un nuovo carico.
-- **Vista orbitale:** trascina sul vetro per girare attorno alla macchina e giudicare la profondità.
-- **Resa** (`js/crane.js`): cabinato rosso/crema/blu, insegna a lampadine, neon Bauhaus sullo sfondo, riflessi da environment map, ombre e bloom HDR (`js/vendor/three-postfx-r128.js`). Se il dispositivo non regge, il bloom si disattiva da solo.
-- I dati dei progetti sono in `js/projects.js`.
-
-### 5. Monitor CRT & Transizione Catodica
-- Spengimento a riga orizzontale, collasso nel punto di fosforo centrale, scarica flyback e riaccensione a degauss surge tra il preloader e il sito, e quando si selezionano i canali `[ G ]` e `[ B ]`.
-- Filtro CRT globale con scanlines, vignettatura scura e telaio con angoli arrotondati.
+Si divide in tre **canali**, R, G e B, come i tre colori di uno schermo. Ognuno ha il suo stile e il passaggio dall'uno all'altro è una transizione da vecchio televisore. Il logo in alto a sinistra resta sempre **designjack**: cambiando canale cambia solo il suo stile.
 
 ---
 
-### Tab R / G / B
-Al passaggio del mouse sotto ogni lettera compare un box con due parole con la stessa iniziale (anche negli avvisi di cambio canale): **R — Realizzazioni & Ricreazione** (lavori e playground), **G — Germogli & Graffiti** (il lato fuori orario), **B — Bolle & Bottiglie** (contatti e messaggi in bottiglia). Testi in `index.html` (`.channel-tip`), toast in `js/main.js`. Il colore del box segue la lettera (R rosso, G verde, B blu) in ogni sezione; la forma e l’animazione seguono la sezione: in R scende dall’alto come una tendina, in G si compone come un graffito (passata spray, nebulizzato, colatura), in B nasce come una bolla che sale e ondeggia.
-
-### Music player
-In alto a destra, sotto la barra, metà disco con la copertina gira incastrato nel bordo dello schermo. In hover (o al tocco su mobile) il disco esce e compare il pannello: brano precedente/successivo, play/pausa, muto e volume, barra di avanzamento cliccabile. Brani e copertina sono in `Musica/` (singoli di Ikigai, grafiche di designjack); l'avatar lo dice quando passi sopra al player. La musica parte appena entri, a volume basso (`DEFAULT_VOLUME` 0.22) e in dissolvenza; se il browser blocca l'audio prima di un'interazione, il brano parte in muto (il disco gira) e il suono arriva al primo clic, tasto o tocco (`AUTOSTART` in `js/musicPlayer.js`). Il pannello si vede solo in hover. Mentre la musica si sente, dal disco escono note che svaniscono, nello stile del canale: in R quadrate rosso/blu/giallo, in G tonde lime che ondeggiano e sfumano come spray, in B dentro bollicine che salgono e scoppiano. Spariscono mentre usi il player, a scheda nascosta, in muto e con "riduci movimento". Volume, brano e pausa sono ricordati nel browser. Stile per canale in `css/music-player.css`.
-
-### Font
-Un font principale per canale (variabile `--font-main` in `css/styles.css`): **Jost** in R (geometrico erede del Futura, il carattere del Bauhaus), **Bricolage Grotesque** in G, **Hind** in B (umanista vicino al Frutiger). Eccezioni solo decorative: Sedgwick Ave Display per i graffiti di G e il ciclo di font di "jack" nel preloader.
-
-### 6. Canali G e B: due siti a sé
-Quando si passa a G o B la cornice del canale R sparisce (niente scanline CRT, niente carta crema, nav e toast restilizzati); resta solo la transizione CRT come "cambio canale".
-- **Canale G — "febi"** (`css/channel-g.css`): organico × graffiti, tutto verde. Muro notturno con blob che respirano, tag spray con colature, adesivi da trascinare, nastro che scorre, manifesto su carta organica e **muro libero** da dipingere con la bomboletta (colori verdi, colature se tieni fermo il tratto). Font: Bricolage Grotesque (Sedgwick Ave Display solo per i graffiti decorativi).
-- **Canale B — "Frutiger Marine"** (`css/channel-b.css`): contatti in stile Frutiger Aero oceanico, tutto blu. Cielo con sole e riflessi, onde animate, discesa sott'acqua con raggi di luce, caustiche, bolle che scoppiano e pesci; pannelli di vetro lucido con gocce d’acqua e icone a sfera, email (e tasto copia), **messaggio in bottiglia** (prepara una mail) e il flauto magico; in superficie nastri di luce, bokeh, scintille, titolo riflesso e un delfino lucido che salta tra le onde. Font: Hind.
-- Logica di entrambi in `js/channels.js` (le animazioni girano solo con il canale attivo).
-
----
-
-## 🚀 Avvio Locale
-
-Il server locale è attivo:
+## Avvio in locale
 
 ```bash
-cd /Users/jacob/Desktop/Portfolio
+cd Portfolio
 python3 -m http.server 8080
 ```
 
-Apri nel browser:
-👉 **`http://localhost:8080`**
+Poi apri **http://localhost:8080**.
 
-### 🎮 Controlli
-- **Claw machine:** `WASD` o `Frecce` per muovere il carrello, `Spazio` o `Invio` per pescare, trascina sul vetro per ruotare la vista; `Esc` chiude i modal. I tasti sono attivi solo quando la macchina è in vista.
-- **Fogli al Filo:** Clicca `[ MOSTRA INTERO CATALOGO ]` per srotolare i fogli lungo il cavo con fisica pendolare.
+Va aperto da un server e non come file (`file://`). Altrimenti il browser blocca le immagini nella capsula 3D, le maschere degli spruzzi e alcuni font.
 
-### Prestazioni dello scroll
-- **Avatar:** il renderer WebGL dell'avatar non usa l'antialias. La scena passa comunque dal buffer pixelato, quindi non cambia nulla a vista, ma con l'antialias ogni ridimensionamento del canvas (l'avatar che si aggancia o si sgancia scrollando, o la bolla del canale B) costava ~200 ms e dava scatti e lampi. Ora costa 3–10 ms. `onResize` salta anche le chiamate con la stessa misura (il ResizeObserver lo richiamava due volte).
-- **Barra in alto:** non ha più il `backdrop-filter`. Lo sfondo era già quasi pieno, ma la sfocatura di ciò che scorre sotto veniva ricalcolata a ogni frame.
-- **Misura:** scroll automatico dall'alto in basso, schermo Retina, due passate per canale. Prima: R e G con picchi di 150–250 ms, B intorno ai 30 fps con frame fino a 600 ms. Dopo: 60 fps fissi in tutti e tre i canali.
+---
 
+## I tre canali
 
-### Easter egg: Konami code
-- **Codice:** ↑ ↑ ↓ ↓ ← → ← → B A da tastiera; su telefono gli stessi swipe seguiti da due tap. `js/konami.js` + `css/easter-egg.css`; si prova anche dalla console con `konamiAlert()`.
-- **Cosa succede:** l'avatar si spaventa (`HeroAvatar.surprise()`: salto, sussulto, bocca aperta, niente battito di ciglia). Sopra la testa scatta il punto esclamativo `assets/Immagini/alert.png` e parte il suono `assets/sfx/Metal Gear Solid Alert Sound Effect.mp3`. Poi l'avatar commenta.
-- **Ovunque sia l'avatar:** funziona nella hero, agganciato in basso a sinistra o nella bolla del canale B. Se è fuori schermo viene richiamato in basso a sinistra; se è coperto da una scheda aperta il "!" compare al centro.
-- **Audio:** il suono rispetta il tasto AUDIO della barra e abbassa la musica per un attimo.
-- **Attenzione alle maiuscole:** la cartella si chiama `Immagini` con la I maiuscola. Su un server online le maiuscole contano, quindi se la rinomini va aggiornato `IMG` in `js/konami.js`.
+### R — Realizzazioni & Ricreazione (lavori e playground)
+Stile Bauhaus su carta, con filtro da monitor CRT. Font Jost.
+- **Chi sono:**
+  - titolo "Idee in forma. Forme in gioco.";
+  - una breve presentazione;
+  - l'avatar 3D low-poly;
+  - muovendo il cursore, un pennello retinato (dithering Bayer) scopre una composizione nascosta sotto la carta.
+- **Progetti su filo:** i progetti sono fogli appesi a un cavo con mollette e oscillano come pendoli. Passandoci sopra il foglio si solleva e mostra la versione a 1 bit; cliccandolo si apre la scheda. Si scorre con le frecce o con la rotella.
+- **Catalogo intero:** griglia di tutti i progetti, con filtri per categoria (quelli vuoti si nascondono).
+  - In alto a destra c'è lo switch R / G / B, che cambia lo stile di tutto il sito.
+  - Si apre anche dal pulsante **CATALOGO** nella barra in alto, che c'è in tutti e tre i canali e mostra il numero di progetti.
+- **Toy Claw Machine:** macchina 2D a tutta pagina con fisica vera: capsule rigide, artiglio a pendolo, presa che nasce dai contatti, scivolo e vaschetta. Ogni capsula ha dentro l'immagine di un progetto e, una volta pescata, si apre la sua scheda.
+  - **Comandi:** `A` / `D` o frecce ← → per muovere il carrello, `Spazio` o `Invio` per pescare.
 
-### Claw machine con i progetti veri
-- **Quali progetti:** nella vasca ci sono solo i progetti con `capsuleImage` in `js/projects.js`, cioè quelli veri: Campari Champ-AR, La Fanciulla del West ed Echo Sound Festival. Se nessun progetto ha l'immagine, la macchina torna a usarli tutti.
-- **Dentro la capsula:** l'immagine (`assets/projects/<progetto>/capsule.png`, quadrata 256 px) è disegnata come un adesivo tondo dietro la plastica colorata. Resta dritta mentre la capsula rotola, così si legge sempre.
-- **Colori:** le capsule hanno colori diversi: Campari rossa, Fanciulla gialla, Echo blu.
-- **Capsula vinta:** quando si apre (il 3D in `js/modal.js`) esce un gettone tondo con la stessa immagine, che oscilla verso chi guarda, al posto della forma geometrica.
-- **Aggiungere un progetto:** salva un ritaglio quadrato come `capsule.png` nella sua cartella e aggiungi `capsuleImage` alla sua voce in `js/projects.js`.
-- **Server locale:** l'immagine nella capsula 3D si vede solo aprendo il sito da un server (`http://…`). Aperto come file (`file://`) il browser non permette a WebGL di usare le immagini.
+### G — Germogli & Graffiti (il lato fuori orario)
+Organico × graffiti, tutto verde. Font Bricolage Grotesque; Sedgwick Ave Display solo per le scritte a spray.
+- **Muro:** muro notturno con blob che respirano e la tag "jack" con le colature.
+- **Adesivi e nastro:** gli adesivi si staccano e si trascinano; sotto scorre un nastro.
+- **Manifesto:** "in tre spruzzi".
+- **Muro libero:** si dipinge con la bomboletta.
 
+### B — Bolle & Bottiglie (contatti)
+Frutiger Aero marino, tutto blu e lucido. Font Hind.
+- **In superficie:** cielo con sole, onde, nastri di luce e un delfino.
+- **Sotto l'acqua:** discesa con raggi di luce e caustiche morbide.
+- **Contatti:** pannelli di vetro con l'email (e il tasto per copiarla) e il **messaggio in bottiglia**, che prepara una mail.
+- **Flauto magico:** si apre dal suo pannello. I tasti R T Y U I suonano le note e ogni melodia porta a un canale.
 
-### Progetti di Brand Design: Teatro Salone Ablondi e Melagoccio
-Due layout dedicati in `js/projectBrand.js` + `css/project-brand.css` (`gallery.layout: 'ablondi'` e `'melagoccio'`). Ognuno segue le linee guida del suo marchio. Asset in `assets/projects/teatro-ablondi/` e `assets/projects/melagoccio/`, presi da `Progetti/Brand Design/`.
+### In comune
+- **Tab R / G / B:** passandoci sopra compare un'etichetta con due parole che iniziano con la stessa lettera. In R scende come una tendina. In G si compone come un graffito: passata di spray, macchie di vernice attorno e una colatura. In B nasce come una bolla.
+- **Avatar** (`js/heroAvatar.js`, `js/avatarPilot.js`): la testa low-poly ha come texture `assets/avatar/jacopo-avatar.png`.
+  - Segue il cursore e sbatte le palpebre.
+  - Si trascina per girarla e, se la clicchi, parla.
+  - Scrollando si aggancia in basso a sinistra e commenta quello su cui passi.
+  - Ha una casa per canale: la hero in R, accanto al manifesto in G, dentro una bolla in B.
+- **Music player:** in alto a destra un mezzo disco gira incastrato nel bordo. Riproduce due singoli di Ikigai (cartella `Musica/`), con note che escono nello stile del canale.
+- **Easter egg:** il Konami code (↑ ↑ ↓ ↓ ← → ← → B A; su telefono gli swipe e poi due tap). L'avatar si spaventa, sopra la testa compare il "!" di Metal Gear e parte il suono di allarme. Dalla console si prova con `konamiAlert()`.
 
-**Teatro Salone Ablondi (R-15)**
-- **Apertura:** un sipario di velluto viola si apre e mostra il marchio sotto l'occhio di bue.
-- **Il simbolo:** dalle prime variazioni alla versione finale.
-- **Costruzione:** il marchio è ridisegnato con le guide e le proporzioni delle linee guida (ABLONDI = 2,42 × TEATRO SALONE; y = 2,546 × x).
-- **Palette:** quattro colori con il marchio su ognuno; passandoci sopra il riquadro si allarga.
-- **Tipografia:** Montserrat Regular e Radlush SemiBold.
-- **Applicazioni:** le magliette.
-- **Asset:** il simbolo è in quattro SVG senza scritte (`simbolo-black/viola/bianco/crema.svg`); TEATRO SALONE e ABLONDI sono scritti in HTML con i font veri. Montserrat arriva da Google Fonts, Radlush da `assets/fonts/Radlush-SemiBold.ttf`.
+---
 
-**Melagoccio (R-16)**
-- **Apertura:** su sfondo menta con le scritte ripetute delle figurine, il logo ondeggia; sotto scorre la striscia "ONE SHOT ✦ ONE SPIKE".
-- **Il brand:** palette a bollini e la mascotte.
-- **La felpa:** si gira con un clic tra fronte e retro (fa un giro da sola la prima volta che compare).
-- **Le figurine:** i quattro giocatori distribuiti a ventaglio come un mazzo.
-- **Social:** il banner di Instagram si compone dai suoi tre post.
-- **Font:** i titoli usano BLOCKY, il font originale del brand (`assets/fonts/blocky.ttf`, lo stesso delle figurine); i testi Rubik (Google Fonts). Il banner di Instagram è ripulito: senza barra dell’app, righe tra i post e puntine, e i tre pezzi a fine animazione combaciano senza spazi.
+## Progetti
 
-**Copertine e capsule:** entrambi hanno `coverImage` (catalogo e filo) e `capsuleImage`, quindi sono anche nella claw machine (capsula viola e verde).
+| Id | Progetto | Categoria | Anno | Layout |
+|---|---|---|---|---|
+| r-16 | Melagoccio | Brand Design | 2025 | `melagoccio` |
+| r-15 | Teatro Salone Ablondi | Brand Design | 2025 | `ablondi` |
+| r-14 | Campari Champ-AR | Interaction Design | 2026 | `champar` |
+| r-13 | La Fanciulla del West | Graphic Design | 2025 | `fanciulla` |
+| r-06 | Echo Sound Festival | Graphic Design | 2025 | `echo` |
 
-### Pagine progetto: parte introduttiva nello stile del canale
-- **Parte iniziale:** titolo, software / palette / stile, Panoramica e Progettazione sono dentro `.project-intro` e seguono lo stile del canale attivo (`css/project-page.css`): carta Bauhaus in R, muro verde con adesivi in G, cielo e vetro lucido in B. Panoramica e Progettazione sono due schede. Dal primo blocco del progetto in poi la pagina prende lo stile del brand (layout dedicati).
-- **Solo progetti veri:** nel registro restano solo i progetti reali: Melagoccio, Teatro Salone Ablondi, Campari Champ-AR, La Fanciulla del West ed Echo Sound Festival. I filtri del catalogo senza progetti si nascondono da soli. Una copia del vecchio registro con i segnaposto è salvata fuori dal progetto.
+I dati sono in `js/projects.js`, gli asset in `assets/projects/<progetto>/`, i materiali originali in `Progetti/`.
 
-### Echo Sound Festival: pagina dedicata
-`gallery.layout: 'echo'` (`js/projectBrand.js` + `css/project-echo.css`), stile pop psichedelico del poster. Titoli in Super Earthly (`assets/fonts/super-earthly.ttf`), il font installato più vicino alle lettere del poster.
-1. **Apertura:** anelli gialli e rosa che pulsano, il poster con due illustrazioni attaccate come adesivi.
-2. **Il poster:** fondo menta a griglia, palette a bollini.
-3. **Le illustrazioni:** a zig-zag, ognuna sul fondo che ha nel poster.
-4. **I mockup:** in fondo, come chiedevano le istruzioni.
+### Come è fatta una scheda progetto
+1. **Parte introduttiva**, nello stile del **canale attivo** (`css/project-page.css`):
+   - titolo;
+   - software, palette e stile;
+   - le schede *Panoramica* e *Progettazione*.
+2. **Layout dedicato** sotto, nello stile del **progetto**. Ogni layout è una funzione registrata in `window.PROJECT_LAYOUTS[nome]`: disegna la pagina e restituisce una funzione di pulizia, che `js/modal.js` chiama alla chiusura.
 
-### Canale B e catalogo in G e B
-- **Canale B:** le caustiche dell'acqua non sono più una texture ripetuta a piastrelle. Sono macchie di luce morbide, grandi quanto la sezione, che vagano piano.
-- **Catalogo B:** sfumatura unica dal cielo all'abisso, raggi di luce, riflessi, un'onda sotto i filtri e bolle che salgono (solo a catalogo aperto); i riquadri sono bolle di vetro.
-- **Catalogo G:** macchie di spray sul muro, la tag "febi" gigante, colature lime sotto i filtri, riquadri attaccati con il nastro e titoli a pennarello.
-- **Livello comune:** le decorazioni stanno in `.catalog-deco`, dietro la griglia.
+Si chiude con la X in alto a destra o con `Esc`.
 
-### Telefono
-- **Progetti su filo:** su schermi stretti i fogli si rimpiccioliscono (scala 0,58 sotto i 520 px, 0,74 sotto gli 820) e l'area si accorcia. Su telefono si vedono un foglio e mezzo invece di mezzo.
-- **Claw machine:** sotto i 560 px lo sfondo è una composizione Bauhaus più leggera (quarto di cerchio, barra gialla, puntinato), invece del manifesto grande che si deformava.
-- **`css/mobile.css`:**
-  - sui touch i suggerimenti dicono "tocca" invece di "passa sopra";
-  - il disco della musica è più piccolo;
-  - nell'intestazione della scheda progetto palette e stile stanno affiancati;
-  - nel catalogo l'avatar è più piccolo e non copre i progetti.
-- **Campari su telefono:** la scatola non copre più "Accetti la sfida?" e lo spiritello resta dentro lo schermo.
+### Layout dedicati
+- **Campari Champ-AR** (`js/projectChampar.js`, `css/project-champar.css`; font Upheaval TT):
+  - apertura: la scatola sbuca e lo spiritello spunta da dietro;
+  - la storia con gli sprite animati, il packaging, lo showcase e la campagna sui telefoni;
+  - in fondo un mini gioco endless: si parte con **SALTA** (o Spazio o ↑) e si saltano le arance che lo spiritello lancia. Il record resta salvato nel browser.
+  - Il codice del gioco AR (A-Frame + MindAR) è su [github.com/jackdesigz/champar](https://github.com/jackdesigz/champar).
+- **Teatro Salone Ablondi** (`js/projectBrand.js`, `css/project-brand.css`; Montserrat e Radlush SemiBold):
+  - un sipario di velluto si apre sul marchio;
+  - il simbolo, dalle prime variazioni alla versione finale;
+  - la costruzione con le proporzioni delle linee guida;
+  - la palette, la tipografia e le magliette.
+- **Melagoccio** (`js/projectBrand.js`, `css/project-brand.css`; font del brand BLOCKY, testi in Rubik):
+  - il logo su un fondo di scritte che scorrono;
+  - palette e mascotte;
+  - la felpa che si gira tra fronte e retro;
+  - le figurine a ventaglio;
+  - il banner Instagram che si compone dai tre post.
+- **La Fanciulla del West** (`js/projectBrand.js`, `css/project-fanciulla.css`; font Decondol):
+  - apertura art déco con una carta che si gira e mostra il poster;
+  - la regina di cuori e la mano del morto;
+  - le sagome poligonali;
+  - moodboard, palette e font;
+  - le bozze su un tavolo verde e i mockup;
+  - il download della presentazione.
+- **Echo Sound Festival** (`js/projectBrand.js`, `css/project-echo.css`; font Super Earthly):
+  - anelli psichedelici che pulsano e il poster con le illustrazioni attaccate come adesivi;
+  - il poster con la palette a bollini;
+  - le tre illustrazioni a zig-zag;
+  - i mockup.
 
+### Aggiungere un progetto
+1. Crea la cartella `assets/projects/<progetto>/` con:
+   - `cover.jpg` (catalogo e filo);
+   - `capsule.png` (quadrata, 256 px, per la claw machine).
+2. Aggiungi la voce in `js/projects.js`:
+   - `id`, `title`, `category`, `year`;
+   - `coverImage`, `capsuleImage`;
+   - `software`, `palette`, `style`;
+   - i testi di panoramica e progettazione;
+   - `gallery`.
+3. Per la pagina hai due strade:
+   - usa le sezioni standard di `gallery` (`poster`, `moodboard`, `sketches`, `illustrations`, `mockups`, `download`);
+   - oppure scrivi un layout dedicato: registra `PROJECT_LAYOUTS.<nome>` e metti `gallery.layout: '<nome>'`.
+4. Nella claw machine finiscono solo i progetti con `capsuleImage`.
+
+---
+
+## Struttura
+
+```
+index.html              pagina unica: tre canali, catalogo, schede
+css/
+  styles.css            base e canale R
+  channel-g.css         canale G
+  channel-b.css         canale B
+  catalog-ui.css        catalogo, switch R/G/B, pulsante CATALOGO, X delle schede
+  project-page.css      parte introduttiva delle schede (stile del canale)
+  project-*.css         layout dedicati dei progetti
+  music-player.css · mobile.css · easter-egg.css
+js/
+  main.js               cambio canale, catalogo, filtri
+  channels.js           animazioni di G e B (muro spray, adesivi, bolle)
+  projects.js           registro dei progetti
+  modal.js              scheda progetto e capsula vinta
+  projectChampar.js     layout Campari + gioco
+  projectBrand.js       layout Ablondi, Melagoccio, Fanciulla, Echo
+  hangingCatalog.js     fogli sul filo
+  dither.js             pennello retinato e fogli a 1 bit
+  crane2d.js · clawPhysics2D.js   claw machine 2D
+  heroAvatar.js · avatarPilot.js  avatar 3D e i suoi spostamenti
+  musicPlayer.js · audio.js · flute.js · konami.js · softwareIcons.js
+assets/
+  projects/             immagini dei progetti
+  fonts/                font locali
+  avatar/ · Immagini/ · sfx/
+Musica/                 brani del player
+Progetti/               materiali originali (PDF, istruzioni)
+archive/                versioni precedenti (claw machine 3D, sfera e avatar procedurale)
+```
+
+`js/crane.js` è la vecchia claw machine 3D: la pagina non la carica. Come riattivarla è spiegato in `archive/claw-machine-3d/LEGGIMI.md`.
+
+---
+
+## Note tecniche
+
+- **Cache:** i file CSS e JS sono richiamati con `?v=` in `index.html`. Quando ne modifichi uno, alza il numero, altrimenti il browser può tenere la versione vecchia.
+- **Prestazioni:** lo scroll gira a 60 fps in tutti e tre i canali.
+  - L'avatar non usa l'antialias WebGL: con l'antialias ogni ridimensionamento costava circa 200 ms.
+  - La barra in alto non ha `backdrop-filter`.
+  - Il catalogo ha un fondo pieno e nasconde il sito sotto (`body.catalog-open`), così non lampeggia.
+- **Telefono** (`css/mobile.css` e media query nei singoli file):
+  - fogli sul filo più piccoli;
+  - sfondo più leggero per la claw machine;
+  - suggerimenti "tocca" al posto di "passa sopra";
+  - disco della musica e avatar più piccoli.
+- **Spruzzi del canale G:** sono SVG generati usati come maschere (`--splat-*` in `css/channel-g.css`), quindi prendono il colore della lettera.
+- **Maiuscole nei percorsi:** la cartella `assets/Immagini` ha la I maiuscola. Online le maiuscole contano: se la rinomini, aggiorna `js/konami.js`.
+- **Font locali:** Upheaval TT, Radlush, BLOCKY, Decondol e Super Earthly sono in `assets/fonts/`. Prima di distribuire il repo verifica che le loro licenze lo permettano.
