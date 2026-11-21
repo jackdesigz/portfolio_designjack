@@ -1,7 +1,7 @@
 /**
  * designjack — Layout dedicati ai progetti di Editorial Design
  * window.PROJECT_LAYOUTS.mao       → MAO Museo d'Arte Orientale (catalogo, gabbia 7×5, campagna OOH)
- * window.PROJECT_LAYOUTS.decoder   → Decoder (rivista cyberpunk: glitch, indice da terminale, duotoni)
+ * window.PROJECT_LAYOUTS.decoder   → Decoder (rivista cyberpunk come fanzine punk: cut-up, micropunti, un’opera uno stile)
  * window.PROJECT_LAYOUTS.modartech → Modartech (magazine di fotografia: schemi di luce, foto vs AI)
  *
  * Tutti e tre hanno un lettore sfogliabile (createFlipbook) con le pagine vere della pubblicazione.
@@ -290,7 +290,7 @@
     };
   }
 
-  const pageList = (base, n) => Array.from({ length: n }, (_, i) => `${base}pages/${pad2(i + 1)}.jpg`);
+  const pageList = (base, n, v) => Array.from({ length: n }, (_, i) => `${base}pages/${pad2(i + 1)}.jpg${v ? `?v=${v}` : ''}`);
 
   /* ==================================================================
      MAO — MUSEO D'ARTE ORIENTALE
@@ -452,18 +452,89 @@
           <figure class="mao-banner" data-reveal ${zoom(B + 'banner.jpg', 'Banner orizzontale')}>
             <img src="${B}banner.jpg" alt="Il banner orizzontale del MAO: logo, Kongo Rikishi e orari delle collezioni permanenti" loading="lazy" />
           </figure>
-          <div class="mao-ooh-grid">
-            ${ooh.map((m, i) => `
-              <figure class="mao-ooh-item is-${m.size || 'm'}" data-reveal style="--i:${i % 4};" ${zoom(B + m.src, m.title)}>
-                <img src="${B}${m.src}" alt="${esc(m.alt || m.title)}" loading="lazy" />
-                <figcaption><strong>${esc(m.kind || '')}</strong> ${esc(m.title || '')}</figcaption>
-              </figure>`).join('')}
+          ${g.poster ? `
+          <div class="mao-poster-row">
+            <figure class="mao-poster" data-reveal style="--ar:${g.poster.ratio};" ${zoom(B + g.poster.src, g.poster.title)}>
+              <img src="${B}${g.poster.src}" alt="${esc(g.poster.alt || g.poster.title)}" loading="lazy" />
+            </figure>
+            ${g.totem ? `<figure class="mao-poster is-totem" data-reveal style="--i:1; --ar:${g.totem.ratio};" ${zoom(B + g.totem.src, g.totem.title)}>
+              <img src="${B}${g.totem.src}" alt="${esc(g.totem.alt || g.totem.title)}" loading="lazy" />
+            </figure>` : ''}
+            <div class="mao-poster-copy" data-reveal style="--i:2;">
+              ${[g.poster, g.totem].filter(Boolean).map((m) => `
+                <div class="mao-poster-note">
+                  <p class="mao-kind">${esc(m.kind)}</p>
+                  <h4>${esc(m.title)}</h4>
+                  <p>${m.text}</p>
+                </div>`).join('')}
+            </div>
+          </div>` : ''}
+          ${g.insta ? `
+          <div class="mao-ig" data-reveal>
+            <div class="mao-ig-copy">
+              <p class="mao-kind">${esc(g.insta.kind)}</p>
+              <h4>${esc(g.insta.title)}</h4>
+              <p>${g.insta.text}</p>
+              <div class="mao-ig-tabs" role="group" aria-label="Scegli il post">
+                <button type="button" class="is-active" aria-pressed="true" data-i="-1">Tutti</button>
+                ${(g.insta.posts || []).map((pt, i) => `<button type="button" aria-pressed="false" data-i="${i}">${esc(pt.name)}</button>`).join('')}
+              </div>
+            </div>
+            <div class="mao-ig-view" style="--ar:${g.insta.ratio};">
+              <img src="${B}${g.insta.src}" alt="${esc(g.insta.alt || g.insta.title)}" loading="lazy" />
+              <span class="mao-ig-hint" aria-hidden="true">clicca un post</span>
+            </div>
+          </div>` : ''}
+          <div class="mao-ooh-rows">
+            ${[ooh.slice(0, 2), ooh.slice(2)].filter((r) => r.length).map((row) => `
+              <div class="mao-ooh-row">
+                ${row.map((m, i) => `
+                  <figure class="mao-ooh-item" data-reveal style="--i:${i}; --ar:${m.ratio || 1.4};" ${zoom(B + m.src, m.title)}>
+                    <img src="${B}${m.src}" alt="${esc(m.alt || m.title)}" loading="lazy" />
+                    <figcaption><strong>${esc(m.kind || '')}</strong> ${esc(m.title || '')}</figcaption>
+                  </figure>`).join('')}
+              </div>`).join('')}
           </div>
         </section>
       </div>
     `;
 
     const root = container.querySelector('.mao');
+
+    // Instagram: si sceglie un post e la vista si avvicina fino a leggerlo
+    const ig = root.querySelector('.mao-ig');
+    if (ig && g.insta) {
+      const posts = g.insta.posts || [];
+      const view = ig.querySelector('.mao-ig-view');
+      const img = view.querySelector('img');
+      const btns = Array.from(ig.querySelectorAll('.mao-ig-tabs button'));
+      const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+      let cur = -1;
+      const show = (i) => {
+        cur = i;
+        const p = posts[i];
+        if (!p) {
+          img.style.transform = 'translate(0%, 0%) scale(1)';
+        } else {
+          const s = Math.min(3.2, Math.min(100 / p.w, 100 / p.h) * 0.94);
+          const tx = clamp(50 - s * (p.x + p.w / 2), 100 - 100 * s, 0);
+          const ty = clamp(50 - s * (p.y + p.h / 2), 100 - 100 * s, 0);
+          img.style.transform = `translate(${tx.toFixed(2)}%, ${ty.toFixed(2)}%) scale(${s.toFixed(3)})`;
+        }
+        view.classList.toggle('is-zoomed', !!p);
+        btns.forEach((b) => { const on = Number(b.dataset.i) === i; b.classList.toggle('is-active', on); b.setAttribute('aria-pressed', String(on)); });
+      };
+      btns.forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.i))));
+      // clic sulla foto: da lontano apre il post sotto il puntatore, da vicino torna a tutti
+      view.addEventListener('click', (e) => {
+        if (cur !== -1) { show(-1); return; }
+        const r = view.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100;
+        const y = ((e.clientY - r.top) / r.height) * 100;
+        const hit = posts.findIndex((p) => x >= p.x && x <= p.x + p.w && y >= p.y && y <= p.y + p.h);
+        if (hit !== -1) show(hit);
+      });
+    }
 
     // principi: un pannello alla volta
     const prBtns = Array.from(root.querySelectorAll('.mao-pr'));
@@ -498,47 +569,6 @@
     return () => cleanups.forEach((fn) => fn && fn());
   };
 
-  /* ------------------------------------------------------------------
-     Testo che si "decodifica": caratteri a caso che si fissano da
-     sinistra a destra. Parte quando l'elemento riceve .is-in.
-     ------------------------------------------------------------------ */
-  const GLYPHS = '▓▒░<>/\\_-=+*#01ABCDEFX§¤';
-  function scramble(el, duration = 1400) {
-    const final = el.getAttribute('data-final') || el.textContent;
-    if (reduceMotion()) { el.textContent = final; return () => {}; }
-    // un carattere per span: la lettera vera resta (invisibile) e tiene il posto,
-    // sopra scorre il carattere a caso, così le righe non si muovono
-    el.textContent = '';
-    const spans = [];
-    for (const ch of final) {
-      if (ch === ' ') { el.appendChild(document.createTextNode(' ')); continue; }
-      const sp = document.createElement('span');
-      sp.className = 'sc is-noise';
-      sp.textContent = ch;
-      el.appendChild(sp);
-      spans.push(sp);
-    }
-    let raf = 0;
-    let frame = 0;
-    const t0 = performance.now();
-    const tick = (now) => {
-      const k = Math.min(1, (now - t0) / duration);
-      const fixed = Math.floor(spans.length * k);
-      frame++;
-      for (let i = 0; i < spans.length; i++) {
-        const sp = spans[i];
-        if (i < fixed) {
-          if (sp.classList.contains('is-noise')) sp.classList.remove('is-noise');
-        } else if (frame % 2 === 0) {
-          sp.setAttribute('data-n', GLYPHS[(Math.random() * GLYPHS.length) | 0]);
-        }
-      }
-      if (k < 1) raf = requestAnimationFrame(tick);
-      else el.textContent = final;
-    };
-    raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); el.textContent = final; };
-  }
   // esegue fn(el) la prima volta che el (o il suo antenato con data-reveal) riceve .is-in
   function onReveal(el, fn) {
     const host = el.closest('[data-reveal]') || el;
@@ -551,140 +581,332 @@
   }
 
   /* ==================================================================
-     DECODER — rivista cyberpunk
-     Nero, testata rossa, duotoni; Anton (al posto di Druk), Michroma,
-     Monobloco per indice e terminale.
+     DECODER — rivista cyberpunk, impaginata come una fanzine punk
+     Fotocopie strappate, nastro adesivo, lettere ritagliate, timbri.
+     Ogni opera ha il suo stile (colore, carattere, fondo), come nella
+     rivista. Anton (al posto di Druk), Special Elite, Permanent Marker,
+     Monobloco per numeri e didascalie.
      ================================================================== */
+
+  // numeri pseudo-casuali ripetibili: ogni pezzo di carta è strappato sempre allo stesso modo
+  function seeded(seed) {
+    let t = seed >>> 0;
+    return () => {
+      t += 0x6D2B79F5;
+      let r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // bordo strappato: poligono frastagliato sui lati scelti (t r b l)
+  function torn(seed, amp = 6, sides = 'trbl') {
+    const r = seeded(seed);
+    const off = (side) => (sides.includes(side) ? (r() * amp).toFixed(1) : '0');
+    const step = () => 2.5 + r() * 5.5;
+    const pts = [];
+    for (let x = 0; x < 100; x += step()) pts.push(`${x.toFixed(1)}% ${off('t')}px`);
+    for (let y = 0; y < 100; y += step()) pts.push(`calc(100% - ${off('r')}px) ${y.toFixed(1)}%`);
+    for (let x = 100; x > 0; x -= step()) pts.push(`${x.toFixed(1)}% calc(100% - ${off('b')}px)`);
+    for (let y = 100; y > 0; y -= step()) pts.push(`${off('l')}px ${y.toFixed(1)}%`);
+    return `polygon(${pts.join(',')})`;
+  }
+
+  // lettere ritagliate dai giornali, una diversa dall'altra
+  const RANSOM = [
+    { f: "'Anton', sans-serif", bg: '#E53232', fg: '#F2EEE3' },
+    { f: "'UnifrakturMaguntia', serif", bg: '#F2EEE3', fg: '#111111' },
+    { f: "'Special Elite', 'Courier New', monospace", bg: '#F3E600', fg: '#111111' },
+    { f: "'Anton', sans-serif", bg: '#111111', fg: '#F2EEE3' },
+    { f: "'Playfair Display', Georgia, serif", bg: '#CFCBC0', fg: '#C21F1F', it: true },
+    { f: "'Permanent Marker', cursive", bg: '#F2EEE3', fg: '#111111' },
+    { f: "'Michroma', sans-serif", bg: '#E53232', fg: '#111111' },
+    { f: "'Bungee Shade', sans-serif", bg: '#F2EEE3', fg: '#111111' },
+    { f: "'Monobloco', 'Courier New', monospace", bg: '#4871B4', fg: '#F2EEE3' }
+  ];
+  function ransom(text, seed) {
+    const r = seeded(seed);
+    let k = Math.floor(r() * RANSOM.length);
+    let i = -1;
+    // le lettere di una parola restano insieme: si va a capo solo tra le parole
+    return text.split(' ').map((word) => `<span class="dc-rw">${Array.from(word).map((ch) => {
+      i += 1;
+      k = (k + 1 + Math.floor(r() * 3)) % RANSOM.length;
+      const s = RANSOM[k];
+      const rot = ((r() - 0.5) * 14).toFixed(1);
+      const lift = ((r() - 0.5) * 0.16).toFixed(2);
+      const size = (0.86 + r() * 0.28).toFixed(2);
+      return `<span class="dc-rl" aria-hidden="true" style="--i:${i}; --r:${rot}deg; --y:${lift}em; --s:${size}; --bg:${s.bg}; --fg:${s.fg}; --font-main:${s.f};${s.it ? ' font-style:italic; font-weight:700;' : ''} clip-path:${torn(seed * 31 + i, 3)};">${esc(ch)}</span>`;
+    }).join('')}</span>`).join('<span class="dc-rl-sp"> </span>');
+  }
+
   LAYOUTS.decoder = function (container, project) {
     const g = project.gallery || {};
     const B = g.base || '';
     const idx = g.index || [];
-    const duo = g.duo || [];
+    const works = g.works || [];
+    const cuts = g.cutLines || [];
     const cleanups = [];
     const pagesUrl = pageList(B, g.pages || 32);
+    const head = (n, t, extra = '') => `<header class="dc-head" data-reveal${extra}><span class="dc-num">${n}</span><h3 class="dc-h" style="clip-path:${torn(Number(n) * 17, 4)};">${esc(t)}</h3></header>`;
+    const tape = (cls) => `<span class="dc-tape ${cls}" style="clip-path:${torn(cls.length * 13 + 5, 3, 'lr')};" aria-hidden="true"></span>`;
 
     container.innerHTML = `
       <div class="dc">
+        <svg class="dc-defs" width="0" height="0" aria-hidden="true" focusable="false">
+          <filter id="dc-rough" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5"/>
+          </filter>
+        </svg>
 
-        <!-- APERTURA: testata glitch, sottotitolo che si decodifica, copertina -->
+        <!-- APERTURA: testata a lettere ritagliate, copertina fotocopiata e incollata -->
         <section class="dc-hero">
           <div class="dc-hero-copy">
-            <p class="dc-tag" data-reveal>${esc(g.tag || '')}</p>
-            <h3 class="dc-title" data-text="DECODER" data-reveal>DECODER</h3>
-            <p class="dc-sub" data-reveal style="--i:1;"><span class="dc-scramble" data-final="${esc(g.subtitle || '')}">${esc(g.subtitle || '')}</span></p>
-            <p class="dc-lead" data-reveal style="--i:2;">${g.lead || ''}</p>
-            <p class="dc-status" data-reveal style="--i:3;"><span>&gt; decodifica</span> <b class="dc-pct">000%</b><i class="dc-bar"><i></i></i></p>
+            <p class="dc-stamp" data-reveal>${esc(g.stamp || '')}</p>
+            <h3 class="dc-ransom" data-reveal aria-label="Decoder">${ransom('DECODER', 3)}</h3>
+            <p class="dc-marker" data-reveal style="--i:2;">${esc(g.subtitle || '')}</p>
+            <div class="dc-strip" data-reveal style="--i:3; clip-path:${torn(11, 5)};"><p>${g.lead || ''}</p></div>
           </div>
           <figure class="dc-cover" data-reveal style="--i:1;" ${zoom(B + 'cover.jpg', 'Decoder — la copertina')}>
-            <img src="${B}cover.jpg" alt="La copertina di Decoder: la testata rossa sopra un volto in bianco e nero" />
-            <span class="dc-glitch-a" style="background-image:url('${B}cover.jpg');" aria-hidden="true"></span>
-            <span class="dc-glitch-b" style="background-image:url('${B}cover.jpg');" aria-hidden="true"></span>
+            <img src="${B}cover.jpg" alt="La copertina di Decoder: la testata rossa sopra un volto in bianco e nero" style="clip-path:${torn(5, 9)};" />
+            ${tape('is-a')}${tape('is-b')}
+            <span class="dc-cover-stamp" aria-hidden="true">Stampa</span>
           </figure>
         </section>
 
-        <!-- 01 INDICE: come un terminale; ogni voce apre la rivista a quella pagina -->
-        <section class="dc-sec dc-index-sec">
-          <header class="dc-head" data-reveal><span class="dc-num">01</span><h3 class="dc-h">${esc(g.indexTitle || 'Indice')}</h3></header>
-          <ol class="dc-index">
+        <!-- 01 LA RIVISTA, con l'indice ad adesivi -->
+        <section class="dc-sec dc-read-sec">
+          ${head('01', g.readerTitle || 'Sfoglia la rivista')}
+          <ol class="dc-stickers" aria-label="${esc(g.indexTitle || 'Indice')}">
             ${idx.map((it, i) => `
-              <li data-reveal style="--i:${i}; --c:${it.c};">
-                <button type="button" data-page="${it.p}">
-                  <span class="dc-ix-n">${pad2(i + 1)}</span>
-                  <span class="dc-ix-t">${esc(it.t)}</span>
-                  <span class="dc-ix-dots" aria-hidden="true"></span>
-                  <span class="dc-ix-p">${pad2(it.p)}</span>
+              <li data-reveal style="--i:${i % 5};">
+                <button type="button" data-page="${it.p}" style="--c:${it.c}; --r:${(((i * 37) % 9) - 4) * 0.8}deg; clip-path:${torn(70 + i, 3)};">
+                  <b>${pad2(it.p)}</b><span>${esc(it.t)}</span>
                 </button>
               </li>`).join('')}
           </ol>
-        </section>
-
-        <!-- 02 LA RIVISTA, dentro un monitor -->
-        <section class="dc-sec dc-reader-sec">
-          <header class="dc-head" data-reveal><span class="dc-num">02</span><h3 class="dc-h">${esc(g.readerTitle || 'Sfoglia la rivista')}</h3></header>
-          <div class="dc-monitor" data-reveal>
-            <div class="dc-monitor-bar"><span>DECODER_STAMPA.PDF</span><span class="dc-monitor-page">PAG 01</span></div>
+          <div class="dc-board" data-reveal>
+            ${tape('is-tl')}${tape('is-tr')}
             <div class="dc-reader"></div>
+            <span class="dc-pagetag" aria-hidden="true">pag. 01</span>
           </div>
         </section>
 
-        <!-- 03 DUOTONI -->
-        <section class="dc-sec dc-duo-sec">
-          <header class="dc-head" data-reveal><span class="dc-num">03</span><h3 class="dc-h">${esc(g.duoTitle || 'Un colore per ogni opera')}</h3></header>
-          <p class="dc-text" data-reveal>${g.duoText || ''}</p>
-          <div class="dc-duo">
-            ${duo.map((d, i) => `
-              <figure class="dc-tile" data-reveal style="--i:${i % 4}; --c:${d.c};" ${zoom(pagesUrl[d.page - 1], `Decoder — ${d.title}`)}>
-                <img src="${pagesUrl[d.page - 1]}" alt="Pagina ${d.page}: ${esc(d.title)}" loading="lazy" />
-                <figcaption><b>${esc(d.title)}</b><code>${esc(d.c)}</code></figcaption>
-              </figure>`).join('')}
+        <!-- 02 TAGLIA IL CODICE: il cut-up di Burroughs -->
+        <section class="dc-sec dc-cut-sec">
+          ${head('02', g.cutTitle || 'Taglia il codice')}
+          <div class="dc-cut">
+            <div class="dc-cut-copy" data-reveal>
+              ${(g.cutText || []).map((t) => `<p class="dc-text">${t}</p>`).join('')}
+              <figure class="dc-cut-film" ${zoom(B + 'ed-decoder-film.jpg', g.cutCaption || 'Decoder, il film')}>
+                <img src="${B}ed-decoder-film.jpg" alt="${esc(g.cutCaption || 'Due fotogrammi del film Decoder')}" loading="lazy" style="clip-path:${torn(21, 6)};" />
+              </figure>
+            </div>
+            <div class="dc-cut-desk" data-reveal style="--i:1;">
+              <div class="dc-cut-lines">
+                ${cuts.map((t, i) => `<span class="dc-cut-line" data-i="${i}" style="clip-path:${torn(40 + i, 4, 'lr')};">${esc(t)}</span>`).join('')}
+              </div>
+              <button type="button" class="dc-cut-btn"><span aria-hidden="true">✂</span> <em>Taglia e rimescola</em></button>
+            </div>
           </div>
         </section>
 
-        <!-- 04 DECODIFICARE -->
-        <section class="dc-sec dc-decode-sec">
-          <header class="dc-head" data-reveal><span class="dc-num">04</span><h3 class="dc-h">${esc(g.decodeTitle || 'Decodificare')}</h3></header>
-          <blockquote class="dc-quote" data-reveal><span class="dc-scramble" data-final="${esc(g.decodeQuote || '')}">${esc(g.decodeQuote || '')}</span></blockquote>
-          <div class="dc-decode-text">
-            ${(g.decodeText || []).map((t, i) => `<p class="dc-text" data-reveal style="--i:${i};">${t}</p>`).join('')}
+        <!-- 03 SAPEVI CHE: i micropunti gialli della stampante -->
+        <section class="dc-sec dc-dots-sec">
+          ${head('03', g.dotsTitle || 'Sapevi che…')}
+          <div class="dc-dots">
+            <div class="dc-dots-copy" data-reveal>
+              ${(g.dotsText || []).map((t) => `<p class="dc-text">${t}</p>`).join('')}
+              <figure class="dc-dots-printer" ${zoom(B + 'ed-stampante.jpg', 'Sapevi che… — pag. 9')}>
+                <img src="${B}ed-stampante.jpg" alt="Una stampante laser fotocopiata in bianco e nero" loading="lazy" style="clip-path:${torn(23, 6)};" />
+              </figure>
+            </div>
+            <div class="dc-sheet" data-reveal style="--i:1; --mx:50%; --my:45%;">
+              <div class="dc-sheet-print">
+                <p class="dc-sheet-kicker">Decoder // pag. 9</p>
+                <p class="dc-sheet-big">${esc(g.dotsSheet || '')}</p>
+                <p class="dc-sheet-small">E la tecnologia che usi ogni giorno sa più cose di te di quanto immagini.</p>
+              </div>
+              <div class="dc-uv" aria-hidden="true"></div>
+              <span class="dc-uv-tip" aria-hidden="true">luce blu</span>
+            </div>
           </div>
+        </section>
+
+        <!-- 04 UN'OPERA, UNO STILE -->
+        <section class="dc-sec dc-works-sec">
+          ${head('04', g.worksTitle || 'Un’opera, uno stile')}
+          <p class="dc-text dc-works-text" data-reveal>${g.worksText || ''}</p>
+          <div class="dc-works-tabs" role="tablist" aria-label="Le opere" data-reveal>
+            ${works.map((w, i) => `<button type="button" role="tab" aria-selected="${i === 0}" class="${i === 0 ? 'is-active' : ''}" data-i="${i}" style="--c:${w.c}; --r:${(((i * 53) % 7) - 3) * 0.9}deg; clip-path:${torn(90 + i, 3)};">${esc(w.title)}</button>`).join('')}
+          </div>
+          <div class="dc-stage" data-reveal aria-live="polite"></div>
+        </section>
+
+        <!-- CHIUSURA: No Future -->
+        <section class="dc-sec dc-outro">
+          <div class="dc-outro-bg" aria-hidden="true" style="background-image:url('${B}ed-volto.jpg');"></div>
+          <p class="dc-nofuture" data-reveal aria-label="${esc((g.outroWords || []).join(' '))}">
+            <span class="dc-nf-no">${esc((g.outroWords || ['No'])[0])}<svg class="dc-nf-strike" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M4 38 C 50 20, 120 46, 196 18 M 10 46 C 70 30, 130 52, 192 30"/></svg></span>
+            <span class="dc-nf-future">${esc((g.outroWords || ['', 'Future'])[1])}</span>
+          </p>
+          <p class="dc-outro-text" data-reveal style="--i:1; clip-path:${torn(99, 5)};">${g.outroText || ''}</p>
         </section>
       </div>
     `;
 
     const root = container.querySelector('.dc');
+    const card = container.closest('.project-modal-card');
+    const scrollToEl = (el) => {
+      if (!card) return;
+      const top = el.getBoundingClientRect().top - card.getBoundingClientRect().top + card.scrollTop - 24;
+      card.scrollTo({ top, behavior: reduceMotion() ? 'auto' : 'smooth' });
+    };
 
-    // testi che si decodificano quando compaiono
-    root.querySelectorAll('.dc-scramble').forEach((el) => {
-      let stop = () => {};
-      cleanups.push(onReveal(el, () => { stop = scramble(el, el.closest('.dc-quote') ? 2200 : 1300); }));
-      cleanups.push(() => stop());
-    });
-
-    // percentuale di decodifica nell'apertura
-    const pct = root.querySelector('.dc-pct');
-    const status = root.querySelector('.dc-status');
-    let pctRaf = 0;
-    cleanups.push(onReveal(pct, () => {
-      if (reduceMotion()) { pct.textContent = '100%'; status.classList.add('is-done'); return; }
-      const t0 = performance.now();
-      const tick = (now) => {
-        const k = Math.min(1, (now - t0) / 1800);
-        pct.textContent = `${String(Math.round(k * 100)).padStart(3, '0')}%`;
-        status.style.setProperty('--k', k.toFixed(3));
-        if (k < 1) pctRaf = requestAnimationFrame(tick);
-        else status.classList.add('is-done');
-      };
-      pctRaf = requestAnimationFrame(tick);
-    }));
-    cleanups.push(() => cancelAnimationFrame(pctRaf));
-
-    // la rivista
-    const pageLabel = root.querySelector('.dc-monitor-page');
-    const ixBtns = Array.from(root.querySelectorAll('.dc-index button'));
+    // ---- la rivista + indice ad adesivi
+    const board = root.querySelector('.dc-board');
+    const pageTag = root.querySelector('.dc-pagetag');
+    const stickers = Array.from(root.querySelectorAll('.dc-stickers button'));
     const fb = createFlipbook(root.querySelector('.dc-reader'), {
       pages: pagesUrl,
       ratio: 860 / 1206,
       title: 'Decoder',
       maxHeight: 0.7,
       onChange(p) {
-        pageLabel.textContent = `PAG ${pad2(p + 1)}`;
+        pageTag.textContent = `pag. ${pad2(p + 1)}`;
         let cur = -1;
         idx.forEach((it, k) => { if (p + 1 >= it.p - 1) cur = k; });
-        ixBtns.forEach((b, k) => b.classList.toggle('is-current', k === cur));
+        stickers.forEach((b, k) => b.classList.toggle('is-current', k === cur));
       }
     });
     cleanups.push(() => fb.destroy());
+    const openAt = (page) => { fb.goPage(page - 1); scrollToEl(board); };
+    stickers.forEach((b) => b.addEventListener('click', () => openAt(Number(b.dataset.page))));
 
-    // l'indice apre la rivista alla pagina giusta e ci porta lì
-    const monitor = root.querySelector('.dc-monitor');
-    ixBtns.forEach((b) => b.addEventListener('click', () => {
-      fb.goPage(Number(b.dataset.page) - 1);
-      const card = container.closest('.project-modal-card');
-      if (card) {
-        const top = monitor.getBoundingClientRect().top - card.getBoundingClientRect().top + card.scrollTop - 24;
-        card.scrollTo({ top, behavior: reduceMotion() ? 'auto' : 'smooth' });
+    // ---- cut-up: le strisce si tagliano e si rimescolano (FLIP)
+    const desk = root.querySelector('.dc-cut-lines');
+    const cutBtn = root.querySelector('.dc-cut-btn');
+    if (desk && cutBtn) {
+      const lines = Array.from(desk.children);
+      let shuffled = false;
+      let round = 0;
+      const place = (order, rots) => {
+        const before = new Map(lines.map((l) => [l, l.getBoundingClientRect()]));
+        order.forEach((l) => desk.appendChild(l));
+        lines.forEach((l, k) => {
+          const a = before.get(l);
+          const b = l.getBoundingClientRect();
+          const rot = rots ? rots[k] : 0;
+          l.style.transition = 'none';
+          l.style.transform = `translate(${a.left - b.left}px, ${a.top - b.top}px) rotate(${l.dataset.rot || 0}deg)`;
+          l.dataset.rot = String(rot);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            l.style.transition = reduceMotion() ? 'none' : `transform 0.7s cubic-bezier(0.3, 1.3, 0.5, 1) ${(k * 0.03).toFixed(2)}s`;
+            l.style.transform = `rotate(${rot}deg)`;
+          }));
+        });
+      };
+      cutBtn.addEventListener('click', () => {
+        round += 1;
+        if (!shuffled) {
+          const r = seeded(round * 977 + 13);
+          let order;
+          do {
+            order = lines.slice();
+            for (let k = order.length - 1; k > 0; k--) { const j = Math.floor(r() * (k + 1)); [order[k], order[j]] = [order[j], order[k]]; }
+          } while (order.every((l, k) => l === lines[k]));
+          place(order, lines.map(() => ((r() - 0.5) * 9).toFixed(1)));
+          cutBtn.querySelector('em').textContent = 'Ricomponi';
+          desk.classList.add('is-cut');
+        } else {
+          place(lines, null);
+          cutBtn.querySelector('em').textContent = 'Taglia e rimescola';
+          desk.classList.remove('is-cut');
+        }
+        shuffled = !shuffled;
+      });
+    }
+
+    // ---- micropunti: la luce blu segue il puntatore e rivela il codice giallo
+    const sheet = root.querySelector('.dc-sheet');
+    const uv = root.querySelector('.dc-uv');
+    if (sheet && uv) {
+      // matrice 15 × 8 come quella delle stampanti: alcuni punti sì, altri no
+      const r = seeded(2017);
+      const cell = 9;
+      let dots = '';
+      for (let y = 0; y < 8; y++) for (let x = 0; x < 15; x++) {
+        if (y === 0 || x === 0 || r() > 0.62) dots += `<circle cx="${x * cell + 5}" cy="${y * cell + 5}" r="1.5"/>`;
       }
-    }));
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${15 * cell + 22}" height="${8 * cell + 22}"><g fill="#FFE94A">${dots}</g></svg>`;
+      sheet.style.setProperty('--dots', `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+      let hover = false;
+      let raf = 0;
+      const set = (x, y) => { sheet.style.setProperty('--mx', `${x}px`); sheet.style.setProperty('--my', `${y}px`); };
+      const onMove = (e) => {
+        const b = sheet.getBoundingClientRect();
+        hover = true;
+        sheet.classList.add('is-lit');
+        set(e.clientX - b.left, e.clientY - b.top);
+      };
+      const onLeave = () => { hover = false; };
+      sheet.addEventListener('pointermove', onMove);
+      sheet.addEventListener('pointerdown', onMove);
+      sheet.addEventListener('pointerleave', onLeave);
+      // da sola, la luce gira piano sul foglio per far capire il gioco
+      const t0 = performance.now();
+      const loop = (now) => {
+        raf = requestAnimationFrame(loop);
+        if (hover || !inView(sheet)) return;
+        const b = sheet.getBoundingClientRect();
+        const t = (now - t0) / 1000;
+        set(b.width * (0.5 + 0.3 * Math.sin(t * 0.7)), b.height * (0.5 + 0.28 * Math.sin(t * 1.1 + 1)));
+        sheet.classList.add('is-lit');
+      };
+      if (!reduceMotion()) raf = requestAnimationFrame(loop);
+      else { sheet.classList.add('is-lit'); }
+      cleanups.push(() => cancelAnimationFrame(raf));
+    }
+
+    // ---- le opere: ogni scelta rifà la scena con lo stile di quell'opera
+    const stage = root.querySelector('.dc-stage');
+    const tabs = Array.from(root.querySelectorAll('.dc-works-tabs button'));
+    let swapT = 0;
+    const renderWork = (i, animate) => {
+      const w = works[i];
+      if (!w) return;
+      const pages = w.pages[0] === w.pages[1] ? `${w.pages[0]}` : `${w.pages[0]}–${w.pages[1]}`;
+      const draw = () => {
+        stage.className = `dc-stage is-${w.key}${stage.classList.contains('is-in') ? ' is-in' : ''}`;
+        stage.style.setProperty('--c', w.c);
+        stage.innerHTML = `
+          <div class="dc-st-bg" aria-hidden="true"></div>
+          <div class="dc-st-art">
+            <figure class="dc-paste is-a" ${zoom(B + w.img, `${w.title} — Decoder, pag. ${pages}`)}>
+              <img src="${B}${w.img}" alt="${esc(w.title)}: un’immagine dalla rivista" style="clip-path:${torn(i * 7 + 1, 7)};" />
+            </figure>
+            ${w.img2 ? `<figure class="dc-paste is-b" ${zoom(B + w.img2, `${w.title} — Decoder`)}><img src="${B}${w.img2}" alt="${esc(w.title)}: un’altra immagine dalla rivista" style="clip-path:${torn(i * 7 + 3, 6)};" /></figure>` : ''}
+            ${tape('is-a')}${tape('is-b')}
+          </div>
+          <div class="dc-st-copy">
+            <p class="dc-st-kicker">${esc(w.kicker)}</p>
+            <h4 class="dc-st-title" data-text="${esc(w.title)}">${w.key === 'johnny' ? ransom(w.title.toUpperCase(), 9) : esc(w.title)}</h4>
+            <blockquote class="dc-st-quote" style="clip-path:${torn(i * 7 + 5, 5)};"><p>${w.quote}</p><cite>Decoder, pag. ${pages}</cite></blockquote>
+            <button type="button" class="dc-st-open" data-page="${w.pages[0]}">Apri la rivista a pag. ${w.pages[0]} <span aria-hidden="true">→</span></button>
+          </div>`;
+        stage.querySelector('.dc-st-open').addEventListener('click', () => openAt(w.pages[0]));
+      };
+      tabs.forEach((t, k) => { t.classList.toggle('is-active', k === i); t.setAttribute('aria-selected', String(k === i)); });
+      clearTimeout(swapT);
+      if (!animate || reduceMotion()) { draw(); return; }
+      // cambio come una fotocopia: lampo bianco, poi la nuova pagina
+      stage.classList.add('is-swap');
+      swapT = setTimeout(() => { draw(); stage.classList.add('is-swap-in'); swapT = setTimeout(() => stage.classList.remove('is-swap', 'is-swap-in'), 420); }, 170);
+    };
+    tabs.forEach((t, i) => t.addEventListener('click', () => renderWork(i, true)));
+    renderWork(0, false);
+    cleanups.push(() => clearTimeout(swapT));
 
     cleanups.push(setupReveal(root, container));
     return () => cleanups.forEach((fn) => fn && fn());
@@ -705,7 +927,7 @@
     const sena = g.sena || [];
     const travel = g.travel || [];
     const cleanups = [];
-    const pagesUrl = pageList(B, g.pages || 82);
+    const pagesUrl = pageList(B, g.pages || 82, 2); // v2: pagine di sinistra ritagliate di nuovo
     const bars = (cls) => `<span class="mt-bars ${cls}" aria-hidden="true"><i></i><i></i></span>`;
 
     // schema visto dall'alto: soggetto al centro, fotocamera in basso, luce che si sposta
@@ -842,13 +1064,16 @@
         ${travel.length ? `
         <section class="mt-sec mt-travel-sec">
           <header class="mt-head" data-reveal><span class="mt-num">06</span><h3 class="mt-h">${esc(g.travelTitle || 'Viaggio')}</h3></header>
-          <blockquote class="mt-quote" data-reveal>${esc(g.travelQuote || '')}</blockquote>
-          <div class="mt-travel">
-            ${travel.map((src, i) => `<figure class="mt-trip is-${i}" data-reveal style="--i:${i % 3};" ${zoom(B + src, `Viaggio — ${i + 1}`)}><img src="${B}${src}" alt="Paesaggio di montagna ${i + 1}" loading="lazy" /></figure>`).join('')}
-            <span class="mt-word is-a" aria-hidden="true">Viaggio</span>
-            <span class="mt-word is-b" aria-hidden="true">Vastità</span>
-            <span class="mt-word is-c" aria-hidden="true">Proporzione</span>
-          </div>
+          <p class="mt-text" data-reveal>${g.travelText || ''}</p>
+          ${travel.map((ch, ci) => `
+            <article class="mt-chap is-${ci}">
+              <h4 class="mt-big" data-reveal><span>${esc(ch.word)}</span></h4>
+              <div class="mt-chap-text" data-reveal style="--i:1;">
+                <p>${ch.text}</p>
+                ${ch.pages ? `<button type="button" class="mt-chap-go" data-page="${ch.pages[0]}">Sfoglia le pagine ${ch.pages.join('–')} <span aria-hidden="true">↗</span></button>` : ''}
+              </div>
+              ${ch.imgs.map((im, k) => `<figure class="mt-trip is-${k}" data-reveal style="--i:${k + 1};" ${zoom(B + im.src, `${ch.word} — foto ${k + 1}`)}><img src="${B}${im.src}" alt="${esc(im.alt)}" loading="lazy" /></figure>`).join('')}
+            </article>`).join('')}
         </section>` : ''}
       </div>
     `;
@@ -864,7 +1089,7 @@
     });
     cleanups.push(() => fb.destroy());
     const reader = root.querySelector('.mt-reader');
-    root.querySelectorAll('.mt-contents button').forEach((b) => b.addEventListener('click', () => {
+    root.querySelectorAll('.mt-contents button, .mt-chap-go').forEach((b) => b.addEventListener('click', () => {
       fb.goPage(Number(b.dataset.page) - 1);
       const card = container.closest('.project-modal-card');
       if (card) {
@@ -974,6 +1199,56 @@
         requestAnimationFrame(() => { tk = false; count.textContent = `${pad2(current() + 1)} / ${pad2(items.length)}`; });
       };
       track.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // viaggio: le tre parole riempiono la loro colonna, come nel magazine
+    const bigs = Array.from(root.querySelectorAll('.mt-big'));
+    const fitBigs = () => bigs.forEach((h) => {
+      const span = h.firstElementChild;
+      h.style.fontSize = '100px';
+      const w = span.getBoundingClientRect().width;
+      const target = h.clientWidth;
+      if (w && target) h.style.fontSize = `${Math.min(420, (100 * target) / w) * 0.995}px`;
+    });
+    if (bigs.length) {
+      fitBigs();
+      if (document.fonts && document.fonts.load) document.fonts.load('100px Boldark').then(fitBigs).catch(() => {});
+      // si ricalcola solo se cambia la larghezza delle colonne, e al frame dopo:
+      // cambiare la dimensione del testo dentro l'osservatore creerebbe un ciclo
+      let lastW = '';
+      let fitRaf = 0;
+      const ro = new ResizeObserver(() => {
+        const w = bigs.map((h) => h.clientWidth).join(',');
+        if (w === lastW) return;
+        lastW = w;
+        cancelAnimationFrame(fitRaf);
+        fitRaf = requestAnimationFrame(fitBigs);
+      });
+      bigs.forEach((h) => ro.observe(h));
+      cleanups.push(() => cancelAnimationFrame(fitRaf));
+      cleanups.push(() => ro.disconnect());
+    }
+
+    // viaggio: le foto scorrono un poco più lente della pagina
+    const trips = Array.from(root.querySelectorAll('.mt-chap .mt-trip'));
+    const scroller = container.closest('.project-modal-card');
+    if (trips.length && scroller && !reduceMotion()) {
+      let ticking = false;
+      const parallax = () => {
+        ticking = false;
+        const vh = scroller.clientHeight;
+        const top0 = scroller.getBoundingClientRect().top;
+        trips.forEach((f) => {
+          const r = f.getBoundingClientRect();
+          if (r.bottom < top0 - 50 || r.top > top0 + vh + 50) return;
+          const k = (r.top + r.height / 2 - top0 - vh / 2) / vh;
+          f.style.setProperty('--py', `${(k * -7).toFixed(2)}%`);
+        });
+      };
+      const onScrollP = () => { if (!ticking) { ticking = true; requestAnimationFrame(parallax); } };
+      scroller.addEventListener('scroll', onScrollP, { passive: true });
+      parallax();
+      cleanups.push(() => scroller.removeEventListener('scroll', onScrollP));
     }
 
     cleanups.push(setupReveal(root, container));

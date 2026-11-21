@@ -19,7 +19,7 @@ window.PROJECT_REGISTRY = [
     stack: ['Adobe InDesign', 'Adobe Photoshop', 'Catalogo', 'Griglia modulare', 'Campagna OOH', 'Social Media'],
     description: 'Il catalogo delle collezioni permanenti del MAO, il Museo d’Arte Orientale di Torino, e la campagna che lo porta in città: affissioni, totem, manifesti, un pieghevole a tre ante e i post per Instagram.',
     details: 'Il progetto parte dall’identità del museo e da un approccio decoloniale (#MAOtempopresente). La sobrietà di Palazzo Mazzonis incontra il rigore tipografico occidentale e la materia delle opere asiatiche: una gabbia modulare 7 × 5 nata dall’interlinea, molto spazio bianco, il Rosso “MAO” e il Kongo Rikishi, il guardiano dei templi, come figura di benvenuto su ogni supporto.',
-    coverImage: 'assets/projects/mao-torino/cover.jpg',
+    coverImage: 'assets/projects/mao-torino/cover.jpg?v=2',
     capsuleImage: 'assets/projects/mao-torino/capsule.png',
     gallery: {
       layout: 'mao',
@@ -77,14 +77,33 @@ window.PROJECT_REGISTRY = [
       ],
       oohTitle: 'Fuori dal museo',
       oohText: 'Nei templi i Kongō-rikishi sono i guardiani che accolgono chi entra. Qui il Kongo Rikishi diventa la figura di benvenuto: a cavallo tra il fondo riso e la fascia rossa rompe la griglia, dà profondità e rende riconoscibile ogni supporto.',
+      poster: {
+        src: 'mockup-manifesto.jpg', ratio: 812 / 1210, kind: 'MANIFESTO', title: 'Il manifesto',
+        text: 'In alto il logo, accanto il titolo “viaggio culturale nell’Asia” e, a cavallo della fascia rossa, il Kongo Rikishi; in basso i kanji e gli orari delle collezioni permanenti.',
+        alt: 'Il manifesto del MAO incorniciato in una sala: logo, Kongo Rikishi sulla fascia rossa e il titolo viaggio culturale nell’Asia'
+      },
+      totem: {
+        src: 'mockup-totem.jpg', ratio: 754 / 1700, kind: 'TOTEM', title: 'Il totem',
+        text: 'La stessa composizione in verticale: il Kongo Rikishi a figura intera accoglie chi passa, come i guardiani all’ingresso dei templi.',
+        alt: 'Il totem del MAO in una piazza, con il Kongo Rikishi a figura intera'
+      },
+      insta: {
+        src: 'mockup-instagram.jpg', ratio: 2600 / 1706, kind: 'INSTAGRAM', title: 'Quattro post, uno per sezione',
+        text: 'Quattro post separati: tre raccontano una sezione della mostra, il quarto riprende la grafica della campagna con il Kongo Rikishi. Scegli un post per guardarlo da vicino.',
+        alt: 'I quattro post Instagram del MAO su fondo rosa, accanto a uno smartphone con il post sul Giappone',
+        posts: [
+          { name: 'Kongo Rikishi', x: 9, y: 44, w: 22, h: 46 },
+          { name: 'Giappone', x: 14, y: 0, w: 22, h: 45 },
+          { name: 'Gandhāra, India e Sudest asiatico', x: 34, y: 4, w: 22, h: 46 },
+          { name: 'Cina', x: 29, y: 48, w: 23, h: 44 },
+          { name: 'Sullo smartphone', x: 54, y: 9, w: 35, h: 91 }
+        ]
+      },
       ooh: [
-        { src: 'mockup-affissione.jpg', kind: 'AFFISSIONE', title: 'Il banner in città', size: 'l', alt: 'Il banner del MAO su un ponteggio in una via di Torino, con la Mole sullo sfondo' },
-        { src: 'mockup-totem.jpg', kind: 'TOTEM', title: 'All’ingresso', size: 't', alt: 'Il totem del MAO con il Kongo Rikishi' },
-        { src: 'mockup-manifesto.jpg', kind: 'MANIFESTO', title: 'In cornice', size: 'm', alt: 'Il manifesto del MAO incorniciato in una sala' },
-        { src: 'mockup-tre-ante.jpg', kind: 'PIEGHEVOLE', title: 'Il tre ante', size: 'm', alt: 'Il pieghevole a tre ante chiuso' },
-        { src: 'mockup-tre-ante-interno.jpg', kind: 'PIEGHEVOLE', title: 'L’interno', size: 'm', alt: 'L’interno del pieghevole a tre ante' },
-        { src: 'mockup-instagram.jpg', kind: 'INSTAGRAM', title: 'Quattro post, uno per sezione', size: 'w', alt: 'I post Instagram del MAO accanto a uno smartphone' },
-        { src: 'mockup-catalogo-aperto.jpg', kind: 'CATALOGO', title: 'Aperto sul tavolo', size: 'w', alt: 'Il catalogo del MAO aperto' }
+        { src: 'mockup-affissione.jpg', ratio: 1700 / 1506, kind: 'AFFISSIONE', title: 'Il banner in città', alt: 'Il banner del MAO su un ponteggio in una via di Torino, con la Mole sullo sfondo' },
+        { src: 'mockup-tre-ante.jpg', ratio: 1700 / 1486, kind: 'PIEGHEVOLE', title: 'Il tre ante', alt: 'Il pieghevole a tre ante chiuso' },
+        { src: 'mockup-tre-ante-interno.jpg', ratio: 1700 / 1660, kind: 'PIEGHEVOLE', title: 'L’interno', alt: 'L’interno del pieghevole a tre ante' },
+        { src: 'mockup-catalogo-aperto.jpg', ratio: 1700 / 1098, kind: 'CATALOGO', title: 'Aperto sul tavolo', alt: 'Il catalogo del MAO aperto' }
       ]
     }
   },
@@ -97,7 +116,7 @@ window.PROJECT_REGISTRY = [
     shapeName: 'Glitch Cube',
     colorHex: '#E53232',
     capsuleColor: 'black',
-    style: 'Cyberpunk & Duotono',
+    style: 'Punk & Duotono',
     palette: ['#1C1C1C', '#E53232', '#FBFBFB', '#4871B4', '#BBCE19'],
     software: ['Adobe InDesign', 'Adobe Photoshop'],
     stack: ['Adobe InDesign', 'Adobe Photoshop', 'Rivista', 'Duotono', 'Tipografia sperimentale'],
@@ -110,40 +129,49 @@ window.PROJECT_REGISTRY = [
       layout: 'decoder',
       base: 'assets/projects/decoder/',
       pages: 32,
-      tag: 'RIVISTA // 32 PAGINE // STAMPA',
-      subtitle: 'Il cyberpunk nella cultura moderna',
+      stamp: 'Rivista // 32 pagine // stampa',
+      subtitle: 'il cyberpunk nella cultura moderna',
       lead: 'Il cyberpunk non come semplice fantascienza, ma come strumento per leggere il presente: dalla scena italiana nata attorno alla rivista Decoder ai film, ai videogiochi e alla musica che ne hanno fatto un immaginario.',
       indexTitle: 'Indice',
       index: [
-        { t: 'Il cyberpunk', p: 4, c: '#E53232' },
-        { t: 'Decoder', p: 7, c: '#FBFBFB' },
-        { t: 'Media principali', p: 10, c: '#E9702F' },
+        { t: 'Il cyberpunk', p: 4, c: '#F2EEE3' },
+        { t: 'Decoder', p: 7, c: '#E53232' },
+        { t: 'Media principali', p: 10, c: '#F08FC0' },
         { t: 'Blade Runner', p: 14, c: '#4871B4' },
         { t: 'Ghost in the Shell', p: 18, c: '#E9702F' },
-        { t: 'Cyberpunk 2077', p: 20, c: '#D9D64A' },
+        { t: 'Cyberpunk 2077', p: 20, c: '#E6E13A' },
         { t: 'Marathon', p: 24, c: '#BBCE19' },
         { t: 'Neuromante', p: 26, c: '#B0449C' },
         { t: 'Nine Inch Nails', p: 28, c: '#2E9A55' }
       ],
       readerTitle: 'Sfoglia la rivista',
-      duoTitle: 'Un colore per ogni opera',
-      duoText: 'Ogni immagine è ridotta a due toni: il nero della pagina e un colore che cambia da un’opera all’altra. Passa sopra una pagina per decodificarla.',
-      duo: [
-        { page: 13, title: 'Akira', c: '#D22629' },
-        { page: 15, title: 'Blade Runner', c: '#4871B4' },
-        { page: 19, title: 'Ghost in the Shell', c: '#E9702F' },
-        { page: 23, title: 'Johnny Silverhand', c: '#EEEB95' },
-        { page: 25, title: 'Marathon', c: '#BBCE19' },
-        { page: 26, title: 'Neuromante', c: '#8E347B' },
-        { page: 27, title: 'Sprawl', c: '#916CAA' },
-        { page: 29, title: 'Nine Inch Nails', c: '#247C44' }
+      cutTitle: 'Taglia il codice',
+      cutText: [
+        'Il nome della rivista viene da <strong>William S. Burroughs</strong>: per lui il linguaggio era un codice imposto dal potere, e decodificare voleva dire smontarlo, leggerlo controcorrente, sovvertirlo.',
+        'Burroughs lo smontava anche con le forbici: il <strong>cut-up</strong>, un testo tagliato a strisce e rimescolato. Prova con la sua frase.'
       ],
-      decodeTitle: 'Decodificare',
-      decodeQuote: 'Il linguaggio non è uno strumento neutro: è un sistema di controllo, un codice imposto dal potere.',
-      decodeText: [
-        'Il nome della rivista viene dalle teorie sulla comunicazione di <strong>William S. Burroughs</strong>, che aveva trasformato il linguaggio in un campo di battaglia politico.',
-        'Decodificare significa smontare quel codice, leggerlo controcorrente, sovvertirlo. Per questo il testo si sgretola, le colonne si spezzano e le immagini sembrano segnali appena captati.'
-      ]
+      cutLines: ['Per Burroughs,', 'il linguaggio', 'non è uno strumento neutro:', 'è un sistema di controllo,', 'un codice imposto dal potere', 'per plasmare la realtà', 'e il pensiero.'],
+      cutCaption: '“Decoder”, film del 1984 che trae spunto dalle idee di Burroughs (pag. 7)',
+      dotsTitle: 'Sapevi che…',
+      dotsText: [
+        'Ogni volta che stampi un documento a colori, potresti star lasciando una firma invisibile sul foglio. Si chiamano <strong>Printer Tracking Dots</strong>: micropunti gialli, invisibili a occhio nudo, che sotto luce blu o ultravioletta codificano il numero seriale della stampante e la data e l’ora esatte della stampa.',
+        'Nel 2017 Reality Winner, contractor della NSA, fu identificata proprio attraverso i micropunti sul foglio stampato.'
+      ],
+      dotsSheet: 'La carta non è anonima.',
+      worksTitle: 'Un’opera, uno stile',
+      worksText: 'Nella rivista ogni opera ha il suo colore, i suoi caratteri e le sue immagini ridotte a due toni. Scegline una.',
+      works: [
+        { key: 'akira', title: 'Akira', kicker: 'Manga 1982 // Film 1988', pages: [12, 13], c: '#D22629', img: 'ed-akira.jpg', quote: 'Le corporazioni e i governi non proteggono i cittadini, li usano.' },
+        { key: 'blade', title: 'Blade Runner', kicker: 'Film // 1982', pages: [14, 17], c: '#4871B4', img: 'ed-blade.jpg', img2: 'ed-lacrime.jpg', quote: 'Chi può se ne va. Chi resta è quello che rimane quando il progresso decide di andare avanti senza di te.' },
+        { key: 'ghost', title: 'Ghost in the Shell', kicker: 'Manga // 1989', pages: [18, 19], c: '#E9702F', img: 'ed-ghost.jpg', quote: 'Un’opera che non si accontenta di raccontare il futuro, vuole capirlo dall’interno, smontarlo pezzo per pezzo e vedere cosa rimane.' },
+        { key: 'cp', title: 'Cyberpunk 2077', kicker: 'Videogioco // 2020', pages: [20, 22], c: '#E6E13A', img: 'ed-v2077.jpg', img2: 'ed-arasaka.jpg', quote: 'Night City non è un posto dove si vince. È un posto dove si sopravvive, se si è fortunati.' },
+        { key: 'johnny', title: 'Johnny Silverhand', kicker: 'Rockstar // terrorista // fantasma digitale', pages: [23, 23], c: '#EEEB95', img: 'ed-johnny.jpg', img2: 'ed-johnny-foto.jpg', quote: 'Un uomo che ha combattuto le corporazioni con una chitarra e con le bombe.' },
+        { key: 'marathon', title: 'Marathon', kicker: 'Videogioco // Bungie', pages: [24, 25], c: '#BBCE19', img: 'ed-marathon.jpg', img2: 'ed-marathon-bar.jpg', quote: 'Corpo sostituito, identità in bilico, sistemi di controllo opachi: è la grammatica classica del genere.' },
+        { key: 'neuro', title: 'Neuromante', kicker: 'Romanzo // 1984', pages: [26, 27], c: '#B0449C', img: 'ed-sprawl.jpg', quote: 'Gibson inventa in queste pagine il concetto di cyberspazio, definendolo come una allucinazione condivisa da milioni di utenti.' },
+        { key: 'nin', title: 'Nine Inch Nails', kicker: 'Musica // dal 1989', pages: [28, 29], c: '#2E9A55', img: 'ed-nin.jpg', quote: 'Una macchina che soffre, un uomo che si trasforma in qualcosa di diverso e non sa se esserne sollevato o terrorizzato.' }
+      ],
+      outroWords: ['No', 'Future'],
+      outroText: 'Il motto punk era “No Future”. Sulle pagine di Decoder il cyberpunk arriva in Italia con la voglia di affrontare quel futuro temuto e di usarlo per leggere il presente.'
     }
   },
   {
@@ -211,9 +239,34 @@ window.PROJECT_REGISTRY = [
       senaTitle: '#MADEINSENA',
       senaText: 'Una campagna per Sena, artigiani del cappello: le persone, le mani e gli strumenti del laboratorio, con il marchio e l’hashtag sopra le foto.',
       sena: ['sena-33.jpg', 'sena-34.jpg', 'sena-35.jpg', 'sena-36.jpg', 'sena-37.jpg'],
-      travelTitle: 'In viaggio',
-      travelQuote: 'Il viaggio non è una vacanza: è un atto di sabotaggio contro l’abitudine.',
-      travel: ['viaggio-1.jpg', 'viaggio-2.jpg', 'viaggio-3.jpg', 'viaggio-4.jpg', 'viaggio-5.jpg']
+      travelTitle: 'Viaggio | Vastità | Proporzione',
+      travelText: 'Il magazine si chiude in montagna: tre parole, tre doppie pagine, le foto scattate in viaggio.',
+      travel: [
+        {
+          word: 'Viaggio',
+          pages: [74, 75],
+          text: 'Il viaggio non è una vacanza; è un atto di sabotaggio contro l’abitudine. In un mondo che ci vuole immobili davanti a uno schermo, spostare il corpo nello spazio diventa un gesto rivoluzionario. Viaggiare significa cercare l’attrito: il fastidio di una lingua che non mastichiamo, il peso di uno zaino, l’imprevisto di un treno perso. È in quell’attrito che la nostra identità, solitamente pigra e statica, viene levigata come un sasso dal fiume. Viaggiamo non per aggiungere timbri sul passaporto, ma per sottrarre pregiudizi alla mente. Il vero viaggiatore non è chi cerca nuovi paesaggi, ma chi accetta di tornare a casa con occhi che non riconoscono più i vecchi mobili.',
+          imgs: [{ src: 'viaggio-1.jpg', alt: 'Un lago di montagna tra i boschi di abeti, sotto un cielo di nuvole' }]
+        },
+        {
+          word: 'Vastità',
+          pages: [76, 77],
+          text: 'Esiste una forma di vertigine benefica che ci assale quando l’orizzonte smette di avere confini visibili. La vastità è lo specchio in cui la nostra arroganza si frantuma. Che sia il blu cobalto dell’oceano o il vuoto pneumatico tra le stelle, la vastità ci ricorda che siamo ospiti, non padroni. In questa immensità, il tempo rallenta e le nostre “urgenze” quotidiane rivelano la loro natura di sussurri nel vento. Abitare la vastità significa imparare la lingua dell’umiltà: accettare che non tutto può essere misurato, mappato o posseduto. È il luogo dove finisce il controllo e inizia, finalmente, la meraviglia.',
+          imgs: [
+            { src: 'viaggio-3.jpg', alt: 'Una cima rosata dal sole sopra la nebbia e i tetti del paese' },
+            { src: 'viaggio-2.jpg', alt: 'Una casa tra gli alberi, con le montagne sullo sfondo' }
+          ]
+        },
+        {
+          word: 'Proporzione',
+          pages: [78, 79],
+          text: 'Le barche sul lago, i tetti delle case: tutto si fa piccolo sotto le pareti di roccia.',
+          imgs: [
+            { src: 'viaggio-4.jpg', alt: 'Barche ormeggiate su un lago verde, sotto una parete di roccia' },
+            { src: 'viaggio-5.jpg', alt: 'Il tetto di una casa di legno davanti a una valle nella nebbia' }
+          ]
+        }
+      ]
     }
   },
   {
@@ -285,7 +338,7 @@ window.PROJECT_REGISTRY = [
     stack: ['Adobe Illustrator', 'Adobe Photoshop', 'Logo Design', 'Brand Guidelines', 'Tipografia', 'Mockup Design'],
     description: 'Identità visiva per il Teatro Salone Ablondi: un simbolo nato dalla A del nome, un marchio con due caratteri in proporzione fissa e le linee guida per usarlo.',
     details: 'Il simbolo parte dalla A di Ablondi: due archi la racchiudono come le quinte di un sipario e tre linee curve, sotto, disegnano il palco. Ci si è arrivati per variazioni successive, semplificando il segno a ogni passaggio. Il marchio unisce Montserrat Regular per TEATRO SALONE e Radlush SemiBold per ABLONDI, in proporzioni fissate dalle linee guida. La palette ha quattro colori (bianco, crema, nero e un viola profondo) e il marchio funziona su ognuno. Le linee guida chiudono con le applicazioni sulle magliette.',
-    coverImage: 'assets/projects/teatro-ablondi/cover.jpg',
+    coverImage: 'assets/projects/teatro-ablondi/cover.jpg?v=2',
     capsuleImage: 'assets/projects/teatro-ablondi/capsule.png',
     gallery: {
       layout: 'ablondi',
@@ -342,7 +395,7 @@ window.PROJECT_REGISTRY = [
     stack: ['Adobe Illustrator', 'Adobe Photoshop', 'JavaScript', 'A-Frame', 'MindAR', 'Realtà Aumentata', 'Pixel Art', 'Packaging Design', 'Social Campaign'],
     description: 'Un gioco in realtà aumentata e un packaging in edizione limitata per Campari. “Champ-AR” unisce “Champ” e “AR” (Augmented Reality) e porta dentro un cabinato arcade da scaffale l’interazione che il brand ha sempre cercato nelle sue campagne.',
     details: 'Lo spiritello ha rubato il Campari e farà di tutto per tenerselo: l’eroe in stile Depero deve saltare le arance e recuperare la bottiglia. Packaging ed etichetta richiamano i cabinati dei videogiochi anni ’80 e ’90 e parlano a chi ha vissuto i primi giochi arcade, con un target tra i 20 e i 35 anni. La pixel art si unisce all’estetica minimale con pattern delle scatole di alcolici. Il gioco gira nel browser con A-Frame e MindAR: inquadrando la scatola parte la sfida. Progetto del secondo anno di Communication Design, Istituto Modartech.',
-    coverImage: 'assets/projects/campari-champ-ar/showcase.jpg',
+    coverImage: 'assets/projects/campari-champ-ar/cover.jpg',
     capsuleImage: 'assets/projects/campari-champ-ar/capsule.png',
     gallery: {
       layout: 'champar',

@@ -458,24 +458,126 @@
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
 }
 .mao-banner img { display: block; width: 100%; height: auto; }
-.mao-ooh-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-auto-flow: dense;
-  grid-auto-rows: clamp(140px, 15vw, 220px);
-  gap: clamp(10px, 1.6vw, 20px);
+/* etichetta rossa in maiuscoletto, come le didascalie del catalogo */
+.mao-kind {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--mao-red);
 }
+
+/* manifesto e totem: interi, grandi, con le note accanto */
+.mao-poster-row {
+  --ph: clamp(420px, 54vw, 760px);
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(14px, 2vw, 28px);
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+.mao-poster {
+  flex: none;
+  height: var(--ph);
+  aspect-ratio: var(--ar);
+  margin: 0;
+  overflow: hidden;
+  background: var(--mao-paper);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.16);
+  cursor: zoom-in;
+}
+.mao-poster.is-totem { height: calc(var(--ph) * 0.92); }
+.mao-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--mao-ease);
+}
+.mao-poster:hover img { transform: scale(1.03); }
+.mao-poster-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding-bottom: 6px;
+}
+.mao-poster-note { border-top: 2px solid var(--mao-ink); padding-top: 12px; }
+.mao-poster-note:first-child { border-top-color: var(--mao-red); }
+.mao-poster-note h4,
+.mao-ig-copy h4 { margin: 0 0 8px; font-size: 1.35rem; font-weight: 600; line-height: 1.15; }
+.mao-poster-note p:last-child,
+.mao-ig-copy > p:not(.mao-kind) { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--mao-soft); }
+
+/* Instagram: il mockup intero, si sceglie un post e la vista si avvicina */
+.mao-ig {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+  gap: clamp(18px, 2.6vw, 36px);
+  align-items: start;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+.mao-ig-copy { position: sticky; top: 20px; border-top: 2px solid var(--mao-red); padding-top: 12px; }
+.mao-ig-copy > p:not(.mao-kind) { margin-bottom: 18px; }
+.mao-ig-tabs { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.mao-ig-tabs button {
+  padding: 7px 12px;
+  border: 1px solid var(--mao-ink);
+  background: transparent;
+  color: var(--mao-ink);
+  font: inherit;
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.mao-ig-tabs button:hover { border-color: var(--mao-red); color: var(--mao-red); }
+.mao-ig-tabs button.is-active { background: var(--mao-red); border-color: var(--mao-red); color: #FFFFFF; }
+.mao-ig-tabs button:focus-visible { outline: 3px solid var(--mao-red); outline-offset: 2px; }
+.mao-ig-view {
+  position: relative;
+  aspect-ratio: var(--ar);
+  overflow: hidden;
+  background: #D9A9AC;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.14);
+  cursor: zoom-in;
+}
+.mao-ig-view.is-zoomed { cursor: zoom-out; }
+.mao-ig-view img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  transition: transform 0.9s var(--mao-ease);
+  will-change: transform;
+}
+.mao-ig-hint {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 6px 10px;
+  background: var(--mao-rice);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.mao-ig-view.is-zoomed .mao-ig-hint { opacity: 0; }
+
+/* gli altri supporti: righe a proporzioni vere, nessun taglio */
+.mao-ooh-rows { display: flex; flex-direction: column; gap: clamp(10px, 1.6vw, 20px); }
+.mao-ooh-row { display: flex; gap: clamp(10px, 1.6vw, 20px); }
 .mao-ooh-item {
   position: relative;
+  flex: var(--ar) 1 0%;
+  min-width: 0;
+  aspect-ratio: var(--ar);
   margin: 0;
   overflow: hidden;
   background: var(--mao-paper);
   cursor: zoom-in;
-  grid-column: span 2;
 }
-.mao-ooh-item.is-l { grid-column: span 4; grid-row: span 2; }
-.mao-ooh-item.is-t { grid-column: span 2; grid-row: span 2; }
-.mao-ooh-item.is-w { grid-column: span 3; }
 .mao-ooh-item img {
   display: block;
   width: 100%;
@@ -510,11 +612,16 @@
   .mao-colors { flex-direction: column; min-height: 0; }
   .mao-color { flex: none; min-height: 120px; }
   .mao-fonts { grid-template-columns: 1fr; }
-  .mao-ooh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 170px; }
-  .mao-ooh-item,
-  .mao-ooh-item.is-w { grid-column: span 1; }
-  .mao-ooh-item.is-l { grid-column: span 2; grid-row: span 1; }
-  .mao-ooh-item.is-t { grid-column: span 1; grid-row: span 2; }
+  .mao-poster-row { --ph: auto; flex-wrap: wrap; align-items: flex-start; }
+  .mao-poster { flex: 1 1 100%; height: auto; }
+  .mao-poster.is-totem { flex: 0 0 38%; height: auto; }
+  .mao-poster-copy { flex: 1 1 40%; }
+  .mao-ig { grid-template-columns: 1fr; }
+  .mao-ig-copy { position: static; }
+  .mao-ig-tabs { flex-direction: row; flex-wrap: wrap; }
+  .mao-ig-tabs button { font-size: 0.82rem; }
+  .mao-ooh-row { flex-direction: column; }
+  .mao-ooh-item { flex: none; }
   .mao-chapters { max-width: none; }
   .mao-samurai { display: none; }
 }

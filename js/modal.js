@@ -358,7 +358,8 @@ class ModalManager {
     });
 
     document.addEventListener('click', (e) => {
-      const zoomTrigger = e.target.closest('.zoomable-trigger');
+      // anche [data-img-src]: nei layout la classe zoomable-trigger può perdersi accanto a un altro class="…"
+      const zoomTrigger = e.target.closest('.zoomable-trigger, [data-img-src]');
       if (zoomTrigger) {
         e.preventDefault();
         const src = zoomTrigger.getAttribute('data-img-src');
@@ -499,12 +500,30 @@ class ModalManager {
       });
     }
 
+    // ogni scheda parte dall'inizio: il riquadro è sempre lo stesso e altrimenti
+    // terrebbe lo scorrimento del progetto aperto prima
+    this.resetProjectScroll();
     this.renderProjectGallery(project);
 
     if (this.projectModal) {
       this.projectModal.classList.add('active');
       document.body.classList.add('modal-open');
     }
+    this.resetProjectScroll();
+    requestAnimationFrame(() => this.resetProjectScroll());
+  }
+
+  resetProjectScroll() {
+    if (!this.projectModal) return;
+    const card = this.projectModal.querySelector('.project-modal-card');
+    [this.projectModal, card].forEach((el) => {
+      if (!el) return;
+      const prev = el.style.scrollBehavior;
+      el.style.scrollBehavior = 'auto'; // niente scorrimento morbido: deve essere già in cima
+      el.scrollTop = 0;
+      el.scrollLeft = 0;
+      el.style.scrollBehavior = prev;
+    });
   }
 
   teardownLayout() {
