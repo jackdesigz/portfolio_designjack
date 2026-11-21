@@ -140,6 +140,34 @@ Due layout dedicati in `js/projectBrand.js` + `css/project-brand.css` (`gallery.
 - **La felpa:** si gira con un clic tra fronte e retro (fa un giro da sola la prima volta che compare).
 - **Le figurine:** i quattro giocatori distribuiti a ventaglio come un mazzo.
 - **Social:** il banner di Instagram si compone dai suoi tre post.
-- **Font:** Bungee e Rubik (Google Fonts).
+- **Font:** i titoli usano BLOCKY, il font originale del brand (`assets/fonts/blocky.ttf`, lo stesso delle figurine); i testi Rubik (Google Fonts). Il banner di Instagram è ripulito: senza barra dell’app, righe tra i post e puntine, e i tre pezzi a fine animazione combaciano senza spazi.
 
 **Copertine e capsule:** entrambi hanno `coverImage` (catalogo e filo) e `capsuleImage`, quindi sono anche nella claw machine (capsula viola e verde).
+
+### Pagine progetto: parte introduttiva nello stile del canale
+- **Parte iniziale:** titolo, software / palette / stile, Panoramica e Progettazione sono dentro `.project-intro` e seguono lo stile del canale attivo (`css/project-page.css`): carta Bauhaus in R, muro verde con adesivi in G, cielo e vetro lucido in B. Panoramica e Progettazione sono due schede. Dal primo blocco del progetto in poi la pagina prende lo stile del brand (layout dedicati).
+- **Solo progetti veri:** nel registro restano solo i progetti reali: Melagoccio, Teatro Salone Ablondi, Campari Champ-AR, La Fanciulla del West ed Echo Sound Festival. I filtri del catalogo senza progetti si nascondono da soli. Una copia del vecchio registro con i segnaposto è salvata fuori dal progetto.
+
+### Echo Sound Festival: pagina dedicata
+`gallery.layout: 'echo'` (`js/projectBrand.js` + `css/project-echo.css`), stile pop psichedelico del poster. Titoli in Super Earthly (`assets/fonts/super-earthly.ttf`), il font installato più vicino alle lettere del poster.
+1. **Apertura:** anelli gialli e rosa che pulsano, il poster con due illustrazioni attaccate come adesivi.
+2. **Il poster:** fondo menta a griglia, palette a bollini.
+3. **Le illustrazioni:** a zig-zag, ognuna sul fondo che ha nel poster.
+4. **I mockup:** in fondo, come chiedevano le istruzioni.
+
+### Canale B e catalogo in G e B
+- **Canale B:** le caustiche dell'acqua non sono più una texture ripetuta a piastrelle. Sono macchie di luce morbide, grandi quanto la sezione, che vagano piano.
+- **Catalogo B:** sfumatura unica dal cielo all'abisso, raggi di luce, riflessi, un'onda sotto i filtri e bolle che salgono (solo a catalogo aperto); i riquadri sono bolle di vetro.
+- **Catalogo G:** macchie di spray sul muro, la tag "febi" gigante, colature lime sotto i filtri, riquadri attaccati con il nastro e titoli a pennarello.
+- **Livello comune:** le decorazioni stanno in `.catalog-deco`, dietro la griglia.
+
+### Telefono
+- **Progetti su filo:** su schermi stretti i fogli si rimpiccioliscono (scala 0,58 sotto i 520 px, 0,74 sotto gli 820) e l'area si accorcia. Su telefono si vedono un foglio e mezzo invece di mezzo.
+- **Claw machine:** sotto i 560 px lo sfondo è una composizione Bauhaus più leggera (quarto di cerchio, barra gialla, puntinato), invece del manifesto grande che si deformava.
+- **`css/mobile.css`:**
+  - sui touch i suggerimenti dicono "tocca" invece di "passa sopra";
+  - il disco della musica è più piccolo;
+  - nell'intestazione della scheda progetto palette e stile stanno affiancati;
+  - nel catalogo l'avatar è più piccolo e non copre i progetti.
+- **Campari su telefono:** la scatola non copre più "Accetti la sfida?" e lo spiritello resta dentro lo schermo.
+

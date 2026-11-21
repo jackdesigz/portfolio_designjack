@@ -2,6 +2,8 @@
  * designjack — Layout dedicati ai progetti di Brand Design
  * window.PROJECT_LAYOUTS.ablondi    → Teatro Salone Ablondi (sipario, costruzione, palette, tipografia)
  * window.PROJECT_LAYOUTS.melagoccio → Melagoccio (felpa da girare, figurine, banner a tre post)
+ * window.PROJECT_LAYOUTS.fanciulla  → La Fanciulla del West (carta da gioco, sagome, art déco)
+ * window.PROJECT_LAYOUTS.echo       → Echo Sound Festival (pop psichedelico, illustrazioni sparse)
  * Ogni layout disegna la pagina e restituisce la funzione di pulizia per la modal.
  */
 (function () {
@@ -225,7 +227,7 @@
             <p class="mg-lead">${g.lead || ''}</p>
           </div>
           <div class="mg-hero-logo" data-reveal>
-            <img src="${B}logo.svg" alt="Logo Melagoccio" />
+            <img src="${B}logo.png" alt="Logo Melagoccio" />
           </div>
         </section>
 
@@ -262,7 +264,7 @@
                 <span class="mg-face is-front">
                   ${hoodie(true)}
                   <span class="mg-face-tag">FRONTE</span>
-                  <img src="${B}logo.svg" alt="Fronte: il logo sul petto" />
+                  <img src="${B}logo.png" alt="Fronte: il logo sul petto" />
                 </span>
                 <span class="mg-face is-back">
                   ${hoodie(false)}
@@ -290,6 +292,9 @@
         <!-- 04 SOCIAL: il banner si compone dai tre post -->
         ${g.banner ? `
         <section class="mg-sec mg-social">
+          <div class="mg-social-wall" aria-hidden="true">
+            ${Array.from({ length: 9 }, (_, i) => `<div class="mg-wall-row"><div class="mg-wall-track">${`<span>${esc(slogan)}</span>`.repeat(8)}</div></div>`).join('')}
+          </div>
           ${head('mg', '04', esc(g.banner.title || 'Social'))}
           ${g.banner.text ? `<p class="mg-text" data-reveal>${g.banner.text}</p>` : ''}
           <div class="mg-banner" data-reveal ${zoom(B + g.banner.src, g.banner.caption || '')} style="--ar:${g.banner.ratio || 2.08};">
@@ -329,5 +334,255 @@
       mo.disconnect();
       teaseTimers.forEach(clearTimeout);
     };
+  };
+
+  /* ==================================================================
+     LA FANCIULLA DEL WEST — art déco e pop art, rosso / oro / nero / bianco
+     ================================================================== */
+  LAYOUTS.fanciulla = function (container, project) {
+    const g = project.gallery || {};
+    const B = g.base || '';
+    const sag = g.sagome || [];
+    const refs = g.references || [];
+    const colors = g.colors || [];
+    const sketches = g.sketchesList || [];
+    const mocks = g.mockups || [];
+    const card = (cls, inner) => `<span class="fw-pip ${cls}" aria-hidden="true">${inner}</span>`;
+
+    container.innerHTML = `
+      <div class="fw">
+
+        <!-- APERTURA: raggiera déco, titolo e la carta che si gira mostrando il manifesto -->
+        <section class="fw-hero">
+          <div class="fw-rays" aria-hidden="true"></div>
+          <img class="fw-peek fw-peek-cowboy" data-reveal src="${B}sagome/cowboy.png" alt="" aria-hidden="true" />
+          <img class="fw-peek fw-peek-gun" data-reveal src="${B}sagome/pistola.png" alt="" aria-hidden="true" />
+          <div class="fw-hero-copy" data-reveal>
+            <span class="fw-kicker">${esc(g.kicker || 'Giacomo Puccini')}</span>
+            <h3 class="fw-title"><span>La</span><span>Fanciulla</span><span>del West</span></h3>
+            <p class="fw-lead">${g.lead || ''}</p>
+            <span class="fw-hint">Clicca la carta per girarla ↻</span>
+          </div>
+          <button type="button" class="fw-card" data-reveal aria-pressed="false" aria-label="Gira la carta: il manifesto">
+            <span class="fw-card-inner">
+              <span class="fw-card-face is-back">
+                <span class="fw-back-frame"><span class="fw-back-heart">♥</span></span>
+              </span>
+              <span class="fw-card-face is-front">
+                <img src="${B}poster.jpg" alt="${esc(g.posterAlt || 'Il manifesto de La Fanciulla del West')}" />
+              </span>
+            </span>
+          </button>
+        </section>
+
+        <div class="fw-deco-band" aria-hidden="true"></div>
+
+        <!-- 01 LA REGINA DI CUORI -->
+        <section class="fw-sec fw-queen">
+          <div class="fw-queen-card" data-reveal ${zoom(B + 'regina.jpg', 'La protagonista come regina di cuori')}>
+            ${card('is-tl', 'Q<i>♥</i>')}
+            <img src="${B}regina.jpg" alt="La protagonista disegnata come la regina di cuori" loading="lazy" />
+            ${card('is-br', 'Q<i>♥</i>')}
+          </div>
+          <div class="fw-queen-copy">
+            <header class="fw-head" data-reveal><span class="fw-num">01</span><h3 class="fw-h">${esc(g.queenTitle || 'La regina di cuori')}</h3></header>
+            ${(g.queenText || []).map((p) => `<p class="fw-text" data-reveal>${p}</p>`).join('')}
+            <figure class="fw-hand" data-reveal>
+              <img src="${B}sagome/carte.png" alt="Assi e otto: la mano del morto" loading="lazy" />
+              <figcaption>${esc(g.handCaption || '')}</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 02 LE SAGOME -->
+        <section class="fw-sec fw-shapes-sec">
+          <header class="fw-head" data-reveal><span class="fw-num">02</span><h3 class="fw-h">${esc(g.shapesTitle || 'Le sagome')}</h3></header>
+          ${(g.shapesText || []).map((p) => `<p class="fw-text" data-reveal>${p}</p>`).join('')}
+          <div class="fw-shapes">
+            ${sag.map((s, i) => `
+              <figure class="fw-shape ${s.cls || ''}" data-reveal style="--i:${i};">
+                <div class="fw-shape-panel"><img src="${B}sagome/${s.src}" alt="${esc(s.title)}" loading="lazy" /></div>
+                <figcaption><strong>${esc(s.title)}</strong><span>${esc(s.text)}</span></figcaption>
+              </figure>`).join('')}
+          </div>
+        </section>
+
+        <!-- 03 LO STILE: riferimenti come titoli di testa, moodboard, palette e font -->
+        <section class="fw-sec fw-style">
+          <header class="fw-head" data-reveal><span class="fw-num">03</span><h3 class="fw-h">${esc(g.styleTitle || 'Lo stile')}</h3></header>
+          ${(g.styleText || []).map((p) => `<p class="fw-text" data-reveal>${p}</p>`).join('')}
+          <ol class="fw-credits">
+            ${refs.map((r, i) => `
+              <li data-reveal style="--i:${i};"><span class="fw-credit-year">${esc(r.year)}</span><strong>${esc(r.title)}</strong><em>${esc(r.note)}</em></li>`).join('')}
+          </ol>
+          ${g.moodboard ? `
+          <figure class="fw-mood" data-reveal ${zoom(B + 'moodboard.jpg', g.moodboard.caption || 'Moodboard')}>
+            <img src="${B}moodboard.jpg" alt="${esc(g.moodboard.alt || 'Moodboard')}" loading="lazy" />
+          </figure>` : ''}
+          <div class="fw-kit">
+            <div class="fw-palette">
+              ${colors.map((c, i) => `
+                <div class="fw-chip" data-reveal style="--i:${i}; --c:${c.hex}; --t:${c.ink};">
+                  ${card('is-tl', `${esc(c.rank)}<i>${c.suit}</i>`)}
+                  <b>${esc(c.hex)}</b><span>${esc(c.cmyk)}</span>
+                </div>`).join('')}
+            </div>
+            <div class="fw-font" data-reveal>
+              <span class="fw-font-use">Titolo</span>
+              <span class="fw-font-aa">Aa</span>
+              <span class="fw-font-abc">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
+              <span class="fw-font-name">Decondol Regular</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 04 LE BOZZE -->
+        <section class="fw-sec fw-sketches-sec">
+          <header class="fw-head" data-reveal><span class="fw-num">04</span><h3 class="fw-h">${esc(g.sketchesTitle || 'Le bozze')}</h3></header>
+          <div class="fw-sketches" data-reveal>
+            ${sketches.map((s, i) => `
+              <figure class="fw-sketch" style="--i:${i}; --n:${sketches.length};" ${zoom(B + s.src, s.title + ' — ' + s.text)}>
+                <img src="${B}${s.src}" alt="${esc(s.title)}" loading="lazy" />
+                <figcaption><strong>${esc(s.title)}</strong>${esc(s.text)}</figcaption>
+              </figure>`).join('')}
+          </div>
+        </section>
+
+        <!-- 05 IL MANIFESTO NEL MONDO -->
+        ${mocks.length ? `
+        <section class="fw-sec fw-mock-sec">
+          <header class="fw-head" data-reveal><span class="fw-num">05</span><h3 class="fw-h">${esc(g.mockupsTitle || 'Nel mondo')}</h3></header>
+          ${g.mockupsLead ? `<p class="fw-text" data-reveal>${g.mockupsLead}</p>` : ''}
+          <div class="fw-mocks">
+            ${mocks.map((m, i) => `
+              <figure class="fw-mock" data-reveal style="--i:${i}; --ar:${m.ratio};" ${zoom(B + m.src.split('/').pop(), m.title + ' — ' + (m.desc || ''))}>
+                <img src="${m.src}" alt="${esc(m.alt)}" loading="lazy" />
+                <figcaption><strong>${esc(m.kind || '')}</strong>${esc(m.title || '')}</figcaption>
+              </figure>`).join('')}
+          </div>
+          ${g.download ? `
+          <a class="fw-download" data-reveal href="${g.download.href}" target="_blank" rel="noopener">
+            <span class="fw-dl-suit" aria-hidden="true">♠</span>
+            <span><strong>${esc(g.download.label)}</strong>${g.download.meta ? `<small>${esc(g.download.meta)}</small>` : ''}</span>
+          </a>` : ''}
+        </section>` : ''}
+      </div>
+    `;
+
+    const root = container.querySelector('.fw');
+
+    // la carta: si gira da sola quando compare, poi al clic
+    const flipCard = root.querySelector('.fw-card');
+    const setFlip = (on) => {
+      flipCard.classList.toggle('is-flipped', on);
+      flipCard.setAttribute('aria-pressed', on ? 'true' : 'false');
+    };
+    flipCard.addEventListener('click', () => {
+      setFlip(!flipCard.classList.contains('is-flipped'));
+      if (window.audioEngine && window.audioEngine.playPaperFlutter) window.audioEngine.playPaperFlutter();
+    });
+    let auto = null;
+    const mo = new MutationObserver(() => {
+      if (auto || !flipCard.classList.contains('is-in')) return;
+      auto = setTimeout(() => setFlip(true), reduceMotion() ? 0 : 1100);
+    });
+    mo.observe(flipCard, { attributes: true, attributeFilter: ['class'] });
+
+    const stopReveal = setupReveal(root, container);
+    return () => {
+      stopReveal();
+      mo.disconnect();
+      clearTimeout(auto);
+    };
+  };
+
+  /* ==================================================================
+     ECHO SOUND FESTIVAL — pop psichedelico: giallo, rosa, menta, blu, crema
+     Poster, illustrazioni sparse nella pagina, galleria di mockup in fondo.
+     ================================================================== */
+  LAYOUTS.echo = function (container, project) {
+    const g = project.gallery || {};
+    const B = g.base || '';
+    const ill = g.illustrationsList || [];
+    const mocks = g.mockupsList || [];
+    const colors = g.colors || [];
+    const strip = g.strip || 'POP ✦ RAP ✦';
+    const ring = (cls) => `<div class="ec-rings ${cls}" aria-hidden="true"></div>`;
+
+    container.innerHTML = `
+      <div class="ec">
+
+        <!-- APERTURA: anelli psichedelici, titolo gonfio, poster e illustrazioni attaccate attorno -->
+        <section class="ec-hero">
+          ${ring('is-hero')}
+          <div class="ec-hero-copy" data-reveal>
+            <span class="ec-date">${esc(g.date || '')}</span>
+            <h3 class="ec-title"><span>Echo</span><span>Sound</span><span>Festival</span></h3>
+            <p class="ec-lead">${g.lead || ''}</p>
+          </div>
+          <div class="ec-hero-stage">
+            ${ill[0] ? `<img class="ec-sticker ec-st-a" data-reveal src="${B}${ill[0].src}" alt="" aria-hidden="true" />` : ''}
+            <figure class="ec-poster" data-reveal ${zoom(B + 'poster.png', 'Echo Sound Festival — il poster')}>
+              <img src="${B}poster.png" alt="Il poster dell’Echo Sound Festival" />
+            </figure>
+            ${ill[1] ? `<img class="ec-sticker ec-st-b" data-reveal src="${B}${ill[1].src}" alt="" aria-hidden="true" />` : ''}
+          </div>
+        </section>
+
+        <div class="ec-marquee" aria-hidden="true">
+          <div class="ec-marquee-track">${`<span>${esc(strip)}</span>`.repeat(10)}</div>
+        </div>
+
+        <!-- 01 IL POSTER -->
+        <section class="ec-sec ec-poster-sec">
+          <div class="ec-poster-copy">
+            <header class="ec-head" data-reveal><span class="ec-num">01</span><h3 class="ec-h">${esc(g.posterTitle || 'Il poster')}</h3></header>
+            ${(g.posterText || []).map((p) => `<p class="ec-text" data-reveal>${p}</p>`).join('')}
+            <div class="ec-colors">
+              ${colors.map((c, i) => `<span class="ec-dot" data-reveal style="--i:${i}; --c:${c.hex}; --t:${c.ink || '#070707'};"><b>${esc(c.hex)}</b></span>`).join('')}
+            </div>
+          </div>
+          <figure class="ec-poster-big" data-reveal ${zoom(B + 'poster.png', 'Echo Sound Festival — il poster')}>
+            <img src="${B}poster.png" alt="Il poster dell’Echo Sound Festival, intero" loading="lazy" />
+          </figure>
+        </section>
+
+        <!-- 02 LE ILLUSTRAZIONI: sparse nella pagina, a zig-zag -->
+        <section class="ec-sec ec-ill-sec">
+          <header class="ec-head" data-reveal><span class="ec-num">02</span><h3 class="ec-h">${esc(g.illTitle || 'Le illustrazioni')}</h3></header>
+          ${g.illLead ? `<p class="ec-text" data-reveal>${g.illLead}</p>` : ''}
+          <div class="ec-ills">
+            ${ill.map((it, i) => `
+              <figure class="ec-ill${i % 2 ? ' is-flip' : ''} ec-bg-${it.bg || 'pink'}" data-reveal style="--i:${i};">
+                <div class="ec-ill-frame" ${zoom(B + it.src, it.title)}>
+                  <img src="${B}${it.src}" alt="${esc(it.title)}" loading="lazy" />
+                </div>
+                <figcaption>
+                  <span class="ec-ill-n">${String(i + 1).padStart(2, '0')}</span>
+                  <strong>${esc(it.title)}</strong>
+                  ${it.text ? `<span>${esc(it.text)}</span>` : ''}
+                </figcaption>
+              </figure>`).join('')}
+          </div>
+        </section>
+
+        <!-- 03 MOCKUP -->
+        ${mocks.length ? `
+        <section class="ec-sec ec-mock-sec">
+          ${ring('is-mock')}
+          <header class="ec-head" data-reveal><span class="ec-num">03</span><h3 class="ec-h">${esc(g.mockTitle || 'I mockup')}</h3></header>
+          ${g.mockLead ? `<p class="ec-text" data-reveal>${g.mockLead}</p>` : ''}
+          <div class="ec-mocks">
+            ${mocks.map((m, i) => `
+              <figure class="ec-mock" data-reveal style="--i:${i}; --ar:${m.ratio};" ${zoom(B + m.src, m.title)}>
+                <img src="${B}${m.src}" alt="${esc(m.alt || m.title)}" loading="lazy" />
+                <figcaption><strong>${esc(m.kind || '')}</strong> ${esc(m.title || '')}</figcaption>
+              </figure>`).join('')}
+          </div>
+        </section>` : ''}
+      </div>
+    `;
+
+    return setupReveal(container.querySelector('.ec'), container);
   };
 })();

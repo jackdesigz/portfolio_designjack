@@ -879,8 +879,17 @@
   }
 
   .champar .cz-box-wrap {
-    height: calc(100% + 40px);
+    height: 100%;
   }
+
+  /* lo spiritello resta dentro lo schermo */
+  .champar .cz-peek-spirit {
+    width: 116px;
+    height: 116px;
+    left: calc(50% - 40px);
+    top: 2%;
+  }
+  .champar .cz-peek-spirit.is-in { translate: 70px 0; }
 
   .champar .cz-cast {
     grid-template-columns: 1fr;

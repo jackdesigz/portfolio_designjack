@@ -413,29 +413,46 @@ body.channel-b-active #channel-toast {
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  opacity: 0.2;
+  opacity: 0.35;
   -webkit-mask: linear-gradient(180deg, #000, transparent);
   mask: linear-gradient(180deg, #000, transparent);
 }
-/* due strati di caustiche che scorrono in direzioni opposte, mossi con transform (GPU) */
+/* Riflessi di luce sull'acqua: macchie morbide grandi quanto la sezione,
+   che vagano piano avanti e indietro. Niente texture ripetuta a piastrelle. */
 .bx-caustics::before,
 .bx-caustics::after {
   content: '';
   position: absolute;
-  inset: -560px;
-  background-image: var(--bx-caustic);
-  background-size: 420px 420px;
+  inset: -15%;
+  background:
+    radial-gradient(ellipse 22% 14% at 18% 22%, rgba(255, 255, 255, 0.9), transparent 70%),
+    radial-gradient(ellipse 30% 10% at 52% 12%, rgba(210, 245, 255, 0.85), transparent 70%),
+    radial-gradient(ellipse 18% 16% at 82% 30%, rgba(255, 255, 255, 0.75), transparent 70%),
+    radial-gradient(ellipse 26% 12% at 34% 48%, rgba(190, 240, 255, 0.7), transparent 70%),
+    radial-gradient(ellipse 20% 11% at 70% 58%, rgba(255, 255, 255, 0.6), transparent 70%);
+  filter: blur(18px);
   will-change: transform;
-  animation: bxCausticA 26s linear infinite;
+  animation: bxCausticA 22s ease-in-out infinite alternate;
 }
 .bx-caustics::after {
-  background-size: 560px 560px;
+  background:
+    radial-gradient(ellipse 16% 9% at 28% 34%, rgba(255, 255, 255, 0.85), transparent 70%),
+    radial-gradient(ellipse 24% 8% at 62% 26%, rgba(220, 248, 255, 0.8), transparent 70%),
+    radial-gradient(ellipse 14% 12% at 88% 50%, rgba(255, 255, 255, 0.6), transparent 70%),
+    radial-gradient(ellipse 22% 9% at 10% 60%, rgba(200, 242, 255, 0.6), transparent 70%);
+  filter: blur(10px);
   opacity: 0.8;
   animation-name: bxCausticB;
-  animation-duration: 34s;
+  animation-duration: 17s;
 }
-@keyframes bxCausticA { to { transform: translate3d(420px, 420px, 0); } }
-@keyframes bxCausticB { to { transform: translate3d(-560px, 560px, 0); } }
+@keyframes bxCausticA {
+  from { transform: translate3d(-4%, -2%, 0) scale(1); }
+  to   { transform: translate3d(5%, 3%, 0) scale(1.08); }
+}
+@keyframes bxCausticB {
+  from { transform: translate3d(4%, 1%, 0) scale(1.05); }
+  to   { transform: translate3d(-5%, -3%, 0) scale(0.97); }
+}
 
 /* Livello delle bolle su tutta la pagina B (figlio di .bx-site): passano davanti
    a cielo, titolo, pannelli e fondale */

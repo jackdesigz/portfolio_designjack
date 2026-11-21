@@ -1,0 +1,45 @@
+/* =====================================================================
+   RITOCCHI PER TELEFONO E TOUCH (tutto il sito)
+   ===================================================================== */
+
+/* suggerimenti: "passa sopra" solo con il mouse, "tocca" sui touch */
+.hint-touch { display: none; }
+@media (hover: none) {
+  .hint-pointer { display: none; }
+  .hint-touch { display: inline; }
+}
+
+@media (max-width: 640px) {
+  /* disco della musica più discreto sul bordo */
+  .music-player { --mp-disc: 44px; top: 64px; }
+
+  /* intestazione della scheda progetto più compatta:
+     software su una riga, palette e stile affiancati */
+  .project-intro { gap: 20px; }
+  .project-key-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px;
+  }
+  .project-key-strip .key-software { grid-column: 1 / -1; }
+  .project-key-strip .key-card { padding: 12px 14px; }
+  .project-key-strip .key-style { align-items: flex-end; text-align: right; }
+  .project-key-strip .key-style .key-body { justify-content: flex-end; font-size: 1.05rem; }
+  .project-key-strip .key-palette { align-items: flex-start; text-align: left; }
+  .project-key-strip .key-palette .key-body { justify-content: flex-start; flex-wrap: nowrap; }
+  .project-key-strip .palette-square { width: 30px; height: 30px; }
+  .project-key-strip .software-tile { padding: 3px 10px 3px 3px; }
+  .project-key-strip .software-tile svg { width: 26px; height: 26px; }
+  .project-key-strip .software-name { font-size: 0.74rem; }
+  .project-modal-title { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; line-height: 1.05; }
+
+  /* catalogo: l'avatar agganciato non copre i riquadri */
+  body.avatar-pinned .avatar-pilot.is-docked {
+    --avatar-h: 92px;
+    width: 82px;
+    height: 92px;
+    left: 6px;
+    bottom: 6px;
+  }
+  body.avatar-pinned .avatar-pilot.is-docked .avatar-bubble { bottom: 74px; max-width: 180px; }
+  .fullscreen-grid-viewport { padding-bottom: 120px !important; }
+}

@@ -1,0 +1,703 @@
+/* =====================================================================
+   LA FANCIULLA DEL WEST — layout dedicato (js/projectBrand.js, LAYOUTS.fanciulla)
+   Stile del manifesto: art déco + pop art, rosso #BF2025, oro #E7C42F,
+   nero, bianco. Titoli in Decondol, testi in Jost (geometrico anni '20).
+   ===================================================================== */
+
+@font-face {
+  font-family: 'Decondol';
+  src: url('../assets/fonts/Decondol-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+.project-media-showcase[data-layout="fanciulla"] {
+  gap: 0;
+  margin: 0;
+}
+
+.fw {
+  --fw-red: #BF2025;
+  --fw-red-2: #8E141A;
+  --fw-gold: #E7C42F;
+  --fw-black: #0A0A0A;
+  --fw-white: #F4EFE4;
+  --fw-pad: clamp(20px, 4vw, 56px);
+  --fw-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-main: 'Jost', 'Futura', 'Helvetica Neue', sans-serif;
+
+  position: relative;
+  margin: 8px calc(-1 * clamp(24px, 3.8vw, 48px)) 8px;
+  background: var(--fw-black);
+  color: var(--fw-white);
+  overflow-x: clip;
+}
+
+.fw .fw-title,
+.fw .fw-h,
+.fw .fw-font-aa,
+.fw .fw-font-abc,
+.fw .fw-credit-year {
+  --font-main: 'Decondol', 'Jost', serif;
+  font-weight: 400;
+}
+
+.fw [data-reveal] {
+  transition:
+    transform 0.9s var(--fw-bounce),
+    opacity 0.55s ease,
+    clip-path 0.9s cubic-bezier(0.7, 0, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 0.12s);
+}
+
+/* ---------- indici da carta da gioco (Q ♥) ---------- */
+.fw-pip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.9;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--fw-red);
+}
+
+.fw-pip i {
+  font-style: normal;
+  font-size: 1.1rem;
+  --font-main: 'Jost', sans-serif;
+}
+
+.fw-pip.is-tl { top: 10px; left: 12px; }
+.fw-pip.is-br { bottom: 10px; right: 12px; transform: rotate(180deg); }
+
+/* =====================================================================
+   APERTURA
+   ===================================================================== */
+.fw-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 24px;
+  min-height: clamp(520px, 60vw, 680px);
+  padding: clamp(40px, 6vw, 70px) var(--fw-pad);
+  overflow: hidden;
+  background: var(--fw-black);
+}
+
+/* raggiera déco dorata che gira piano dietro la carta */
+.fw-rays {
+  position: absolute;
+  right: -10%;
+  top: 50%;
+  width: 130vmax;
+  height: 130vmax;
+  max-width: 1500px;
+  max-height: 1500px;
+  translate: 30% -50%;
+  background: repeating-conic-gradient(from 0deg, rgba(231, 196, 47, 0.13) 0 4deg, transparent 4deg 12deg);
+  border-radius: 50%;
+  mask-image: radial-gradient(circle, #000 18%, transparent 62%);
+  -webkit-mask-image: radial-gradient(circle, #000 18%, transparent 62%);
+  animation: fw-spin 90s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fw-spin { to { rotate: 360deg; } }
+
+.fw-hero-copy {
+  position: relative;
+  z-index: 2;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.fw-hero-copy.is-in { transform: none; opacity: 1; }
+
+.fw-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--fw-gold);
+}
+
+.fw-kicker::before,
+.fw-kicker::after {
+  content: '';
+  width: 34px;
+  height: 0;
+  border-top: 1px solid var(--fw-gold);
+}
+
+.fw-title {
+  display: flex;
+  flex-direction: column;
+  margin: 18px 0 0;
+  line-height: 0.9;
+  color: var(--fw-white);
+}
+
+.fw-title span:nth-child(1) { font-size: clamp(2.2rem, 4.4vw, 3.4rem); color: var(--fw-gold); }
+.fw-title span:nth-child(2) { font-size: clamp(4rem, 9.6vw, 7.6rem); letter-spacing: 0.01em; }
+.fw-title span:nth-child(3) { font-size: clamp(2.6rem, 6vw, 4.8rem); color: var(--fw-red); margin-left: 0.8em; }
+
+.fw-lead {
+  max-width: 36ch;
+  margin: 22px 0 0;
+  font-size: 1.12rem;
+  line-height: 1.55;
+  color: rgba(244, 239, 228, 0.85);
+}
+
+.fw-hint {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--fw-gold);
+  opacity: 0.85;
+}
+
+/* la carta da gioco: dorso rosso déco, fronte il manifesto */
+.fw-card {
+  position: relative;
+  z-index: 2;
+  justify-self: center;
+  width: min(100%, 340px);
+  aspect-ratio: 1400 / 1999;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 1600px;
+  transform: translateY(80px) rotate(10deg);
+  opacity: 0;
+}
+
+.fw-card.is-in { transform: rotate(-4deg); opacity: 1; }
+.fw-card:hover { transform: rotate(0deg) scale(1.02); transition-delay: 0s; }
+
+.fw-card-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.fw-card.is-flipped .fw-card-inner { transform: rotateY(180deg); }
+
+.fw-card-face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 2px var(--fw-gold);
+}
+
+.fw-card-face.is-front { transform: rotateY(180deg); background: var(--fw-black); }
+.fw-card-face.is-front img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* dorso: reticolo di rombi oro su rosso, cornice a gradini */
+.fw-card-face.is-back {
+  background:
+    repeating-linear-gradient(45deg, rgba(231, 196, 47, 0.35) 0 2px, transparent 2px 22px),
+    repeating-linear-gradient(-45deg, rgba(231, 196, 47, 0.35) 0 2px, transparent 2px 22px),
+    var(--fw-red);
+  padding: 16px;
+}
+
+.fw-back-frame {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--fw-gold);
+  outline: 2px solid var(--fw-gold);
+  outline-offset: -10px;
+  border-radius: 8px;
+  background: radial-gradient(circle, var(--fw-red) 0 32%, transparent 33%);
+}
+
+.fw-back-heart {
+  display: grid;
+  place-items: center;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--fw-black);
+  border: 3px solid var(--fw-gold);
+  color: var(--fw-gold);
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1;
+}
+
+/* sagome che sbucano dai bordi, come nei titoli di Saul Bass */
+.fw-peek {
+  position: absolute;
+  z-index: 1;
+  height: auto;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.fw-peek-cowboy {
+  left: -2%;
+  bottom: -6px;
+  width: clamp(120px, 15vw, 190px);
+  transform: translateY(100%);
+}
+
+.fw-peek-cowboy.is-in { transform: translateY(18%); opacity: 0.16; transition-delay: 0.5s; }
+
+.fw-peek-gun {
+  right: -4%;
+  top: 8%;
+  width: clamp(180px, 24vw, 320px);
+  transform: translateX(110%) scaleX(-1);
+}
+
+.fw-peek-gun.is-in { transform: translateX(18%) scaleX(-1); opacity: 0.14; transition-delay: 0.7s; }
+
+/* fascia déco tra l'apertura e il resto */
+.fw-deco-band {
+  height: 22px;
+  background:
+    linear-gradient(90deg, transparent 0 calc(50% - 1px), var(--fw-black) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) 0 0 / 22px 100%,
+    linear-gradient(var(--fw-gold), var(--fw-gold)) 0 50% / 100% 2px no-repeat,
+    var(--fw-red);
+  border-top: 2px solid var(--fw-gold);
+  border-bottom: 2px solid var(--fw-gold);
+}
+
+/* =====================================================================
+   SEZIONI
+   ===================================================================== */
+.fw-sec {
+  position: relative;
+  padding: clamp(52px, 7vw, 100px) var(--fw-pad);
+}
+
+.fw-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  transform: translateX(-30px);
+  opacity: 0;
+}
+
+.fw-head.is-in { transform: none; opacity: 1; }
+
+.fw-num {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fw-gold);
+}
+
+/* rombo déco attorno al numero */
+.fw-num::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1.5px solid currentColor;
+  rotate: 45deg;
+}
+
+.fw-h {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.4vw, 4rem);
+  line-height: 0.95;
+  color: var(--fw-white);
+}
+
+.fw-text {
+  max-width: 62ch;
+  margin: 0 0 14px;
+  font-size: 1.06rem;
+  line-height: 1.7;
+  color: rgba(244, 239, 228, 0.88);
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.fw-text.is-in { transform: none; opacity: 1; }
+.fw-text strong { color: var(--fw-gold); font-weight: 600; }
+
+/* ---------- 01 la regina di cuori ---------- */
+.fw-queen {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+  background: var(--fw-red);
+}
+
+.fw-queen .fw-h { color: var(--fw-white); }
+.fw-queen .fw-num { color: var(--fw-white); }
+.fw-queen .fw-text { color: var(--fw-white); }
+.fw-queen .fw-text strong { color: var(--fw-gold); }
+
+.fw-queen-card {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 360px);
+  padding: 42px 18px;
+  background: var(--fw-white);
+  border-radius: 16px;
+  box-shadow: 12px 12px 0 var(--fw-black);
+  cursor: zoom-in;
+  transform: translateX(-60px) rotate(-14deg);
+  opacity: 0;
+}
+
+.fw-queen-card.is-in { transform: rotate(-3deg); opacity: 1; }
+.fw-queen-card:hover { transform: rotate(0deg) scale(1.02); transition-delay: 0s; }
+
+.fw-queen-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--fw-black);
+}
+
+.fw-hand {
+  margin: 26px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.fw-hand.is-in { transform: none; opacity: 1; }
+
+.fw-hand img {
+  width: min(52%, 260px);
+  height: auto;
+  filter: drop-shadow(6px 6px 0 var(--fw-black));
+  transform-origin: 50% 100%;
+  transition: transform 0.4s var(--fw-bounce);
+}
+
+.fw-hand:hover img { transform: rotate(-4deg) scale(1.05); }
+
+.fw-hand figcaption {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--fw-white);
+}
+
+/* ---------- 02 le sagome: pannelli tagliati come nel manifesto ---------- */
+.fw-shapes-sec { background: var(--fw-black); }
+
+.fw-shapes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.6vw, 30px);
+  margin-top: 30px;
+}
+
+.fw-shape {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  clip-path: inset(0 100% 0 0);
+}
+
+.fw-shape:nth-child(even) { clip-path: inset(0 0 0 100%); }
+.fw-shape.is-in { clip-path: inset(0 0 0 0); }
+
+.fw-shape-panel {
+  display: grid;
+  place-items: center;
+  height: clamp(190px, 21vw, 260px);
+  padding: 22px;
+  background: var(--fw-red);
+  /* pannello poligonale, ogni volta un po' diverso */
+  clip-path: polygon(4% 6%, 100% 0, 96% 94%, 0 100%);
+  transition: background 0.3s ease;
+}
+
+.fw-shape:nth-child(3n + 2) .fw-shape-panel { clip-path: polygon(0 0, 95% 8%, 100% 100%, 6% 92%); }
+.fw-shape:nth-child(3n) .fw-shape-panel { clip-path: polygon(6% 0, 100% 5%, 94% 100%, 0 95%); }
+
+.fw-shape-panel img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  transition: transform 0.45s var(--fw-bounce);
+}
+
+.fw-shape:hover .fw-shape-panel { background: #D42A30; }
+.fw-shape:hover .fw-shape-panel img { transform: scale(1.08) rotate(-3deg); }
+
+/* l'amato sta sul cuore di lei: il suo pannello è oro */
+.fw-shape.is-heart .fw-shape-panel { background: var(--fw-gold); }
+
+.fw-shape figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 12px;
+  border-left: 2px solid var(--fw-gold);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(244, 239, 228, 0.8);
+}
+
+.fw-shape figcaption strong {
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fw-gold);
+}
+
+/* ---------- 03 lo stile ---------- */
+.fw-style {
+  background:
+    radial-gradient(ellipse at 50% 0, rgba(231, 196, 47, 0.08), transparent 60%),
+    #111;
+}
+
+/* riferimenti come titoli di testa */
+.fw-credits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fw-credits li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 18px;
+  border: 1px solid rgba(231, 196, 47, 0.45);
+  text-align: center;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.fw-credits li.is-in { transform: none; opacity: 1; }
+
+.fw-credit-year { font-size: 2.4rem; line-height: 1; color: var(--fw-red); }
+.fw-credits strong { font-size: 1rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.fw-credits em { font-style: normal; font-size: 0.85rem; color: rgba(244, 239, 228, 0.65); }
+
+.fw-mood {
+  margin: 0 0 30px;
+  padding: 12px;
+  border: 2px solid var(--fw-gold);
+  outline: 1px solid var(--fw-gold);
+  outline-offset: 6px;
+  cursor: zoom-in;
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+.fw-mood.is-in { transform: none; opacity: 1; }
+.fw-mood img { display: block; width: 100%; height: auto; }
+
+.fw-kit {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(16px, 3vw, 34px);
+  align-items: stretch;
+}
+
+.fw-palette {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+/* ogni colore è una carta */
+.fw-chip {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  aspect-ratio: 5 / 7;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--c);
+  color: var(--t);
+  border: 2px solid rgba(231, 196, 47, 0.7);
+  font-size: 0.72rem;
+  transform: translateY(50px) rotate(6deg);
+  opacity: 0;
+}
+
+.fw-chip.is-in { transform: rotate(calc((var(--i) - 1.5) * 3deg)); opacity: 1; }
+.fw-chip:hover { transform: translateY(-10px) rotate(0deg); transition-delay: 0s; }
+.fw-chip .fw-pip { color: var(--t); font-size: 1.4rem; }
+.fw-chip b { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.04em; }
+.fw-chip span { opacity: 0.75; }
+
+.fw-font {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 22px;
+  border: 2px solid var(--fw-gold);
+  background: var(--fw-black);
+  transform: translateY(40px);
+  opacity: 0;
+}
+
+.fw-font.is-in { transform: none; opacity: 1; }
+.fw-font-use { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fw-gold); }
+.fw-font-aa { font-size: clamp(4rem, 8vw, 6rem); line-height: 1; color: var(--fw-white); }
+.fw-font-abc { font-size: 1.3rem; letter-spacing: 0.06em; line-height: 1.2; color: var(--fw-gold); word-break: break-all; }
+.fw-font-name { margin-top: 6px; font-size: 0.95rem; font-weight: 600; }
+
+/* ---------- 04 le bozze: carte distribuite sul tavolo ---------- */
+.fw-sketches-sec {
+  background:
+    radial-gradient(ellipse at 50% 40%, #1F5C3C 0%, #0F3322 70%);
+}
+
+.fw-sketches {
+  display: flex;
+  justify-content: center;
+  gap: clamp(14px, 3vw, 40px);
+  padding: 20px 0 10px;
+}
+
+.fw-sketch {
+  margin: 0;
+  width: clamp(150px, 22vw, 260px);
+  padding: 10px 10px 14px;
+  background: var(--fw-white);
+  color: var(--fw-black);
+  border-radius: 12px;
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.45);
+  cursor: zoom-in;
+  transform: translateY(160px) rotate(0deg);
+  opacity: 0;
+  transition:
+    transform 0.8s var(--fw-bounce) calc(var(--i) * 0.16s),
+    opacity 0.5s ease calc(var(--i) * 0.16s);
+}
+
+.fw-sketches.is-in .fw-sketch {
+  transform: rotate(calc((var(--i) - (var(--n) - 1) / 2) * 6deg)) translateY(calc(max(var(--i) - (var(--n) - 1) / 2, (var(--n) - 1) / 2 - var(--i)) * 16px));
+  opacity: 1;
+}
+
+.fw-sketches.is-in .fw-sketch:hover { transform: translateY(-18px) scale(1.06); transition-delay: 0s; }
+
+.fw-sketch img { display: block; width: 100%; height: auto; border-radius: 6px; }
+.fw-sketch figcaption { display: flex; flex-direction: column; gap: 2px; margin-top: 10px; font-size: 0.8rem; line-height: 1.35; }
+.fw-sketch figcaption strong { font-size: 0.9rem; color: var(--fw-red); }
+
+/* ---------- 05 i mockup ---------- */
+.fw-mock-sec { background: var(--fw-black); }
+
+.fw-mocks {
+  display: flex;
+  gap: clamp(14px, 2.4vw, 28px);
+  margin-top: 26px;
+}
+
+.fw-mock {
+  flex: var(--ar) 1 0;
+  margin: 0;
+  cursor: zoom-in;
+  transform: translateY(50px);
+  opacity: 0;
+}
+
+.fw-mock.is-in { transform: none; opacity: 1; }
+
+.fw-mock img {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--ar);
+  object-fit: cover;
+  border: 2px solid var(--fw-gold);
+  transition: filter 0.3s ease;
+}
+
+.fw-mock:hover img { filter: brightness(1.08); }
+
+.fw-mock figcaption {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: rgba(244, 239, 228, 0.75);
+}
+
+.fw-mock figcaption strong { font-size: 0.75rem; letter-spacing: 0.2em; color: var(--fw-gold); }
+
+.fw-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 36px;
+  padding: 16px 22px;
+  border: 2px solid var(--fw-gold);
+  background: var(--fw-red);
+  color: var(--fw-white);
+  text-decoration: none;
+  box-shadow: 6px 6px 0 var(--fw-gold);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.5s ease;
+}
+
+.fw-download.is-in { transform: none; opacity: 1; }
+.fw-download:hover { transform: translate(-2px, -2px); box-shadow: 9px 9px 0 var(--fw-gold); }
+.fw-dl-suit { font-size: 2rem; line-height: 1; color: var(--fw-black); }
+.fw-download strong { display: block; font-size: 1rem; letter-spacing: 0.04em; }
+.fw-download small { display: block; font-size: 0.8rem; opacity: 0.8; }
+
+/* =====================================================================
+   SCHERMI PICCOLI
+   ===================================================================== */
+@media (max-width: 860px) {
+  .fw-hero,
+  .fw-queen,
+  .fw-kit { grid-template-columns: 1fr; }
+  .fw-card { width: min(70%, 300px); }
+  .fw-shapes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fw-credits { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .fw-palette { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fw-sketches { flex-direction: column; align-items: center; }
+  .fw-sketches.is-in .fw-sketch { transform: rotate(calc((var(--i) - 1) * 3deg)); }
+  .fw-mocks { flex-direction: column; }
+  .fw-mock { flex: none; }
+  .fw-mock:first-child img { max-height: 70vh; object-fit: contain; background: #111; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fw [data-reveal], .fw-card-inner, .fw-sketch { transition: none !important; }
+  .fw-rays { animation: none; }
+}

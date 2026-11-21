@@ -44,9 +44,8 @@ class HangingCatalogWire {
     this.sheets = [];
 
     const projects = window.PROJECT_REGISTRY || [];
-    this.sheetSpacing = 360; // 3.5 fogli visibili contemporaneamente
     this.sheetWidth = 324;
-    this.startOffset = 50;
+    this.computeLayout();
 
     projects.forEach((proj, idx) => {
       const sheetEl = document.createElement('div');
@@ -255,6 +254,26 @@ class HangingCatalogWire {
     hair(36, h - 70, w - 36, h - 70, 1.5);
   }
 
+  // Su schermi stretti i fogli si rimpiccioliscono (scala applicata nel transform,
+  // con perno in alto al centro): su telefono se ne vedono uno e mezzo, non mezzo.
+  computeLayout() {
+    const w = this.container ? (this.container.clientWidth || 900) : 900;
+    const scale = w < 520 ? 0.58 : (w < 820 ? 0.74 : 1);
+    this.sheetScale = scale;
+    this.sheetSpacing = scale === 1 ? 360 : Math.round(this.sheetWidth * scale + 22);
+    // con il perno al centro, il bordo sinistro visibile cade a 16px (sul desktop resta 50)
+    this.startOffset = scale === 1 ? 50 : Math.round(16 - (this.sheetWidth / 2) * (1 - scale));
+    if (this.container) this.container.style.setProperty('--sheet-scale', scale);
+  }
+
+  relayout() {
+    const before = this.sheetScale;
+    this.computeLayout();
+    if (before === this.sheetScale || !this.sheets) return;
+    this.sheets.forEach((s, idx) => { s.targetX = this.startOffset + idx * this.sheetSpacing; });
+    this.targetScrollX = Math.max(this.getMaxScroll(), Math.min(0, this.targetScrollX || 0));
+  }
+
   getMaxScroll() {
     const containerW = this.container ? (this.container.clientWidth || 900) : 900;
     const spacing = this.sheetSpacing || 360;
@@ -370,6 +389,7 @@ class HangingCatalogWire {
     }
 
     window.addEventListener('resize', () => {
+      this.relayout();
       this.updateButtonStates();
     });
 
@@ -461,9 +481,9 @@ class HangingCatalogWire {
 
       const screenX = s.x + this.scrollX;
       const normX = screenX / 1200;
-      const sagY = Math.sin(normX * Math.PI) * 14;
+      const sagY = Math.sin(normX * Math.PI) * 14 * (this.sheetScale || 1);
 
-      const hoverScale = s.hovered ? 1.04 : 1.0;
+      const hoverScale = (s.hovered ? 1.04 : 1.0) * (this.sheetScale || 1);
       const hoverElevate = s.hovered ? -10 : 0;
       const hoverTilt = s.hovered ? -0.025 : 0;
 

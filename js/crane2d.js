@@ -128,6 +128,24 @@
 
       // --- parete di fondo: manifesto Bauhaus su blu notte
       g.fillStyle = BLU; g.fillRect(0, this.mh, W, this.playBottom - this.mh);
+      const wallH = this.Y0 - this.mh;
+      if (W < 560) {
+        // telefono: composizione più leggera, le forme non si deformano sul formato alto e stretto
+        g.fillStyle = 'rgba(247,241,228,0.07)';
+        for (let yy = this.mh + 14; yy < this.playBottom; yy += 22) {
+          for (let xx = 11; xx < W; xx += 22) g.fillRect(xx, yy, 2, 2);
+        }
+        const r = W * 0.46;
+        g.fillStyle = RED; g.beginPath(); g.moveTo(W, this.mh); g.arc(W, this.mh, r, Math.PI / 2, Math.PI); g.closePath(); g.fill();
+        g.strokeStyle = PAPER; g.lineWidth = 2;
+        g.beginPath(); g.arc(W, this.mh, r * 1.18, Math.PI * 0.55, Math.PI * 0.95); g.stroke();
+        g.fillStyle = YEL; g.fillRect(0, this.mh + wallH * 0.62, W * 0.62, 8);
+        g.fillStyle = INK; g.beginPath(); g.arc(W * 0.16, this.mh + wallH * 0.2, 9, 0, Math.PI * 2); g.fill();
+        g.save(); g.translate(W * 0.8, this.mh + wallH * 0.74); g.rotate(0.25);
+        g.strokeStyle = PAPER; g.lineWidth = 2; g.strokeRect(-11, -11, 22, 22); g.restore();
+        g.fillStyle = 'rgba(247,241,228,0.3)';
+        g.fillRect(W * 0.08, this.mh + wallH * 0.12, W * 0.3, 1.5);
+      } else {
       const cx = W * 0.64, cy = this.mh + (this.Y0 - this.mh) * 0.48, R = Math.min(W * 0.26, (this.Y0 - this.mh) * 0.44);
       g.fillStyle = RED; g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
       g.strokeStyle = PAPER; g.lineWidth = 3;
@@ -141,6 +159,7 @@
       g.fillStyle = 'rgba(247,241,228,0.35)';
       g.fillRect(W * 0.06, this.mh + (this.Y0 - this.mh) * 0.14, W * 0.32, 1.5);
       g.fillRect(W * 0.58, this.Y0 - (this.Y0 - this.mh) * 0.08, W * 0.38, 1.5);
+      }
 
       // --- fondo vasca (con le rampe) e soletta
       const floorY = (x) => this.sy(Math.max(0, this.sim.floorAt(x)));

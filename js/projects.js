@@ -53,7 +53,7 @@ window.PROJECT_REGISTRY = [
         title: 'Social',
         text: 'Sul profilo Instagram il banner “Squadra amatoriale mista” è diviso in <strong>tre post</strong> che, uno accanto all’altro, ricompongono l’immagine intera.',
         src: 'banner-instagram.jpg',
-        ratio: 1600 / 768,
+        ratio: 2169 / 961,
         caption: 'Instagram // Il banner diviso in tre post'
       }
     }
@@ -233,6 +233,52 @@ window.PROJECT_REGISTRY = [
     coverImage: 'assets/projects/la-fanciulla-del-west/poster.jpg',
     capsuleImage: 'assets/projects/la-fanciulla-del-west/capsule.png',
     gallery: {
+      layout: 'fanciulla',
+      base: 'assets/projects/la-fanciulla-del-west/',
+      kicker: 'Giacomo Puccini',
+      lead: 'Il manifesto per l’opera di Puccini: la protagonista diventa la regina di cuori, tra sagome pop art e dettagli art déco.',
+      posterAlt: 'Il manifesto de La Fanciulla del West',
+      queenTitle: 'La regina di cuori',
+      queenText: [
+        'La protagonista è disegnata come la <strong>regina di cuori</strong> di un mazzo da gioco standard. Il suo sguardo assorto riporta al momento più importante dell’opera: la partita a carte in cui si gioca il destino suo e dell’uomo che ama.',
+        'Per vincere estrae dalla calza una mano di valore più alto, in un momento di distrazione dell’avversario, e si assicura così la vittoria.'
+      ],
+      handCaption: 'Nel manifesto c’è anche la mano del morto, leggenda del Far West: assi e otto neri.',
+      shapesTitle: 'Le sagome',
+      shapesText: [
+        'Sagome poligonali bicromatiche in stile pop art e art déco. Rappresentano gli elementi importanti dell’opera, e anche <strong>la loro posizione ha un significato</strong>.'
+      ],
+      sagome: [
+        { src: 'amato.png', title: 'L’amato ferito', text: 'Si rifugia da lei ferito poco prima della partita: per questo sta sul suo cuore.', cls: 'is-heart' },
+        { src: 'cowboy.png', title: 'Lo sceriffo', text: 'Dal lato opposto, rivale del bandito.' },
+        { src: 'pistola.png', title: 'La pistola', text: 'Vicino allo sceriffo, con gli elementi che lo mettono contro il bandito.' },
+        { src: 'tamburo.png', title: 'Il tamburo', text: 'Il tamburo del revolver, accanto allo sceriffo.' },
+        { src: 'proiettili.png', title: 'I proiettili', text: 'Bicromatici come le altre sagome: bianco e oro.' },
+        { src: 'carte.png', title: 'La mano del morto', text: 'Non è casuale: è la mano leggendaria del Far West.' }
+      ],
+      styleTitle: 'Lo stile',
+      styleText: [
+        'Art déco stilizzato e pop art: lo si vede nel font del titolo, il <strong>Decondol Regular</strong>, e nelle sagome nella parte bassa del manifesto.',
+        'Le sagome bicromatiche si sposano con la protagonista in stile “carta da gioco”, dove i pattern semplici riprendono sia la geometria dell’art déco sia le vesti della regina di cuori.'
+      ],
+      references: [
+        { year: '1959', title: 'Anatomy of a Murder', note: 'I titoli di testa di Saul Bass' },
+        { year: '2006', title: '007 Casino Royale', note: 'La sequenza d’apertura' },
+        { year: '2021', title: 'Deathloop', note: 'Le cinematiche animate' }
+      ],
+      colors: [
+        { hex: '#BF2025', cmyk: 'C16 M100 Y100 K9', rank: 'Q', suit: '♥', ink: '#F4EFE4' },
+        { hex: '#E7C42F', cmyk: 'C11 M19 Y94 K0', rank: 'K', suit: '♦', ink: '#0A0A0A' },
+        { hex: '#000000', cmyk: 'C60 M40 Y40 K100', rank: 'A', suit: '♠', ink: '#F4EFE4' },
+        { hex: '#FFFFFF', cmyk: 'C0 M0 Y0 K0', rank: 'J', suit: '♣', ink: '#0A0A0A' }
+      ],
+      sketchesTitle: 'Le bozze',
+      sketchesList: [
+        { src: 'bozza-1.jpg', title: 'Bozza 1', text: 'L’idea originale: la rappresentazione della scena.' },
+        { src: 'bozza-2.jpg', title: 'Bozza 2', text: 'Il focus sul personaggio e le prime stilizzazioni.' },
+        { src: 'bozza-3.jpg', title: 'Bozza 3', text: 'Il personaggio e l’idea concreta di stilizzazione.' }
+      ],
+      mockupsTitle: 'Nel mondo',
       poster: {
         src: 'assets/projects/la-fanciulla-del-west/poster.jpg',
         alt: 'La Fanciulla del West — Manifesto',
@@ -311,87 +357,6 @@ window.PROJECT_REGISTRY = [
     }
   },
   {
-    id: 'r-01',
-    code: 'R-01 // INT-SYS',
-    title: 'KINETIC INTERFACE // BAUHAUS DESIGN SYSTEM',
-    category: 'Interaction Design',
-    year: '2026',
-    shapeName: 'Wireframe Cube',
-    colorHex: '#E63946',
-    capsuleColor: 'red',
-    style: 'Bauhaus / Design System',
-    palette: ['#E63946', '#FFB703', '#1D3557', '#F7F1E4', '#151413'],
-    stack: ['Figma', 'React', 'Design Tokens', 'Micro-interactions'],
-    description: 'Design system modulare basato sulle proporzioni auree di Walter Gropius e sulla reattività delle interfacce contemporanee. Navigazione ergonomica a canali cromatici e feedback aptico.',
-    metrics: { components: '140+', accessibility: 'WCAG AAA', tokenEngine: 'Multi-brand' },
-    details: 'Un framework di componenti che unisce rigore matematico costruttivista e fluidità digitale. Include token dinamici per transizioni cromatiche e micro-interazioni basate su fisica elastica.'
-  },
-  {
-    id: 'r-02',
-    code: 'R-02 // WEB-3D',
-    title: 'NEO-GEOMETRY // THREE.JS EXPERIENCES',
-    category: 'Web Design',
-    year: '2025',
-    shapeName: 'Golden Octahedron',
-    colorHex: '#FFB703',
-    capsuleColor: 'yellow',
-    style: 'Geometrico 3D',
-    palette: ['#FFB703', '#F4A261', '#1D3557', '#0C0C10'],
-    stack: ['Three.js', 'WebGL', 'GLSL Shaders', 'Blender'],
-    description: 'Sito web tridimensionale immersivo con sculture platonici interattivi, illuminazione volumetrica PBR e rendering real-time a 60 FPS ottimizzato per mobile.',
-    metrics: { fps: '60 FPS Lock', drawCalls: '< 30', weight: '2.4 MB' },
-    details: 'Esperienza web-native guidata da shader GLSL custom di rifrazione e dispersione della luce, con interattività al cursore e orientamento giroscopico.'
-  },
-  {
-    id: 'r-03',
-    code: 'R-03 // AR-TOY',
-    title: 'JACK-IN-THE-AR // SPATIAL TOY ENGINE',
-    category: 'Interaction Design',
-    year: '2025',
-    shapeName: 'Cyan Torus',
-    colorHex: '#1D3557',
-    capsuleColor: 'blue',
-    style: 'Toy / Arcade',
-    palette: ['#1D3557', '#3A86FF', '#FFB703', '#F7F1E4'],
-    stack: ['WebXR', 'MindAR', 'Spatial Audio', 'Three.js'],
-    description: 'Esperienza WebAR senza installazione che proietta un jack-in-the-box digitale interattivo nello spazio fisico con mini-giochi arcade e audio binaurale.',
-    metrics: { zeroInstall: 'Web-Native', latency: '< 16ms', retention: '4.8 min' },
-    details: 'Inquadrando un QR code sul packaging, il giocattolo digitale prende vita sulla superficie del tavolo con animazioni a molla e collezionabili 3D.'
-  },
-  {
-    id: 'r-04',
-    code: 'R-04 // EDIT-RADIX',
-    title: 'MODULAR RADIX // CYBER EDITORIAL',
-    category: 'Editorial Design',
-    year: '2024',
-    shapeName: 'Crimson Icosahedron',
-    colorHex: '#E63946',
-    capsuleColor: 'red',
-    style: 'Svizzero / Risograph',
-    palette: ['#FF4F6D', '#FFE600', '#2E5BFF', '#F7F1E4'],
-    stack: ['Risograph', 'Grid Systems', 'Variable Fonts', 'InDesign'],
-    description: 'Pubblicazione ibrida cartacea e digitale che esplora la convergenza tra tipografia modernista svizzera e codici binari stampata a tre colori risograph.',
-    metrics: { edition: '500 Ltd Ed', inks: 'Fluo Red / Yellow / Blue', pages: '160 pp' },
-    details: 'Sovrastampe materiche di griglie binarie e matrici di dithering su carte riciclate giapponesi, accompagnate da un compendio web interattivo.'
-  },
-  {
-    id: 'r-05',
-    code: 'R-05 // BRAND-SPECTRUM',
-    title: 'SPECTRUM KINETIC // DYNAMIC IDENTITY',
-    category: 'Brand Design',
-    year: '2026',
-    shapeName: 'Prism Polyhedron',
-    colorHex: '#FFB703',
-    capsuleColor: 'yellow',
-    style: 'Cinetico / Generativo',
-    palette: ['#E63946', '#FFB703', '#1D3557', '#FFFFFF'],
-    software: ['Adobe After Effects', 'Figma'],
-    stack: ['Generative Identity', 'Variable Typography', 'Motion', 'Design Kit'],
-    description: 'Identità visiva parametrica per festival di arti digitali: il logotipo si trasforma parametricamente in base al rumore ambientale e agli input sonori.',
-    metrics: { variants: '∞ Dynamic', formats: 'Web / OOH / AR', response: '12ms' },
-    details: 'Un marchio che non ha una forma statica: il carattere si comprime ed estende come una molla in base ai decibel rilevati, proiettando tipografie mutanti nei colori primari.'
-  },
-  {
     id: 'r-06',
     code: 'R-06 // GRAPHIC-ECHO',
     title: 'ECHO SOUND FESTIVAL',
@@ -409,139 +374,36 @@ window.PROJECT_REGISTRY = [
     coverImage: 'assets/projects/echo-sound-festival/poster.png',
     capsuleImage: 'assets/projects/echo-sound-festival/capsule.png',
     gallery: {
-      poster: {
-        src: 'assets/projects/echo-sound-festival/poster.png',
-        alt: 'Echo Sound Festival — Poster Ufficiale',
-        caption: 'Poster Ufficiale // Composizione vettoriale psichedelica & POP in Adobe Illustrator'
-      },
-      illustrations: [
-        {
-          src: 'assets/projects/echo-sound-festival/illustration-1.png',
-          alt: 'Echo Sound Festival — Illustrazione 1',
-          caption: 'Illustrazione 01 // Soggetto vettoriale & onde cromatiche'
-        },
-        {
-          src: 'assets/projects/echo-sound-festival/illustration-2.png',
-          alt: 'Echo Sound Festival — Illustrazione 2',
-          caption: 'Illustrazione 02 // Curve fluide ed elementi POP'
-        },
-        {
-          src: 'assets/projects/echo-sound-festival/illustration-3.png',
-          alt: 'Echo Sound Festival — Illustrazione 3',
-          caption: 'Illustrazione 03 // Composizione orizzontale di dettaglio'
-        }
+      layout: 'echo',
+      base: 'assets/projects/echo-sound-festival/',
+      date: '20 maggio 2025',
+      lead: 'Un esercizio di grafica vettoriale: tante illustrazioni che, messe insieme, compongono il poster di un festival pop e rap.',
+      strip: 'POP ✦ RAP ✦ PSICHEDELIA ✦',
+      posterTitle: 'Il poster',
+      posterText: [
+        'Il poster è un mosaico di riquadri, ognuno con la sua illustrazione e il suo fondo: le righe, la griglia ondulata, le onde blu, i cerchi arancioni.',
+        'I colori sono <strong>saturi e a contrasto</strong>, tenuti insieme da un contorno nero spesso, come nelle grafiche pop e psichedeliche a cui si ispira.'
       ],
-      mockups: [
-        {
-          src: 'assets/projects/echo-sound-festival/mockup-poster.png',
-          alt: 'Echo Sound Festival — Mockup Affissione Poster',
-          title: 'Affissione Urbana',
-          desc: 'Mockup realistico del poster ambientato in contesto urbano'
-        },
-        {
-          src: 'assets/projects/echo-sound-festival/mockup-instagram.png',
-          alt: 'Echo Sound Festival — Mockup Instagram',
-          title: 'Instagram Feed & Social Post',
-          desc: 'Declinazione in formato quadrato 1:1 per la promozione social'
-        }
+      colors: [
+        { hex: '#EFEA16' },
+        { hex: '#D68DC1' },
+        { hex: '#6DC8AB' },
+        { hex: '#0E74BA', ink: '#FEF7CF' },
+        { hex: '#070707', ink: '#EFEA16' }
+      ],
+      illTitle: 'Le illustrazioni',
+      illLead: 'Le illustrazioni sono nate una per una in Adobe Illustrator, poi ognuna ha trovato il suo posto nel poster.',
+      illustrationsList: [
+        { src: 'illustration-1.png', title: 'L’UFO', text: 'Un disco volante con un occhio solo, sopra le onde blu.', bg: 'blue' },
+        { src: 'illustration-2.png', title: 'La cassetta', text: 'Il nastro che fa partire la musica, sui cerchi arancioni.', bg: 'orange' },
+        { src: 'illustration-3.png', title: 'I ballerini', text: 'Tre figure gialle che ballano sulle righe rosa.', bg: 'pink' }
+      ],
+      mockTitle: 'I mockup',
+      mockLead: 'Il poster attaccato in strada e il post su Instagram.',
+      mockupsList: [
+        { src: 'mockup-poster.jpg', ratio: 1600 / 1070, kind: 'AFFISSIONE', title: 'Il poster su un muro in città', alt: 'Il poster dell’Echo Sound Festival attaccato su una parete di legno' },
+        { src: 'mockup-instagram.jpg', ratio: 1, kind: 'INSTAGRAM', title: 'Il post del festival', alt: 'Il post Instagram dell’Echo Sound Festival' }
       ]
     }
-  },
-  {
-    id: 'r-07',
-    code: 'R-07 // PERS-SYNTH',
-    title: 'SYNTH-BOX // PHYSICAL COMPUTING TOY',
-    category: 'Personal Projects',
-    year: '2025',
-    shapeName: 'Electric Torus Knot',
-    colorHex: '#E63946',
-    capsuleColor: 'red',
-    style: 'Hardware / Industriale',
-    palette: ['#E63946', '#C1121F', '#151413', '#E5E5E5'],
-    stack: ['Arduino', 'Laser Cut', 'WebAudio API', 'Acrylic Hardware'],
-    description: 'Sintetizzatore hardware custom racchiuso in scocca acrilica rossa trasparente. Comunica via WebMIDI con un canvas web per visualizzare le onde sonore.',
-    metrics: { voices: '4 Polifonia', knobs: '8 Rotary', baudRate: '115200 bps' },
-    details: 'Esperimento personale nato per esplorare la materialità del suono. Potenziometri in alluminio controllano filtri e delay virtuali a nastro in tempo reale.'
-  },
-  {
-    id: 'r-08',
-    code: 'R-08 // WEB-DITHER',
-    title: 'DITHER-LAB // INTERACTIVE HALFTONE ENGINE',
-    category: 'Web Design',
-    year: '2026',
-    shapeName: 'Dodecahedron Core',
-    colorHex: '#2A9D8F',
-    capsuleColor: 'green',
-    style: 'Rétro-cyber / 1-bit',
-    palette: ['#2A9D8F', '#151413', '#F7F1E4', '#E63946'],
-    stack: ['HTML5 Canvas', 'GLSL', 'Bayer Matrix', 'JavaScript'],
-    description: 'Web app sperimentale per la quantizzazione grafica in tempo reale di immagini e flussi video attraverso matrici di Bayer 4x4 e 8x8 con export vettoriale.',
-    metrics: { speed: '60 FPS', algorithms: 'Floyd / Bayer / Atkinson', export: 'SVG / PNG' },
-    details: 'Strumento open-source per designer che trasforma qualsiasi input grafico in texture ditherate rétro-cyber con palette personalizzabili.'
-  },
-  {
-    id: 'r-09',
-    code: 'R-09 // GRAPH-TECT',
-    title: 'RADICAL GRID // TECTONIC POSTERS',
-    category: 'Graphic Design',
-    year: '2025',
-    shapeName: 'Truncated Cone',
-    colorHex: '#FFB703',
-    capsuleColor: 'yellow',
-    style: 'Brutalista / Costruttivista',
-    palette: ['#151413', '#C9A227', '#F7F1E4', '#FFB703'],
-    stack: ['Offset UV', 'Matrici Svizzere', 'Typo Vettoriale', 'Illustrator'],
-    description: 'Manifesti tipografici brutalisti su fogli 100x140cm con sovrastampe dorate e inchiostro nero denso. Analisi visiva della modularità costruttivista.',
-    metrics: { format: '100x140 cm', tiratura: '150 Copie', carta: 'Munken Kristall' },
-    details: 'Composizioni tipografiche che sfidano la leggibilità per enfatizzare il ritmo architettonico delle lettere e dei pieni/vuoti modulari.'
-  },
-  {
-    id: 'r-10',
-    code: 'R-10 // EDIT-MATRIX',
-    title: 'TYPE MATRIX // VARIABLE MONOSPACE JOURNAL',
-    category: 'Editorial Design',
-    year: '2025',
-    shapeName: 'Prism Cylinder',
-    colorHex: '#1D3557',
-    capsuleColor: 'blue',
-    style: 'Monospace / Editoriale',
-    palette: ['#1D3557', '#E63946', '#F7F1E4', '#151413'],
-    stack: ['Variable Font', 'Bookbinding', 'Risograph 4-Color', 'InDesign'],
-    description: 'Rivista sperimentale rilegata a mano con filo rosso a vista. Esplora la storia dei caratteri a spaziatura fissa dai mainframe IBM alle interfacce cyber attuali.',
-    metrics: { pagine: '192 pp', rilegatura: 'Filo Singer Rosso', carta: 'Fedrigoni Arena' },
-    details: 'Ogni capitolo è impaginato secondo vincoli di codice e layout a griglia fissa, con inserti in carta velina trasparente ditherata.'
-  },
-  {
-    id: 'r-11',
-    code: 'R-11 // BRAND-CONSTRUCT',
-    title: 'CYBER-CONSTRUCT // IDENTITY ENGINE',
-    category: 'Brand Design',
-    year: '2026',
-    shapeName: 'Bauhaus Tetrahedron',
-    colorHex: '#E63946',
-    capsuleColor: 'red',
-    style: 'Modulare / Computazionale',
-    palette: ['#E63946', '#151413', '#F7F1E4', '#8D99AE'],
-    stack: ['Brand Guidelines', 'Generative Assets', 'Design System', 'Figma'],
-    description: 'Ecosistema di identità visiva modulare per un collettivo di architettura computazionale. Logotipi reattivi generati da algoritmi di suddivisione spaziale.',
-    metrics: { assetCount: '250+', guidelines: 'Interattive Web', responsiveBrand: '100%' },
-    details: 'Un marchio vivo che calcola la propria geometria in base alla superficie del supporto: da favicon di 16px a mega-insegne luminose a LED.'
-  },
-  {
-    id: 'r-12',
-    code: 'R-12 // PERS-GAMEPAD',
-    title: 'PIXEL-GLITCH // HAPTIC ARCADE GAMEPAD',
-    category: 'Personal Projects',
-    year: '2026',
-    shapeName: 'Arcade Star Polyhedron',
-    colorHex: '#2A9D8F',
-    capsuleColor: 'green',
-    style: 'Pixel / Arcade',
-    palette: ['#2A9D8F', '#38B000', '#151413', '#F7F1E4'],
-    software: ['Arduino', 'Blender'],
-    stack: ['ESP32', '3D Print', 'Haptic Motors', 'Bluetooth LE'],
-    description: 'Controller arcade tascabile con switch meccanici a scatto rapido, display OLED monochrome integrato e vibrazione aptica programmabile per chiptune.',
-    metrics: { latenza: '1.2ms BLE', switch: 'Gateron Red', autonomia: '24 Ore' },
-    details: 'Progettato e stampato in 3D con resina fotopolimerica semitrasparente. Si connette direttamente al browser via WebBluetooth per i giochi web arcade.'
   }
 ];

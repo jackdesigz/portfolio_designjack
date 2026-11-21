@@ -1,0 +1,509 @@
+/* =====================================================================
+   ECHO SOUND FESTIVAL — layout dedicato (js/projectBrand.js, LAYOUTS.echo)
+   Pop psichedelico come il poster: giallo acido, rosa, menta, blu, crema,
+   contorni neri spessi. Titoli in Super Earthly (il più vicino al poster).
+   ===================================================================== */
+
+@font-face {
+  font-family: 'Super Earthly';
+  src: url('../assets/fonts/super-earthly.ttf') format('truetype');
+  font-display: swap;
+}
+
+.project-media-showcase[data-layout="echo"] {
+  gap: 0;
+  margin: 0;
+}
+
+.ec {
+  --ec-yellow: #EFEA16;
+  --ec-pink: #D68DC1;
+  --ec-pink-2: #CE87BA;
+  --ec-mint: #6DC8AB;
+  --ec-blue: #0E74BA;
+  --ec-orange: #F26A2E;
+  --ec-cream: #FEF7CF;
+  --ec-ink: #070707;
+  --ec-pad: clamp(20px, 4vw, 56px);
+  --ec-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-main: 'Rubik', 'Jost', 'Helvetica Neue', sans-serif;
+
+  position: relative;
+  margin: 8px calc(-1 * clamp(24px, 3.8vw, 48px)) 8px;
+  background: var(--ec-cream);
+  color: var(--ec-ink);
+  overflow-x: clip;
+}
+
+.ec .ec-title,
+.ec .ec-h,
+.ec .ec-date,
+.ec .ec-marquee,
+.ec .ec-ill-n {
+  --font-main: 'Super Earthly', 'Rubik', sans-serif;
+  font-weight: 400;
+}
+
+/* testo gonfio: rosa con contorno e ombra nera, come sul poster */
+.ec .ec-title span,
+.ec .ec-h {
+  -webkit-text-stroke: 3px var(--ec-ink);
+  paint-order: stroke fill;
+  text-shadow: 4px 5px 0 var(--ec-ink);
+}
+
+.ec [data-reveal] {
+  transition: transform 0.9s var(--ec-bounce), opacity 0.5s ease;
+  transition-delay: calc(var(--i, 0) * 0.12s);
+}
+
+/* anelli psichedelici concentrici (una sola sfumatura radiale, niente piastrelle) */
+.ec-rings {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 180vmax;
+  height: 180vmax;
+  max-width: 2400px;
+  max-height: 2400px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle, var(--ec-yellow) 0 34px, var(--ec-pink) 34px 62px, var(--ec-yellow) 62px 70px, var(--ec-ink) 70px 74px);
+  animation: ec-pulse 7s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.ec-rings.is-hero { left: 74%; opacity: 0.9; }
+.ec-rings.is-mock { left: 50%; top: 100%; opacity: 0.35; }
+
+@keyframes ec-pulse {
+  from { transform: scale(1) rotate(0deg); }
+  to { transform: scale(1.08) rotate(8deg); }
+}
+
+/* =====================================================================
+   APERTURA
+   ===================================================================== */
+.ec-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  min-height: clamp(520px, 58vw, 680px);
+  padding: clamp(40px, 6vw, 70px) var(--ec-pad);
+  overflow: hidden;
+  background: var(--ec-yellow);
+  border-bottom: 5px solid var(--ec-ink);
+}
+
+/* metà sinistra piena, per leggere bene il titolo */
+.ec-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0 48% 0 0;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 20px, rgba(7, 7, 7, 0.9) 20px 23px),
+    var(--ec-pink);
+  clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+  border-right: 5px solid var(--ec-ink);
+}
+
+.ec-hero-copy {
+  position: relative;
+  z-index: 2;
+  transform: translateX(-40px);
+  opacity: 0;
+}
+
+.ec-hero-copy.is-in { transform: none; opacity: 1; }
+
+.ec-date {
+  display: inline-block;
+  padding: 8px 16px 6px;
+  background: var(--ec-yellow);
+  color: var(--ec-ink);
+  border: 3px solid var(--ec-ink);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--ec-ink);
+  font-size: 1.15rem;
+  rotate: -3deg;
+}
+
+.ec-title {
+  display: flex;
+  flex-direction: column;
+  margin: 18px 0 0;
+  line-height: 0.88;
+}
+
+.ec-title span {
+  font-size: clamp(3.4rem, 8.4vw, 7rem);
+  color: var(--ec-pink);
+}
+
+.ec-title span:nth-child(1) { color: var(--ec-yellow); }
+.ec-title span:nth-child(2) { color: var(--ec-mint); margin-left: 0.35em; }
+.ec-title span:nth-child(3) { font-size: clamp(2.4rem, 5.6vw, 4.6rem); color: var(--ec-cream); }
+
+.ec-lead {
+  max-width: 34ch;
+  margin: 20px 0 0;
+  padding: 12px 16px;
+  background: var(--ec-cream);
+  border: 3px solid var(--ec-ink);
+  border-radius: 14px;
+  box-shadow: 5px 5px 0 var(--ec-ink);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.ec-hero-stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  min-height: 420px;
+}
+
+.ec-poster {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 330px);
+  margin: 0;
+  border: 4px solid var(--ec-ink);
+  box-shadow: 10px 10px 0 var(--ec-ink);
+  cursor: zoom-in;
+  transform: translateY(80px) rotate(12deg);
+  opacity: 0;
+}
+
+.ec-poster.is-in { transform: rotate(3deg); opacity: 1; }
+.ec-poster:hover { transform: rotate(0deg) scale(1.03); transition-delay: 0s; }
+.ec-poster img { display: block; width: 100%; height: auto; }
+
+/* illustrazioni attaccate come adesivi attorno al poster */
+.ec-sticker {
+  position: absolute;
+  z-index: 3;
+  width: clamp(130px, 15vw, 200px);
+  height: auto;
+  border: 3px solid var(--ec-ink);
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 var(--ec-ink);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ec-st-a { top: 2%; right: 2%; transform: translate(40px, -40px) rotate(30deg) scale(0.6); }
+.ec-st-a.is-in { transform: rotate(9deg); opacity: 1; transition-delay: 0.5s; animation: ec-bob 4s ease-in-out 1.4s infinite; }
+.ec-st-b { bottom: 4%; left: 0; transform: translate(-40px, 40px) rotate(-30deg) scale(0.6); }
+.ec-st-b.is-in { transform: rotate(-8deg); opacity: 1; transition-delay: 0.7s; animation: ec-bob 4.6s ease-in-out 1.6s infinite reverse; }
+
+@keyframes ec-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+/* striscia che scorre */
+.ec-marquee {
+  overflow: hidden;
+  background: var(--ec-ink);
+  border-bottom: 5px solid var(--ec-ink);
+}
+
+.ec-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: ec-marquee 20s linear infinite;
+}
+
+.ec-marquee-track span {
+  padding: 12px 20px 10px;
+  font-size: 1.5rem;
+  color: var(--ec-yellow);
+  white-space: nowrap;
+}
+
+.ec-marquee-track span:nth-child(even) { color: var(--ec-pink); }
+
+@keyframes ec-marquee { to { transform: translateX(-50%); } }
+
+/* =====================================================================
+   SEZIONI
+   ===================================================================== */
+.ec-sec {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(52px, 7vw, 100px) var(--ec-pad);
+  border-bottom: 5px solid var(--ec-ink);
+}
+
+.ec-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  transform: translateY(30px) rotate(-3deg);
+  opacity: 0;
+}
+
+.ec-head.is-in { transform: rotate(-1.5deg); opacity: 1; }
+
+.ec-num {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--ec-yellow);
+  border: 3px solid var(--ec-ink);
+  box-shadow: 3px 3px 0 var(--ec-ink);
+  font-size: 1.1rem;
+}
+
+.ec-h {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.4vw, 4rem);
+  line-height: 1;
+  color: var(--ec-pink);
+}
+
+.ec-text {
+  position: relative;
+  z-index: 1;
+  max-width: 60ch;
+  margin: 0 0 14px;
+  font-size: 1.06rem;
+  line-height: 1.65;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.ec-text.is-in { transform: none; opacity: 1; }
+.ec-text strong { color: var(--ec-blue); font-weight: 700; }
+
+/* ---------- 01 poster: fondo menta a griglia ondulata come la cassa ---------- */
+.ec-poster-sec {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(7, 7, 7, 0.16) 2px, transparent 2px) 0 0 / 34px 100%,
+    linear-gradient(0deg, rgba(7, 7, 7, 0.16) 2px, transparent 2px) 0 0 / 100% 34px,
+    var(--ec-mint);
+}
+
+.ec-poster-sec .ec-text {
+  background: var(--ec-cream);
+  padding: 12px 16px;
+  border: 3px solid var(--ec-ink);
+  border-radius: 14px;
+}
+
+.ec-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.ec-dot {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--c);
+  color: var(--t);
+  border: 3px solid var(--ec-ink);
+  box-shadow: 4px 4px 0 var(--ec-ink);
+  font-size: 0.74rem;
+  transform: scale(0.2) rotate(-90deg);
+  opacity: 0;
+}
+
+.ec-dot.is-in { transform: rotate(calc((var(--i) - 2) * 6deg)); opacity: 1; }
+.ec-dot:hover { transform: scale(1.1); transition-delay: 0s; }
+
+.ec-poster-big {
+  justify-self: center;
+  width: min(100%, 440px);
+  margin: 0;
+  border: 5px solid var(--ec-ink);
+  box-shadow: 14px 14px 0 var(--ec-ink);
+  cursor: zoom-in;
+  transform: translateX(60px) rotate(8deg);
+  opacity: 0;
+}
+
+.ec-poster-big.is-in { transform: rotate(-2deg); opacity: 1; }
+.ec-poster-big:hover { transform: rotate(0deg) scale(1.02); transition-delay: 0s; }
+.ec-poster-big img { display: block; width: 100%; height: auto; }
+
+/* ---------- 02 illustrazioni: a zig-zag, ognuna su un fondo del poster ---------- */
+.ec-ill-sec {
+  background: var(--ec-cream);
+}
+
+.ec-ills {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 6vw, 70px);
+  margin-top: 30px;
+}
+
+.ec-ill {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+  gap: clamp(18px, 4vw, 48px);
+  align-items: center;
+  margin: 0;
+  transform: translateX(-80px) rotate(-4deg);
+  opacity: 0;
+}
+
+.ec-ill.is-flip { grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr); transform: translateX(80px) rotate(4deg); }
+.ec-ill.is-flip .ec-ill-frame { order: 2; }
+.ec-ill.is-in { transform: none; opacity: 1; }
+
+.ec-ill-frame {
+  position: relative;
+  padding: clamp(14px, 2.4vw, 26px);
+  border: 4px solid var(--ec-ink);
+  border-radius: 22px;
+  box-shadow: 10px 10px 0 var(--ec-ink);
+  cursor: zoom-in;
+  rotate: -1.5deg;
+  transition: rotate 0.35s var(--ec-bounce), transform 0.35s var(--ec-bounce);
+}
+
+.ec-ill.is-flip .ec-ill-frame { rotate: 1.5deg; }
+.ec-ill-frame:hover { rotate: 0deg; transform: scale(1.02); }
+
+.ec-ill-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 3px solid var(--ec-ink);
+  border-radius: 10px;
+}
+
+/* fondi presi dal poster */
+.ec-bg-pink .ec-ill-frame { background: repeating-linear-gradient(180deg, var(--ec-pink) 0 14px, var(--ec-ink) 14px 16px); }
+.ec-bg-blue .ec-ill-frame { background: radial-gradient(circle at 30% 30%, #59B8EA, var(--ec-blue)); }
+.ec-bg-orange .ec-ill-frame { background: repeating-radial-gradient(circle at 50% 50%, var(--ec-orange) 0 18px, #F59366 18px 30px); }
+.ec-bg-green .ec-ill-frame {
+  background:
+    linear-gradient(90deg, rgba(7, 7, 7, 0.25) 2px, transparent 2px) 0 0 / 22px 100%,
+    linear-gradient(0deg, rgba(7, 7, 7, 0.25) 2px, transparent 2px) 0 0 / 100% 22px,
+    #3FAE5A;
+}
+
+.ec-ill figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.ec-ill-n {
+  font-size: 3.4rem;
+  line-height: 1;
+  color: var(--ec-yellow);
+  -webkit-text-stroke: 2.5px var(--ec-ink);
+  paint-order: stroke fill;
+  text-shadow: 3px 4px 0 var(--ec-ink);
+}
+
+.ec-ill figcaption strong {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* ---------- 03 mockup ---------- */
+.ec-mock-sec {
+  background: var(--ec-yellow);
+  border-bottom: 0;
+}
+
+.ec-mock-sec .ec-text {
+  background: var(--ec-cream);
+  display: inline-block;
+  padding: 10px 14px;
+  border: 3px solid var(--ec-ink);
+  border-radius: 12px;
+}
+
+.ec-mocks {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: clamp(16px, 2.6vw, 30px);
+  margin-top: 24px;
+}
+
+.ec-mock {
+  flex: var(--ar) 1 0;
+  margin: 0;
+  cursor: zoom-in;
+  transform: translateY(60px) rotate(calc((var(--i) - 0.5) * 8deg));
+  opacity: 0;
+}
+
+.ec-mock.is-in { transform: rotate(calc((var(--i) - 0.5) * 2deg)); opacity: 1; }
+.ec-mock:hover { transform: rotate(0deg) scale(1.02); transition-delay: 0s; }
+
+.ec-mock img {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--ar);
+  object-fit: cover;
+  border: 4px solid var(--ec-ink);
+  border-radius: 14px;
+  box-shadow: 10px 10px 0 var(--ec-ink);
+}
+
+.ec-mock figcaption {
+  margin-top: 14px;
+  font-size: 0.95rem;
+}
+
+.ec-mock figcaption strong {
+  padding: 3px 10px;
+  background: var(--ec-ink);
+  color: var(--ec-yellow);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* =====================================================================
+   SCHERMI PICCOLI
+   ===================================================================== */
+@media (max-width: 860px) {
+  .ec-hero,
+  .ec-poster-sec { grid-template-columns: 1fr; }
+  .ec-hero::before { inset: 0 0 46% 0; clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); border-right: 0; border-bottom: 5px solid var(--ec-ink); }
+  .ec-hero-stage { min-height: 360px; }
+  .ec-ill,
+  .ec-ill.is-flip { grid-template-columns: 1fr; }
+  .ec-ill.is-flip .ec-ill-frame { order: 0; }
+  .ec-mocks { flex-direction: column; }
+  .ec-mock { flex: none; }
+}
+
+@media (max-width: 640px) {
+  .ec-dot { width: 74px; height: 74px; font-size: 0.66rem; }
+  .ec-sticker { width: 110px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ec [data-reveal], .ec-sticker { transition: none !important; animation: none !important; }
+  .ec-rings, .ec-marquee-track { animation: none; }
+}

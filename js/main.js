@@ -406,6 +406,14 @@ function initFullscreenInstagramCatalog() {
     });
   });
 
+  // i filtri senza progetti non si mostrano
+  filterBtns.forEach((b) => {
+    const cat = (b.getAttribute('data-filter') || 'all').toLowerCase();
+    if (cat === 'all') return;
+    const has = projects.some((p) => (p.category || '').toLowerCase() === cat);
+    b.hidden = !has;
+  });
+
   // 2. Interactive Filter Hover Highlight:
   // "quando passi sopra uno dei filtri tutti gli elementi nella griglia con quel filtro si illuminano"
   filterBtns.forEach(btn => {
@@ -508,7 +516,18 @@ function initFullscreenInstagramCatalog() {
     if (c.contains('channel-b-active')) return 'B';
     return 'R';
   };
+  // bolle che salgono dietro la griglia, solo nello stile B e solo a catalogo aperto
+  const bubbleLayer = modal ? modal.querySelector('.catalog-bubbles') : null;
+  const syncBubbles = () => {
+    if (!bubbleLayer) return;
+    const want = modal.classList.contains('active') && currentStyle() === 'B' &&
+      !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const has = bubbleLayer.childElementCount > 0;
+    if (want && !has) for (let i = 0; i < 16; i++) spawnMarineBubble(bubbleLayer);
+    if (!want && has) bubbleLayer.innerHTML = '';
+  };
   const syncStyleBtns = () => {
+    syncBubbles();
     const cur = currentStyle();
     styleBtns.forEach((b) => {
       const on = b.getAttribute('data-style-channel') === cur;
@@ -528,6 +547,7 @@ function initFullscreenInstagramCatalog() {
   if (styleBtns.length) {
     syncStyleBtns();
     new MutationObserver(syncStyleBtns).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    new MutationObserver(syncBubbles).observe(modal, { attributes: true, attributeFilter: ['class'] });
   }
 
   document.addEventListener('keydown', (e) => {

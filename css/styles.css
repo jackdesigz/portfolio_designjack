@@ -5952,3 +5952,14 @@ body.avatar-pinned .avatar-close { display: none; }
 @media (hover: none) {
   .channel-tip { display: none; }
 }
+
+/* =====================================================================
+   FILO SU SCHERMI STRETTI: i fogli sono scalati in js/hangingCatalog.js
+   (--sheet-scale), l'area si accorcia di conseguenza
+   ===================================================================== */
+@media (max-width: 820px) {
+  .hanging-wire-arena { height: calc(36px + 440px * 0.74 + 60px); }
+}
+@media (max-width: 520px) {
+  .hanging-wire-arena { height: calc(36px + 440px * 0.58 + 54px); }
+}

@@ -290,7 +290,7 @@
         if (this.trapped) this.setTrapped(false);
         if (!this.docked) this.setDocked(true);
         this.lastTarget = null;
-        this.avatar.say('Ecco tutto l’archivio. Passa sopra ai progetti!', { autoHide: 3200 });
+        this.avatar.say((window.matchMedia && window.matchMedia('(hover: none)').matches) ? 'Ecco tutto l’archivio. Tocca un progetto!' : 'Ecco tutto l’archivio. Passa sopra ai progetti!', { autoHide: 3200 });
       } else {
         if (!this.dockedBeforePin) this.setDocked(false);
         if (this.channel === 'b' && !this.docked) this.setTrapped(true);
