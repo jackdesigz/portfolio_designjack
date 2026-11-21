@@ -57,7 +57,7 @@ class HangingCatalogWire {
         : '';
 
       const mediaHtml = proj.coverImage
-        ? `<img class="sheet-photo-media" src="${proj.coverImage}" alt="${proj.title}" loading="lazy" />`
+        ? `<img class="sheet-photo-media" src="${proj.coverImage}" alt="${proj.title}" loading="lazy"${typeof proj.coverFocusY === 'number' ? ` style="object-position: 50% ${proj.coverFocusY * 100}%;"` : ''} />`
         : `<canvas class="sheet-photo-canvas" width="648" height="880"></canvas>`;
 
       sheetEl.innerHTML = `

@@ -67,6 +67,9 @@ Frutiger Aero marino, tutto blu e lucido. Font Hind.
 
 | Id | Progetto | Categoria | Anno | Layout |
 |---|---|---|---|---|
+| r-19 | MAO — Museo d’Arte Orientale | Editorial Design | 2026 | `mao` |
+| r-18 | Decoder | Editorial Design | 2026 | `decoder` |
+| r-17 | Modartech — Fotografia | Editorial Design | 2026 | `modartech` |
 | r-16 | Melagoccio | Brand Design | 2025 | `melagoccio` |
 | r-15 | Teatro Salone Ablondi | Brand Design | 2025 | `ablondi` |
 | r-14 | Campari Champ-AR | Interaction Design | 2026 | `champar` |
@@ -114,13 +117,42 @@ Si chiude con la X in alto a destra o con `Esc`.
   - le tre illustrazioni a zig-zag;
   - i mockup.
 
+### Editorial Design: le pubblicazioni da sfogliare
+I tre progetti editoriali sono in `js/projectEditorial.js`, con uno stile per ciascuno (`css/project-mao.css`, `css/project-decoder.css`, `css/project-modartech.css`). Le pagine vere stanno in `assets/projects/<progetto>/pages/` (01.jpg, 02.jpg…), ricavate dai PDF in `Progetti/Editorial Design/`.
+
+- **Lettore sfogliabile** (`createFlipbook`, stile base in `css/project-editorial.css`):
+  - la copertina sta da sola al centro, poi le doppie pagine;
+  - la pagina gira in 3D;
+  - si sfoglia con un clic sulla pagina, con le frecce della tastiera, con uno swipe o con la barra;
+  - il tasto ⤢ ingrandisce la pagina;
+  - su telefono si legge una pagina alla volta;
+  - le immagini si caricano solo attorno alla pagina aperta.
+- **MAO — Museo d’Arte Orientale** (font Gill Sans, quello di sistema su Mac e iPhone; Rotis Semi Serif per il motto):
+  - apertura come il banner: kanji 和敬清寂 che compaiono a pennellate, la fascia rossa e il Kongo Rikishi scontornato;
+  - i quattro principi (Wa, Kei, Sei, Jaku), uno alla volta;
+  - la gabbia: canone di Van de Graaf, moduli 7 × 5 e baseline grid disegnati dal vivo;
+  - il catalogo da sfogliare, con i capitoli che portano alla pagina giusta;
+  - palette con CMYK e HEX, tipografia, e la campagna (banner, affissione, totem, manifesto, tre ante, Instagram).
+- **Decoder** (titoli in Anton al posto di Druk, testi in Michroma, indice in Monobloco):
+  - testata con glitch, sottotitolo che si "decodifica" e percentuale di decodifica;
+  - indice da terminale: ogni voce apre la rivista a quella pagina;
+  - la rivista dentro un monitor;
+  - un colore per ogni opera: le pagine sono in bianco e nero e si colorano al passaggio del mouse;
+  - la citazione su Burroughs che si decodifica.
+- **Modartech** (titoli in Boldark, testi in Cormorant Garamond al posto di Canela):
+  - copertina, testata e contenuti cliccabili;
+  - il magazine da sfogliare (le doppie pagine del PDF sono divise in pagine singole);
+  - gli schemi di illuminazione: scegli lo schema, cambia la foto e la luce si sposta nella pianta vista dall’alto;
+  - originale o AI: confronto con la linea da trascinare;
+  - i ritratti (aule, Crastan, parco), la campagna #MADEINSENA che scorre in orizzontale e il viaggio in montagna.
+
 ### Aggiungere un progetto
 1. Crea la cartella `assets/projects/<progetto>/` con:
    - `cover.jpg` (catalogo e filo);
    - `capsule.png` (quadrata, 256 px, per la claw machine).
 2. Aggiungi la voce in `js/projects.js`:
    - `id`, `title`, `category`, `year`;
-   - `coverImage`, `capsuleImage`;
+   - `coverImage`, `capsuleImage` (e, se serve, `coverFocusY`: da dove ritagliare la copertina in verticale, 0 = in alto);
    - `software`, `palette`, `style`;
    - i testi di panoramica e progettazione;
    - `gallery`.
@@ -141,7 +173,7 @@ css/
   channel-b.css         canale B
   catalog-ui.css        catalogo, switch R/G/B, pulsante CATALOGO, X delle schede
   project-page.css      parte introduttiva delle schede (stile del canale)
-  project-*.css         layout dedicati dei progetti
+  project-*.css         layout dedicati dei progetti (project-editorial.css: il lettore sfogliabile)
   music-player.css · mobile.css · easter-egg.css
 js/
   main.js               cambio canale, catalogo, filtri
@@ -150,6 +182,7 @@ js/
   modal.js              scheda progetto e capsula vinta
   projectChampar.js     layout Campari + gioco
   projectBrand.js       layout Ablondi, Melagoccio, Fanciulla, Echo
+  projectEditorial.js   lettore sfogliabile + layout MAO, Decoder, Modartech
   hangingCatalog.js     fogli sul filo
   dither.js             pennello retinato e fogli a 1 bit
   crane2d.js · clawPhysics2D.js   claw machine 2D
@@ -182,4 +215,6 @@ archive/                versioni precedenti (claw machine 3D, sfera e avatar pro
   - disco della musica e avatar più piccoli.
 - **Spruzzi del canale G:** sono SVG generati usati come maschere (`--splat-*` in `css/channel-g.css`), quindi prendono il colore della lettera.
 - **Maiuscole nei percorsi:** la cartella `assets/Immagini` ha la I maiuscola. Online le maiuscole contano: se la rinomini, aggiorna `js/konami.js`.
-- **Font locali:** Upheaval TT, Radlush, BLOCKY, Decondol e Super Earthly sono in `assets/fonts/`. Prima di distribuire il repo verifica che le loro licenze lo permettano.
+- **Font locali:** Upheaval TT, Radlush, BLOCKY, Decondol, Super Earthly, Rotis Semi Serif, Boldark e Monobloco sono in `assets/fonts/`. Monobloco è libero anche per uso commerciale; per gli altri, prima di distribuire il repo verifica che le licenze lo permettano (Rotis è un font Adobe a pagamento).
+- **Font sostituiti:** Decoder usa Druk solo in versione Trial, che non si può pubblicare: sul sito i titoli sono in Anton. Canela (Modartech) e Gill Sans (MAO) non si possono distribuire: al loro posto ci sono Cormorant Garamond e, fuori dai dispositivi Apple, Hind.
+- **PDF troppo grande per GitHub:** `Progetti/Editorial Design/Fotografia_Modartech/Fotografia_Magazine_Jacopo_febi.pdf` pesa 117 MB e GitHub rifiuta i file oltre i 100 MB, quindi è in `.gitignore`. Il sito non lo usa: le pagine sono già in `assets/projects/modartech/pages/`.

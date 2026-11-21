@@ -24,3 +24,6 @@ Icon
 
 # Server logs
 *.log
+
+# PDF oltre i 100 MB: GitHub li rifiuta (le pagine sono già in assets/projects/modartech/pages/)
+Progetti/Editorial Design/Fotografia_Modartech/Fotografia_Magazine_Jacopo_febi.pdf

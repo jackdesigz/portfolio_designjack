@@ -1,0 +1,429 @@
+/* =====================================================================
+   DECODER — rivista cyberpunk (js/projectEditorial.js, LAYOUTS.decoder)
+   Fondo nero, testata rossa, immagini a due toni, scanline e glitch.
+   Titoli in Anton (la rivista usa Druk, qui solo in versione Trial),
+   testi in Michroma, indice e terminale in Monobloco.
+   ===================================================================== */
+
+@font-face {
+  font-family: 'Monobloco';
+  src: url('../assets/fonts/Monobloco.otf') format('opentype');
+  font-display: swap;
+}
+
+.project-media-showcase[data-layout="decoder"] {
+  gap: 0;
+  margin: 0;
+}
+
+.dc {
+  --dc-black: #0E0E0E;
+  --dc-ink: #1C1C1C;
+  --dc-red: #E53232;
+  --dc-white: #F2F2F2;
+  --dc-grey: #8D8E8E;
+  --dc-cyan: #3FE0E8;
+  --dc-pad: clamp(20px, 4.4vw, 64px);
+  --font-main: 'Michroma', 'Rajdhani', 'Eurostile', sans-serif;
+
+  position: relative;
+  margin: 8px calc(-1 * clamp(24px, 3.8vw, 48px)) 8px;
+  background: var(--dc-black);
+  color: var(--dc-white);
+  overflow-x: clip;
+  isolation: isolate;
+}
+/* scanline e grana su tutta la rivista */
+.dc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px);
+  mix-blend-mode: screen;
+}
+
+.dc .dc-title,
+.dc .dc-h,
+.dc .dc-tile b {
+  --font-main: 'Anton', 'Impact', 'Haettenschweiler', sans-serif;
+  font-weight: 400;
+}
+.dc .dc-tag,
+.dc .dc-status,
+.dc .dc-num,
+.dc .dc-index,
+.dc .dc-monitor-bar,
+.dc .dc-tile code {
+  --font-main: 'Monobloco', 'JetBrains Mono', monospace;
+  font-weight: 400;
+}
+
+.dc [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.5s steps(5, end), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 0.08s);
+}
+.dc [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ---------- Apertura ---------- */
+.dc-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(24px, 4vw, 60px);
+  align-items: center;
+  padding: clamp(40px, 6vw, 84px) var(--dc-pad);
+  background:
+    radial-gradient(70% 60% at 80% 40%, rgba(229, 50, 50, 0.16), transparent 70%),
+    var(--dc-black);
+  overflow: hidden;
+}
+.dc-tag {
+  margin: 0 0 18px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--dc-grey);
+}
+.dc-title {
+  position: relative;
+  margin: 0;
+  font-size: clamp(4.6rem, 12vw, 10.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  color: var(--dc-red);
+}
+/* glitch: due copie sfasate (rosso/ciano) che ogni tanto scattano */
+.dc-title::before,
+.dc-title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.dc-title::before {
+  color: var(--dc-cyan);
+  mix-blend-mode: screen;
+  clip-path: inset(0 0 0 0);
+  transform: translate(0, 0);
+  opacity: 0;
+  animation: dc-glitch-a 3.6s steps(1, end) infinite;
+}
+.dc-title::after {
+  color: #FF2E6A;
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: dc-glitch-b 3.6s steps(1, end) infinite;
+}
+@keyframes dc-glitch-a {
+  0%, 86%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 0 0); }
+  87% { opacity: 1; transform: translate(-6px, 2px); clip-path: inset(10% 0 62% 0); }
+  89% { opacity: 1; transform: translate(5px, -1px); clip-path: inset(48% 0 22% 0); }
+  91% { opacity: 1; transform: translate(-3px, 0); clip-path: inset(76% 0 4% 0); }
+  93% { opacity: 0; }
+}
+@keyframes dc-glitch-b {
+  0%, 87%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 0 0); }
+  88% { opacity: 1; transform: translate(6px, -2px); clip-path: inset(30% 0 40% 0); }
+  90% { opacity: 1; transform: translate(-5px, 1px); clip-path: inset(60% 0 12% 0); }
+  92% { opacity: 0; }
+}
+.dc-sub {
+  margin: 14px 0 0;
+  font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dc-white);
+}
+.dc-scramble { white-space: pre-wrap; }
+.dc-scramble .sc { position: relative; }
+.dc-scramble .sc.is-noise { -webkit-text-fill-color: transparent; }
+.dc-scramble .sc.is-noise::after {
+  content: attr(data-n);
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-text-fill-color: currentColor;
+  opacity: 0.85;
+}
+.dc-lead {
+  max-width: 52ch;
+  margin: 22px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.85;
+  color: #C9C9C9;
+}
+.dc-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 26px 0 0;
+  font-size: 0.8rem;
+  color: var(--dc-grey);
+}
+.dc-status b { color: var(--dc-red); font-weight: 400; }
+.dc-status.is-done b { color: var(--dc-white); }
+.dc-bar {
+  position: relative;
+  display: block;
+  width: 140px;
+  height: 8px;
+  border: 1px solid var(--dc-grey);
+}
+.dc-bar i {
+  position: absolute;
+  inset: 1px;
+  background: var(--dc-red);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--k, 0));
+}
+
+.dc-cover {
+  position: relative;
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 420px);
+  cursor: zoom-in;
+  transform: rotate(2deg);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 80px rgba(229, 50, 50, 0.18);
+}
+.dc-cover.is-in { transform: rotate(2deg); }
+.dc-cover img { display: block; width: 100%; height: auto; }
+.dc-glitch-a,
+.dc-glitch-b {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  pointer-events: none;
+}
+.dc-glitch-a { mix-blend-mode: screen; filter: sepia(1) hue-rotate(130deg) saturate(6); }
+.dc-glitch-b { mix-blend-mode: screen; filter: sepia(1) hue-rotate(-40deg) saturate(6); }
+.dc-cover:hover .dc-glitch-a { animation: dc-slice-a 0.9s steps(1, end) infinite; }
+.dc-cover:hover .dc-glitch-b { animation: dc-slice-b 0.9s steps(1, end) infinite; }
+@keyframes dc-slice-a {
+  0% { opacity: 0.8; clip-path: inset(8% 0 70% 0); transform: translateX(-10px); }
+  25% { opacity: 0.8; clip-path: inset(40% 0 38% 0); transform: translateX(8px); }
+  50% { opacity: 0; }
+  75% { opacity: 0.8; clip-path: inset(72% 0 10% 0); transform: translateX(-6px); }
+}
+@keyframes dc-slice-b {
+  0% { opacity: 0; }
+  20% { opacity: 0.7; clip-path: inset(22% 0 60% 0); transform: translateX(9px); }
+  45% { opacity: 0.7; clip-path: inset(58% 0 26% 0); transform: translateX(-12px); }
+  70% { opacity: 0; }
+}
+
+/* ---------- Sezioni ---------- */
+.dc-sec {
+  position: relative;
+  padding: clamp(54px, 7vw, 100px) var(--dc-pad);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.dc-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: clamp(22px, 3vw, 34px);
+}
+.dc-num { font-size: 0.85rem; color: var(--dc-red); }
+.dc-h {
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--dc-white);
+}
+.dc-text {
+  max-width: 64ch;
+  margin: 0 0 16px;
+  font-size: 0.86rem;
+  line-height: 1.9;
+  color: #C9C9C9;
+}
+.dc-text strong { color: var(--dc-white); }
+
+/* ---------- 01 Indice ---------- */
+.dc-index {
+  max-width: 760px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dc-index li { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.dc-index button {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  width: 100%;
+  padding: 13px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--dc-white);
+  font: inherit;
+  font-size: clamp(0.92rem, 1.8vw, 1.3rem);
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.15s steps(2, end);
+}
+/* barra di selezione nel colore dell'opera, da terminale */
+.dc-index button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--c);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.25s steps(6, end);
+}
+.dc-index button:hover::before,
+.dc-index button:focus-visible::before { transform: scaleX(1); }
+.dc-index button:hover,
+.dc-index button:focus-visible { color: var(--dc-black); outline: none; }
+.dc-ix-n { font-size: 0.7em; color: var(--dc-grey); }
+.dc-index button:hover .dc-ix-n { color: inherit; }
+.dc-ix-t { flex: none; }
+.dc-ix-dots { flex: 1; border-bottom: 2px dotted rgba(255, 255, 255, 0.25); transform: translateY(-4px); }
+.dc-index button:hover .dc-ix-dots { border-color: rgba(0, 0, 0, 0.4); }
+.dc-ix-p { color: var(--c); }
+.dc-index button:hover .dc-ix-p { color: inherit; }
+.dc-index button.is-current .dc-ix-n::after { content: ' ◄'; color: var(--dc-red); }
+
+/* ---------- 02 Monitor con la rivista ---------- */
+.dc-monitor {
+  position: relative;
+  padding: 0 clamp(10px, 2vw, 26px) clamp(16px, 2vw, 24px);
+  border: 2px solid #2C2C2C;
+  border-radius: 14px;
+  background: radial-gradient(120% 90% at 50% 40%, #191919 0%, #070707 100%);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8), 0 0 0 6px #151515, 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.dc-monitor-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 4px 14px;
+  font-size: 0.72rem;
+  color: var(--dc-grey);
+}
+.dc-monitor-page { color: var(--dc-red); }
+.dc-reader.fb {
+  --fb-paper: #1C1C1C;
+  --fb-ink: var(--dc-white);
+  --fb-accent: var(--dc-red);
+  --fb-shadow: rgba(229, 50, 50, 0.12);
+  --font-main: 'Monobloco', monospace;
+}
+.dc-reader .fb-btn { border-width: 1px; }
+.dc-reader .fb-spine { background: rgba(255, 255, 255, 0.12); }
+
+/* ---------- 03 Duotoni ---------- */
+.dc-duo {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.6vw, 18px);
+  margin-top: 14px;
+}
+.dc-tile {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  cursor: zoom-in;
+  aspect-ratio: 860 / 1206;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.dc-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.25) brightness(0.8);
+  transition: filter 0.45s steps(4, end), transform 0.6s ease;
+}
+/* scansione: una banda del colore dell'opera passa sulla pagina */
+.dc-tile::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -30%;
+  height: 30%;
+  z-index: 1;
+  background: linear-gradient(180deg, transparent, var(--c) 70%, transparent);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+.dc-tile:hover::before { animation: dc-scan 0.7s linear; }
+@keyframes dc-scan { 0% { top: -30%; opacity: 0.9; } 100% { top: 100%; opacity: 0.9; } }
+.dc-tile:hover img { filter: none; transform: scale(1.03); }
+.dc-tile figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 26px 12px 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.88));
+}
+.dc-tile b { font-size: 1.15rem; text-transform: uppercase; color: var(--dc-white); }
+.dc-tile code { font-size: 0.62rem; color: var(--c); }
+.dc-tile::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  z-index: 3;
+  background: var(--c);
+}
+
+/* ---------- 04 Decodificare ---------- */
+.dc-decode-sec {
+  background:
+    repeating-linear-gradient(90deg, rgba(229, 50, 50, 0.05) 0 1px, transparent 1px 64px),
+    var(--dc-black);
+}
+.dc-quote {
+  max-width: 22ch;
+  margin: 0 0 clamp(26px, 3vw, 40px);
+  font-family: 'Anton', 'Impact', sans-serif;
+  --font-main: 'Anton', 'Impact', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  line-height: 1.02;
+  text-transform: uppercase;
+  color: var(--dc-red);
+}
+.dc-decode-text { columns: 2 300px; column-gap: 40px; max-width: 900px; }
+.dc-decode-text .dc-text { break-inside: avoid; }
+
+/* ---------- Telefono ---------- */
+@media (max-width: 860px) {
+  .dc-hero { grid-template-columns: 1fr; }
+  .dc-cover { width: min(78%, 340px); }
+  .dc-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dc-index button { gap: 10px; }
+  .dc-status { flex-wrap: wrap; gap: 8px 12px; }
+  .dc-bar { width: 100%; max-width: 220px; }
+}
+/* sui touch le pagine sono già a colori */
+@media (hover: none) {
+  .dc-tile img { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dc [data-reveal] { transition: none !important; opacity: 1 !important; transform: none !important; }
+  .dc-title::before, .dc-title::after, .dc-glitch-a, .dc-glitch-b, .dc-tile::before { animation: none !important; }
+}

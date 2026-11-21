@@ -571,7 +571,9 @@ function drawInstagramProjectArtwork(canvas, proj, idx) {
     img.onload = () => {
       const minDim = Math.min(img.width, img.height);
       const sx = (img.width - minDim) / 2;
-      const sy = (img.height - minDim) / 2;
+      // coverFocusY: da dove ritagliare in verticale (0 = in alto, 0.5 = al centro)
+      const fy = typeof proj.coverFocusY === 'number' ? proj.coverFocusY : 0.5;
+      const sy = (img.height - minDim) * fy;
       ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, w, h);
     };
     img.src = proj.coverImage;

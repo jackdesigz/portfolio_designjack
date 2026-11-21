@@ -585,4 +585,7 @@
 
     return setupReveal(container.querySelector('.ec'), container);
   };
+
+  // strumenti condivisi con gli altri file di layout (js/projectEditorial.js)
+  window.ProjectKit = { setupReveal, esc, zoom, reduceMotion };
 })();

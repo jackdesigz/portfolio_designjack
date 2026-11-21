@@ -5,6 +5,218 @@
 
 window.PROJECT_REGISTRY = [
   {
+    id: 'r-19',
+    code: 'R-19 // EDITORIAL-MAO',
+    title: 'MAO — MUSEO D’ARTE ORIENTALE',
+    category: 'Editorial Design',
+    year: '2026',
+    shapeName: 'Red Square',
+    colorHex: '#DB3332',
+    capsuleColor: 'red',
+    style: 'Zen & Tipografico',
+    palette: ['#DB3332', '#F5F4EE', '#000000'],
+    software: ['Adobe InDesign', 'Adobe Photoshop'],
+    stack: ['Adobe InDesign', 'Adobe Photoshop', 'Catalogo', 'Griglia modulare', 'Campagna OOH', 'Social Media'],
+    description: 'Il catalogo delle collezioni permanenti del MAO, il Museo d’Arte Orientale di Torino, e la campagna che lo porta in città: affissioni, totem, manifesti, un pieghevole a tre ante e i post per Instagram.',
+    details: 'Il progetto parte dall’identità del museo e da un approccio decoloniale (#MAOtempopresente). La sobrietà di Palazzo Mazzonis incontra il rigore tipografico occidentale e la materia delle opere asiatiche: una gabbia modulare 7 × 5 nata dall’interlinea, molto spazio bianco, il Rosso “MAO” e il Kongo Rikishi, il guardiano dei templi, come figura di benvenuto su ogni supporto.',
+    coverImage: 'assets/projects/mao-torino/cover.jpg',
+    capsuleImage: 'assets/projects/mao-torino/capsule.png',
+    gallery: {
+      layout: 'mao',
+      base: 'assets/projects/mao-torino/',
+      pages: 36,
+      kicker: 'Catalogo e campagna · Palazzo Mazzonis, Torino',
+      lead: 'Un catalogo per le collezioni permanenti del Museo d’Arte Orientale e una campagna che lo porta in città, dal totem all’ingresso ai post su Instagram.',
+      facts: [
+        { k: 'Formato', v: '25 × 35 cm' },
+        { k: 'Facciate', v: '36' },
+        { k: 'Gallerie', v: '5' }
+      ],
+      conceptTitle: 'Il concept',
+      conceptText: [
+        'Il progetto traduce l’identità del MAO superando la visione orientalista, a favore di un approccio <strong>decoloniale, partecipativo e aperto al presente</strong> (#MAOtempopresente).',
+        'La memoria storica e sobria di Palazzo Mazzonis incontra il rigore tipografico occidentale e la materia delle opere asiatiche. A guidare ogni scelta ci sono quattro principi della cultura giapponese: <strong>和敬清寂</strong>.'
+      ],
+      principles: [
+        { jp: 'Wa', it: 'Armonia', text: 'La ricerca dell’equilibrio diventa la <strong>gabbia modulare 7 × 5</strong>, ricavata dall’interlinea di 11,5 pt e agganciata alla baseline grid: un dialogo proporzionato tra tipografia, margini e architettura del palazzo.' },
+        { jp: 'Kei', it: 'Rispetto', text: 'Un approccio non eurocentrico, che rispetta l’identità delle opere. Ogni reperto è <strong>scontornato in Photoshop</strong>, con tracciati e canale alfa, e posato sul fondo color carta di riso.' },
+        { jp: 'Sei', it: 'Purezza', text: 'Nessun elemento superfluo. La gerarchia nasce dal contrasto armonico tra il <strong>Rotis</strong>, che riprende il marchio del museo, e il <strong>Gill Sans</strong> dei testi continui.' },
+        { jp: 'Jaku', it: 'Quiete', text: 'Il ritmo disteso delle pagine richiama i <strong>giardini zen</strong> del museo: grandi bianchi ai margini e una palette misurata, per una lettura contemplativa.' }
+      ],
+      gridTitle: 'La gabbia',
+      gridText: [
+        'L’impaginato nasce <strong>dal basso</strong>: la griglia viene dal ritmo del testo. Ogni modulo quadrato contiene esattamente 7 righe da 11,5 pt e i moduli sono separati da un’interlinea.',
+        'Il canone di Van de Graaf fissa i margini. Per leggere si uniscono 2 o 3 moduli, mentre i margini ampi ospitano didascalie e opere a tutta pagina. Le stesse regole, semplificate, impaginano anche i materiali per la città.'
+      ],
+      gridNumbers: [
+        { v: '7 × 5', k: 'moduli per pagina' },
+        { v: '11,5 pt', k: 'interlinea di base' },
+        { v: '7', k: 'righe per modulo' },
+        { v: '1', k: 'interlinea tra i moduli' }
+      ],
+      bookTitle: 'Il catalogo',
+      bookText: '36 facciate che attraversano le cinque gallerie permanenti del MAO. Sfoglialo: clicca sulle pagine, usa le frecce o salta a un capitolo.',
+      chapters: [
+        { page: 4, title: 'Introduzione' },
+        { page: 8, title: 'Gandhāra, India e Sud-est asiatico' },
+        { page: 16, title: 'Cina' },
+        { page: 22, title: 'Himalaya' },
+        { page: 26, title: 'Giappone' },
+        { page: 30, title: 'Arte islamica' }
+      ],
+      colorsTitle: 'Il colore',
+      colors: [
+        { name: 'Rosso “MAO”', hex: '#DB3332', cmyk: 'C10 M95 Y90 K0', note: 'Il colore d’accento: identitario sia per il marchio del museo sia per i paesi in mostra.', ink: '#FFFFFF', weight: 2.2 },
+        { name: 'Bianco Riso', hex: '#F5F4EE', cmyk: 'C3 M2 Y5 K0', note: 'Il fondo delle pagine.', ink: '#111111', weight: 1.4 },
+        { name: 'Nero', hex: '#000000', cmyk: 'C75 M68 Y67 K90', note: 'Il colore del testo.', ink: '#F5F4EE', weight: 1 }
+      ],
+      typeTitle: 'Tipografia',
+      fonts: [
+        { name: 'Gill Sans', sample: 'MAO — Museo d’Arte Orientale', note: 'Versatile: la maggior parte dei titoli e tutti i testi. Fa già parte delle linee guida di comunicazione del MAO.' },
+        { name: 'Rotis Semi Serif', sample: 'il museo<br>le opere<br>l’idea', note: 'Il carattere della scritta “museo d’arte orientale” nel logo, ripreso in alcune titolazioni per continuità visiva.' }
+      ],
+      oohTitle: 'Fuori dal museo',
+      oohText: 'Nei templi i Kongō-rikishi sono i guardiani che accolgono chi entra. Qui il Kongo Rikishi diventa la figura di benvenuto: a cavallo tra il fondo riso e la fascia rossa rompe la griglia, dà profondità e rende riconoscibile ogni supporto.',
+      ooh: [
+        { src: 'mockup-affissione.jpg', kind: 'AFFISSIONE', title: 'Il banner in città', size: 'l', alt: 'Il banner del MAO su un ponteggio in una via di Torino, con la Mole sullo sfondo' },
+        { src: 'mockup-totem.jpg', kind: 'TOTEM', title: 'All’ingresso', size: 't', alt: 'Il totem del MAO con il Kongo Rikishi' },
+        { src: 'mockup-manifesto.jpg', kind: 'MANIFESTO', title: 'In cornice', size: 'm', alt: 'Il manifesto del MAO incorniciato in una sala' },
+        { src: 'mockup-tre-ante.jpg', kind: 'PIEGHEVOLE', title: 'Il tre ante', size: 'm', alt: 'Il pieghevole a tre ante chiuso' },
+        { src: 'mockup-tre-ante-interno.jpg', kind: 'PIEGHEVOLE', title: 'L’interno', size: 'm', alt: 'L’interno del pieghevole a tre ante' },
+        { src: 'mockup-instagram.jpg', kind: 'INSTAGRAM', title: 'Quattro post, uno per sezione', size: 'w', alt: 'I post Instagram del MAO accanto a uno smartphone' },
+        { src: 'mockup-catalogo-aperto.jpg', kind: 'CATALOGO', title: 'Aperto sul tavolo', size: 'w', alt: 'Il catalogo del MAO aperto' }
+      ]
+    }
+  },
+  {
+    id: 'r-18',
+    code: 'R-18 // EDITORIAL-DECODER',
+    title: 'DECODER',
+    category: 'Editorial Design',
+    year: '2026',
+    shapeName: 'Glitch Cube',
+    colorHex: '#E53232',
+    capsuleColor: 'black',
+    style: 'Cyberpunk & Duotono',
+    palette: ['#1C1C1C', '#E53232', '#FBFBFB', '#4871B4', '#BBCE19'],
+    software: ['Adobe InDesign', 'Adobe Photoshop'],
+    stack: ['Adobe InDesign', 'Adobe Photoshop', 'Rivista', 'Duotono', 'Tipografia sperimentale'],
+    description: 'Una rivista di 32 pagine sul cyberpunk nella cultura moderna: dalla rivista italiana Decoder a Blade Runner, Akira, Ghost in the Shell, Cyberpunk 2077, Marathon, Neuromante e i Nine Inch Nails.',
+    details: 'Fondo nero, immagini ridotte a due toni e una tinta diversa per ogni opera, come segnali su uno schermo. I titoli sono condensati e pesantissimi, i testi in un carattere largo e tecnico; le colonne si spezzano, il testo si sgretola in pixel e le pagine giocano con il glitch. Il nome viene dalle teorie di Burroughs: decodificare il linguaggio del potere per sovvertirlo.',
+    coverImage: 'assets/projects/decoder/cover.jpg',
+    coverFocusY: 0,
+    capsuleImage: 'assets/projects/decoder/capsule.png',
+    gallery: {
+      layout: 'decoder',
+      base: 'assets/projects/decoder/',
+      pages: 32,
+      tag: 'RIVISTA // 32 PAGINE // STAMPA',
+      subtitle: 'Il cyberpunk nella cultura moderna',
+      lead: 'Il cyberpunk non come semplice fantascienza, ma come strumento per leggere il presente: dalla scena italiana nata attorno alla rivista Decoder ai film, ai videogiochi e alla musica che ne hanno fatto un immaginario.',
+      indexTitle: 'Indice',
+      index: [
+        { t: 'Il cyberpunk', p: 4, c: '#E53232' },
+        { t: 'Decoder', p: 7, c: '#FBFBFB' },
+        { t: 'Media principali', p: 10, c: '#E9702F' },
+        { t: 'Blade Runner', p: 14, c: '#4871B4' },
+        { t: 'Ghost in the Shell', p: 18, c: '#E9702F' },
+        { t: 'Cyberpunk 2077', p: 20, c: '#D9D64A' },
+        { t: 'Marathon', p: 24, c: '#BBCE19' },
+        { t: 'Neuromante', p: 26, c: '#B0449C' },
+        { t: 'Nine Inch Nails', p: 28, c: '#2E9A55' }
+      ],
+      readerTitle: 'Sfoglia la rivista',
+      duoTitle: 'Un colore per ogni opera',
+      duoText: 'Ogni immagine è ridotta a due toni: il nero della pagina e un colore che cambia da un’opera all’altra. Passa sopra una pagina per decodificarla.',
+      duo: [
+        { page: 13, title: 'Akira', c: '#D22629' },
+        { page: 15, title: 'Blade Runner', c: '#4871B4' },
+        { page: 19, title: 'Ghost in the Shell', c: '#E9702F' },
+        { page: 23, title: 'Johnny Silverhand', c: '#EEEB95' },
+        { page: 25, title: 'Marathon', c: '#BBCE19' },
+        { page: 26, title: 'Neuromante', c: '#8E347B' },
+        { page: 27, title: 'Sprawl', c: '#916CAA' },
+        { page: 29, title: 'Nine Inch Nails', c: '#247C44' }
+      ],
+      decodeTitle: 'Decodificare',
+      decodeQuote: 'Il linguaggio non è uno strumento neutro: è un sistema di controllo, un codice imposto dal potere.',
+      decodeText: [
+        'Il nome della rivista viene dalle teorie sulla comunicazione di <strong>William S. Burroughs</strong>, che aveva trasformato il linguaggio in un campo di battaglia politico.',
+        'Decodificare significa smontare quel codice, leggerlo controcorrente, sovvertirlo. Per questo il testo si sgretola, le colonne si spezzano e le immagini sembrano segnali appena captati.'
+      ]
+    }
+  },
+  {
+    id: 'r-17',
+    code: 'R-17 // EDITORIAL-MODARTECH',
+    title: 'MODARTECH — FOTOGRAFIA',
+    category: 'Editorial Design',
+    year: '2026',
+    shapeName: 'Soft Prism',
+    colorHex: '#F9CCAD',
+    capsuleColor: 'pink',
+    style: 'Fashion & Pastello',
+    palette: ['#F9CCAD', '#F8D7E7', '#D3EAE5', '#DEECD7', '#B9392D', '#2A2828'],
+    software: ['Adobe InDesign', 'Adobe Photoshop'],
+    stack: ['Adobe InDesign', 'Adobe Photoshop', 'Magazine', 'Fotografia', 'Ritratto', 'Fashion'],
+    description: 'Un magazine di fotografia di 82 pagine: i maestri della moda (Erwin Blumenfeld, Paolo Roversi, Peter Lindbergh), l’intelligenza artificiale, il ritratto e i servizi fotografici del corso, dagli schemi di luce a una campagna per un laboratorio di cappelli.',
+    details: 'Ogni sezione ha il suo colore pastello: pesca, rosa, menta e salvia. I titoli sono in un condensato dal sapore editoriale, i testi in un serif elegante; barre rosse, triangoli e forme spezzate muovono le pagine, mentre le foto restano protagoniste, a piena pagina o accostate come in un provino.',
+    coverImage: 'assets/projects/modartech/cover.jpg',
+    coverFocusY: 0,
+    capsuleImage: 'assets/projects/modartech/capsule.png',
+    gallery: {
+      layout: 'modartech',
+      base: 'assets/projects/modartech/',
+      pages: 82,
+      kicker: 'Magazine di fotografia',
+      lead: 'Dai maestri della fotografia di moda ai servizi fatti in studio e per strada: un magazine che racconta la luce, il volto e lo sguardo.',
+      contentsTitle: 'Contenuti',
+      contents: [
+        { t: 'Erwin Blumenfeld', p: 4 },
+        { t: 'Intelligenza artificiale', p: 16 },
+        { t: 'Il ritratto', p: 22 },
+        { t: 'Schemi di illuminazione', p: 26 },
+        { t: 'Fotografia di moda', p: 34 },
+        { t: 'Paolo Roversi', p: 42 },
+        { t: 'Peter Lindbergh', p: 54 },
+        { t: 'Sena | Cappelli', p: 64 },
+        { t: 'Viaggio | Vastità | Proporzione', p: 74 }
+      ],
+      lightTitle: 'Schemi di illuminazione',
+      lightText: 'Sei modi di illuminare un volto, fotografati in studio. Scegli uno schema: cambia la foto e la luce si sposta nello schema visto dall’alto.',
+      lights: [
+        { name: 'Frontale', src: 'luce-frontale.jpg', x: 14, y: 64, text: 'La luce colpisce il soggetto dalla direzione della fotocamera: quasi nessuna ombra e volumi appiattiti. Massima visibilità dei dettagli, meno tridimensionalità del volto.' },
+        { name: 'Rembrandt', src: 'luce-rembrandt.jpg', x: -52, y: 46, text: 'Ispirato al pittore e molto usato nella calotipia dell’Ottocento: un piccolo triangolo di luce sulla guancia in ombra. Drammatico e profondo, con un forte contrasto tra luci e ombre.' },
+        { name: 'Laterale', src: 'luce-laterale.jpg', x: -72, y: 0, text: 'La fonte è a 90 gradi rispetto al soggetto: metà volto illuminata, metà al buio. Esalta la texture della pelle e dà un’aria misteriosa al ritratto.' },
+        { name: 'Butterfly', src: 'luce-butterfly.jpg', x: 0, y: 40, high: true, text: 'La luce arriva dall’alto, davanti al soggetto, e sotto il naso disegna un’ombra a forma di farfalla. Un classico del glamour: scolpisce gli zigomi e addolcisce i lineamenti.' },
+        { name: 'Riflessi', src: 'luce-riflessi.jpg', x: -56, y: 38, reflector: true, text: 'Non è una fonte diretta: la luce principale rimbalza su una superficie riflettente verso le zone d’ombra. Ammorbidisce il contrasto e recupera i dettagli nelle parti scure.' },
+        { name: 'Backlight', src: 'luce-backlight.jpg', x: 0, y: -66, text: 'La fonte è dietro il soggetto: disegna la sagoma con un alone (rim light) o crea una silhouette. Stacca la figura dallo sfondo e aggiunge profondità.' }
+      ],
+      aiTitle: 'Originale o AI?',
+      aiText: [
+        'Riccardo Falcinelli si chiede cosa succede al volto quando a generarlo è un’intelligenza artificiale: ricreare le persone rischia un torto non solo morale, ma anche <strong>culturale</strong>, verso la loro memoria.',
+        'Le foto originali accanto alle versioni rifatte con un’AI generativa: gli stessi volti, una scena che non è mai esistita. Trascina la linea per confrontarle.'
+      ],
+      aiPairs: [
+        { a: 'ai-originale-1.jpg', b: 'ai-generata-1.jpg', ratio: 2181 / 1351 },
+        { a: 'ai-originale-2.jpg', b: 'ai-generata-2.jpg', ratio: 2000 / 1449 }
+      ],
+      portraitTitle: 'Nuove prospettive',
+      portraitText: 'Tre luoghi, tre servizi di ritratto: le aule, Crastan e il parco.',
+      portraitSets: [
+        { name: 'Aule', imgs: ['ritratto-aule-1.jpg', 'ritratto-aule-2.jpg', 'ritratto-aule-3.jpg'] },
+        { name: 'Crastan', imgs: ['ritratto-crastan-1.jpg', 'ritratto-crastan-2.jpg', 'ritratto-crastan-3.jpg'] },
+        { name: 'Parco', imgs: ['ritratto-parco-1.jpg', 'ritratto-parco-2.jpg', 'ritratto-parco-3.jpg'] }
+      ],
+      senaTitle: '#MADEINSENA',
+      senaText: 'Una campagna per Sena, artigiani del cappello: le persone, le mani e gli strumenti del laboratorio, con il marchio e l’hashtag sopra le foto.',
+      sena: ['sena-33.jpg', 'sena-34.jpg', 'sena-35.jpg', 'sena-36.jpg', 'sena-37.jpg'],
+      travelTitle: 'In viaggio',
+      travelQuote: 'Il viaggio non è una vacanza: è un atto di sabotaggio contro l’abitudine.',
+      travel: ['viaggio-1.jpg', 'viaggio-2.jpg', 'viaggio-3.jpg', 'viaggio-4.jpg', 'viaggio-5.jpg']
+    }
+  },
+  {
     id: 'r-16',
     code: 'R-16 // BRAND-MELAGOCCIO',
     title: 'MELAGOCCIO',

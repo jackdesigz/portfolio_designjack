@@ -1,0 +1,525 @@
+/* =====================================================================
+   MAO — MUSEO D'ARTE ORIENTALE (js/projectEditorial.js, LAYOUTS.mao)
+   Come il catalogo: Bianco Riso, Rosso "MAO", inchiostro; molto bianco,
+   composizione asimmetrica, fascia rossa verticale, kanji 和敬清寂.
+   Testi in Gill Sans (font di sistema su Mac e iPhone), motto in Rotis.
+   ===================================================================== */
+
+@font-face {
+  font-family: 'Rotis Semi Serif';
+  src: url('../assets/fonts/RotisSemiSerifStd-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+.project-media-showcase[data-layout="mao"] {
+  gap: 0;
+  margin: 0;
+}
+
+.mao {
+  --mao-red: #DB3332;
+  --mao-rice: #F5F4EE;
+  --mao-paper: #FBFAF6;
+  --mao-ink: #111111;
+  --mao-grey: #DEDCD3;
+  --mao-soft: #6E6B64;
+  --mao-pad: clamp(20px, 4.4vw, 64px);
+  --mao-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --font-main: 'Gill Sans', 'Gill Sans MT', 'Gill Sans Nova', 'Hind', 'Segoe UI', sans-serif;
+
+  position: relative;
+  margin: 8px calc(-1 * clamp(24px, 3.8vw, 48px)) 8px;
+  background: var(--mao-rice);
+  color: var(--mao-ink);
+  overflow-x: clip;
+}
+
+.mao .mao-motto,
+.mao .mao-font-1 .mao-font-sample,
+.mao .mao-font-1 .mao-font-aa {
+  --font-main: 'Rotis Semi Serif', 'Gill Sans', serif;
+  font-weight: 700;
+}
+
+.mao [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.8s ease, transform 1s var(--mao-ease);
+  transition-delay: calc(var(--i, 0) * 0.1s);
+}
+.mao [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ---------- Apertura ---------- */
+.mao-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  min-height: clamp(520px, 66vh, 700px);
+  padding: clamp(36px, 6vw, 80px) var(--mao-pad) 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* kanji grigi dietro a tutto, come sul banner */
+.mao-hero-kanji {
+  position: absolute;
+  inset: 12% 0 auto;
+  z-index: -1;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2%;
+  pointer-events: none;
+}
+.mao-kj {
+  width: 22%;
+  aspect-ratio: 1;
+  background: var(--mao-grey);
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  opacity: 0;
+  animation: mao-ink 1.6s var(--mao-ease) calc(0.25s + var(--i) * 0.18s) forwards;
+}
+/* pennellata: il kanji compare dall'alto come inchiostro che scende */
+@keyframes mao-ink {
+  0% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  20% { opacity: 1; }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+.mao-hero-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 520px;
+  padding-bottom: clamp(36px, 6vw, 80px);
+}
+.mao-logo {
+  width: clamp(220px, 26vw, 330px);
+  height: auto;
+}
+.mao-kicker {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mao-red);
+}
+.mao-lead {
+  margin: 0;
+  font-size: clamp(1.08rem, 1.5vw, 1.28rem);
+  line-height: 1.55;
+}
+.mao-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 8px 0 0;
+  border-top: 2px solid var(--mao-red);
+}
+.mao-facts div {
+  padding: 12px 22px 0 0;
+  margin-right: 22px;
+  border-right: 1px solid rgba(17, 17, 17, 0.15);
+}
+.mao-facts div:last-child { border-right: 0; margin-right: 0; }
+.mao-facts dt { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mao-soft); }
+.mao-facts dd { margin: 2px 0 0; font-size: 1.35rem; font-weight: 600; }
+
+.mao-hero-art {
+  position: relative;
+  align-self: stretch;
+  min-height: 460px;
+}
+.mao-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 58%;
+  width: clamp(46px, 5.4vw, 76px);
+  background: var(--mao-red);
+  transform-origin: 50% 0;
+  animation: mao-band 1.1s var(--mao-ease) 0.2s both;
+}
+@keyframes mao-band { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+/* il guardiano a cavallo tra il fondo riso e la fascia rossa */
+.mao-statue {
+  position: absolute;
+  bottom: 0;
+  left: 22%;
+  height: 96%;
+  width: auto;
+  max-width: none;
+  filter: drop-shadow(14px 18px 22px rgba(0, 0, 0, 0.22));
+  animation: mao-rise 1.4s var(--mao-ease) 0.55s both;
+}
+@keyframes mao-rise {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Sezioni ---------- */
+.mao-sec {
+  position: relative;
+  padding: clamp(56px, 8vw, 110px) var(--mao-pad);
+}
+.mao-sec + .mao-sec { border-top: 1px solid rgba(219, 51, 50, 0.35); }
+.mao-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: clamp(22px, 3vw, 36px);
+}
+.mao-num {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--mao-red);
+}
+.mao-h {
+  margin: 0;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--mao-red);
+}
+.mao-text,
+.mao-concept-intro p,
+.mao-grid-copy p {
+  max-width: 62ch;
+  margin: 0 0 16px;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+/* ---------- 01 Concept: quattro principi ---------- */
+.mao-concept-intro { columns: 2 320px; column-gap: 48px; margin-bottom: clamp(30px, 4vw, 54px); }
+.mao-concept-intro p { max-width: none; break-inside: avoid; }
+.mao-principles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 28px);
+}
+.mao-pr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 8px 16px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--mao-ink);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.35s ease, background 0.35s ease;
+}
+.mao-pr-kanji {
+  display: block;
+  width: min(100%, 150px);
+  aspect-ratio: 1;
+  background: var(--mao-ink);
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  opacity: 0.22;
+  transform: scale(0.94);
+  transition: background 0.35s ease, opacity 0.35s ease, transform 0.6s var(--mao-ease);
+}
+.mao-pr-name { font-size: 1.05rem; letter-spacing: 0.02em; }
+.mao-pr-name em { font-style: normal; font-weight: 600; }
+.mao-pr:hover .mao-pr-kanji { opacity: 0.55; }
+.mao-pr.is-active { border-bottom-color: var(--mao-red); }
+.mao-pr.is-active .mao-pr-kanji { background: var(--mao-red); opacity: 1; transform: scale(1); }
+.mao-pr.is-active .mao-pr-name em { color: var(--mao-red); }
+.mao-pr:focus-visible { outline: 2px solid var(--mao-red); outline-offset: 4px; }
+.mao-pr-panel {
+  display: grid;
+  margin-top: 28px;
+  padding: 26px clamp(18px, 3vw, 40px);
+  background: var(--mao-paper);
+  border-left: 6px solid var(--mao-red);
+}
+.mao-pr-text {
+  grid-area: 1 / 1;
+  max-width: 72ch;
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.5s var(--mao-ease);
+}
+.mao-pr-text.is-active { opacity: 1; transform: none; pointer-events: auto; }
+
+/* ---------- 02 Gabbia ---------- */
+.mao-grid-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(26px, 4vw, 60px);
+  align-items: center;
+}
+.mao-grid-fig { margin: 0; }
+.mao-grid-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.1));
+}
+.mao-g-page { fill: var(--mao-paper); stroke: rgba(17, 17, 17, 0.25); stroke-width: 0.6; }
+.mao-g-spine { stroke: rgba(17, 17, 17, 0.25); stroke-width: 0.6; }
+.mao-g-diag line {
+  stroke: #D63F8E;
+  stroke-width: 0.7;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  transition: stroke-dashoffset 1.3s ease;
+  transition-delay: calc(0.2s + var(--d) * 0.35s);
+}
+.mao-g-block {
+  fill: none;
+  stroke: var(--mao-red);
+  stroke-width: 1.1;
+  opacity: 0;
+  transition: opacity 0.6s ease 1.7s;
+}
+.mao-g-mod {
+  fill: rgba(64, 186, 214, 0.16);
+  stroke: #3AA9C8;
+  stroke-width: 0.45;
+  opacity: 0;
+  transform: scale(0.6);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.35s ease, transform 0.45s var(--mao-ease);
+  transition-delay: calc(2s + var(--i) * 0.012s);
+}
+.mao-g-base line {
+  stroke: rgba(214, 63, 142, 0.22);
+  stroke-width: 0.25;
+}
+.mao-g-base { opacity: 0; transition: opacity 0.8s ease 3.1s; }
+.mao-grid-fig.is-in .mao-g-diag line { stroke-dashoffset: 0; }
+.mao-grid-fig.is-in .mao-g-block { opacity: 1; }
+.mao-grid-fig.is-in .mao-g-mod { opacity: 1; transform: none; }
+.mao-grid-fig.is-in .mao-g-base { opacity: 1; }
+.mao-grid-fig figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--mao-soft);
+}
+.mao-grid-fig figcaption i {
+  display: inline-block;
+  width: 18px;
+  height: 10px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.sw-diag { border-top: 2px solid #D63F8E; height: 0 !important; }
+.sw-mod { background: rgba(64, 186, 214, 0.2); border: 1px solid #3AA9C8; }
+.sw-base { border-top: 1px dashed rgba(214, 63, 142, 0.6); height: 0 !important; }
+.mao-grid-nums {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mao-grid-nums li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 2px solid var(--mao-red);
+}
+.mao-grid-nums strong { font-size: 1.9rem; font-weight: 600; line-height: 1; }
+.mao-grid-nums span { font-size: 0.85rem; color: var(--mao-soft); }
+
+/* ---------- 03 Catalogo sfogliabile ---------- */
+.mao-book { overflow: hidden; }
+.mao-chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 6px 0 30px;
+  max-width: calc(100% - 140px);
+}
+.mao-ch {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(17, 17, 17, 0.2);
+  background: var(--mao-paper);
+  color: var(--mao-ink);
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.mao-ch b { font-size: 0.75rem; font-weight: 600; color: var(--mao-red); }
+.mao-ch:hover { border-color: var(--mao-red); }
+.mao-ch.is-current { background: var(--mao-red); border-color: var(--mao-red); color: #fff; }
+.mao-ch.is-current b { color: #fff; }
+.mao-reader {
+  position: relative;
+  z-index: 1;
+  padding: clamp(22px, 3vw, 40px) 0 6px;
+}
+.mao-reader.fb {
+  --fb-paper: #FFFFFF;
+  --fb-ink: var(--mao-ink);
+  --fb-accent: var(--mao-red);
+  --fb-shadow: rgba(60, 40, 20, 0.22);
+}
+.mao-reader .fb-btn { border-width: 1px; border-radius: 0; }
+.mao-reader .fb-count { font-weight: 600; }
+/* il samurai dell'indice fa capolino accanto ai capitoli */
+.mao-samurai {
+  position: absolute;
+  top: clamp(30px, 5vw, 70px);
+  right: calc(var(--mao-pad) - 20px);
+  width: clamp(110px, 13vw, 190px);
+  height: auto;
+  transform: rotate(6deg);
+  pointer-events: none;
+}
+
+/* ---------- 04 Colore ---------- */
+.mao-colors {
+  display: flex;
+  min-height: 260px;
+}
+.mao-color {
+  flex: var(--w) 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+  padding: 22px clamp(14px, 2vw, 26px);
+  background: var(--c);
+  color: var(--t);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+}
+.mao-color strong { font-size: 1.3rem; font-weight: 600; }
+.mao-color span { font-size: 0.88rem; line-height: 1.45; opacity: 0.85; max-width: 34ch; }
+.mao-color code { margin-top: 10px; font-family: inherit; font-size: 0.82rem; letter-spacing: 0.06em; opacity: 0.9; }
+.mao-color[data-reveal] { transform: translateY(40px); }
+
+/* ---------- 05 Tipografia ---------- */
+.mao-fonts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 40px);
+}
+.mao-font {
+  position: relative;
+  padding: clamp(22px, 3vw, 36px);
+  background: var(--mao-paper);
+  border-top: 4px solid var(--mao-ink);
+}
+.mao-font-1 { border-top-color: var(--mao-red); }
+.mao-font-aa {
+  display: block;
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  line-height: 0.9;
+  color: var(--mao-ink);
+}
+.mao-font-1 .mao-font-aa { color: var(--mao-red); }
+.mao-font h4 { margin: 14px 0 8px; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.04em; }
+.mao-font-sample { margin: 0 0 12px; font-size: 1.35rem; line-height: 1.25; }
+.mao-font-1 .mao-font-sample { color: var(--mao-red); font-size: 1.7rem; line-height: 1.05; }
+.mao-font-note { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--mao-soft); }
+
+/* ---------- 06 Campagna ---------- */
+.mao-banner {
+  margin: 10px 0 clamp(26px, 3vw, 40px);
+  cursor: zoom-in;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
+}
+.mao-banner img { display: block; width: 100%; height: auto; }
+.mao-ooh-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  grid-auto-rows: clamp(140px, 15vw, 220px);
+  gap: clamp(10px, 1.6vw, 20px);
+}
+.mao-ooh-item {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--mao-paper);
+  cursor: zoom-in;
+  grid-column: span 2;
+}
+.mao-ooh-item.is-l { grid-column: span 4; grid-row: span 2; }
+.mao-ooh-item.is-t { grid-column: span 2; grid-row: span 2; }
+.mao-ooh-item.is-w { grid-column: span 3; }
+.mao-ooh-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--mao-ease);
+}
+.mao-ooh-item:hover img { transform: scale(1.04); }
+.mao-ooh-item figcaption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 8px 14px;
+  background: var(--mao-rice);
+  font-size: 0.85rem;
+}
+.mao-ooh-item figcaption strong { font-size: 0.7rem; letter-spacing: 0.14em; color: var(--mao-red); }
+
+/* ---------- Telefono ---------- */
+@media (max-width: 860px) {
+  .mao-hero { grid-template-columns: 1fr; padding-top: 30px; }
+  .mao-hero-kanji { inset: 4% 0 auto; }
+  .mao-hero-copy { padding-bottom: 10px; }
+  .mao-hero-art { min-height: 420px; margin: 0 calc(-1 * var(--mao-pad)); }
+  .mao-band { left: 60%; }
+  .mao-statue { left: 26%; }
+  .mao-grid-wrap { grid-template-columns: 1fr; }
+  .mao-principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mao-colors { flex-direction: column; min-height: 0; }
+  .mao-color { flex: none; min-height: 120px; }
+  .mao-fonts { grid-template-columns: 1fr; }
+  .mao-ooh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 170px; }
+  .mao-ooh-item,
+  .mao-ooh-item.is-w { grid-column: span 1; }
+  .mao-ooh-item.is-l { grid-column: span 2; grid-row: span 1; }
+  .mao-ooh-item.is-t { grid-column: span 1; grid-row: span 2; }
+  .mao-chapters { max-width: none; }
+  .mao-samurai { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mao [data-reveal], .mao-kj, .mao-band, .mao-statue { transition: none !important; animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; }
+  .mao-g-diag line, .mao-g-block, .mao-g-mod, .mao-g-base { transition: none !important; }
+}
