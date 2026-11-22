@@ -20,8 +20,6 @@
   LAYOUTS.bosch = function (container, project) {
     const g = project.gallery || {};
     const B = g.base || '';
-    const phases = g.phases || [];
-    const punk = g.punk || [];
     const renders = g.renders || [];
     const realms = g.realms || [];
     const cleanups = [];
@@ -62,7 +60,7 @@
               <span class="bw-op" aria-hidden="true">+</span>
               ${fig('uovo-bosch.jpg', 'L’uomo-albero con l’uovo spaccato, dal Giardino delle delizie', 'is-term')}
               <span class="bw-op" aria-hidden="true">=</span>
-              ${fig('render-2.jpg', 'Il nuovo ciondolo: l’uovo spaccato al posto del globo', 'is-term is-result')}
+              ${fig('render-1.jpg', 'Il nuovo ciondolo: l’uovo spaccato al posto del globo', 'is-term is-result')}
             </div>
           </div>
         </section>
@@ -77,12 +75,19 @@
           <p class="bw-text" data-reveal>${g.renderText || ''}</p>
           <div class="bw-render" data-reveal>
             <div class="bw-render-stage">
-              ${renders.map((r, i) => `<figure class="bw-render-img${i === 0 ? ' is-active' : ''}" ${zoom(B + r.src, r.cap)}><img src="${B}${r.src}" alt="${esc(r.cap)}" loading="lazy" /></figure>`).join('')}
-              <span class="bw-render-cap">${esc(renders[0] ? renders[0].cap : '')}</span>
+              ${renders.map((r, i) => `<figure class="bw-render-img${i === renders.length - 1 ? ' is-active' : ''}" ${zoom(B + r.src, r.cap)}><img src="${B}${r.src}" alt="${esc(r.cap)}" loading="lazy" /></figure>`).join('')}
+              <span class="bw-render-cap"><b class="bw-render-step">${esc(renders.length ? renders[renders.length - 1].label : '')}</b> ${esc(renders.length ? renders[renders.length - 1].cap : '')}</span>
             </div>
-            <div class="bw-render-thumbs" role="tablist" aria-label="Viste del ciondolo">
-              ${renders.map((r, i) => `<button type="button" role="tab" aria-selected="${i === 0}" class="${i === 0 ? 'is-active' : ''}${r.blender ? ' is-blender' : ''}" data-i="${i}"><img src="${B}${r.src}" alt="" loading="lazy" /><span>${esc(r.label)}</span></button>`).join('')}
-            </div>
+            <ol class="bw-steps" aria-label="Dal file Blender al render finale">
+              ${renders.map((r, i) => `
+                <li class="${i === renders.length - 1 ? 'is-active is-final' : ''}">
+                  <button type="button" data-i="${i}" aria-pressed="${i === renders.length - 1}">
+                    <img src="${B}${r.src}" alt="" loading="lazy" />
+                    <span><b>${String(i + 1).padStart(2, '0')}</b> ${esc(r.label)}</span>
+                  </button>
+                </li>`).join('')}
+            </ol>
+            <button type="button" class="bw-play">▶ Guarda il processo</button>
           </div>
         </section>
 
@@ -93,13 +98,13 @@
             <span class="bw-rule" aria-hidden="true"></span>
           </header>
           <p class="bw-text" data-reveal>${g.ringText || ''}</p>
-          <div class="bw-ring" data-reveal>
-            <div class="bw-triptych" style="background-image:url('${B}giardino-trittico.jpg');" data-r="0">
-              ${realms.map((r, i) => `<button type="button" class="bw-realm${i === 0 ? ' is-active' : ''}" data-i="${i}" aria-label="${esc(r.name)}"><span>${esc(r.name)}</span></button>`).join('')}
+          <div class="bw-ring" data-reveal data-r="0">
+            <div class="bw-ring-obj">
+              <img src="${B}anello.png" alt="L’Armor Ring con il Giardino delle delizie, dall’alto verso il basso" loading="lazy" />
             </div>
             <div class="bw-ring-side">
-              <div class="bw-ring-obj">
-                <img src="${B}anello.png" alt="L’Armor Ring con il Giardino delle delizie, dall’alto verso il basso" loading="lazy" />
+              <div class="bw-triptych" style="background-image:url('${B}giardino-trittico.jpg');" data-r="0">
+                ${realms.map((r, i) => `<button type="button" class="bw-realm${i === 0 ? ' is-active' : ''}" data-i="${i}" aria-label="${esc(r.name)}"><span>${esc(r.name)}</span></button>`).join('')}
               </div>
               <div class="bw-realm-copy" aria-live="polite">
                 <p class="bw-realm-n">${pad(1)} / ${pad(realms.length)}</p>
@@ -114,7 +119,7 @@
           </div>
         </section>
 
-        <!-- 04 DA DOVE NASCE: i due autori, in breve -->
+        <!-- 04 DA DOVE NASCE: Bosch e Westwood, una pagina per uno -->
         <section class="bw-sec bw-roots-sec">
           <header class="bw-head" data-reveal>
             <h3 class="bw-h">Da dove<br>nasce</h3>
@@ -122,68 +127,27 @@
             <p class="bw-page">Storia dell’arte moderna</p>
           </header>
           <p class="bw-text" data-reveal>${g.rootsText || ''}</p>
-        </section>
-
-        <!-- 04a BOSCH: il creatore di diavoli e le sue tre fasi -->
-        <section class="bw-sec bw-bosch-sec">
-          <header class="bw-head" data-reveal>
-            <h3 class="bw-h">Hieronymus<br>Bosch</h3>
-            <span class="bw-rule" aria-hidden="true"></span>
-            <p class="bw-page">${esc(g.boschQuote || '')}</p>
-          </header>
-          <div class="bw-intro">
-            <figure class="bw-fig bw-portrait" data-reveal ${zoom(B + 'bosch-ritratto.jpg', 'Ritratto di Hieronymus Bosch')}>
-              <img src="${B}bosch-ritratto.jpg" alt="Ritratto di Hieronymus Bosch, incisione" loading="lazy" />
-            </figure>
-            <div class="bw-intro-text" data-reveal style="--i:1;">
-              ${(g.boschText || []).map((t) => `<p>${t}</p>`).join('')}
-            </div>
-          </div>
-          <div class="bw-phases" data-reveal>
-            <div class="bw-phase-tabs" role="tablist" aria-label="Le fasi di Bosch">
-              ${phases.map((p, i) => `<button type="button" role="tab" aria-selected="${i === 0}" class="${i === 0 ? 'is-active' : ''}" data-i="${i}"><span>${pad(i + 1)}</span>${esc(p.title)}</button>`).join('')}
-            </div>
-            ${phases.map((p, i) => `
-              <div class="bw-phase${i === 0 ? ' is-active' : ''}" role="tabpanel">
-                <div class="bw-phase-copy">
-                  <h4>${esc(p.title)}</h4>
-                  <p class="bw-phase-sub">${esc(p.sub)}</p>
-                  <p>${p.text}</p>
+          <div class="bw-diptych">
+            ${(g.authors || []).map((a, k) => `
+              <article class="bw-author is-${esc(a.key)}" data-reveal style="--i:${k};">
+                <header class="bw-author-head">
+                  ${a.logo ? `<img class="bw-author-logo" src="${B}${a.logo}" alt="${esc(a.name)}" loading="lazy" />` : `<h4 class="bw-author-name">${a.name}</h4>`}
+                  <p class="bw-author-sub">${esc(a.sub)}</p>
+                </header>
+                <div class="bw-author-main">
+                  <figure class="bw-fig bw-author-img" ${zoom(B + a.img.src, a.img.cap)}><img src="${B}${a.img.src}" alt="${esc(a.img.cap)}" loading="lazy" /></figure>
+                  <div class="bw-author-copy">
+                    <p>${a.text}</p>
+                    <ul class="bw-author-points">${(a.points || []).map((pt) => `<li>${pt}</li>`).join('')}</ul>
+                  </div>
                 </div>
-                <div class="bw-phase-works">${(p.works || []).map((w) => fig(w.src, w.cap)).join('')}</div>
-              </div>`).join('')}
+                <div class="bw-author-works">
+                  ${(a.works || []).map((w) => `<figure class="bw-fig" ${zoom(B + w.src, w.cap)}><img src="${B}${w.src}" alt="${esc(w.cap)}" loading="lazy" /><figcaption>${esc(w.cap)}</figcaption></figure>`).join('')}
+                </div>
+              </article>`).join('<span class="bw-diptych-x" aria-hidden="true">×</span>')}
           </div>
         </section>
 
-        <!-- 04b VIVIENNE WESTWOOD: dal punk all'Orb -->
-        <section class="bw-sec bw-vw-sec">
-          <header class="bw-head is-vw" data-reveal>
-            <img class="bw-vw-logo" src="${B}westwood-logo.png" alt="Vivienne Westwood" loading="lazy" />
-            <span class="bw-rule" aria-hidden="true"></span>
-            <p class="bw-page">la moda e il punk</p>
-          </header>
-          <ol class="bw-timeline" data-reveal>
-            ${punk.map((p, i) => `
-              <li class="${i === 0 ? 'is-active' : ''}">
-                <button type="button" data-i="${i}"><b>${esc(p.year)}</b><span>${esc(p.title)}</span></button>
-              </li>`).join('')}
-          </ol>
-          <div class="bw-vw" data-reveal>
-            <div class="bw-vw-copy" aria-live="polite">
-              <p class="bw-vw-year">${esc(punk[0] ? punk[0].year : '')}</p>
-              <h4 class="bw-vw-title">${esc(punk[0] ? punk[0].title : '')}</h4>
-              <p class="bw-vw-text">${punk[0] ? punk[0].text : ''}</p>
-            </div>
-            <div class="bw-vw-imgs">
-              ${punk.map((p, i) => `<figure class="bw-fig bw-vw-img${i === 0 ? ' is-active' : ''}" ${zoom(B + p.src, p.cap)}><img src="${B}${p.src}" alt="${esc(p.cap)}" loading="lazy" /><figcaption>${esc(p.cap)}</figcaption></figure>`).join('')}
-            </div>
-          </div>
-        </section>
-
-        <footer class="bw-sec bw-refs" data-reveal>
-          <h4>Sitografia</h4>
-          <ul>${(g.refs || []).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
-        </footer>
       </div>
     `;
 
@@ -208,38 +172,33 @@
     }
     cleanups.push(() => cancelAnimationFrame(hRaf));
 
-    // ---- le fasi di Bosch
-    const phTabs = Array.from(root.querySelectorAll('.bw-phase-tabs button'));
-    const phPanels = Array.from(root.querySelectorAll('.bw-phase'));
-    phTabs.forEach((b, i) => b.addEventListener('click', () => {
-      phTabs.forEach((x, k) => { x.classList.toggle('is-active', k === i); x.setAttribute('aria-selected', String(k === i)); });
-      phPanels.forEach((p, k) => p.classList.toggle('is-active', k === i));
-    }));
-
-    // ---- Westwood: la linea del tempo
-    const tl = Array.from(root.querySelectorAll('.bw-timeline li'));
-    const vwImgs = Array.from(root.querySelectorAll('.bw-vw-img'));
-    const vYear = root.querySelector('.bw-vw-year');
-    const vTitle = root.querySelector('.bw-vw-title');
-    const vText = root.querySelector('.bw-vw-text');
-    tl.forEach((li, i) => li.querySelector('button').addEventListener('click', () => {
-      const p = punk[i];
-      tl.forEach((x, k) => x.classList.toggle('is-active', k === i));
-      vwImgs.forEach((x, k) => x.classList.toggle('is-active', k === i));
-      vYear.textContent = p.year;
-      vTitle.textContent = p.title;
-      vText.innerHTML = p.text;
-    }));
-
-    // ---- render: le viste del ciondolo
-    const rThumbs = Array.from(root.querySelectorAll('.bw-render-thumbs button'));
+    // ---- render: i passi dal file Blender al render finale; "Guarda il processo" li scorre da solo
+    const steps = Array.from(root.querySelectorAll('.bw-steps li'));
     const rImgs = Array.from(root.querySelectorAll('.bw-render-img'));
     const rCap = root.querySelector('.bw-render-cap');
-    rThumbs.forEach((b, i) => b.addEventListener('click', () => {
-      rThumbs.forEach((x, k) => { x.classList.toggle('is-active', k === i); x.setAttribute('aria-selected', String(k === i)); });
+    const playBtn = root.querySelector('.bw-play');
+    let playT = 0;
+    const showStep = (i) => {
+      steps.forEach((li, k) => { li.classList.toggle('is-active', k === i); li.classList.toggle('is-done', k < i); li.querySelector('button').setAttribute('aria-pressed', String(k === i)); });
       rImgs.forEach((x, k) => x.classList.toggle('is-active', k === i));
-      rCap.textContent = renders[i].cap;
-    }));
+      rCap.innerHTML = `<b class="bw-render-step">${esc(renders[i].label)}</b> ${esc(renders[i].cap)}`;
+    };
+    const stop = () => { clearTimeout(playT); playT = 0; playBtn.classList.remove('is-on'); playBtn.textContent = '▶ Guarda il processo'; };
+    steps.forEach((li, i) => li.querySelector('button').addEventListener('click', () => { stop(); showStep(i); }));
+    playBtn.addEventListener('click', () => {
+      if (playT) { stop(); return; }
+      playBtn.classList.add('is-on');
+      playBtn.textContent = '■ Ferma';
+      let i = 0;
+      const next = () => {
+        showStep(i);
+        if (i >= renders.length - 1) { playT = 0; playBtn.classList.remove('is-on'); playBtn.textContent = '↻ Rivedi il processo'; return; }
+        i += 1;
+        playT = setTimeout(next, reduceMotion() ? 600 : 1700);
+      };
+      next();
+    });
+    cleanups.push(() => clearTimeout(playT));
 
     // ---- anello: i tre regni del trittico, dall'alto verso il basso
     const realmBtns = Array.from(root.querySelectorAll('.bw-realm'));

@@ -33,12 +33,8 @@
 .bw .bw-h,
 .bw .bw-hero-bosch,
 .bw .bw-x,
-.bw .bw-phase-copy h4,
-.bw .bw-vw-title,
-.bw .bw-vw-year,
 .bw .bw-op,
-.bw .bw-realm-name,
-.bw .bw-refs h4 {
+.bw .bw-realm-name {
   --font-main: var(--bw-title);
   font-weight: 400;
 }
@@ -136,129 +132,6 @@
 .bw-page { margin: 0; font-size: 0.8rem; color: var(--bw-soft); }
 .bw-text { max-width: 64ch; margin: 0 0 26px; font-size: 0.98rem; line-height: 1.7; }
 
-/* ---------- 01 Bosch ---------- */
-.bw-bosch-sec { background: var(--bw-ivory); }
-.bw-intro {
-  display: grid;
-  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
-  gap: clamp(22px, 4vw, 60px);
-  align-items: center;
-  margin-bottom: clamp(40px, 5vw, 70px);
-}
-.bw-portrait img { filter: sepia(0.15); }
-.bw-intro-text p { max-width: 60ch; margin: 0 0 14px; font-size: 0.98rem; line-height: 1.75; }
-.bw-phases { border-top: 1px solid var(--bw-ink); }
-.bw-phase-tabs { display: flex; flex-wrap: wrap; gap: 0 clamp(16px, 3vw, 44px); margin-bottom: clamp(20px, 3vw, 36px); }
-.bw-phase-tabs button {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  padding: 14px 0 8px;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  background: none;
-  color: var(--bw-soft);
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color 0.25s ease, border-color 0.25s ease;
-}
-.bw-phase-tabs button span { font-size: 0.7rem; }
-.bw-phase-tabs button.is-active { color: var(--bw-ink); border-bottom-color: var(--bw-ink); }
-.bw-phase-tabs button:focus-visible,
-.bw-timeline button:focus-visible,
-.bw-render-thumbs button:focus-visible,
-.bw-realm:focus-visible { outline: 2px solid var(--bw-gold); outline-offset: 3px; }
-.bw-phase {
-  display: none;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(22px, 4vw, 60px);
-  align-items: start;
-}
-.bw-phase.is-active { display: grid; animation: bw-in 0.6s var(--bw-ease); }
-@keyframes bw-in { from { opacity: 0; transform: translateY(12px); } }
-.bw-phase-copy h4 { margin: 0; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 0.95; text-transform: uppercase; }
-.bw-phase-sub { margin: 10px 0 18px; font-size: 0.82rem; color: var(--bw-soft); }
-.bw-phase-copy p:last-child { margin: 0; font-size: 0.98rem; line-height: 1.75; }
-.bw-phase-works { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 22px); align-items: start; }
-
-/* ---------- 02 Bosch e il pop ---------- */
-.bw-pop-sec { background: var(--bw-stone); }
-.bw-pop { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 34px); }
-.bw-pop-card { padding: clamp(18px, 2.6vw, 30px); background: var(--bw-ivory); }
-.bw-pop-logo { display: block; height: clamp(48px, 6vw, 70px); width: auto; max-width: 100%; margin-bottom: 18px; object-fit: contain; object-position: left center; }
-.bw-pop-imgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
-.bw-pop-card > p { margin: 0; font-size: 0.92rem; line-height: 1.65; }
-
-/* ---------- 03 Vivienne Westwood ---------- */
-.bw-vw-sec { background: var(--bw-ivory); }
-.bw-head.is-vw { align-items: center; }
-.bw-vw-logo { width: clamp(170px, 22vw, 260px); height: auto; filter: brightness(0.12); }
-.bw-timeline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  margin: 0 0 clamp(22px, 3vw, 36px);
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--bw-ink);
-}
-.bw-timeline li { flex: 1 1 140px; }
-.bw-timeline button {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  width: 100%;
-  padding: 18px 12px 10px 0;
-  border: 0;
-  background: none;
-  color: var(--bw-soft);
-  text-align: left;
-  cursor: pointer;
-}
-.bw-timeline button::before {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 0;
-  width: 11px;
-  height: 11px;
-  border: 1px solid var(--bw-ink);
-  border-radius: 50%;
-  background: var(--bw-ivory);
-  transition: background 0.25s ease, transform 0.25s ease;
-}
-.bw-timeline b { --font-main: var(--bw-title); font-size: 1.8rem; font-weight: 400; line-height: 1; }
-.bw-timeline span { font-size: 0.78rem; line-height: 1.35; }
-.bw-timeline li.is-active button { color: var(--bw-ink); }
-.bw-timeline li.is-active button::before { background: var(--bw-ink); transform: scale(1.3); }
-.bw-vw {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-  gap: clamp(22px, 4vw, 60px);
-  align-items: center;
-}
-.bw-vw-year { margin: 0; font-size: clamp(2.8rem, 6vw, 4.6rem); line-height: 1; color: var(--bw-gold); }
-.bw-vw-title { margin: 4px 0 14px; font-size: clamp(1.8rem, 3.4vw, 2.8rem); line-height: 1; text-transform: uppercase; }
-.bw-vw-text { max-width: 56ch; margin: 0; font-size: 0.98rem; line-height: 1.75; }
-.bw-vw-imgs { position: relative; display: grid; }
-.bw-vw-img {
-  grid-area: 1 / 1;
-  align-self: center;
-  justify-self: center;
-  max-width: 100%;
-  opacity: 0;
-  transform: scale(0.97);
-  transition: opacity 0.5s ease, transform 0.7s var(--bw-ease);
-  pointer-events: none;
-}
-.bw-vw-img img { max-height: 460px; width: auto; max-width: 100%; margin: 0 auto; }
-.bw-vw-img.is-active { opacity: 1; transform: none; pointer-events: auto; }
-
 /* ---------- 04 L'idea ---------- */
 .bw-idea-sec { background: var(--bw-stone); }
 .bw-idea {
@@ -298,33 +171,79 @@
   left: 16px;
   bottom: 14px;
   z-index: 2;
-  padding: 6px 12px;
-  background: rgba(241, 238, 234, 0.9);
-  font-size: 0.74rem;
+  padding: 7px 12px;
+  background: rgba(241, 238, 234, 0.94);
+  color: var(--bw-ink);
+  font-size: 0.78rem;
   pointer-events: none;
 }
-.bw-render-thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
-.bw-render-thumbs button {
-  position: relative;
+/* i passi del render: dal file Blender al render finale */
+.bw-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0 0;
   padding: 0;
-  border: 2px solid transparent;
-  background: #0B0B0B;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.25s ease, border-color 0.25s ease;
+  list-style: none;
+  counter-reset: none;
 }
-.bw-render-thumbs button img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-.bw-render-thumbs button span {
+.bw-steps li { position: relative; }
+.bw-steps li:not(:last-child)::after {
+  content: '→';
   position: absolute;
-  left: 6px;
-  bottom: 5px;
-  padding: 2px 6px;
-  background: rgba(241, 238, 234, 0.88);
-  font-size: 0.62rem;
+  top: 34%;
+  right: -12px;
+  z-index: 1;
+  color: var(--bw-ivory);
+  font-size: 0.9rem;
+  opacity: 0.6;
 }
-.bw-render-thumbs button:hover,
-.bw-render-thumbs button.is-active { opacity: 1; border-color: var(--bw-gold); }
-.bw-render-note { margin-top: 22px; }
+.bw-steps button {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bw-ivory);
+  text-align: left;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.25s ease;
+}
+.bw-steps button img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 2px solid transparent;
+  transition: border-color 0.25s ease;
+}
+.bw-steps button span { font-size: 0.72rem; letter-spacing: 0.04em; }
+.bw-steps button b { font-weight: 600; color: var(--bw-gold); margin-right: 4px; }
+.bw-steps li.is-done button { opacity: 0.8; }
+.bw-steps li.is-active button,
+.bw-steps button:hover { opacity: 1; }
+.bw-steps li.is-active button img { border-color: var(--bw-gold); }
+.bw-steps li.is-final button span { color: var(--bw-gold); font-weight: 600; }
+.bw-steps button:focus-visible,
+.bw-play:focus-visible { outline: 2px solid var(--bw-gold); outline-offset: 3px; }
+.bw-render-step { margin-right: 6px; font-weight: 600; }
+.bw-play {
+  margin-top: 18px;
+  padding: 10px 18px;
+  border: 1px solid var(--bw-ivory);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--bw-ivory);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.bw-play:hover,
+.bw-play.is-on { background: var(--bw-ivory); color: var(--bw-ink); }
 
 /* ---------- Il ciondolo in 3D ---------- */
 .bw-3d-sec { background: #141311; color: var(--bw-ivory); }
@@ -337,27 +256,70 @@
   font-weight: 600;
   letter-spacing: 0.08em;
 }
-.bw-3d-sec .bw-render-thumbs button span { color: var(--bw-ink); }
 
-/* ---------- Da dove nasce: Bosch e Westwood, più raccolti ---------- */
-.bw-roots-sec,
-.bw-roots-sec ~ .bw-bosch-sec,
-.bw-roots-sec ~ .bw-vw-sec { background: var(--bw-stone); }
-.bw-roots-sec { padding-bottom: 0; }
-.bw-roots-sec ~ .bw-bosch-sec,
-.bw-roots-sec ~ .bw-vw-sec { padding-top: clamp(36px, 4.5vw, 64px); padding-bottom: clamp(36px, 4.5vw, 64px); }
-.bw-roots-sec ~ .bw-bosch-sec .bw-h { font-size: clamp(1.8rem, 3.6vw, 3rem); }
-.bw-roots-sec ~ .bw-vw-sec .bw-vw-logo { width: clamp(130px, 15vw, 180px); }
-.bw-roots-sec ~ .bw-bosch-sec .bw-portrait { max-width: 260px; }
-.bw-roots-sec ~ .bw-bosch-sec .bw-phases,
-.bw-roots-sec ~ .bw-vw-sec .bw-timeline { border-top-color: var(--bw-ink); }
-.bw-roots-sec ~ .bw-vw-sec .bw-vw-img img { max-height: 360px; }
+/* ---------- Da dove nasce: doppia pagina Bosch | Westwood ---------- */
+.bw-roots-sec { background: var(--bw-stone); }
+.bw-diptych {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: clamp(16px, 2.6vw, 34px);
+  align-items: stretch;
+  margin-top: clamp(10px, 2vw, 24px);
+}
+.bw-diptych-x {
+  align-self: center;
+  font-family: var(--bw-title);
+  --font-main: var(--bw-title);
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  line-height: 1;
+}
+.bw-author {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(20px, 2.8vw, 34px);
+  background: var(--bw-ivory);
+}
+.bw-author-head {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(90px, 9vw, 120px);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--bw-ink);
+}
+.bw-author-name {
+  --font-main: var(--bw-title);
+  margin: 0;
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+.bw-author-logo { width: clamp(150px, 15vw, 200px); height: auto; filter: brightness(0.12); }
+.bw-author-sub { margin: 8px 0 0; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bw-soft); }
+.bw-author-main { display: grid; grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr); gap: 16px; align-items: start; }
+.bw-author-img img { aspect-ratio: 3 / 4; object-fit: cover; }
+.bw-author.is-bosch .bw-author-img img { filter: sepia(0.15); }
+.bw-author-copy p { margin: 0 0 12px; font-size: 0.92rem; line-height: 1.65; }
+.bw-author-points { margin: 0; padding: 0; list-style: none; }
+.bw-author-points li {
+  position: relative;
+  padding: 7px 0 7px 18px;
+  border-top: 1px solid rgba(28, 25, 22, 0.15);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+.bw-author-points li::before { content: ''; position: absolute; left: 0; top: 14px; width: 8px; height: 1px; background: var(--bw-gold); }
+.bw-author-works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: auto; }
+.bw-author-works img { aspect-ratio: 1; object-fit: cover; }
+.bw-author-works figcaption { font-size: 0.64rem; }
 
 /* ---------- 05 Armor Ring ---------- */
 .bw-ring-sec { background: var(--bw-ivory); }
 .bw-ring {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(22px, 4vw, 60px);
   align-items: center;
   margin-bottom: clamp(30px, 4vw, 50px);
@@ -400,7 +362,13 @@
 .bw-realm:hover { background: transparent; }
 .bw-realm.is-active span,
 .bw-realm:hover span { opacity: 1; }
-.bw-ring-obj { position: relative; width: min(100%, 320px); margin: 0 auto 10px; }
+.bw-ring-obj {
+  position: relative;
+  width: min(100%, 500px);
+  margin: 0 auto;
+  filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.22));
+}
+.bw-ring-side { display: flex; flex-direction: column; gap: clamp(16px, 2.4vw, 28px); }
 .bw-ring-obj img {
   display: block;
   width: 100%;
@@ -409,18 +377,14 @@
   mask: linear-gradient(180deg, rgba(0, 0, 0, 0.3) var(--a), #000 var(--a), #000 var(--b), rgba(0, 0, 0, 0.3) var(--b));
 }
 /* la fascia accesa dell'anello segue il regno scelto: in alto il paradiso, in fondo l'inferno */
-.bw-ring[data-r="0"] .bw-ring-obj img { --a: 18%; --b: 42%; }
-.bw-ring[data-r="1"] .bw-ring-obj img { --a: 38%; --b: 58%; }
-.bw-ring[data-r="2"] .bw-ring-obj img { --a: 54%; --b: 84%; }
+.bw-ring-obj img { transition: -webkit-mask 0.4s ease, mask 0.4s ease; }
+.bw-ring[data-r="0"] .bw-ring-obj img { --a: 4%; --b: 38%; }
+.bw-ring[data-r="1"] .bw-ring-obj img { --a: 26%; --b: 57%; }
+.bw-ring[data-r="2"] .bw-ring-obj img { --a: 46%; --b: 92%; }
 .bw-realm-n { margin: 0 0 4px; font-size: 0.74rem; letter-spacing: 0.16em; color: var(--bw-soft); }
 .bw-realm-name { margin: 0 0 10px; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; text-transform: uppercase; }
 .bw-realm-text { margin: 0; font-size: 0.94rem; line-height: 1.7; }
 .bw-ring-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 22px); max-width: 780px; }
-
-/* ---------- Sitografia ---------- */
-.bw-refs { background: var(--bw-stone); padding-top: clamp(36px, 5vw, 60px); padding-bottom: clamp(36px, 5vw, 60px); }
-.bw-refs h4 { margin: 0 0 12px; font-size: 2rem; text-transform: uppercase; }
-.bw-refs ul { margin: 0; padding: 0 0 0 1.1em; font-size: 0.8rem; line-height: 1.8; color: var(--bw-soft); }
 
 /* ---------- Telefono ---------- */
 @media (max-width: 860px) {
@@ -428,23 +392,20 @@
   .bw-hero-card { margin: 0 auto; }
   .bw-hero-title { grid-template-columns: minmax(0, 1fr); justify-items: center; }
   .bw-hero-vw { justify-self: center; width: min(70%, 200px); }
-  .bw-intro,
-  .bw-phase,
-  .bw-phase.is-active,
-  .bw-vw,
   .bw-idea,
-  .bw-ring { grid-template-columns: minmax(0, 1fr); }
-  .bw-pop { grid-template-columns: minmax(0, 1fr); }
+  .bw-ring,
+  .bw-diptych { grid-template-columns: minmax(0, 1fr); }
+  .bw-diptych-x { justify-self: center; }
+  .bw-ring-obj { width: min(80%, 360px); }
   .bw-equation { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
   .bw-equation .is-result { grid-column: 1 / -1; }
   .bw-equation .bw-op:nth-of-type(2) { display: none; }
-  .bw-render-thumbs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bw-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bw-steps li:nth-child(3)::after { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bw [data-reveal],
-  .bw-vw-img,
-  .bw-render-img,
-  .bw-phase.is-active { transition: none !important; animation: none !important; }
+  .bw-render-img { transition: none !important; animation: none !important; }
   .bw [data-reveal] { opacity: 1 !important; transform: none !important; }
 }

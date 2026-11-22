@@ -115,11 +115,12 @@ Si chiude con la X in alto a destra o con `Esc`.
   - il Canvas per Spotify in un telefono (`canvas.mp4`, 540 × 960, senza audio), con i comandi che pilotano il player del sito;
   - la copertina con cinque punti da esplorare;
   - le due parole giapponesi dei titoli, ognuna con il suo brano.
-- **Hieronymus Bosch × Vivienne Westwood** (`js/projectBosch.js`, `css/project-bosch.css`; Italiana al posto di DreamAvenue, Poppins):
-  - apertura come la copertina della presentazione; il puntatore apre una lente sul Giardino delle delizie;
-  - Bosch nelle tre fasi (linguette), Bosch nel pop, Westwood su una linea del tempo;
-  - l’idea come equazione (Orb + uovo = ciondolo), le viste del render e la scena in Blender;
-  - l’Armor Ring: si passa sui tre pannelli del trittico e la fascia corrispondente dell’anello si accende.
+- **Hieronymus Bosch × Vivienne Westwood** (`js/projectBosch.js`, `css/project-bosch.css`; Italiana al posto di DreamAvenue, Poppins). Centrata sul mio lavoro:
+  - apertura con il render finale a tutta pagina, che si sposta appena seguendo il puntatore;
+  - l’idea come equazione (Orb + uovo = ciondolo);
+  - il ciondolo in 3D, il processo in Blender: dalla scena alle prove fino al render finale (`renders` nel registro, in ordine); «Guarda il processo» li scorre da solo;
+  - l’Armor Ring grande, con il trittico accanto: passando su un pannello si accende la fascia corrispondente dell’anello;
+  - da dove nasce: una doppia pagina breve, Bosch | Westwood (`authors` nel registro).
 - **Gelato di Piazza** (`js/projectGelato.js`, `css/project-gelato.css`; DIN Condensed Bold per marchio e titoli, Akzidenz Grotesk CE Roman per i testi):
   - il logo è un SVG costruito dai tracciati originali (`Asset 1.svg`), con "DI PIAZZA" convertito in tracciati: è identico ovunque e si ricolora con le variabili CSS;
   - apertura su crema con la colata di gelato; l'occhio dell'uccellino segue il puntatore e al clic saltella;
