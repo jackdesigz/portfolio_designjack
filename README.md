@@ -135,11 +135,11 @@ I tre progetti editoriali sono in `js/projectEditorial.js`, con uno stile per ci
   - palette con CMYK e HEX e tipografia;
   - la campagna: il banner, il manifesto e il totem interi e grandi, i quattro post Instagram (scegli un post e la vista si avvicina finché non si legge), gli altri mockup in file a proporzioni vere.
 - **Decoder**, impaginata come una fanzine punk: fotocopie strappate, nastro adesivo, lettere ritagliate, timbri, pennarello (titoli in Anton al posto di Druk, testi in Special Elite, scritte a mano in Permanent Marker, numeri in Monobloco):
-  - testata a lettere ritagliate e copertina incollata con il nastro;
+  - testata nel carattere della rivista (rossa, stretta e altissima) e copertina incollata con il nastro; le lettere ritagliate restano per le cose più punk, come Johnny Silverhand;
   - l’indice ad adesivi colorati: ogni voce apre la rivista a quella pagina;
   - taglia il codice: la frase di Burroughs su strisce di carta da tagliare e rimescolare (cut-up);
-  - sapevi che…: una luce blu da passare sul foglio rivela i micropunti gialli della stampante;
-  - un’opera, uno stile: Akira, Blade Runner, Ghost in the Shell, Cyberpunk 2077, Johnny Silverhand, Marathon, Neuromante e Nine Inch Nails, ognuno con il suo colore, i suoi caratteri e le sue immagini, come nella rivista;
+  - sapevi che…: impaginata come la pagina 9 (titolo in Monobloco, testo originale su due colonne in Michroma, la stampante, le frecce e le cornici), ma interattiva: la stampante stampa il foglio, la luce blu scopre i micropunti gialli e il riquadro MIC decodifica seriale, data e ora della stampa man mano che muovi la luce;
+  - un’opera, uno stile: Akira, Blade Runner, Ghost in the Shell, Cyberpunk 2077, Johnny Silverhand, Marathon, Neuromante e Nine Inch Nails, ognuno con il suo colore, i suoi caratteri e le sue immagini, come nella rivista. Le immagini (`ed-*`) sono ritagliate da una versione del PDF senza testo (solo le lettere tolte, colori invariati), così le figure sono intere e pulite; si vedono sempre intere, con la larghezza presa dalle proporzioni (`ar` nel registro);
   - chiusura su “No Future”.
 - **Modartech** (titoli in Boldark, testi in Cormorant Garamond al posto di Canela):
   - copertina, testata e contenuti cliccabili;

@@ -152,23 +152,24 @@ window.PROJECT_REGISTRY = [
       ],
       cutLines: ['Per Burroughs,', 'il linguaggio', 'non è uno strumento neutro:', 'è un sistema di controllo,', 'un codice imposto dal potere', 'per plasmare la realtà', 'e il pensiero.'],
       cutCaption: '“Decoder”, film del 1984 che trae spunto dalle idee di Burroughs (pag. 7)',
-      dotsTitle: 'Sapevi che…',
+      dotsTitle: 'Sapevi che...',
       dotsText: [
-        'Ogni volta che stampi un documento a colori, potresti star lasciando una firma invisibile sul foglio. Si chiamano <strong>Printer Tracking Dots</strong>: micropunti gialli, invisibili a occhio nudo, che sotto luce blu o ultravioletta codificano il numero seriale della stampante e la data e l’ora esatte della stampa.',
-        'Nel 2017 Reality Winner, contractor della NSA, fu identificata proprio attraverso i micropunti sul foglio stampato.'
+        'Ogni volta che stampi un documento a colori, potresti star lasciando una firma invisibile sul foglio. Si chiamano Printer Tracking Dots, o Machine Identification Code, e sono micropunti gialli stampati in pattern precisi dalla maggior parte delle stampanti laser a colori. Invisibili a occhio nudo, diventano visibili sotto luce blu o ultravioletta e codificano informazioni come il numero seriale della stampante e la data e l’ora esatte della stampa.',
+        'Il sistema fu sviluppato negli anni ‘80 da Xerox e altri produttori in accordo con diversi governi occidentali, con l’obiettivo dichiarato di contrastare la contraffazione. Per vent’anni rimase nell’ombra, senza che nessun produttore lo comunicasse ai propri utenti. Nel 2004 la Electronic Frontier Foundation lo rese pubblico, decodificando il pattern usato da Xerox. Non è teoria: nel 2017 una contractor della NSA, Reality Winner, fu identificata e arrestata dopo aver fatto trapelare documenti classificati alla stampa. Gli investigatori risalirono a lei proprio attraverso i micropunti sul foglio stampato.',
+        'La carta non è anonima. E la tecnologia che usi ogni giorno sa più cose di te di quanto immagini.'
       ],
       dotsSheet: 'La carta non è anonima.',
       worksTitle: 'Un’opera, uno stile',
       worksText: 'Nella rivista ogni opera ha il suo colore, i suoi caratteri e le sue immagini ridotte a due toni. Scegline una.',
       works: [
-        { key: 'akira', title: 'Akira', kicker: 'Manga 1982 // Film 1988', pages: [12, 13], c: '#D22629', img: 'ed-akira.jpg', quote: 'Le corporazioni e i governi non proteggono i cittadini, li usano.' },
-        { key: 'blade', title: 'Blade Runner', kicker: 'Film // 1982', pages: [14, 17], c: '#4871B4', img: 'ed-blade.jpg', img2: 'ed-lacrime.jpg', quote: 'Chi può se ne va. Chi resta è quello che rimane quando il progresso decide di andare avanti senza di te.' },
-        { key: 'ghost', title: 'Ghost in the Shell', kicker: 'Manga // 1989', pages: [18, 19], c: '#E9702F', img: 'ed-ghost.jpg', quote: 'Un’opera che non si accontenta di raccontare il futuro, vuole capirlo dall’interno, smontarlo pezzo per pezzo e vedere cosa rimane.' },
-        { key: 'cp', title: 'Cyberpunk 2077', kicker: 'Videogioco // 2020', pages: [20, 22], c: '#E6E13A', img: 'ed-v2077.jpg', img2: 'ed-arasaka.jpg', quote: 'Night City non è un posto dove si vince. È un posto dove si sopravvive, se si è fortunati.' },
-        { key: 'johnny', title: 'Johnny Silverhand', kicker: 'Rockstar // terrorista // fantasma digitale', pages: [23, 23], c: '#EEEB95', img: 'ed-johnny.jpg', img2: 'ed-johnny-foto.jpg', quote: 'Un uomo che ha combattuto le corporazioni con una chitarra e con le bombe.' },
-        { key: 'marathon', title: 'Marathon', kicker: 'Videogioco // Bungie', pages: [24, 25], c: '#BBCE19', img: 'ed-marathon.jpg', img2: 'ed-marathon-bar.jpg', quote: 'Corpo sostituito, identità in bilico, sistemi di controllo opachi: è la grammatica classica del genere.' },
-        { key: 'neuro', title: 'Neuromante', kicker: 'Romanzo // 1984', pages: [26, 27], c: '#B0449C', img: 'ed-sprawl.jpg', quote: 'Gibson inventa in queste pagine il concetto di cyberspazio, definendolo come una allucinazione condivisa da milioni di utenti.' },
-        { key: 'nin', title: 'Nine Inch Nails', kicker: 'Musica // dal 1989', pages: [28, 29], c: '#2E9A55', img: 'ed-nin.jpg', quote: 'Una macchina che soffre, un uomo che si trasforma in qualcosa di diverso e non sa se esserne sollevato o terrorizzato.' }
+        { key: 'akira', title: 'Akira', kicker: 'Manga 1982 // Film 1988', pages: [12, 13], c: '#D22629', img: 'ed-akira.jpg', ar: 0.713, quote: 'Le corporazioni e i governi non proteggono i cittadini, li usano.' },
+        { key: 'blade', title: 'Blade Runner', kicker: 'Film // 1982', pages: [14, 17], c: '#4871B4', img: 'ed-blade.jpg', ar: 0.713, img2: 'ed-lacrime.jpg', ar2: 0.713, quote: 'Chi può se ne va. Chi resta è quello che rimane quando il progresso decide di andare avanti senza di te.' },
+        { key: 'ghost', title: 'Ghost in the Shell', kicker: 'Manga // 1989', pages: [18, 19], c: '#E9702F', img: 'ed-ghost.jpg', ar: 0.713, quote: 'Un’opera che non si accontenta di raccontare il futuro, vuole capirlo dall’interno, smontarlo pezzo per pezzo e vedere cosa rimane.' },
+        { key: 'cp', title: 'Cyberpunk 2077', kicker: 'Videogioco // 2020', pages: [20, 22], c: '#E6E13A', img: 'ed-v2077.jpg', ar: 0.715, img2: 'ed-arasaka.jpg', ar2: 0.991, quote: 'Night City non è un posto dove si vince. È un posto dove si sopravvive, se si è fortunati.' },
+        { key: 'johnny', title: 'Johnny Silverhand', kicker: 'Rockstar // terrorista // fantasma digitale', pages: [23, 23], c: '#EEEB95', img: 'ed-johnny.jpg', ar: 0.716, img2: 'ed-johnny-foto.jpg', ar2: 2.857, quote: 'Un uomo che ha combattuto le corporazioni con una chitarra e con le bombe.' },
+        { key: 'marathon', title: 'Marathon', kicker: 'Videogioco // Bungie', pages: [24, 25], c: '#BBCE19', img: 'ed-marathon.jpg', ar: 1.582, quote: 'Corpo sostituito, identità in bilico, sistemi di controllo opachi: è la grammatica classica del genere.' },
+        { key: 'neuro', title: 'Neuromante', kicker: 'Romanzo // 1984', pages: [26, 27], c: '#B0449C', img: 'ed-sprawl.jpg', ar: 0.713, quote: 'Gibson inventa in queste pagine il concetto di cyberspazio, definendolo come una allucinazione condivisa da milioni di utenti.' },
+        { key: 'nin', title: 'Nine Inch Nails', kicker: 'Musica // dal 1989', pages: [28, 29], c: '#2E9A55', img: 'ed-nin.jpg', ar: 1.794, quote: 'Una macchina che soffre, un uomo che si trasforma in qualcosa di diverso e non sa se esserne sollevato o terrorizzato.' }
       ],
       outroWords: ['No', 'Future'],
       outroText: 'Il motto punk era “No Future”. Sulle pagine di Decoder il cyberpunk arriva in Italia con la voglia di affrontare quel futuro temuto e di usarlo per leggere il presente.'
@@ -395,7 +396,7 @@ window.PROJECT_REGISTRY = [
     stack: ['Adobe Illustrator', 'Adobe Photoshop', 'JavaScript', 'A-Frame', 'MindAR', 'Realtà Aumentata', 'Pixel Art', 'Packaging Design', 'Social Campaign'],
     description: 'Un gioco in realtà aumentata e un packaging in edizione limitata per Campari. “Champ-AR” unisce “Champ” e “AR” (Augmented Reality) e porta dentro un cabinato arcade da scaffale l’interazione che il brand ha sempre cercato nelle sue campagne.',
     details: 'Lo spiritello ha rubato il Campari e farà di tutto per tenerselo: l’eroe in stile Depero deve saltare le arance e recuperare la bottiglia. Packaging ed etichetta richiamano i cabinati dei videogiochi anni ’80 e ’90 e parlano a chi ha vissuto i primi giochi arcade, con un target tra i 20 e i 35 anni. La pixel art si unisce all’estetica minimale con pattern delle scatole di alcolici. Il gioco gira nel browser con A-Frame e MindAR: inquadrando la scatola parte la sfida. Progetto del secondo anno di Communication Design, Istituto Modartech.',
-    coverImage: 'assets/projects/campari-champ-ar/cover.jpg',
+    coverImage: 'assets/projects/campari-champ-ar/showcase.jpg',
     capsuleImage: 'assets/projects/campari-champ-ar/capsule.png',
     gallery: {
       layout: 'champar',

@@ -664,13 +664,13 @@
         <section class="dc-hero">
           <div class="dc-hero-copy">
             <p class="dc-stamp" data-reveal>${esc(g.stamp || '')}</p>
-            <h3 class="dc-ransom" data-reveal aria-label="Decoder">${ransom('DECODER', 3)}</h3>
+            <h3 class="dc-title" data-reveal><span>DECODER</span></h3>
             <p class="dc-marker" data-reveal style="--i:2;">${esc(g.subtitle || '')}</p>
             <div class="dc-strip" data-reveal style="--i:3; clip-path:${torn(11, 5)};"><p>${g.lead || ''}</p></div>
           </div>
           <figure class="dc-cover" data-reveal style="--i:1;" ${zoom(B + 'cover.jpg', 'Decoder — la copertina')}>
             <img src="${B}cover.jpg" alt="La copertina di Decoder: la testata rossa sopra un volto in bianco e nero" style="clip-path:${torn(5, 9)};" />
-            ${tape('is-a')}${tape('is-b')}
+            ${tape('is-tl')}${tape('is-br')}
             <span class="dc-cover-stamp" aria-hidden="true">Stampa</span>
           </figure>
         </section>
@@ -712,25 +712,44 @@
           </div>
         </section>
 
-        <!-- 03 SAPEVI CHE: i micropunti gialli della stampante -->
+        <!-- 03 SAPEVI CHE: impaginata come la pagina 9, ma si stampa e si decodifica -->
         <section class="dc-sec dc-dots-sec">
-          ${head('03', g.dotsTitle || 'Sapevi che…')}
-          <div class="dc-dots">
-            <div class="dc-dots-copy" data-reveal>
-              ${(g.dotsText || []).map((t) => `<p class="dc-text">${t}</p>`).join('')}
-              <figure class="dc-dots-printer" ${zoom(B + 'ed-stampante.jpg', 'Sapevi che… — pag. 9')}>
-                <img src="${B}ed-stampante.jpg" alt="Una stampante laser fotocopiata in bianco e nero" loading="lazy" style="clip-path:${torn(23, 6)};" />
-              </figure>
-            </div>
-            <div class="dc-sheet" data-reveal style="--i:1; --mx:50%; --my:45%;">
-              <div class="dc-sheet-print">
-                <p class="dc-sheet-kicker">Decoder // pag. 9</p>
-                <p class="dc-sheet-big">${esc(g.dotsSheet || '')}</p>
-                <p class="dc-sheet-small">E la tecnologia che usi ogni giorno sa più cose di te di quanto immagini.</p>
+          <div class="dc-p9">
+            <div class="dc-p9-copy" data-reveal>
+              <h3 class="dc-p9-title"><span class="dc-p9-num">03 //</span> ${esc(g.dotsTitle || 'Sapevi che...')}</h3>
+              <div class="dc-p9-cols" lang="it">
+                ${(g.dotsText || []).map((t) => `<p>${t}</p>`).join('')}
               </div>
-              <div class="dc-uv" aria-hidden="true"></div>
-              <span class="dc-uv-tip" aria-hidden="true">luce blu</span>
+              <div class="dc-hud">
+                <svg class="dc-hud-frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 H90 L100 14 V100 H0 Z"/></svg>
+                <span class="dc-hud-tab" aria-hidden="true"></span>
+                <p class="dc-hud-head">MIC // Machine Identification Code</p>
+                <dl class="dc-hud-data">
+                  <div><dt>Seriale</dt><dd data-k="serial">····-····-··</dd></div>
+                  <div><dt>Data</dt><dd data-k="date">··/··/····</dd></div>
+                  <div><dt>Ora</dt><dd data-k="time">··:··:··</dd></div>
+                </dl>
+                <div class="dc-hud-bar" aria-hidden="true"><i></i></div>
+                <p class="dc-hud-status" aria-live="polite">in attesa di stampa</p>
+                <button type="button" class="dc-hud-btn">▶ Stampa</button>
+                <span class="dc-hud-page" aria-hidden="true">9</span>
+              </div>
             </div>
+            <div class="dc-p9-machine" data-reveal style="--i:1;">
+              <div class="dc-p9-slot">
+                <div class="dc-sheet" style="--mx:50%; --my:40%;">
+                  <div class="dc-sheet-print">
+                    <p class="dc-sheet-kicker">Decoder // pag. 9</p>
+                    <p class="dc-sheet-big">${esc(g.dotsSheet || '')}</p>
+                    <p class="dc-sheet-small">E la tecnologia che usi ogni giorno sa più cose di te di quanto immagini.</p>
+                  </div>
+                  <div class="dc-uv" aria-hidden="true"></div>
+                  <span class="dc-uv-tip" aria-hidden="true">passa la luce blu</span>
+                </div>
+              </div>
+              <img class="dc-p9-printer" src="${B}ed-stampante.png" alt="La stampante della pagina 9, in bianco e nero" loading="lazy" />
+            </div>
+            <img class="dc-p9-chevron" src="${B}ed-chevron.jpg" alt="" aria-hidden="true" loading="lazy" />
           </div>
         </section>
 
@@ -828,10 +847,12 @@
       });
     }
 
-    // ---- micropunti: la luce blu segue il puntatore e rivela il codice giallo
+    // ---- sapevi che: si stampa il foglio, la luce blu scopre i micropunti
+    //      e il riquadro decodifica numero di serie, data e ora della stampa
     const sheet = root.querySelector('.dc-sheet');
-    const uv = root.querySelector('.dc-uv');
-    if (sheet && uv) {
+    const machine = root.querySelector('.dc-p9-machine');
+    const hud = root.querySelector('.dc-hud');
+    if (sheet && machine && hud) {
       // matrice 15 × 8 come quella delle stampanti: alcuni punti sì, altri no
       const r = seeded(2017);
       const cell = 9;
@@ -841,16 +862,87 @@
       }
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${15 * cell + 22}" height="${8 * cell + 22}"><g fill="#FFE94A">${dots}</g></svg>`;
       sheet.style.setProperty('--dots', `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+
+      const fields = {
+        serial: hud.querySelector('[data-k="serial"]'),
+        date: hud.querySelector('[data-k="date"]'),
+        time: hud.querySelector('[data-k="time"]')
+      };
+      const bar = hud.querySelector('.dc-hud-bar i');
+      const status = hud.querySelector('.dc-hud-status');
+      const btn = hud.querySelector('.dc-hud-btn');
+      const hex = (n) => Math.floor(seeded(n)() * 65536).toString(16).toUpperCase().padStart(4, '0');
+      let target = null;
+      let progress = 0;
+      let printed = false;
+      let printT = 0;
+      const mask = (txt, k) => txt.split('').map((ch, i) => (i < k || /[-/: ]/.test(ch) ? ch : '·')).join('');
+      const paint = () => {
+        if (!target) return;
+        Object.keys(fields).forEach((key, row) => {
+          // le righe si decodificano una dopo l'altra
+          const p = Math.max(0, Math.min(1, progress * 3 - row));
+          fields[key].textContent = mask(target[key], Math.round(p * target[key].length));
+        });
+        bar.style.transform = `scaleX(${progress.toFixed(3)})`;
+        if (progress >= 1) {
+          status.textContent = 'decodificato: la stampante ha firmato il foglio';
+          hud.classList.add('is-done');
+        } else {
+          status.textContent = `decodifica ${String(Math.floor(progress * 100)).padStart(3, '0')}%`;
+        }
+      };
+      const print = () => {
+        const now = new Date();
+        const two = (n) => String(n).padStart(2, '0');
+        target = {
+          serial: `${hex(now.getTime() % 9973)}-${hex(now.getMinutes() + 7)}-${two(now.getSeconds())}`,
+          date: `${two(now.getDate())}/${two(now.getMonth() + 1)}/${now.getFullYear()}`,
+          time: `${two(now.getHours())}:${two(now.getMinutes())}:${two(now.getSeconds())}`
+        };
+        progress = 0;
+        hud.classList.remove('is-done');
+        machine.classList.remove('is-printed');
+        void machine.offsetWidth;
+        machine.classList.add('is-printing');
+        status.textContent = 'stampa in corso…';
+        btn.textContent = '↻ Ristampa';
+        printed = false;
+        clearTimeout(printT);
+        printT = setTimeout(() => {
+          machine.classList.remove('is-printing');
+          machine.classList.add('is-printed');
+          printed = true;
+          paint();
+        }, reduceMotion() ? 0 : 2300);
+        Object.values(fields).forEach((f) => { f.textContent = f.textContent.replace(/[0-9A-F]/g, '·'); });
+        bar.style.transform = 'scaleX(0)';
+      };
+      btn.addEventListener('click', print);
+      cleanups.push(() => clearTimeout(printT));
+
+      // la luce: segue il puntatore; più la muovi sul foglio, più il codice si decodifica
       let hover = false;
       let raf = 0;
-      const set = (x, y) => { sheet.style.setProperty('--mx', `${x}px`); sheet.style.setProperty('--my', `${y}px`); };
+      let last = null;
+      const set = (x, y) => {
+        if (printed && last) {
+          const d = Math.hypot(x - last.x, y - last.y);
+          progress = Math.min(1, progress + d / (sheet.clientWidth * (hover ? 5 : 9)));
+          paint();
+        }
+        last = { x, y };
+        sheet.style.setProperty('--mx', `${x}px`);
+        sheet.style.setProperty('--my', `${y}px`);
+      };
       const onMove = (e) => {
         const b = sheet.getBoundingClientRect();
+        if (!hover) last = null;
         hover = true;
         sheet.classList.add('is-lit');
         set(e.clientX - b.left, e.clientY - b.top);
       };
-      const onLeave = () => { hover = false; };
+      const onLeave = () => { hover = false; last = null; };
       sheet.addEventListener('pointermove', onMove);
       sheet.addEventListener('pointerdown', onMove);
       sheet.addEventListener('pointerleave', onLeave);
@@ -858,14 +950,25 @@
       const t0 = performance.now();
       const loop = (now) => {
         raf = requestAnimationFrame(loop);
-        if (hover || !inView(sheet)) return;
+        if (hover || !printed || !inView(sheet)) return;
         const b = sheet.getBoundingClientRect();
         const t = (now - t0) / 1000;
         set(b.width * (0.5 + 0.3 * Math.sin(t * 0.7)), b.height * (0.5 + 0.28 * Math.sin(t * 1.1 + 1)));
         sheet.classList.add('is-lit');
       };
-      if (!reduceMotion()) raf = requestAnimationFrame(loop);
-      else { sheet.classList.add('is-lit'); }
+      // la prima stampa parte da sola quando la sezione entra in vista
+      cleanups.push(onReveal(machine, () => {
+        if (reduceMotion()) {
+          print();
+          progress = 1;
+          sheet.classList.add('is-lit');
+          setTimeout(paint, 0);
+          return;
+        }
+        const t = setTimeout(print, 500);
+        cleanups.push(() => clearTimeout(t));
+        raf = requestAnimationFrame(loop);
+      }));
       cleanups.push(() => cancelAnimationFrame(raf));
     }
 
@@ -883,11 +986,11 @@
         stage.innerHTML = `
           <div class="dc-st-bg" aria-hidden="true"></div>
           <div class="dc-st-art">
-            <figure class="dc-paste is-a" ${zoom(B + w.img, `${w.title} — Decoder, pag. ${pages}`)}>
-              <img src="${B}${w.img}" alt="${esc(w.title)}: un’immagine dalla rivista" style="clip-path:${torn(i * 7 + 1, 7)};" />
+            <figure class="dc-paste is-a" style="--ar:${w.ar || 0.72};" ${zoom(B + w.img, `${w.title} — Decoder, pag. ${pages}`)}>
+              <img src="${B}${w.img}" alt="${esc(w.title)}: dalla rivista, pag. ${pages}" style="clip-path:${torn(i * 7 + 1, 7)};" />
+              ${tape('is-tl')}
             </figure>
-            ${w.img2 ? `<figure class="dc-paste is-b" ${zoom(B + w.img2, `${w.title} — Decoder`)}><img src="${B}${w.img2}" alt="${esc(w.title)}: un’altra immagine dalla rivista" style="clip-path:${torn(i * 7 + 3, 6)};" /></figure>` : ''}
-            ${tape('is-a')}${tape('is-b')}
+            ${w.img2 ? `<figure class="dc-paste is-b" style="--ar:${w.ar2 || 1};" ${zoom(B + w.img2, `${w.title} — Decoder`)}><img src="${B}${w.img2}" alt="${esc(w.title)}: un’altra immagine dalla rivista" style="clip-path:${torn(i * 7 + 3, 6)};" />${tape('is-tr')}</figure>` : ''}
           </div>
           <div class="dc-st-copy">
             <p class="dc-st-kicker">${esc(w.kicker)}</p>
