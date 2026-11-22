@@ -298,7 +298,15 @@
     setTrack(index);
     syncUI();
     if (AUTOSTART) autostart();
-    window.musicPlayer = { audio, play: () => play(false), pause, toggle, next: () => skip(1), prev: () => skip(-1) };
+    // playTrack: le pagine dei progetti (es. la collaborazione con Ikigai) fanno partire un brano preciso
+    const playTrack = (i) => {
+      if (i !== index) { setTrack(i); load(); }
+      play(false);
+    };
+    window.musicPlayer = {
+      audio, play: () => play(false), pause, toggle, next: () => skip(1), prev: () => skip(-1),
+      playTrack, current: () => index, tracks: TRACKS.map((t) => t.title)
+    };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

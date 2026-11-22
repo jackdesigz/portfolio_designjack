@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 600">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: AkzidenzGroteskCE-Roman, 'Akzidenz Grotesk CE Roman';
+        font-size: 30px;
+      }
+
+      .cls-2 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        fill: #5881c1;
+      }
+
+      .cls-4 {
+        font-family: DINCondensed-Bold, 'DIN Condensed';
+        font-size: 103px;
+        font-weight: 700;
+      }
+
+      .cls-5 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 11px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <polygon class="cls-3" points="455.82 0 0 0 0 600 455.82 600 1200 600 1200 0 455.82 0"/>
+    <text class="cls-4" transform="translate(65.19 291.03)"><tspan x="0" y="0">P</tspan><tspan class="cls-2" x="41.92" y="0">r</tspan><tspan x="69.94" y="0">oduzione artigianale a casa tua</tspan></text>
+    <text class="cls-1" transform="translate(70.13 361.25)"><tspan x="0" y="0">Consegne dei nostri gelati in vaschette apposite</tspan></text>
+    <image width="512" height="512" transform="translate(922.93 321.65) scale(.44)" xlink:href="../../../Downloads/scooter_1433422.png"/>
+    <line class="cls-5" x1="859.83" y1="432.6" x2="909.88" y2="432.6"/>
+    <line class="cls-5" x1="810.4" y1="455.32" x2="872.34" y2="455.32"/>
+    <line class="cls-5" x1="855.44" y1="481.09" x2="895.64" y2="481.09"/>
+    <line class="cls-5" x1="815.43" y1="506.86" x2="877.37" y2="506.86"/>
+  </g>
+</svg>

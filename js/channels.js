@@ -1,8 +1,9 @@
 /**
  * designjack — logica dei canali G e B
  *
- * Canale G: blob organici che respirano, adesivi da staccare e
- * spostare, muro libero da dipingere con la bomboletta (con colature).
+ * Canale G (pagina autobiografica): blob organici che respirano, adesivi
+ * da staccare e spostare, "Cosa faccio" con gli adesivi dei progetti presi
+ * dal registro (al clic si apre la scheda).
  * Canale B ("Frutiger Marine"): bolle che salgono e scoppiano, copia
  * dell'indirizzo email, "messaggio in bottiglia" che prepara una mail.
  *
@@ -80,157 +81,25 @@
     });
   }
 
-  class SprayWall {
-    constructor(canvas, ui) {
-      this.canvas = canvas;
-      this.wall = canvas.parentElement;
-      this.ctx = canvas.getContext('2d');
-      this.color = '#B8F23A';
-      this.size = 30;
-      this.drips = [];
-      this.pointer = null;
-      this.lastSound = 0;
-      this.dpr = 1;
-
-      ui.cans.forEach((btn) => btn.addEventListener('click', () => {
-        ui.cans.forEach((b) => { b.classList.remove('is-active'); b.setAttribute('aria-checked', 'false'); });
-        btn.classList.add('is-active');
-        btn.setAttribute('aria-checked', 'true');
-        this.color = btn.dataset.color;
-      }));
-      if (ui.size) ui.size.addEventListener('input', () => { this.size = Number(ui.size.value); });
-      if (ui.clean) ui.clean.addEventListener('click', () => this.clean());
-
-      canvas.addEventListener('pointerdown', (e) => this.down(e));
-      canvas.addEventListener('pointermove', (e) => this.move(e));
-      canvas.addEventListener('pointerup', () => this.up());
-      canvas.addEventListener('pointercancel', () => this.up());
-      if ('ResizeObserver' in window) new ResizeObserver(() => this.resize()).observe(canvas);
-      this.resize();
-    }
-
-    resize() {
-      const r = this.canvas.getBoundingClientRect();
-      if (!r.width || !r.height) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
-      if (w === this.canvas.width && h === this.canvas.height) return;
-      // conserva il disegno quando il muro cambia dimensione
-      let keep = null;
-      if (this.canvas.width && this.canvas.height) {
-        keep = document.createElement('canvas');
-        keep.width = this.canvas.width;
-        keep.height = this.canvas.height;
-        keep.getContext('2d').drawImage(this.canvas, 0, 0);
-      }
-      this.canvas.width = w;
-      this.canvas.height = h;
-      this.dpr = dpr;
-      if (keep) this.ctx.drawImage(keep, 0, 0, w, h);
-    }
-
-    pos(e) {
-      const r = this.canvas.getBoundingClientRect();
-      return { x: (e.clientX - r.left) * this.dpr, y: (e.clientY - r.top) * this.dpr };
-    }
-
-    down(e) {
-      e.preventDefault();
-      this.canvas.setPointerCapture(e.pointerId);
-      const p = this.pos(e);
-      this.pointer = { ...p, still: 0, last: performance.now() };
-      this.wall.classList.add('has-paint');
-      this.sound(true);
-      this.stamp(p.x, p.y);
-    }
-
-    move(e) {
-      if (!this.pointer) return;
-      const p = this.pos(e);
-      const dx = p.x - this.pointer.x, dy = p.y - this.pointer.y;
-      const dist = Math.hypot(dx, dy);
-      const step = Math.max(2, this.size * this.dpr * 0.22);
-      const n = Math.max(1, Math.floor(dist / step));
-      for (let i = 1; i <= n; i++) this.stamp(this.pointer.x + (dx * i) / n, this.pointer.y + (dy * i) / n);
-      if (dist > 4 * this.dpr) this.pointer.still = 0;
-      this.pointer.x = p.x;
-      this.pointer.y = p.y;
-      this.sound(false);
-    }
-
-    up() {
-      this.pointer = null;
-    }
-
-    sound(force) {
-      const now = performance.now();
-      if (!force && now - this.lastSound < 650) return;
-      this.lastSound = now;
-      const a = audio();
-      if (a && a.playSprayCan) a.playSprayCan();
-    }
-
-    // Un colpo di bomboletta: nebbia morbida + puntini più densi al centro
-    stamp(x, y) {
-      const ctx = this.ctx;
-      const r = this.size * this.dpr;
-      ctx.fillStyle = this.color;
-      ctx.globalAlpha = 0.05;
-      ctx.beginPath();
-      ctx.arc(x, y, r * 0.7, 0, Math.PI * 2);
-      ctx.fill();
-      const dots = Math.round(this.size * 1.3);
-      for (let i = 0; i < dots; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const d = r * Math.pow(Math.random(), 1.7);
-        const s = (Math.random() * 1.6 + 0.6) * this.dpr;
-        ctx.globalAlpha = 0.35 + Math.random() * 0.5;
-        ctx.fillRect(x + Math.cos(a) * d, y + Math.sin(a) * d, s, s);
-      }
-      ctx.globalAlpha = 1;
-      if (this.pointer) {
-        this.pointer.still += 1;
-        // fermo nello stesso punto: la vernice si accumula e cola
-        if (this.pointer.still > 14 && Math.random() < 0.12 && this.drips.length < 40) {
-          this.drips.push({
-            x: x + (Math.random() - 0.5) * r * 0.6,
-            y: y + r * 0.25,
-            v: (1.2 + Math.random() * 1.6) * this.dpr,
-            w: (2 + Math.random() * 3) * this.dpr,
-            left: (40 + Math.random() * 120) * this.dpr,
-            color: this.color
-          });
-        }
-      }
-    }
-
-    tick() {
-      if (!this.drips.length) return;
-      const ctx = this.ctx;
-      ctx.lineCap = 'round';
-      this.drips = this.drips.filter((d) => {
-        const step = Math.min(d.v, d.left);
-        ctx.strokeStyle = d.color;
-        ctx.lineWidth = d.w;
-        ctx.beginPath();
-        ctx.moveTo(d.x, d.y);
-        ctx.lineTo(d.x, d.y + step);
-        ctx.stroke();
-        d.y += step;
-        d.left -= step;
-        d.v *= 0.985;
-        d.w *= 0.997;
-        return d.left > 0.5 && d.v > 0.15;
-      });
-    }
-
-    clean() {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.drips = [];
-      this.wall.classList.remove('has-paint');
-      const a = audio();
-      if (a && a.playWaterDrop) a.playWaterDrop();
-    }
+  // "Cosa faccio": per ogni disciplina gli adesivi dei progetti, presi dal registro
+  function initProjectStickers(root) {
+    const reg = window.PROJECT_REGISTRY || [];
+    const short = (t) => String(t).split(' — ')[0];
+    root.querySelectorAll('.gx-do-list[data-cat]').forEach((list, li) => {
+      const cat = list.getAttribute('data-cat');
+      const items = reg.filter((p) => p.category === cat);
+      if (!items.length) { list.closest('.gx-do-card').hidden = true; return; }
+      list.innerHTML = items.map((p, i) => {
+        const r = (((li * 3 + i * 5) % 7) - 3) * 0.9;
+        return `<button type="button" class="gx-do-proj" data-proj="${p.id}" style="--r:${r.toFixed(1)}deg" aria-label="Apri il progetto ${short(p.title)}">${short(p.title)}</button>`;
+      }).join('');
+    });
+    root.addEventListener('click', (e) => {
+      const b = e.target.closest('.gx-do-proj');
+      if (!b) return;
+      const p = reg.find((x) => x.id === b.getAttribute('data-proj'));
+      if (p && window.openProjectModal) window.openProjectModal(p);
+    });
   }
 
   function initChannelG() {
@@ -238,12 +107,7 @@
     if (!root) return null;
     const drawBlobs = initBlobs(root);
     initStickers(root);
-    const canvas = document.getElementById('gx-spray-canvas');
-    const wall = canvas ? new SprayWall(canvas, {
-      cans: Array.from(root.querySelectorAll('.gx-can')),
-      size: document.getElementById('gx-spray-size'),
-      clean: document.getElementById('gx-wall-clean')
-    }) : null;
+    initProjectStickers(root);
     // i blob si muovono lentamente: 30 fps e solo con l'hero a schermo
     // (controllo legato allo scroll: una lettura per evento, non per frame)
     let heroVisible = true;
@@ -265,13 +129,11 @@
     window.addEventListener('resize', queueHero);
     return {
       onShow() {
-        if (wall) wall.resize();
         checkHero();
       },
       frame(t) {
         tick++;
         if (!reduceMotion && heroVisible && (tick & 1) === 0) drawBlobs(t);
-        if (wall) wall.tick();
       }
     };
   }

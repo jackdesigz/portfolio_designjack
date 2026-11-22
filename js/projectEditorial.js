@@ -645,7 +645,6 @@
     const B = g.base || '';
     const idx = g.index || [];
     const works = g.works || [];
-    const cuts = g.cutLines || [];
     const cleanups = [];
     const pagesUrl = pageList(B, g.pages || 32);
     const head = (n, t, extra = '') => `<header class="dc-head" data-reveal${extra}><span class="dc-num">${n}</span><h3 class="dc-h" style="clip-path:${torn(Number(n) * 17, 4)};">${esc(t)}</h3></header>`;
@@ -693,21 +692,28 @@
           </div>
         </section>
 
-        <!-- 02 TAGLIA IL CODICE: il cut-up di Burroughs -->
-        <section class="dc-sec dc-cut-sec">
-          ${head('02', g.cutTitle || 'Taglia il codice')}
-          <div class="dc-cut">
-            <div class="dc-cut-copy" data-reveal>
-              ${(g.cutText || []).map((t) => `<p class="dc-text">${t}</p>`).join('')}
-              <figure class="dc-cut-film" ${zoom(B + 'ed-decoder-film.jpg', g.cutCaption || 'Decoder, il film')}>
-                <img src="${B}ed-decoder-film.jpg" alt="${esc(g.cutCaption || 'Due fotogrammi del film Decoder')}" loading="lazy" style="clip-path:${torn(21, 6)};" />
-              </figure>
-            </div>
-            <div class="dc-cut-desk" data-reveal style="--i:1;">
-              <div class="dc-cut-lines">
-                ${cuts.map((t, i) => `<span class="dc-cut-line" data-i="${i}" style="clip-path:${torn(40 + i, 4, 'lr')};">${esc(t)}</span>`).join('')}
-              </div>
-              <button type="button" class="dc-cut-btn"><span aria-hidden="true">✂</span> <em>Taglia e rimescola</em></button>
+        <!-- 02 DECODER: impaginata come la pagina 7; il fotogramma del film è un segnale da sintonizzare -->
+        <section class="dc-sec dc-p7-sec">
+          <div class="dc-p7-cols" lang="it" data-reveal>
+            <h3 class="dc-p7-title"><span class="dc-p9-num">02 //</span><b>${esc(g.decTitle || 'Decoder')}</b></h3>
+            ${(g.decText || []).map((t) => `<p>${t}</p>`).join('')}
+          </div>
+          <div class="dc-p7-film" data-reveal style="--i:1;">
+            <figure class="dc-tv">
+              <canvas class="dc-tv-canvas" role="img" aria-label="Un fotogramma del film Decoder del 1984, disturbato finché non si sintonizza il segnale"></canvas>
+              <span class="dc-tv-lock" aria-hidden="true">segnale agganciato</span>
+              <figcaption class="dc-tv-cap">${esc(g.decCaption || '')}</figcaption>
+            </figure>
+            <div class="dc-hud dc-tuner">
+              <svg class="dc-hud-frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 H86 L100 12 V100 H0 Z"/></svg>
+              <span class="dc-hud-tab" aria-hidden="true"></span>
+              <p class="dc-hud-head">Sintonizza il segnale</p>
+              <p class="dc-tuner-ch"><span>CH</span> <b class="dc-tuner-num">12.0</b></p>
+              <div class="dc-tuner-scale" aria-hidden="true">${Array.from({ length: 21 }, (_, i) => `<i style="--k:${i};"></i>`).join('')}</div>
+              <input class="dc-tuner-range" type="range" min="0" max="99" step="0.1" value="12" aria-label="Canale: sintonizza il fotogramma del film" />
+              <div class="dc-hud-bar" aria-hidden="true"><i></i></div>
+              <p class="dc-hud-status" aria-live="polite">nessun segnale</p>
+              <span class="dc-hud-page" aria-hidden="true">7</span>
             </div>
           </div>
         </section>
@@ -803,55 +809,137 @@
     const openAt = (page) => { fb.goPage(page - 1); scrollToEl(board); };
     stickers.forEach((b) => b.addEventListener('click', () => openAt(Number(b.dataset.page))));
 
-    // ---- cut-up: le strisce si tagliano e si rimescolano (FLIP)
-    const desk = root.querySelector('.dc-cut-lines');
-    const cutBtn = root.querySelector('.dc-cut-btn');
-    if (desk && cutBtn) {
-      const lines = Array.from(desk.children);
-      let shuffled = false;
-      let round = 0;
-      const place = (order, rots) => {
-        const before = new Map(lines.map((l) => [l, l.getBoundingClientRect()]));
-        order.forEach((l) => desk.appendChild(l));
-        lines.forEach((l, k) => {
-          const a = before.get(l);
-          const b = l.getBoundingClientRect();
-          const rot = rots ? rots[k] : 0;
-          l.style.transition = 'none';
-          l.style.transform = `translate(${a.left - b.left}px, ${a.top - b.top}px) rotate(${l.dataset.rot || 0}deg)`;
-          l.dataset.rot = String(rot);
-          requestAnimationFrame(() => requestAnimationFrame(() => {
-            l.style.transition = reduceMotion() ? 'none' : `transform 0.7s cubic-bezier(0.3, 1.3, 0.5, 1) ${(k * 0.03).toFixed(2)}s`;
-            l.style.transform = `rotate(${rot}deg)`;
-          }));
-        });
+    // ---- pagina 7: il fotogramma del film è un segnale disturbato; con la manopola
+    //      si cerca il canale giusto (84, come il 1984 del film) e l'immagine si aggancia
+    const tv = root.querySelector('.dc-tv');
+    const tuner = root.querySelector('.dc-tuner');
+    if (tv && tuner) {
+      const cvs = tv.querySelector('canvas');
+      const ctx = cvs.getContext('2d');
+      const range = tuner.querySelector('.dc-tuner-range');
+      const num = tuner.querySelector('.dc-tuner-num');
+      const tBar = tuner.querySelector('.dc-hud-bar i');
+      const tStatus = tuner.querySelector('.dc-hud-status');
+      const target = Number(g.decChannel) || 84;
+      const img = new Image();
+      let ready = false;
+      let touched = false;
+      let raf = 0;
+      let glide = null;
+      // neve: un piccolo riquadro di rumore ridisegnato a ogni fotogramma e allargato
+      const snow = document.createElement('canvas');
+      snow.width = 320;
+      snow.height = 210;
+      const sctx = snow.getContext('2d');
+      const snowData = sctx.createImageData(snow.width, snow.height);
+      const quality = () => Math.max(0, 1 - Math.abs(Number(range.value) - target) / 26);
+      const fit = () => {
+        const w = Math.round(cvs.clientWidth * Math.min(2, window.devicePixelRatio || 1));
+        if (w && cvs.width !== w) { cvs.width = w; cvs.height = Math.round(w * (img.naturalHeight / img.naturalWidth || 0.655)); }
       };
-      cutBtn.addEventListener('click', () => {
-        round += 1;
-        if (!shuffled) {
-          const r = seeded(round * 977 + 13);
-          let order;
-          do {
-            order = lines.slice();
-            for (let k = order.length - 1; k > 0; k--) { const j = Math.floor(r() * (k + 1)); [order[k], order[j]] = [order[j], order[k]]; }
-          } while (order.every((l, k) => l === lines[k]));
-          place(order, lines.map(() => ((r() - 0.5) * 9).toFixed(1)));
-          cutBtn.querySelector('em').textContent = 'Ricomponi';
-          desk.classList.add('is-cut');
+      const draw = (now) => {
+        if (!ready) return;
+        fit();
+        const W = cvs.width;
+        const H = cvs.height;
+        const q = quality();
+        const locked = q > 0.985;
+        const t = now / 1000;
+        const off = 1 - q;
+        ctx.fillStyle = '#060606';
+        ctx.fillRect(0, 0, W, H);
+        if (locked) {
+          ctx.drawImage(img, 0, 0, W, H);
         } else {
-          place(lines, null);
-          cutBtn.querySelector('em').textContent = 'Taglia e rimescola';
-          desk.classList.remove('is-cut');
+          // l'immagine scorre in verticale e si strappa a bande orizzontali
+          const roll = ((t * 0.9 * off * off) % 1) * H * (off > 0.35 ? 1 : 0);
+          const band = Math.max(3, Math.round(H / 90));
+          for (let y = 0; y < H; y += band) {
+            const n = Math.sin(y * 0.031 + t * 7.3) * Math.sin(y * 0.007 - t * 2.1) + (Math.random() - 0.5) * 0.35;
+            const dx = n * W * 0.22 * off * off + (Math.random() < 0.02 * off ? (Math.random() - 0.5) * W * 0.3 : 0);
+            const sy = (((y + roll) % H) + H) % H;
+            const sh = Math.min(band, H - sy);
+            const srcY = (sy / H) * img.naturalHeight;
+            const srcH = (sh / H) * img.naturalHeight;
+            ctx.drawImage(img, 0, srcY, img.naturalWidth, srcH, dx, y, W, sh);
+          }
+          // neve sopra, più fitta quanto più si è lontani dal canale
+          const d = snowData.data;
+          for (let i = 0; i < d.length; i += 4) {
+            const v = Math.random() * 255;
+            d[i] = v; d[i + 1] = v; d[i + 2] = v; d[i + 3] = 255;
+          }
+          sctx.putImageData(snowData, 0, 0);
+          ctx.globalAlpha = Math.min(0.85, 0.06 + off * off * 0.8);
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(snow, 0, 0, W, H);
+          ctx.imageSmoothingEnabled = true;
+          ctx.globalAlpha = 1;
+          // la riga chiara che passa
+          const ly = ((t * 0.35) % 1) * H;
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.05 + off * 0.1})`;
+          ctx.fillRect(0, ly, W, H * 0.06);
         }
-        shuffled = !shuffled;
+        tv.classList.toggle('is-locked', locked);
+      };
+      const paintHud = () => {
+        const q = quality();
+        num.textContent = Number(range.value).toFixed(1);
+        tBar.style.transform = `scaleX(${q.toFixed(3)})`;
+        const locked = q > 0.985;
+        tuner.classList.toggle('is-done', locked);
+        tStatus.textContent = locked ? 'segnale agganciato: Decoder, 1984' : q > 0.6 ? 'ci sei quasi…' : q > 0 ? 'segnale debole' : 'nessun segnale';
+      };
+      const loop = (now) => {
+        raf = requestAnimationFrame(loop);
+        if (glide) {
+          const k = Math.max(0, Math.min(1, (now - glide.t0) / glide.dur));
+          const e = 1 - Math.pow(1 - k, 3);
+          range.value = String(glide.from + (glide.to - glide.from) * e);
+          paintHud();
+          if (k >= 1) glide = null;
+        }
+        if (!inView(tv)) return;
+        draw(now);
+      };
+      range.addEventListener('input', () => {
+        touched = true;
+        glide = null;
+        paintHud();
+        if (reduceMotion()) draw(performance.now());
       });
+      // trascinando sul fotogramma si gira la manopola
+      let drag = null;
+      cvs.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, v: Number(range.value) }; cvs.setPointerCapture(e.pointerId); });
+      cvs.addEventListener('pointermove', (e) => {
+        if (!drag) return;
+        const v = Math.max(0, Math.min(99, drag.v + ((e.clientX - drag.x) / cvs.clientWidth) * 60));
+        range.value = String(v);
+        range.dispatchEvent(new Event('input'));
+      });
+      const endDrag = () => { drag = null; };
+      cvs.addEventListener('pointerup', endDrag);
+      cvs.addEventListener('pointercancel', endDrag);
+      img.onload = () => {
+        ready = true;
+        paintHud();
+        if (reduceMotion()) { range.value = String(target); paintHud(); draw(performance.now()); }
+        else raf = requestAnimationFrame(loop);
+      };
+      img.src = `${B}ed-decoder-film.jpg`;
+      // la prima volta la manopola si muove da sola verso il canale, ma si ferma prima: l'ultimo giro è tuo
+      cleanups.push(onReveal(tv, () => {
+        if (touched || reduceMotion()) return;
+        glide = { from: Number(range.value), to: target - 14, t0: performance.now() + 500, dur: 1800 };
+      }));
+      cleanups.push(() => cancelAnimationFrame(raf));
     }
 
     // ---- sapevi che: si stampa il foglio, la luce blu scopre i micropunti
     //      e il riquadro decodifica numero di serie, data e ora della stampa
     const sheet = root.querySelector('.dc-sheet');
     const machine = root.querySelector('.dc-p9-machine');
-    const hud = root.querySelector('.dc-hud');
+    const hud = root.querySelector('.dc-dots-sec .dc-hud');
     if (sheet && machine && hud) {
       // matrice 15 × 8 come quella delle stampanti: alcuni punti sì, altri no
       const r = seeded(2017);

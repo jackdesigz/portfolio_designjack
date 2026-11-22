@@ -56,11 +56,10 @@
     ['.hero-title', 'Prima l’idea, poi la forma. Poi si gioca.'],
     // Canale G
     ['.gx-sticker', 'Staccalo pure, tanto si riattacca.'],
-    ['.gx-can', 'Scegli il tuo verde.'],
-    ['#gx-wall-clean', 'Davvero? Era un capolavoro.'],
-    ['#gx-spray-canvas', 'Tieni premuto e spruzza!'],
-    ['a[href="#gx-wall"]', 'Bomboletta pronta, si va al muro.'],
-    ['.gx-paper', 'Il mio manifesto. Breve, ma sincero.'],
+    ['a[href="#gx-about"]', 'Eccomi, ti racconto un po’ di me.'],
+    ['.gx-id-item', 'Questo sono io, in versione documento.'],
+    ['.gx-do-proj', (el) => `Apri ${el.textContent.trim()}: ti porto lì.`],
+    ['.gx-rule', 'Così lavoro, più o meno sempre.'],
     // Canale B
     ['.bx-mail-pill', 'Scrivimi, rispondo davvero.'],
     ['.bx-copy', 'Copia e incolla, facile.'],
@@ -159,24 +158,28 @@
     goHome(ch) {
       this.channel = ch;
       this.home = this.homes[ch] || this.homes.r;
-      this.docked = false;
       this.dismissed = false;
-      this.pilot.classList.remove('is-docked');
-      this.home.appendChild(this.pilot);
-      this.setTrapped(ch === 'b');
       this.avatar.hideBubble();
       this.avatar.setTint(ch);
       this.avatar.setMessages(MESSAGES[ch]);
-      this.avatar.onResize();
-      // cambio stile dal catalogo: l'avatar resta agganciato sopra al catalogo
+      // cambio stile dal catalogo: l'avatar resta agganciato sopra al catalogo e non passa
+      // dalla casa del canale. Passarci lo ridimensionava sulla casa (grande) e poi, rimesso
+      // in basso a sinistra, restava disegnato troppo grande: il ResizeObserver non se ne
+      // accorge perché prima e dopo la misura è la stessa
       if (this.pinned) {
-        if (this.trapped) this.setTrapped(false);
+        this.setTrapped(false);
         this.dockedBeforePin = false;
-        document.body.appendChild(this.pilot);
+        if (this.pilot.parentNode !== document.body) document.body.appendChild(this.pilot);
         this.pilot.classList.add('is-docked');
         this.docked = true;
+        this.avatar.onResize();
         return;
       }
+      this.docked = false;
+      this.pilot.classList.remove('is-docked');
+      this.home.appendChild(this.pilot);
+      this.setTrapped(ch === 'b');
+      this.avatar.onResize();
       this.queueCheck && this.queueCheck();
     }
 

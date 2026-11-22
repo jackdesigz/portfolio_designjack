@@ -79,6 +79,10 @@ class CapsuleOpeningStage {
     if (project.capsuleColor === 'purple') colHex = 0x8338EC;
     if (project.capsuleColor === 'black') colHex = 0x2A2724;
     if (project.capsuleColor === 'pink') colHex = 0xF593B4;
+    if (project.capsuleColor === 'sky') colHex = 0x7BA3E0;
+    if (project.capsuleColor === 'coral') colHex = 0xE2614C;
+    if (project.capsuleColor === 'gold') colHex = 0xC49A55;
+    if (project.capsuleColor === 'white') colHex = 0xF2F0EA;
 
     const capMat = new THREE.MeshStandardMaterial({
       color: colHex,

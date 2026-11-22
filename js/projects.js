@@ -5,6 +5,269 @@
 
 window.PROJECT_REGISTRY = [
   {
+    id: 'r-24',
+    code: 'R-24 // WEB-DESIGNJACK',
+    title: 'DESIGNJACK — IL PORTFOLIO',
+    category: 'Web Design',
+    year: '2026',
+    shapeName: 'RGB Prism',
+    colorHex: '#E63946',
+    capsuleColor: 'red',
+    style: 'Tre canali in uno',
+    palette: ['#F2EBDD', '#E63946', '#151413', '#B8F23A', '#0F2A1D', '#28C3FF', '#0A4F8C'],
+    software: ['JavaScript', 'Three.js', 'HTML5 Canvas'],
+    stack: ['JavaScript', 'Three.js', 'HTML5 Canvas', 'Web Design', 'Interaction Design', 'Cultura visiva', 'Intelligenza artificiale', 'Web Audio'],
+    description: 'Il sito che stai guardando: un portfolio in tre canali, R, G e B, ognuno con il suo carattere. L’ho costruito unendo design, cultura visiva e intelligenza artificiale.',
+    details: 'Il canale R (Realizzazioni e Ricreazione) mescola il Bauhaus con i monitor CRT e i giochi arcade: i lavori sono fogli appesi a un filo e capsule da pescare con una claw machine. Il canale G è il lato organico e street, dove racconto chi sono. Il canale B, per i contatti, è Frutiger Aero marino: vetro lucido, bolle e acqua. Il codice è nato in dialogo con un assistente di intelligenza artificiale: io ho deciso riferimenti, regole e dettagli visivi, l’AI li ha tradotti in codice, e ho provato e corretto ogni passaggio.',
+    coverImage: 'assets/projects/designjack/cover.jpg',
+    capsuleImage: 'assets/projects/designjack/capsule.png',
+    gallery: {
+      layout: 'designjack',
+      base: 'assets/projects/designjack/',
+      kicker: 'Web Design // Il sito che stai guardando',
+      heroTitle: 'Un sito, tre canali.',
+      lead: 'Il mio portfolio non ha una sola faccia: R per i lavori e i giochi, G per raccontarmi, B per i contatti. Il nome resta, lo stile cambia. L’ho costruito unendo <strong>design</strong>, <strong>cultura visiva</strong> e <strong>intelligenza artificiale</strong>.',
+      vennTitle: 'Design × Cultura visiva × AI',
+      venn: {
+        design: { title: 'Design', text: 'Il progetto: l’idea dei tre canali, le griglie, i caratteri, i colori, le interazioni. Ogni scelta parte da cosa deve fare la pagina: mostrare i lavori, raccontarmi, farmi trovare.' },
+        culture: { title: 'Cultura visiva', text: 'I riferimenti: il Bauhaus e il costruttivismo, i monitor CRT e gli arcade per R; graffiti, adesivi e forme organiche per G; il Frutiger Aero, l’acqua e le bolle dei primi anni Duemila per B.' },
+        ai: { title: 'AI', text: 'Lo strumento: il codice è nato in dialogo con un assistente di intelligenza artificiale. Io descrivevo cosa volevo e come doveva sembrare, l’AI scriveva il codice, io lo provavo e chiedevo correzioni, un giro dopo l’altro.' },
+        center: { title: 'designjack', text: 'Nessuna delle tre basta da sola. Senza un progetto l’AI fa pagine qualunque; senza riferimenti il progetto è vuoto; senza uno strumento i riferimenti restano su una tavola. Il sito sta nel mezzo.' }
+      },
+      moodTitle: 'Il moodboard',
+      moodText: 'Quattro famiglie di immagini, tre canali. Passa sulle zone per vedere dove sono finite.',
+      zones: [
+        { ch: 'r', x: 37, y: 4, w: 26, h: 24, title: 'Schermi e arcade', text: 'Il display arancione di un vecchio cellulare, una griglia al neon, una scritta su un monitor CRT. Nel canale R diventano le scanline, la claw machine e i giochi.' },
+        { ch: 'r', x: 5, y: 44, w: 24, h: 54, title: 'Bauhaus e costruttivismo', text: 'Cerchi, triangoli e rettangoli in rosso, giallo e blu su carta. Nel canale R diventano la carta crema, le ombre dure e le forme geometriche.' },
+        { ch: 'g', x: 40, y: 47, w: 25, h: 40, title: 'Verde e graffiti', text: 'Onde verdi, segni di spray, adesivi. Nel canale G diventano il muro verde notte, i blob che respirano e la tag a spray.' },
+        { ch: 'b', x: 75, y: 50, w: 24, h: 43, title: 'Acqua e Frutiger Aero', text: 'Un vinile azzurro, l’acqua, le bolle. Nel canale B diventano il vetro lucido, il mare e le bolle che salgono.' }
+      ],
+      channelsTitle: 'Tre canali',
+      channels: [
+        { key: 'r', name: 'R — Realizzazioni e Ricreazione', shot: 'shot-r.jpg', more: 'shot-claw.jpg', text: 'I lavori e i giochi. Carta crema, ombre dure e le forme del Bauhaus, dentro finestre con le scanline di un vecchio monitor. I progetti sono fogli appesi a un filo e capsule da pescare con una claw machine.', refs: 'Bauhaus · costruttivismo · monitor CRT · arcade anni ’80' },
+        { key: 'g', name: 'G — Germogli e Graffiti', shot: 'shot-g.jpg', more: 'shot-gabout.jpg', text: 'Il lato organico e street, dove racconto chi sono e come lavoro. Un muro verde notte con forme che respirano, adesivi da staccare e la tag a spray.', refs: 'graffiti · sticker art · forme organiche · verde' },
+        { key: 'b', name: 'B — Bolle e Bottiglie', shot: 'shot-b.jpg', more: 'shot-bdeep.jpg', text: 'I contatti, in Frutiger Aero marino: cielo, acqua, vetro lucido e bolle. Si può anche lanciare un messaggio in bottiglia.', refs: 'Frutiger Aero · primi anni 2000 · acqua · bolle' }
+      ],
+      stepsTitle: 'Come l’ho costruito',
+      steps: [
+        { who: 'me', whoLabel: 'io', title: 'Riferimenti', text: 'Raccolgo le immagini nel moodboard e le divido in famiglie: ognuna diventa un canale.' },
+        { who: 'me', whoLabel: 'io', title: 'Regole', text: 'Per ogni canale decido colori, caratteri e comportamenti: carta e ombre dure in R, muro verde e spray in G, vetro e bolle in B.' },
+        { who: 'both', whoLabel: 'io + AI', title: 'Prototipo', text: 'Descrivo all’AI cosa deve succedere e come deve sembrare; lei scrive il codice e io lo apro nel browser.' },
+        { who: 'both', whoLabel: 'io + AI', title: 'Prova e correggi', text: 'Provo su computer e telefono e segnalo cosa non va: un’animazione che scatta, un ritaglio sbagliato, un colore fuori tono. Si rifà finché funziona.' },
+        { who: 'me', whoLabel: 'io', title: 'Contenuti', text: 'Ogni progetto ha una pagina tutta sua, nello stile del progetto, con immagini e testi presi dai file originali.' }
+      ],
+      featuresTitle: 'Dentro il sito',
+      features: [
+        { src: 'shot-wire.jpg', title: 'Il filo dei progetti', text: 'I lavori appesi come fogli: passandoci sopra si illuminano, cliccandoli si apre la scheda.' },
+        { src: 'shot-claw.jpg', title: 'La claw machine', text: 'Ogni progetto è una capsula: la peschi e si apre la sua scheda.' },
+        { src: 'shot-catalog.jpg', title: 'Il catalogo', text: 'Tutto l’archivio in griglia, con i filtri per disciplina e lo stile R, G o B da cambiare al volo.' },
+        { src: 'shot-project.jpg', title: 'Le schede dei progetti', text: 'L’intestazione segue il canale, il resto prende lo stile del progetto.' },
+        { src: 'shot-gabout.jpg', title: 'L’avatar', text: 'Un avatar 3D che saluta, commenta quello che guardi e ti segue in basso a sinistra.' },
+        { src: 'shot-bdeep.jpg', title: 'I contatti', text: 'Scrivermi, copiare l’indirizzo o mandare un messaggio in bottiglia.' }
+      ],
+      stack: ['HTML', 'CSS', 'JavaScript', 'Three.js', 'Canvas', 'Web Audio', 'nessun framework']
+    }
+  },
+  {
+    id: 'r-23',
+    code: 'R-23 // COLLAB-IKIGAI',
+    title: 'IKIGAI × DESIGNJACK — YŪGEN / KŌKOTSU',
+    category: 'Collaborations',
+    year: '2025',
+    shapeName: 'Chrome Blob',
+    colorHex: '#DE6450',
+    capsuleColor: 'coral',
+    style: 'Surreale & 3D',
+    palette: ['#D3D3D1', '#BC4138', '#DE6450', '#C97BAE', '#6E3F7E', '#1F1A1C'],
+    software: ['Blender'],
+    stack: ['Blender', 'Rendering 3D', 'Copertina', 'Spotify Canvas', 'Motion', 'Musica'],
+    description: 'La copertina e il Canvas per Spotify di Yūgen (幽玄) e Kōkotsu (恍惚), due singoli di Ikigai: un personaggio low-poly con un mantello a pixel, in un deserto rosso sotto nuvole di cromo liquido.',
+    details: 'Tutto è costruito in 3D. Il personaggio ha un volto fotografico spezzato in poligoni, un braccio meccanico e un mantello di pixel colorati; attorno, picchi rossi appuntiti e forme cromate che fluttuano e riflettono il paesaggio. Il Canvas, il video in loop che Spotify mostra durante l’ascolto, riprende la stessa scena: la camera gira piano attorno al personaggio, il mantello si muove e le nuvole scorrono.',
+    coverImage: 'assets/projects/ikigai-yugen-kokotsu/cover.jpg',
+    capsuleImage: 'assets/projects/ikigai-yugen-kokotsu/capsule.png',
+    gallery: {
+      layout: 'ikigai',
+      base: 'assets/projects/ikigai-yugen-kokotsu/',
+      kicker: 'Collaborations // Ikigai × designjack',
+      lead: 'La copertina e il Canvas per Spotify di due singoli di Ikigai: un personaggio low-poly in un deserto rosso, sotto nuvole di cromo liquido.',
+      credit: 'Musica di Ikigai — grafiche di designjack',
+      artist: 'Ikigai',
+      tracks: [
+        { title: 'Yūgen', kanji: '幽玄', reading: 'yūgen', meaning: 'Una parola dell’estetica giapponese: la bellezza profonda e misteriosa, quella che si intuisce senza poterla spiegare del tutto.' },
+        { title: 'Kōkotsu', kanji: '恍惚', reading: 'kōkotsu', meaning: 'Estasi, rapimento: lo stato in cui si resta incantati, come fuori dal tempo.' }
+      ],
+      listenTitle: 'Ascolta',
+      listenText: 'Su Spotify, mentre ascolti, al posto della copertina parte il <strong>Canvas</strong>: un video verticale di pochi secondi che si ripete. Qui la camera gira piano attorno al personaggio, il mantello si muove e le nuvole di cromo scorrono.',
+      listenNote: 'I brani sono gli stessi del disco in alto a destra: i pulsanti di questa pagina comandano quel player.',
+      coverTitle: 'La copertina',
+      spots: [
+        { x: 61, y: 37, title: 'Il volto', text: 'Una foto di un volto vero, spezzata nei poligoni di una testa low-poly.' },
+        { x: 55, y: 57, title: 'Il mantello', text: 'Un mantello di pixel colorati, come un glitch che diventa stoffa.' },
+        { x: 70, y: 66, title: 'Il braccio', text: 'Un braccio meccanico nero: il personaggio è mezzo umano e mezzo macchina.' },
+        { x: 20, y: 14, title: 'Le nuvole di cromo', text: 'Forme di metallo liquido che fluttuano nel cielo grigio e riflettono il rosso del paesaggio.' },
+        { x: 29, y: 50, title: 'Il deserto rosso', text: 'Picchi rossi appuntiti e un pavimento salmone: un paesaggio irreale, quasi su un altro pianeta.' }
+      ],
+      wordsTitle: 'Due parole'
+    }
+  },
+  {
+    id: 'r-22',
+    code: 'R-22 // GRAPHIC-BOSCH',
+    title: 'HIERONYMUS BOSCH × VIVIENNE WESTWOOD',
+    category: 'Graphic Design',
+    year: '2025',
+    shapeName: 'Golden Orb',
+    colorHex: '#B08D57',
+    capsuleColor: 'gold',
+    style: 'Concept & Gioielleria',
+    palette: ['#D6CFC6', '#F1EEEA', '#1C1916', '#B08D57', '#2E6B4F'],
+    software: ['Blender'],
+    stack: ['Blender', 'Modellazione 3D', 'Rendering 3D', 'Concept', 'Gioielleria', 'Storia dell’arte'],
+    description: 'Un concept di collaborazione tra Vivienne Westwood e Hieronymus Bosch: un ciondolo Orb in cui il globo diventa l’uovo spaccato di Bosch, modellato e renderizzato in Blender, e un Armor Ring con il Giardino delle delizie.',
+    details: 'Nato come progetto d’esame di Storia dell’arte moderna. Westwood e Bosch usano entrambi simboli forti per andare contro il gusto del loro tempo, ed entrambi sono ancora vivi nella cultura pop: da qui l’idea di unirli in un gioiello. Ho modellato il ciondolo in Blender, sostituendo il globo dell’Orb con l’uovo spaccato dell’uomo-albero, e l’ho messo in scena nello spazio, sopra la Terra, curando luci e composizione. La seconda proposta porta il Giardino delle delizie sull’Armor Ring, dall’alto verso il basso: paradiso, giardino, inferno.',
+    coverImage: 'assets/projects/bosch-westwood/cover.jpg',
+    capsuleImage: 'assets/projects/bosch-westwood/capsule.png',
+    gallery: {
+      layout: 'bosch',
+      base: 'assets/projects/bosch-westwood/',
+      kicker: 'Concept di collaborazione — render 3D in Blender — 2025',
+      heroNote: 'Render in Blender — Jacopo “Jack” Febi',
+      rootsText: 'Il progetto è nato per l’esame di Storia dell’arte moderna (05/09/2025): prima di disegnare il gioiello ho studiato i due autori. Bosch, il «creatore di diavoli», e Vivienne Westwood, dal punk all’Orb, in breve.',
+      boschQuote: '“creatore di diavoli”',
+      boschText: [
+        'Hieronymus Bosch, nato come Jeroen van Aken, è stato un pittore nordeuropeo (sud dei Paesi Bassi) brillante e originale, le cui opere rivelano un’iconografia complessa e uno stile individuale. Vissuto tra il 1450 e il 1516, è stato riconosciuto come un fantasioso <strong>«creatore di diavoli»</strong> e un potente inventore di scene apparentemente senza senso, ma ricche di significato.',
+        'Le sue pitture, che a prima vista possono sembrare il frutto di un incubo, sono rappresentazioni visive della <strong>follia e del peccato umano</strong>, veicolati tramite complessi simbolismi. La sua visione del mondo era pessimista e severamente moralista: non aveva illusioni sulla razionalità della natura umana.'
+      ],
+      phases: [
+        {
+          title: 'Opere giovanili',
+          sub: 'Primi accenni al creatore di demoni',
+          text: 'I primi lavori mostrano una tecnica ancora in via di sviluppo, con un disegno e una composizione a volte incerti. Le scene, ambientate in contesti calmi e quotidiani, hanno un aspetto convenzionale, ma ci sono già i <strong>panorami</strong> e le <strong>zone d’ombra</strong> in cui si celano i primi simboli e le prime creature.',
+          works: [
+            { src: 'ecce-homo.jpg', cap: 'Ecce Homo, ca. 1475–1485, tempera e olio su quercia, Städel Museum, Francoforte' },
+            { src: 'adorazione-magi.jpg', cap: 'Adorazione dei Magi, ca. 1475, olio e oro su quercia, Metropolitan Museum of Art, New York' }
+          ]
+        },
+        {
+          title: 'Opere di maturità',
+          sub: 'Picco massimo del suo stile artistico',
+          text: 'È nella maturità che Bosch crea i suoi capolavori più complessi e visionari. I grandi trittici, come il <strong>Giardino delle delizie</strong>, il <strong>Trittico del fieno</strong> e le <strong>Tentazioni di Sant’Antonio</strong>, sono un’eruzione di fantasia: scene apocalittiche di caos e incubo contrapposte a raffigurazioni idilliache, con figure aggraziate, colori sottili e una composizione fluida.',
+          works: [
+            { src: 'carro-fieno.jpg', cap: 'Il carro di fieno, ca. 1500–1516, olio su tavola, Museo del Prado, Madrid' },
+            { src: 'giardino-inferno.jpg', cap: 'Giardino delle delizie, l’inferno, ca. 1490, olio su tavola, Museo del Prado, Madrid' }
+          ]
+        },
+        {
+          title: 'Opere finali',
+          sub: 'Cambio di prospettiva',
+          text: 'L’ultimo periodo è segnato da un radicale cambiamento di scala: Bosch lascia i vasti paesaggi abitati da centinaia di piccole figure per concentrarsi su <strong>primi piani drammatici</strong>. Nell’Incoronazione di spine e in Cristo che porta la croce i gruppi di figure sono compattati contro il piano del quadro, e lo spettatore partecipa fisicamente e psicologicamente all’evento.',
+          works: [
+            { src: 'cristo-croce.jpg', cap: 'Cristo che porta la croce, ca. 1510, olio su tavola, Museo di Belle Arti, Gand' },
+            { src: 'cristo-deriso.jpg', cap: 'Cristo deriso, ca. 1510, olio su tavola, National Gallery, Londra' }
+          ]
+        }
+      ],
+      punk: [
+        { year: '1971', title: 'Let it Rock, SEX, Seditionaries', src: 'westwood-punk.jpg', cap: 'Vivienne Westwood negli anni del punk', text: 'Vivienne Westwood e Malcolm McLaren si ribellano alla moda hippie e nel 1971 aprono «Let it Rock»: abiti per i Teddy Boy, poi la cultura biker, il fetish e il bondage. Nel 1974 il negozio diventa «SEX», poi «Seditionaries»: con i <strong>Sex Pistols</strong> nasce un’estetica «fai da te» di slogan e immagini provocatorie, in cui zip e cinghie diventano simboli di ribellione.' },
+        { year: 'Dopo', title: 'Corsetti contro la borghesia', src: 'westwood-passerella.jpg', cap: 'Abiti di Vivienne Westwood in passerella', text: 'Dopo la rottura con McLaren, il suo stile guarda alla moda dei secoli passati: i <strong>corsetti</strong> servono a criticare e ridicolizzare la borghesia.' },
+        { year: 'Orb', title: 'Il simbolo', src: 'orb.jpg', cap: 'The Orb, il ciondolo simbolo di Vivienne Westwood', text: 'Vivienne ha sempre usato simboli e icone per esprimersi. <strong>The Orb</strong>, creato da lei, porta la tradizione verso il futuro; i suoi capi e gioielli influenzano ancora oggi la cultura pop del punk e della ribellione.' },
+        { year: '2005', title: 'NANA', src: 'nana.jpg', cap: 'I personaggi di NANA con abiti e gioielli Westwood', text: 'Nel manga <strong>NANA</strong> (dal 2005) i personaggi indossano vestiti e gioielli identici a quelli di Vivienne Westwood.' }
+      ],
+      ideaText: [
+        'L’idea fonde i simbolismi e la cultura punk ribelle di Vivienne Westwood con i grandi simbolismi di Hieronymus Bosch, per raccontare la <strong>mente umana, il peccato e la ribellione</strong>.',
+        'Ho scelto un simbolo per parte: <strong>The Orb</strong>, il globo con la croce che è il marchio di Westwood, e l’<strong>uovo spaccato</strong> dell’uomo-albero del Giardino delle delizie. Nel nuovo ciondolo l’uovo prende il posto del globo.'
+      ],
+      renders: [
+        { src: 'render-1.jpg', label: 'Vista 1', cap: 'Il ciondolo nello spazio, sopra la Terra' },
+        { src: 'render-2.jpg', label: 'Vista 2', cap: 'I due ciondoli, oro e nero' },
+        { src: 'render-3.jpg', label: 'Vista 3', cap: 'Il ciondolo nero' },
+        { src: 'render-4.jpg', label: 'Vista 4', cap: 'Il ciondolo nero, da lontano' },
+        { src: 'blender.jpg', label: 'Blender', cap: 'La scena in Blender: camera, luci e composizione', blender: true }
+      ],
+      renderText: 'Ho modellato il ciondolo in <strong>Blender</strong>: l’anello dorato con le pietre verdi, la croce, l’uovo spaccato al posto del globo, le catene. Poi l’ho messo in scena nello spazio, sopra la Terra, con le sfere che fluttuano attorno: luci e inquadrature sono pensate per far risaltare l’Orb e l’uovo, i due simboli più forti dei due autori. Scegli una vista, l’ultima è la scena in Blender.',
+      ringText: 'Un’altra proposta dà ancora più spazio all’artista: portare un’intera opera, il <strong>Giardino delle delizie</strong>, nell’iconico Armor Ring di Vivienne. L’anello racconta la storia del trittico dall’alto verso il basso, con il passaggio fra i vari regni dell’opera. Passa sui tre pannelli.',
+      realms: [
+        { name: 'Paradiso', text: 'Il pannello di sinistra: il giardino dell’Eden, dove Dio presenta Eva ad Adamo. Sull’anello è la fascia più in alto.' },
+        { name: 'Giardino', text: 'Il pannello centrale, il Giardino delle delizie: un mondo di piaceri, frutti giganti e corpi. Sull’anello sta nel mezzo.' },
+        { name: 'Inferno', text: 'Il pannello di destra: l’inferno, buio e pieno di demoni. Sull’anello chiude in basso, verso la mano.' }
+      ],
+      refs: [
+        'Kathleen Kuiper, Hieronymus Bosch, Enciclopedia Britannica, 05/08/2025',
+        'Michelangelo Manazza, Il Cristo deriso di Hieronymus Bosch, artslife, 29/05/2021',
+        'Paul Vandenbroeck, Bosch Hieronymus, Oxford Art — Grove Art Online, 28/05/2015',
+        'Scottie Andrew, How Vivienne Westwood dressed the Sex Pistols and shaped punk, CNN Style, 30/12/2022',
+        'Vivienne Westwood, sito web ufficiale'
+      ]
+    }
+  },
+  {
+    id: 'r-20',
+    code: 'R-20 // BRAND-GELATO',
+    title: 'GELATO DI PIAZZA',
+    category: 'Brand Design',
+    year: '2025',
+    shapeName: 'Scoop Sphere',
+    colorHex: '#5881C1',
+    capsuleColor: 'sky',
+    style: 'Fresco & Artigianale',
+    palette: ['#FFF2CC', '#5881C1', '#2A2B2A', '#FCFCFC'],
+    software: ['Adobe Illustrator', 'Adobe Photoshop'],
+    stack: ['Adobe Illustrator', 'Adobe Photoshop', 'Logo Design', 'Pattern', 'Packaging', 'Web Design', 'Wireframe'],
+    description: 'Identità visiva per Gelato di Piazza, una gelateria artigianale di Sesto Fiorentino: il marchio con un uccellino e la G che abbraccia la parola, un pattern, coppette, grembiule e il sito.',
+    details: 'Il logo nasce dalla statua della piazza con il nome in corsivo; poi passa a un bastoncino in DIN Condensed Bold, con la G alta che contiene GELATO, e la statua lascia il posto a un uccellino crema e blu. Tre colori (crema, azzurro e inchiostro), un pattern di uccellini per coppette e grembiule, e il sito, pensato prima in wireframe: menu, slider dei banner con la colata di gelato, il benvenuto e il pulsante per prenotare.',
+    coverImage: 'assets/projects/gelato-di-piazza/cover.jpg',
+    capsuleImage: 'assets/projects/gelato-di-piazza/capsule.png',
+    gallery: {
+      layout: 'gelato',
+      base: 'assets/projects/gelato-di-piazza/',
+      kicker: 'Brand Design // Gelateria artigianale a Sesto Fiorentino',
+      lead: 'Il marchio di una gelateria artigianale: un uccellino crema e blu, una G che abbraccia la parola e un pattern che finisce su coppette, grembiule e sito.',
+      moodTitle: 'Il moodboard',
+      moodText: 'Il punto di partenza: la torre e la piazza di Sesto Fiorentino con la sua fontana, la crema del gelato che si avvolge, una spirale blu, onde disegnate a mano, un martin pescatore e un cono a tre gusti. Dominano il crema e l’azzurro.',
+      stepsTitle: 'Dalla statua all’uccellino',
+      steps: [
+        { title: 'La statua', src: 'processo-1.jpg', alt: 'Le prime prove: la statua della piazza accanto a Gelato di Piazza scritto in corsivo', text: 'Il primo logo parte dalla statua della piazza: la sua sagoma accanto a «Gelato di Piazza» scritto in corsivo, in blu, in rosso e in nero.' },
+        { title: 'Il corsivo', src: 'processo-2.jpg', alt: 'Varianti del logo in corsivo, in blu, rosso e nero', text: 'Il corsivo si prova dritto e ondulato, con la palette crema, rosso, azzurro e nero; la statua si riduce a un segno di pennello.' },
+        { title: 'La G', src: 'processo-3.jpg', alt: 'Il nome in DIN Condensed con la G alta, accanto alla statua in tanti colori', text: 'Cambio di rotta: il nome passa a un bastoncino, il <strong>DIN Condensed Bold</strong>, con la G alta che abbraccia ELATO. La statua prova tutti i colori.' },
+        { title: 'L’uccellino', src: 'processo-4.jpg', alt: 'Il logo con un uccellino al posto della statua, in diverse combinazioni di colore', text: 'Al posto della statua arriva un uccellino, più semplice e più simpatico, che si riconosce anche piccolo. Si cercano i colori giusti.' },
+        { title: 'Il marchio', src: 'processo-5.jpg', alt: 'Il marchio finale: l’uccellino crema e blu accanto a GELATO DI PIAZZA', text: 'L’uccellino crema con l’ala e la zampa blu, la G che contiene GELATO e DI PIAZZA sotto: il marchio finale.' }
+      ],
+      markTitle: 'Il marchio',
+      markText: 'Un uccellino crema e blu accanto a GELATO DI PIAZZA in DIN Condensed Bold: la G alta abbraccia ELATO, DI PIAZZA sta sotto. L’uccellino da solo diventa l’icona, anche in negativo e su nero.',
+      buildText: 'Il corpo è un semicerchio, la testa un semicerchio più piccolo, la zampa un rettangolo: poche forme geometriche, contorno uguale ovunque.',
+      versions: [
+        { key: 'crema', name: 'Classico', bg: '#FFF2CC' },
+        { key: 'inv', name: 'Invertito', bg: '#FCFCFC' },
+        { key: 'scuro', name: 'Su scuro', bg: '#2A2B2A' }
+      ],
+      paletteTitle: 'Colori e caratteri',
+      colors: [
+        { name: 'Crema', hex: '#FFF2CC', rgb: 'R255 G242 B204', use: 'Fondo e corpo dell’uccellino' },
+        { name: 'Azzurro', hex: '#5881C1', rgb: 'R88 G129 B193', use: 'Marchio, ala e pulsanti', ink: '#FFF2CC' },
+        { name: 'Inchiostro', hex: '#2A2B2A', rgb: 'R42 G43 B42', use: 'Contorni e testi', ink: '#FFF2CC' },
+        { name: 'Bianco', hex: '#FCFCFC', rgb: 'R252 G252 B252', use: 'Fondo dei testi del sito' }
+      ],
+      fonts: [
+        { use: 'Marchio e titoli', name: 'DIN Condensed Bold', sample: 'Scopri il nostro sapore artigianale!', cls: 'is-din' },
+        { use: 'Testi del sito', name: 'Akzidenz Grotesk CE Roman', sample: 'Gusto autentico, sapori veri e freschezza', cls: 'is-akz' }
+      ],
+      patternTitle: 'Il pattern',
+      patternText: 'L’uccellino si ripete inclinato su fondo azzurro e diventa il pattern di coppette e grembiule. Passaci sopra: si girano a guardarti. Cliccane uno e saltella.',
+      siteTitle: 'Il sito',
+      siteText: 'La home: logo e social in alto, il menu, lo slider dei banner con la colata di gelato, poi il benvenuto con l’orario e il pulsante per prenotare. Lo slider qui sotto funziona: prova le frecce.',
+      menu: ['HOME', 'GELATI', 'CONSEGNA A DOMICILIO', 'CONTATTI'],
+      banners: [
+        { src: 'banner-1.jpg', alt: 'Banner: Gelato artigianale, benvenuti nel cuore del gusto autentico di Sesto' },
+        { src: 'banner-2.jpg', alt: 'Banner: Produzione propria a casa tua, consegne dei gelati artigianali in vaschette apposite' },
+        { src: 'banner-3.jpg', alt: 'Banner: Contattaci, siamo disponibili, tramite la scheda Contatti del sito' }
+      ],
+      siteBoxTitle: 'Scopri il nostro sapore artigianale!',
+      siteBoxText: 'Benvenuti nel cuore del <strong>gusto autentico</strong> a Sesto Fiorentino. Ogni nostro gelato artigianale è un viaggio nei <strong>sapori veri</strong>, preparato con passione e ingredienti selezionati. Lasciati conquistare dalla cremosità e dalla <strong>freschezza</strong> che solo la vera tradizione sa offrire.',
+      siteHours: 'Orario: 9:00 - 18:30 Tutti i giorni',
+      compareTitle: 'Dal wireframe al mockup'
+    }
+  },
+  {
     id: 'r-19',
     code: 'R-19 // EDITORIAL-MAO',
     title: 'MAO — MUSEO D’ARTE ORIENTALE',
@@ -145,13 +408,14 @@ window.PROJECT_REGISTRY = [
         { t: 'Nine Inch Nails', p: 28, c: '#2E9A55' }
       ],
       readerTitle: 'Sfoglia la rivista',
-      cutTitle: 'Taglia il codice',
-      cutText: [
-        'Il nome della rivista viene da <strong>William S. Burroughs</strong>: per lui il linguaggio era un codice imposto dal potere, e decodificare voleva dire smontarlo, leggerlo controcorrente, sovvertirlo.',
-        'Burroughs lo smontava anche con le forbici: il <strong>cut-up</strong>, un testo tagliato a strisce e rimescolato. Prova con la sua frase.'
+      decTitle: 'Decoder',
+      decText: [
+        'Il nome della rivista non è casuale: deriva direttamente dalle teorie sulla comunicazione di William S. Burroughs, lo scrittore americano che più di ogni altro aveva trasformato il linguaggio in un campo di battaglia politico. Per Burroughs, il linguaggio non è uno strumento neutro — è un sistema di controllo, un codice imposto dal potere per plasmare la realtà e il pensiero. Decodificare significa allora smontare quel codice, leggerlo controcorrente, sovvertirlo.',
+        'La rivista raccoglieva questa eredità e la applicava al presente: di fronte a un mondo sempre più dominato da tecnologie opache, media controllati e sistemi economici incomprensibili ai più, Decoder si proponeva come strumento critico per leggere ciò che stava dietro la superficie. Non si trattava solo di capire la realtà, ma di modificarla — restituendo ai lettori gli strumenti per decifrare, e quindi per agire.',
+        'Il titolo era insomma un programma: un invito a non accettare passivamente i codici del potere, ma a imparare a smontarli.'
       ],
-      cutLines: ['Per Burroughs,', 'il linguaggio', 'non è uno strumento neutro:', 'è un sistema di controllo,', 'un codice imposto dal potere', 'per plasmare la realtà', 'e il pensiero.'],
-      cutCaption: '“Decoder”, film del 1984 che trae spunto dalle idee di Burroughs (pag. 7)',
+      decCaption: '“Decoder” Film del 1984 è un film che trae spunto dalle idee di Burroughs',
+      decChannel: 84,
       dotsTitle: 'Sapevi che...',
       dotsText: [
         'Ogni volta che stampi un documento a colori, potresti star lasciando una firma invisibile sul foglio. Si chiamano Printer Tracking Dots, o Machine Identification Code, e sono micropunti gialli stampati in pattern precisi dalla maggior parte delle stampanti laser a colori. Invisibili a occhio nudo, diventano visibili sotto luce blu o ultravioletta e codificano informazioni come il numero seriale della stampante e la data e l’ora esatte della stampa.',

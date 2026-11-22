@@ -11,7 +11,7 @@
 
   const INK = '#151413', PAPER = '#F7F1E4', PAPER_D = '#E2D6BD';
   const RED = '#D93D2A', YEL = '#EEA824', BLU = '#1D3557', GREEN = '#3CCB6E';
-  const CAP = { red: '#D2381F', yellow: '#F0A51C', blue: '#2B62C9', green: '#18A58F', purple: '#6E36C9', black: '#26231F', pink: '#F08FB0' };
+  const CAP = { red: '#D2381F', yellow: '#F0A51C', blue: '#2B62C9', green: '#18A58F', purple: '#6E36C9', black: '#26231F', pink: '#F08FB0', sky: '#6F97D6', coral: '#E2614C', gold: '#B8935A', white: '#F2F0EA' };
 
   // nella macchina ci sono solo i progetti veri: quelli con un'immagine per la capsula
   const clawProjects = () => {

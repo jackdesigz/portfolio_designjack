@@ -615,6 +615,7 @@
   inset: -20%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 4px;
   transform: rotate(-8deg);
   font-size: 2.2rem;
@@ -625,15 +626,21 @@
 }
 
 .mg-pattern span {
-  display: block;
-  translate: calc(var(--row) * -37px) 0;
-  animation: mg-slide 26s linear infinite;
+  display: flex;
+  flex: none;
+  width: max-content;
+  /* righe sfalsate: ognuna parte da un punto diverso del suo giro */
+  animation: mg-slide 90s linear infinite;
+  animation-delay: calc(var(--row) * -7.3s);
 }
+.mg-pattern i { font-style: normal; white-space: pre; }
 
 .mg-pattern span:nth-child(odd) { animation-direction: reverse; }
 
+/* metà della riga = una copia intera: il giro si chiude senza scatti */
 @keyframes mg-slide {
-  to { transform: translateX(-300px); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .mg-hero-copy {

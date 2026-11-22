@@ -245,3 +245,59 @@ body.channel-b-active #project-modal-overlay .window-title {
   background: transparent;
   color: var(--bx-navy);
 }
+
+/* =====================================================================
+   CORNICE DELLA SCHEDA: fondo e piede (Competenze, Torna ai progetti)
+   seguono il canale come l'intestazione. La pagina del progetto si
+   attacca all'intestazione e al piede: niente fasce vuote color carta.
+   ===================================================================== */
+/* la pagina del progetto tocca l'intestazione e il piede */
+#modal-project-media-showcase[data-layout] {
+  margin-top: -32px;
+  margin-bottom: -32px;
+}
+#modal-project-media-showcase[data-layout] > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Campari tiene il suo spazio in alto: la scatola sporge sopra la pagina rossa */
+#modal-project-media-showcase[data-layout] > .champar { margin-top: 110px; }
+.project-detail-body:has(> #modal-project-media-showcase[data-layout]) .project-skills-block {
+  padding-top: 34px;
+}
+
+/* ---------- G: lo stesso muro verde notte dell'intestazione ---------- */
+body.channel-g-active .project-modal-card {
+  background-color: var(--gx-deep);
+  background-image: var(--gx-noise), var(--gx-bricks);
+  background-size: 220px 220px, 96px 48px;
+  background-attachment: local, local;
+}
+body.channel-g-active .project-skills-block,
+body.channel-g-active .modal-footer-nav { color: var(--gx-mint); }
+body.channel-g-active .project-skills-block h4 { color: var(--gx-lime); }
+body.channel-g-active .skill-row .tech-badge {
+  color: var(--gx-mint);
+  background: rgba(15, 42, 29, 0.85);
+  border: 2px dashed rgba(157, 191, 158, 0.5);
+}
+body.channel-g-active .modal-footer-nav { border-top: 3px dashed rgba(184, 242, 58, 0.55); }
+
+/* ---------- B: cielo e bolle come l'intestazione ---------- */
+body.channel-b-active .project-modal-card {
+  background:
+    radial-gradient(circle at 12% 30%, rgba(255, 255, 255, 0.55) 0 3px, transparent 4px) 0 0 / 90px 90px,
+    radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.4) 0 5px, transparent 6px) 0 0 / 140px 140px,
+    linear-gradient(180deg, #9FE0FB 0%, #9FE0FB 100%);
+  background-attachment: local, local, local;
+}
+body.channel-b-active .project-skills-block,
+body.channel-b-active .modal-footer-nav { color: var(--bx-ink); }
+body.channel-b-active .project-skills-block h4 { color: var(--bx-navy); }
+body.channel-b-active .skill-row .tech-badge {
+  color: var(--bx-navy);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(234, 248, 255, 0.75) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: inset 0 1px 0 #fff, 0 3px 8px rgba(0, 80, 150, 0.16);
+}
+body.channel-b-active .modal-footer-nav { border-top: 1px solid rgba(255, 255, 255, 0.85); }

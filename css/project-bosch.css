@@ -1,0 +1,450 @@
+/* =====================================================================
+   HIERONYMUS BOSCH × VIVIENNE WESTWOOD (js/projectBosch.js)
+   Come la presentazione: grigio caldo #D6CFC6, avorio #F1EEEA, inchiostro;
+   titoli sottilissimi ad alto contrasto (Italiana al posto di DreamAvenue),
+   testi in Poppins, numeri di pagina e filetti sottili.
+   Nota: nel sito i font passano da --font-main (styles.css lo impone
+   con !important), quindi qui si cambia sempre --font-main.
+   ===================================================================== */
+
+.project-media-showcase[data-layout="bosch"] {
+  gap: 0;
+  margin: 0;
+}
+
+.bw {
+  --bw-stone: #D6CFC6;
+  --bw-ivory: #F1EEEA;
+  --bw-ink: #1C1916;
+  --bw-soft: #6F665D;
+  --bw-gold: #B08D57;
+  --bw-emerald: #2E6B4F;
+  --bw-pad: clamp(20px, 4.4vw, 64px);
+  --bw-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --bw-title: 'Italiana', 'Didot', 'Bodoni 72', serif;
+  --font-main: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+
+  position: relative;
+  margin: 8px calc(-1 * clamp(24px, 3.8vw, 48px)) 8px;
+  background: var(--bw-ivory);
+  color: var(--bw-ink);
+  overflow-x: clip;
+}
+.bw .bw-h,
+.bw .bw-hero-bosch,
+.bw .bw-x,
+.bw .bw-phase-copy h4,
+.bw .bw-vw-title,
+.bw .bw-vw-year,
+.bw .bw-op,
+.bw .bw-realm-name,
+.bw .bw-refs h4 {
+  --font-main: var(--bw-title);
+  font-weight: 400;
+}
+
+.bw [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 1s var(--bw-ease);
+  transition-delay: calc(var(--i, 0) * 0.1s);
+}
+.bw [data-reveal].is-in { opacity: 1; transform: none; }
+
+.bw strong { font-weight: 600; }
+
+/* figure comuni: immagine e didascalia piccola */
+.bw-fig { margin: 0; cursor: zoom-in; }
+.bw-fig img { display: block; width: 100%; height: auto; transition: transform 0.8s var(--bw-ease); }
+.bw-fig:hover img { transform: scale(1.02); }
+.bw-fig figcaption { margin-top: 8px; font-size: 0.72rem; line-height: 1.45; color: var(--bw-soft); }
+
+/* ---------- Apertura: il render a tutta pagina ---------- */
+.bw-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(480px, 52vw, 700px);
+  padding: clamp(28px, 4vw, 56px) var(--bw-pad);
+  overflow: hidden;
+  isolation: isolate;
+  background: #0B0B0B;
+}
+.bw-hero-render {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: 30% center;
+  transform: scale(1.08);
+  transition: transform 0.6s ease-out;
+}
+.bw-hero-card {
+  position: relative;
+  width: min(100%, 560px);
+  margin-left: auto;
+  padding: clamp(22px, 3.4vw, 44px) clamp(20px, 3vw, 40px);
+  background: rgba(241, 238, 234, 0.9);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  text-align: center;
+}
+.bw-hero-title {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(10px, 2vw, 24px);
+  margin: 0;
+}
+.bw-hero-bosch { font-size: clamp(1.7rem, 3.4vw, 2.8rem); line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; }
+.bw-x { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; font-weight: 400; }
+.bw-hero-vw { justify-self: start; width: min(100%, 200px); height: auto; filter: brightness(0.15); }
+.bw-hero-sub {
+  margin: clamp(16px, 2.4vw, 26px) 0 0;
+  font-size: clamp(0.66rem, 0.9vw, 0.78rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+.bw-hint {
+  position: absolute;
+  left: var(--bw-pad);
+  top: clamp(20px, 3vw, 36px);
+  margin: 0;
+  padding: 6px 12px;
+  background: rgba(241, 238, 234, 0.9);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* ---------- testate di sezione: titolo, filetto, pagina ---------- */
+.bw-sec { position: relative; padding: clamp(56px, 7.5vw, 104px) var(--bw-pad); }
+.bw-head {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 30px);
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+.bw-h {
+  margin: 0;
+  font-size: clamp(2.6rem, 6.4vw, 5.4rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.bw-rule { flex: 1; height: 1px; background: var(--bw-ink); opacity: 0.6; }
+.bw-page { margin: 0; font-size: 0.8rem; color: var(--bw-soft); }
+.bw-text { max-width: 64ch; margin: 0 0 26px; font-size: 0.98rem; line-height: 1.7; }
+
+/* ---------- 01 Bosch ---------- */
+.bw-bosch-sec { background: var(--bw-ivory); }
+.bw-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 60px);
+  align-items: center;
+  margin-bottom: clamp(40px, 5vw, 70px);
+}
+.bw-portrait img { filter: sepia(0.15); }
+.bw-intro-text p { max-width: 60ch; margin: 0 0 14px; font-size: 0.98rem; line-height: 1.75; }
+.bw-phases { border-top: 1px solid var(--bw-ink); }
+.bw-phase-tabs { display: flex; flex-wrap: wrap; gap: 0 clamp(16px, 3vw, 44px); margin-bottom: clamp(20px, 3vw, 36px); }
+.bw-phase-tabs button {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px 0 8px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--bw-soft);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.bw-phase-tabs button span { font-size: 0.7rem; }
+.bw-phase-tabs button.is-active { color: var(--bw-ink); border-bottom-color: var(--bw-ink); }
+.bw-phase-tabs button:focus-visible,
+.bw-timeline button:focus-visible,
+.bw-render-thumbs button:focus-visible,
+.bw-realm:focus-visible { outline: 2px solid var(--bw-gold); outline-offset: 3px; }
+.bw-phase {
+  display: none;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(22px, 4vw, 60px);
+  align-items: start;
+}
+.bw-phase.is-active { display: grid; animation: bw-in 0.6s var(--bw-ease); }
+@keyframes bw-in { from { opacity: 0; transform: translateY(12px); } }
+.bw-phase-copy h4 { margin: 0; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 0.95; text-transform: uppercase; }
+.bw-phase-sub { margin: 10px 0 18px; font-size: 0.82rem; color: var(--bw-soft); }
+.bw-phase-copy p:last-child { margin: 0; font-size: 0.98rem; line-height: 1.75; }
+.bw-phase-works { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 22px); align-items: start; }
+
+/* ---------- 02 Bosch e il pop ---------- */
+.bw-pop-sec { background: var(--bw-stone); }
+.bw-pop { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 34px); }
+.bw-pop-card { padding: clamp(18px, 2.6vw, 30px); background: var(--bw-ivory); }
+.bw-pop-logo { display: block; height: clamp(48px, 6vw, 70px); width: auto; max-width: 100%; margin-bottom: 18px; object-fit: contain; object-position: left center; }
+.bw-pop-imgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.bw-pop-card > p { margin: 0; font-size: 0.92rem; line-height: 1.65; }
+
+/* ---------- 03 Vivienne Westwood ---------- */
+.bw-vw-sec { background: var(--bw-ivory); }
+.bw-head.is-vw { align-items: center; }
+.bw-vw-logo { width: clamp(170px, 22vw, 260px); height: auto; filter: brightness(0.12); }
+.bw-timeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 0 0 clamp(22px, 3vw, 36px);
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--bw-ink);
+}
+.bw-timeline li { flex: 1 1 140px; }
+.bw-timeline button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  padding: 18px 12px 10px 0;
+  border: 0;
+  background: none;
+  color: var(--bw-soft);
+  text-align: left;
+  cursor: pointer;
+}
+.bw-timeline button::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--bw-ink);
+  border-radius: 50%;
+  background: var(--bw-ivory);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.bw-timeline b { --font-main: var(--bw-title); font-size: 1.8rem; font-weight: 400; line-height: 1; }
+.bw-timeline span { font-size: 0.78rem; line-height: 1.35; }
+.bw-timeline li.is-active button { color: var(--bw-ink); }
+.bw-timeline li.is-active button::before { background: var(--bw-ink); transform: scale(1.3); }
+.bw-vw {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: clamp(22px, 4vw, 60px);
+  align-items: center;
+}
+.bw-vw-year { margin: 0; font-size: clamp(2.8rem, 6vw, 4.6rem); line-height: 1; color: var(--bw-gold); }
+.bw-vw-title { margin: 4px 0 14px; font-size: clamp(1.8rem, 3.4vw, 2.8rem); line-height: 1; text-transform: uppercase; }
+.bw-vw-text { max-width: 56ch; margin: 0; font-size: 0.98rem; line-height: 1.75; }
+.bw-vw-imgs { position: relative; display: grid; }
+.bw-vw-img {
+  grid-area: 1 / 1;
+  align-self: center;
+  justify-self: center;
+  max-width: 100%;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.5s ease, transform 0.7s var(--bw-ease);
+  pointer-events: none;
+}
+.bw-vw-img img { max-height: 460px; width: auto; max-width: 100%; margin: 0 auto; }
+.bw-vw-img.is-active { opacity: 1; transform: none; pointer-events: auto; }
+
+/* ---------- 04 L'idea ---------- */
+.bw-idea-sec { background: var(--bw-stone); }
+.bw-idea {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(22px, 4vw, 60px);
+  align-items: center;
+  margin-bottom: clamp(40px, 5vw, 70px);
+}
+.bw-idea-text p { max-width: 54ch; margin: 0 0 14px; font-size: 0.98rem; line-height: 1.75; }
+.bw-equation {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) auto minmax(0, 0.8fr) auto minmax(0, 1.4fr);
+  gap: clamp(8px, 1.4vw, 16px);
+  align-items: center;
+}
+.bw-equation .bw-fig figcaption { font-size: 0.66rem; }
+.bw-op { font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1; text-align: center; }
+.bw-render-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0B0B0B;
+}
+.bw-render-img {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  cursor: zoom-in;
+}
+.bw-render-img.is-active { opacity: 1; z-index: 1; }
+.bw-render-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.bw-render-cap {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 2;
+  padding: 6px 12px;
+  background: rgba(241, 238, 234, 0.9);
+  font-size: 0.74rem;
+  pointer-events: none;
+}
+.bw-render-thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.bw-render-thumbs button {
+  position: relative;
+  padding: 0;
+  border: 2px solid transparent;
+  background: #0B0B0B;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.25s ease, border-color 0.25s ease;
+}
+.bw-render-thumbs button img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.bw-render-thumbs button span {
+  position: absolute;
+  left: 6px;
+  bottom: 5px;
+  padding: 2px 6px;
+  background: rgba(241, 238, 234, 0.88);
+  font-size: 0.62rem;
+}
+.bw-render-thumbs button:hover,
+.bw-render-thumbs button.is-active { opacity: 1; border-color: var(--bw-gold); }
+.bw-render-note { margin-top: 22px; }
+
+/* ---------- Il ciondolo in 3D ---------- */
+.bw-3d-sec { background: #141311; color: var(--bw-ivory); }
+.bw-3d-sec .bw-rule { background: var(--bw-ivory); }
+.bw-blender-tag {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #E87D0D;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.bw-3d-sec .bw-render-thumbs button span { color: var(--bw-ink); }
+
+/* ---------- Da dove nasce: Bosch e Westwood, più raccolti ---------- */
+.bw-roots-sec,
+.bw-roots-sec ~ .bw-bosch-sec,
+.bw-roots-sec ~ .bw-vw-sec { background: var(--bw-stone); }
+.bw-roots-sec { padding-bottom: 0; }
+.bw-roots-sec ~ .bw-bosch-sec,
+.bw-roots-sec ~ .bw-vw-sec { padding-top: clamp(36px, 4.5vw, 64px); padding-bottom: clamp(36px, 4.5vw, 64px); }
+.bw-roots-sec ~ .bw-bosch-sec .bw-h { font-size: clamp(1.8rem, 3.6vw, 3rem); }
+.bw-roots-sec ~ .bw-vw-sec .bw-vw-logo { width: clamp(130px, 15vw, 180px); }
+.bw-roots-sec ~ .bw-bosch-sec .bw-portrait { max-width: 260px; }
+.bw-roots-sec ~ .bw-bosch-sec .bw-phases,
+.bw-roots-sec ~ .bw-vw-sec .bw-timeline { border-top-color: var(--bw-ink); }
+.bw-roots-sec ~ .bw-vw-sec .bw-vw-img img { max-height: 360px; }
+
+/* ---------- 05 Armor Ring ---------- */
+.bw-ring-sec { background: var(--bw-ivory); }
+.bw-ring {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: clamp(22px, 4vw, 60px);
+  align-items: center;
+  margin-bottom: clamp(30px, 4vw, 50px);
+}
+.bw-triptych {
+  position: relative;
+  aspect-ratio: 1024 / 546;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.5);
+}
+.bw-realm {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(28, 25, 22, 0.55);
+  cursor: pointer;
+  transition: background 0.4s ease;
+}
+.bw-realm:nth-child(1) { left: 0; width: 25.5%; }
+.bw-realm:nth-child(2) { left: 25.5%; width: 49.5%; }
+.bw-realm:nth-child(3) { left: 75%; width: 25%; }
+.bw-realm span {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  background: var(--bw-ivory);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.bw-realm.is-active,
+.bw-realm:hover { background: transparent; }
+.bw-realm.is-active span,
+.bw-realm:hover span { opacity: 1; }
+.bw-ring-obj { position: relative; width: min(100%, 320px); margin: 0 auto 10px; }
+.bw-ring-obj img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-mask: linear-gradient(180deg, rgba(0, 0, 0, 0.3) var(--a), #000 var(--a), #000 var(--b), rgba(0, 0, 0, 0.3) var(--b));
+  mask: linear-gradient(180deg, rgba(0, 0, 0, 0.3) var(--a), #000 var(--a), #000 var(--b), rgba(0, 0, 0, 0.3) var(--b));
+}
+/* la fascia accesa dell'anello segue il regno scelto: in alto il paradiso, in fondo l'inferno */
+.bw-ring[data-r="0"] .bw-ring-obj img { --a: 18%; --b: 42%; }
+.bw-ring[data-r="1"] .bw-ring-obj img { --a: 38%; --b: 58%; }
+.bw-ring[data-r="2"] .bw-ring-obj img { --a: 54%; --b: 84%; }
+.bw-realm-n { margin: 0 0 4px; font-size: 0.74rem; letter-spacing: 0.16em; color: var(--bw-soft); }
+.bw-realm-name { margin: 0 0 10px; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; text-transform: uppercase; }
+.bw-realm-text { margin: 0; font-size: 0.94rem; line-height: 1.7; }
+.bw-ring-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 22px); max-width: 780px; }
+
+/* ---------- Sitografia ---------- */
+.bw-refs { background: var(--bw-stone); padding-top: clamp(36px, 5vw, 60px); padding-bottom: clamp(36px, 5vw, 60px); }
+.bw-refs h4 { margin: 0 0 12px; font-size: 2rem; text-transform: uppercase; }
+.bw-refs ul { margin: 0; padding: 0 0 0 1.1em; font-size: 0.8rem; line-height: 1.8; color: var(--bw-soft); }
+
+/* ---------- Telefono ---------- */
+@media (max-width: 860px) {
+  .bw-hero { min-height: 520px; }
+  .bw-hero-card { margin: 0 auto; }
+  .bw-hero-title { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .bw-hero-vw { justify-self: center; width: min(70%, 200px); }
+  .bw-intro,
+  .bw-phase,
+  .bw-phase.is-active,
+  .bw-vw,
+  .bw-idea,
+  .bw-ring { grid-template-columns: minmax(0, 1fr); }
+  .bw-pop { grid-template-columns: minmax(0, 1fr); }
+  .bw-equation { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .bw-equation .is-result { grid-column: 1 / -1; }
+  .bw-equation .bw-op:nth-of-type(2) { display: none; }
+  .bw-render-thumbs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bw [data-reveal],
+  .bw-vw-img,
+  .bw-render-img,
+  .bw-phase.is-active { transition: none !important; animation: none !important; }
+  .bw [data-reveal] { opacity: 1 !important; transform: none !important; }
+}

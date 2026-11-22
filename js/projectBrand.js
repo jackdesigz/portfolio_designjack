@@ -212,8 +212,11 @@
     const players = g.players || [];
     const colors = g.colors || [];
     const slogan = g.slogan || 'ONE SHOT ✦ ONE SPIKE ✦';
-    const patternRows = Array.from({ length: 14 }, (_, i) =>
-      `<span style="--row:${i};">${'MELAGOCCIO '.repeat(8)}</span>`).join('');
+    // ogni riga ha due copie identiche della scritta: scorrendo di metà larghezza
+    // ricomincia senza scatti; abbastanza righe da coprire tutto il fondo inclinato
+    const patternCopy = `<i>${'MELAGOCCIO '.repeat(10)}</i>`;
+    const patternRows = Array.from({ length: 34 }, (_, i) =>
+      `<span style="--row:${i};">${patternCopy}${patternCopy}</span>`).join('');
 
     container.innerHTML = `
       <div class="mg">
