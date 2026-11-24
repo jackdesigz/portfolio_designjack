@@ -2,7 +2,7 @@
  * designjack — Claw Machine 2D a tutta pagina
  *
  * Seconda macchina del Canale R: la fisica è in clawPhysics2D.js, qui si
- * disegna la scena su canvas (stile manifesto Bauhaus su carta) e si gestiscono
+ * disegna la scena su canvas (stile Bauhaus su carta, parete di fondo blu con righe bianche) e si gestiscono
  * comandi, premi e HUD. Funziona come la macchina 3D: mira, presa reale,
  * scivolo, vaschetta e scheda del progetto.
  */
@@ -126,40 +126,10 @@
       const g = bg.getContext('2d');
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // --- parete di fondo: manifesto Bauhaus su blu notte
+      // --- parete di fondo: blu notte pieno con semplici righe bianche orizzontali
       g.fillStyle = BLU; g.fillRect(0, this.mh, W, this.playBottom - this.mh);
-      const wallH = this.Y0 - this.mh;
-      if (W < 560) {
-        // telefono: composizione più leggera, le forme non si deformano sul formato alto e stretto
-        g.fillStyle = 'rgba(247,241,228,0.07)';
-        for (let yy = this.mh + 14; yy < this.playBottom; yy += 22) {
-          for (let xx = 11; xx < W; xx += 22) g.fillRect(xx, yy, 2, 2);
-        }
-        const r = W * 0.46;
-        g.fillStyle = RED; g.beginPath(); g.moveTo(W, this.mh); g.arc(W, this.mh, r, Math.PI / 2, Math.PI); g.closePath(); g.fill();
-        g.strokeStyle = PAPER; g.lineWidth = 2;
-        g.beginPath(); g.arc(W, this.mh, r * 1.18, Math.PI * 0.55, Math.PI * 0.95); g.stroke();
-        g.fillStyle = YEL; g.fillRect(0, this.mh + wallH * 0.62, W * 0.62, 8);
-        g.fillStyle = INK; g.beginPath(); g.arc(W * 0.16, this.mh + wallH * 0.2, 9, 0, Math.PI * 2); g.fill();
-        g.save(); g.translate(W * 0.8, this.mh + wallH * 0.74); g.rotate(0.25);
-        g.strokeStyle = PAPER; g.lineWidth = 2; g.strokeRect(-11, -11, 22, 22); g.restore();
-        g.fillStyle = 'rgba(247,241,228,0.3)';
-        g.fillRect(W * 0.08, this.mh + wallH * 0.12, W * 0.3, 1.5);
-      } else {
-      const cx = W * 0.64, cy = this.mh + (this.Y0 - this.mh) * 0.48, R = Math.min(W * 0.26, (this.Y0 - this.mh) * 0.44);
-      g.fillStyle = RED; g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
-      g.strokeStyle = PAPER; g.lineWidth = 3;
-      g.beginPath(); g.arc(cx, cy, R * 1.22, Math.PI * 1.08, Math.PI * 1.62); g.stroke();
-      g.fillStyle = YEL;
-      g.beginPath(); g.moveTo(W * 0.3, this.Y0 - (this.Y0 - this.mh) * 0.18); g.lineTo(W * 0.44, this.mh + (this.Y0 - this.mh) * 0.22); g.lineTo(W * 0.52, this.Y0 - (this.Y0 - this.mh) * 0.18); g.closePath(); g.fill();
-      g.strokeStyle = PAPER; g.lineWidth = 2;
-      g.save(); g.translate(W * 0.86, this.mh + (this.Y0 - this.mh) * 0.3); g.rotate(0.2); g.strokeRect(-R * 0.32, -R * 0.32, R * 0.64, R * 0.64); g.restore();
-      g.fillStyle = INK; g.beginPath(); g.arc(W * 0.18, this.mh + (this.Y0 - this.mh) * 0.25, R * 0.12, 0, Math.PI * 2); g.fill();
-      // filetti
-      g.fillStyle = 'rgba(247,241,228,0.35)';
-      g.fillRect(W * 0.06, this.mh + (this.Y0 - this.mh) * 0.14, W * 0.32, 1.5);
-      g.fillRect(W * 0.58, this.Y0 - (this.Y0 - this.mh) * 0.08, W * 0.38, 1.5);
-      }
+      g.fillStyle = 'rgba(247,241,228,0.14)';
+      for (let yy = this.mh + 26; yy < this.playBottom; yy += 28) g.fillRect(0, Math.round(yy), W, 1);
 
       // --- fondo vasca (con le rampe) e soletta
       const floorY = (x) => this.sy(Math.max(0, this.sim.floorAt(x)));
@@ -207,25 +177,9 @@
       g.fillStyle = PAPER;
       for (let x = 24; x < W; x += 96) { g.beginPath(); g.arc(x, ry, 2.2, 0, Math.PI * 2); g.fill(); }
 
-      // --- insegna
+      // --- insegna: fascia rossa con le lampadine, senza scritte
       g.fillStyle = RED; g.fillRect(0, 0, W, this.mh);
       g.fillStyle = INK; g.fillRect(0, this.mh - 4, W, 4);
-      const fs = Math.round(this.mh * 0.46);
-      g.font = `700 ${fs}px "Jost", "Helvetica Neue", Arial, sans-serif`;
-      g.textAlign = 'left'; g.textBaseline = 'middle';
-      const tX = Math.max(18, W * 0.03), tY = this.mh * 0.46;
-      g.fillStyle = PAPER; g.fillText("JACK'S CLAW", tX, tY);
-      const tw2 = g.measureText("JACK'S CLAW").width;
-      const sx0 = tX + tw2 + fs * 0.6, sz = fs * 0.62;
-      if (sx0 + sz * 4.4 < W - 120 || W > 760) {
-        g.fillStyle = YEL; g.beginPath(); g.arc(sx0 + sz / 2, tY, sz / 2, 0, Math.PI * 2); g.fill();
-        g.fillStyle = PAPER; g.beginPath(); g.moveTo(sx0 + sz * 1.9, tY - sz / 2); g.lineTo(sx0 + sz * 2.45, tY + sz / 2); g.lineTo(sx0 + sz * 1.35, tY + sz / 2); g.closePath(); g.fill();
-        g.fillStyle = BLU; g.fillRect(sx0 + sz * 2.8, tY - sz / 2, sz, sz);
-      }
-      if (W > 560) {
-        g.font = '700 12px "Jost", "Helvetica Neue", Arial, sans-serif'; g.textAlign = 'right';
-        g.fillStyle = PAPER; g.fillText('PESCA UN PROGETTO', W - Math.max(18, W * 0.03), tY);
-      }
       // lampadine: posizioni (disegnate a ogni fotogramma)
       this.bulbs = [];
       const by = this.mh - 13;

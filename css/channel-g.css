@@ -631,6 +631,230 @@ body.channel-g-active #channel-toast {
 .gx-sec-head .gx-h2 { margin: 0; color: var(--gx-mint); }
 .gx-sec-head p { margin: 0; max-width: 40ch; color: var(--gx-sage); line-height: 1.5; }
 
+/* ---------- Il mio percorso: gli studi come livelli ---------- */
+.gx-path,
+.gx-tools {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 30px 24px 70px;
+}
+.gx-levels {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr 0.85fr;
+  gap: 24px;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: lv;
+}
+.gx-level {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 26px 24px 22px;
+  border-radius: 24px 18px 28px 20px;
+  background: var(--gx-paper);
+  color: var(--gx-ink);
+  transform: rotate(var(--r, 0deg));
+  box-shadow: 10px 10px 0 var(--gx-moss);
+  transition: transform 0.3s cubic-bezier(.3, 1.4, .5, 1);
+}
+.gx-level:hover { transform: rotate(0deg) translateY(-4px); }
+/* la linea a spray che unisce i livelli */
+.gx-level:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -26px;
+  z-index: -1;
+  width: 30px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--gx-lime);
+  box-shadow: 0 0 12px rgba(184, 242, 58, 0.6);
+}
+.gx-level-tag {
+  align-self: flex-start;
+  margin: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--gx-ink);
+  color: var(--gx-lime);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.gx-level-years { margin: 6px 0 0; font-size: 0.9rem; font-weight: 700; color: var(--gx-fern); }
+.gx-level-title { margin: 0; font-size: clamp(1.4rem, 2.2vw, 1.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+.gx-level-place { margin: 0; font-size: 0.9rem; color: #34503D; }
+.gx-level-text { margin: 6px 0 0; font-size: 0.98rem; line-height: 1.5; }
+.gx-level-skills { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; }
+.gx-level-skills li {
+  padding: 4px 10px;
+  border: 2px dashed rgba(46, 94, 62, 0.45);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.gx-xp {
+  position: relative;
+  height: 14px;
+  margin-top: auto;
+  border: 2px solid var(--gx-ink);
+  border-radius: 999px;
+  background: rgba(6, 20, 12, 0.08);
+  overflow: hidden;
+}
+.gx-level .gx-xp { margin-top: 14px; }
+.gx-xp i {
+  display: block;
+  height: 100%;
+  width: var(--p, 0%);
+  background: repeating-linear-gradient(-45deg, var(--gx-lime) 0 8px, #9FDB2A 8px 16px);
+  transform-origin: 0 50%;
+  animation: gxFill 1.4s cubic-bezier(.3, .9, .3, 1) both;
+}
+@keyframes gxFill { from { transform: scaleX(0); } }
+.gx-xp-label {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--gx-ink);
+}
+.gx-level.is-done { opacity: 0.92; }
+.gx-level.is-now { box-shadow: 10px 10px 0 var(--gx-moss), 0 0 0 3px var(--gx-lime); }
+.gx-level.is-next {
+  justify-content: center;
+  background: transparent;
+  color: var(--gx-mint);
+  border: 3px dashed rgba(184, 242, 58, 0.55);
+  box-shadow: none;
+}
+.gx-level.is-next .gx-level-tag { background: var(--gx-lime); color: var(--gx-ink); }
+.gx-level.is-next .gx-level-years { color: var(--gx-sage); }
+.gx-loading { display: flex; gap: 6px; margin-top: 12px; }
+.gx-loading i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gx-lime);
+  animation: gxLoad 1.2s ease-in-out infinite;
+}
+.gx-loading i:nth-child(2) { animation-delay: 0.15s; }
+.gx-loading i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes gxLoad { 0%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-8px); opacity: 1; } }
+
+/* ---------- La cassetta degli attrezzi: adesivi da staccare ---------- */
+.gx-tool-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 26px 28px;
+}
+.gx-tool-group h3 {
+  margin: 0 0 12px;
+  color: var(--gx-sage);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.gx-tool-row { display: flex; flex-wrap: wrap; gap: 12px 10px; }
+.gx-tool {
+  position: relative;
+  display: inline-block;
+  padding: 9px 16px 10px;
+  border-radius: 10px;
+  background: var(--gx-paper);
+  color: var(--gx-ink);
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--r, 0deg));
+  box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.35);
+  transition: box-shadow 0.15s, scale 0.15s;
+}
+.gx-tool.is-lime { background: var(--gx-lime); }
+.gx-tool.is-acid { background: var(--gx-acid); }
+.gx-tool.is-dark { background: var(--gx-ink); color: var(--gx-mint); border: 2px solid rgba(157, 191, 158, 0.5); }
+.gx-tool:hover { scale: 1.05; }
+.gx-tool.is-lifted { cursor: grabbing; scale: 1.1; box-shadow: 10px 16px 22px rgba(0, 0, 0, 0.45); }
+
+/* ---------- Fuori orario: lo schermo di un videogioco ---------- */
+.gx-game {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 50px 24px 60px;
+}
+.gx-game-screen {
+  position: relative;
+  padding: 30px clamp(20px, 4vw, 48px) 34px;
+  border-radius: 34px;
+  border: 4px solid var(--gx-ink);
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px),
+    radial-gradient(120% 100% at 50% 0%, #1F4A31 0%, #0B2116 70%);
+  box-shadow: 0 0 0 6px var(--gx-moss), 0 0 60px rgba(184, 242, 58, 0.15), 14px 14px 0 6px var(--gx-ink);
+  overflow: hidden;
+}
+.gx-game-hud {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 18px;
+  color: var(--gx-lime);
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+.gx-game-hud b { font-weight: 400; color: var(--gx-mint); }
+.gx-game .gx-h2 { margin: 0 0 14px; color: var(--gx-mint); }
+.gx-game .gx-h2 em { color: var(--gx-lime); }
+.gx-game-text { max-width: 62ch; margin: 0 0 24px; color: var(--gx-sage); font-size: 1.05rem; line-height: 1.6; }
+.gx-game-text strong { color: var(--gx-mint); }
+.gx-game-list { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 26px; }
+.gx-cart {
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  padding: 10px 10px 12px;
+  border: 0;
+  border-radius: 12px 12px 6px 6px;
+  background: #2B2F2A;
+  color: var(--gx-mint);
+  text-align: left;
+  cursor: pointer;
+  transform: rotate(var(--r, 0deg));
+  box-shadow: 0 6px 0 #151815, 0 14px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s cubic-bezier(.3, 1.4, .5, 1), box-shadow 0.25s ease;
+}
+/* la tacca in alto delle cartucce */
+.gx-cart::before {
+  content: '';
+  align-self: center;
+  width: 60%;
+  height: 8px;
+  margin-bottom: 8px;
+  border-radius: 0 0 6px 6px;
+  background: #1A1D19;
+}
+.gx-cart-img { display: block; aspect-ratio: 1; overflow: hidden; border-radius: 6px; border: 3px solid #151815; }
+.gx-cart-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gx-cart-name { margin-top: 10px; font-size: 0.86rem; font-weight: 800; line-height: 1.2; }
+.gx-cart:hover,
+.gx-cart:focus-visible { transform: rotate(0deg) translateY(-8px); box-shadow: 0 6px 0 #151815, 0 0 0 3px var(--gx-lime), 0 20px 30px rgba(0, 0, 0, 0.45); outline: none; }
+.gx-game-screen.is-started { animation: gxFlash 0.5s steps(2) 2; }
+.gx-game-screen.is-started .gx-cart { animation: gxPop 0.6s cubic-bezier(.3, 1.6, .5, 1) backwards; animation-delay: calc(0.3s + var(--i) * 0.08s); }
+@keyframes gxFlash { 50% { box-shadow: 0 0 0 6px var(--gx-lime), 0 0 80px rgba(184, 242, 58, 0.6), 14px 14px 0 6px var(--gx-ink); } }
+@keyframes gxPop { from { transform: translateY(30px) scale(0.6); opacity: 0; } }
+
 /* ---------- Cosa faccio ---------- */
 .gx-do {
   max-width: 1240px;
@@ -832,6 +1056,9 @@ body.channel-g-active .avatar-close {
   .gx-paper { padding: 46px 28px 36px; border-radius: 36px 70px 40px 80px / 50px 36px 70px 40px; }
   .gx-do-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gx-rules { grid-template-columns: 1fr; }
+  .gx-levels { grid-template-columns: 1fr; }
+  .gx-level:not(:last-child)::after { top: auto; bottom: -24px; right: 50%; width: 6px; height: 26px; }
+  .gx-cart { width: calc(50% - 9px); }
   .gx-rule { padding: 30px 22px 24px; gap: 6px 14px; }
   .gx-tag-first { transform: translateX(-1em) rotate(-7deg); }
   .gx-tag-last { transform: translateX(2.6em) rotate(-7deg); }
@@ -846,5 +1073,5 @@ body.channel-g-active .avatar-close {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gx-tape-track, .gx-drip { animation: none; }
+  .gx-tape-track, .gx-drip, .gx-xp i, .gx-loading i, .gx-game-screen.is-started, .gx-game-screen.is-started .gx-cart { animation: none; }
 }

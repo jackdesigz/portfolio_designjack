@@ -60,6 +60,11 @@
     ['.gx-id-item', 'Questo sono io, in versione documento.'],
     ['.gx-do-proj', (el) => `Apri ${el.textContent.trim()}: ti porto lì.`],
     ['.gx-rule', 'Così lavoro, più o meno sempre.'],
+    ['.gx-level.is-now', 'Il livello in corso: Modartech.'],
+    ['.gx-level.is-next', 'Il prossimo livello? Videogiochi, spero.'],
+    ['.gx-tool', 'Staccalo pure, è un adesivo.'],
+    ['.gx-cart', (el) => `${el.textContent.trim()}: fatto anche con Blender.`],
+    ['.gx-game-start', 'Player 1, pronto?'],
     // Canale B
     ['.bx-mail-pill', 'Scrivimi, rispondo davvero.'],
     ['.bx-copy', 'Copia e incolla, facile.'],

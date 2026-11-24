@@ -41,8 +41,11 @@ Stile Bauhaus su carta, con filtro da monitor CRT. Font Jost.
 La pagina autobiografica, organico × graffiti, tutto verde. Font Bricolage Grotesque; Sedgwick Ave Display per le scritte a spray, Permanent Marker per nome e cognome.
 - **Muro:** muro notturno con blob che respirano e la tag "jack" con le colature, con "Jacopo" sopra e "Febi" sotto (si legge Jacopo “jack” Febi); sottotitolo "chi sono? cosa faccio?".
 - **Adesivi e nastro:** gli adesivi si staccano e si trascinano; sotto scorre un nastro con quello che faccio.
-- **Chi sono:** il racconto e una carta d'identità fatta di adesivi; accanto c'è la casa dell'avatar.
+- **Chi sono:** il racconto (dal CV) e una carta d'identità fatta di adesivi: nome, da dove vengo, cosa studio, lingue, passione; accanto c'è la casa dell'avatar.
+- **Il mio percorso:** gli studi come livelli di un gioco (Liceo Cecioni, Istituto Modartech, il prossimo livello); la barra XP di Modartech si calcola dalla data di oggi (`data-start` / `data-end` in `index.html`).
+- **La cassetta degli attrezzi:** gli strumenti dal CV come adesivi trascinabili, divisi per ambito.
 - **Cosa faccio:** le discipline (Brand, Editorial, Interaction, Graphic, Web Design e Collaborazioni), ognuna con gli adesivi dei suoi progetti presi dal registro (`category` in `js/projects.js`): al clic si apre la scheda. Una categoria nuova va aggiunta qui (`data-cat` in `index.html`) e tra i filtri del catalogo.
+- **Fuori orario:** la passione per videogiochi e 3D, come lo schermo di un gioco: i progetti che hanno Blender tra i software diventano cartucce che aprono la scheda; «Premi start» le fa saltare fuori.
 - **Come lavoro:** la filosofia di design in quattro regole, come manifesti attaccati al muro; passandoci sopra il titolo prende una passata di spray.
 
 ### B — Bolle & Bottiglie (contatti)
@@ -59,7 +62,7 @@ Frutiger Aero marino, tutto blu e lucido. Font Hind.
   - Si trascina per girarla e, se la clicchi, parla.
   - Scrollando si aggancia in basso a sinistra e commenta quello su cui passi.
   - Ha una casa per canale: la hero in R, accanto a "Chi sono" in G, dentro una bolla in B.
-- **Music player:** in alto a destra un mezzo disco gira incastrato nel bordo. Riproduce due singoli di Ikigai (cartella `Musica/`), con note che escono nello stile del canale. Le pagine dei progetti possono comandarlo con `window.musicPlayer.playTrack(i)` (lo fa la pagina di Ikigai).
+- **Music player:** in alto a destra un mezzo disco gira incastrato nel bordo. Riproduce due singoli di Ikigai (cartella `Musica/yugen-kokotsu/`, nomi dei file solo in ASCII), con note che escono nello stile del canale. Il pulsante AUDIO in alto spegne anche la musica; premere play sul disco lo riaccende. Le pagine dei progetti possono comandarlo con `window.musicPlayer.playTrack(i)` (lo fa la pagina di Ikigai).
 - **Easter egg:** il Konami code (↑ ↑ ↓ ↓ ← → ← → B A; su telefono gli swipe e poi due tap). L'avatar si spaventa, sopra la testa compare il "!" di Metal Gear e parte il suono di allarme. Dalla console si prova con `konamiAlert()`.
 
 ---

@@ -2,7 +2,8 @@
  * designjack — Music player (in alto a destra)
  * Un disco con la copertina gira incastrato nel bordo destro dello schermo;
  * in hover esce un po' e compaiono i comandi (play/pausa, brani, volume).
- * I singoli sono di Ikigai, con grafiche di designjack (cartella Musica/).
+ * I singoli sono di Ikigai, con grafiche di designjack (cartella Musica/yugen-kokotsu/).
+ * Il pulsante AUDIO in alto spegne anche la musica (evento 'dj-audio' da js/main.js).
  *
  * - La musica parte appena entri, a volume basso (DEFAULT_VOLUME) e con dissolvenza.
  *   Se il browser blocca l'audio prima di un'interazione (Chrome/Safari di solito lo
@@ -17,11 +18,12 @@
 
   const AUTOSTART = true;
   const DEFAULT_VOLUME = 0.22;
-  const DIR = 'Musica/Yugen%3Akokotsu/';
-  // nomi dei file esattamente come sono su disco ("Yūgen" è salvato in forma decomposta)
+  // nomi dei file solo in ASCII: con accenti e due punti nel nome il primo brano non si
+  // trovava online (macOS e GitHub scrivono la «ū» in due modi diversi)
+  const DIR = 'Musica/yugen-kokotsu/';
   const TRACKS = [
-    { title: 'Yūgen (幽玄)', file: 'Yūgen (幽玄).mp3' },
-    { title: 'Kōkotsu (恍惚)', file: 'Kōkotsu (恍惚).mp3' }
+    { title: 'Yūgen (幽玄)', file: 'yugen.mp3' },
+    { title: 'Kōkotsu (恍惚)', file: 'kokotsu.mp3' }
   ];
   const STORE = 'dj-music';
 
@@ -68,9 +70,10 @@
 
     function load() {
       if (loaded === index) return;
-      audio.src = DIR + encodeURIComponent(TRACKS[index].file);
+      audio.src = DIR + TRACKS[index].file;
       loaded = index;
     }
+    const siteMuted = () => !!(window.audioEngine && window.audioEngine.muted);
 
     function syncUI() {
       const playing = !audio.paused;
@@ -98,6 +101,8 @@
     }
 
     function play(fade) {
+      // premere play con l'audio del sito spento lo riaccende: il pulsante in alto torna su ON
+      if (siteMuted() && window.setSiteAudio) window.setSiteAudio(false);
       load();
       const target = Number(volume.value);
       const p = audio.play();
@@ -260,8 +265,25 @@
     audio.addEventListener('pause', () => clearTimeout(noteTimer));
     ['play', 'pause', 'volumechange'].forEach((ev) => audio.addEventListener(ev, syncUI));
 
+    // AUDIO: OFF in alto → la musica si ferma; AUDIO: ON → riparte se stava suonando
+    let pausedBySite = false;
+    window.addEventListener('dj-audio', (e) => {
+      const muted = !!(e.detail && e.detail.muted);
+      if (muted) {
+        if (!audio.paused) { pausedBySite = true; pause(); }
+      } else if (pausedBySite) {
+        pausedBySite = false;
+        audio.muted = false;
+        load();
+        const p = audio.play();
+        if (p && p.catch) p.catch(() => syncUI());
+        fadeIn(Number(volume.value));
+      }
+    });
+
     // avvio automatico appena entri
     function autostart() {
+      if (siteMuted()) return;
       const target = Number(volume.value);
       load();
       audio.volume = 0;

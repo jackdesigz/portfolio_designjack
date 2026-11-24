@@ -1,7 +1,6 @@
 /* =====================================================================
    FINESTRE IN OVERLAY E CATALOGO
-   - X di chiusura ben visibile su scheda progetto e capsula (le forme
-     cerchio/triangolo/quadrato restano solo nelle finestre del canale R)
+   - X di chiusura ben visibile su scheda progetto e capsula
    - Switch R/G/B in alto a destra nel catalogo
    - Catalogo senza flicker: fondo pieno, niente backdrop-filter, sito
      sotto nascosto mentre il catalogo è aperto

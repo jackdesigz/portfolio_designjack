@@ -692,43 +692,6 @@ body.channel-b-active .nav-btn:hover {
   user-select: none;
 }
 
-.bauhaus-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ctrl-shape {
-  width: 12px;
-  height: 12px;
-  display: inline-block;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.ctrl-shape:hover {
-  transform: scale(1.2);
-}
-
-.ctrl-circle {
-  background-color: var(--bauhaus-red);
-  border-radius: 50%;
-  border: 1px solid var(--border-line);
-}
-
-.ctrl-triangle {
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 12px solid var(--bauhaus-yellow);
-}
-
-.ctrl-square {
-  background-color: var(--bauhaus-blue);
-  border: 1px solid var(--border-line);
-}
-
 .window-title {
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -4645,18 +4608,11 @@ body.channel-b-active .nav-btn {
   background-repeat: repeat-x;
 }
 
-.bauhaus-controls,
 .window-title,
 .window-meta {
   background: var(--paper-deep);
   position: relative;
   z-index: 1;
-}
-
-.bauhaus-controls {
-  padding: 0 10px 0 2px;
-  height: 24px;
-  gap: 7px;
 }
 
 .window-title {
@@ -4689,8 +4645,6 @@ body.channel-b-active .nav-btn {
   white-space: nowrap;
 }
 
-.ctrl-circle { border: 1.5px solid var(--ink); }
-.ctrl-square { border: 1.5px solid var(--ink); }
 
 /* ---------- Hero ---------- */
 .hero-window {

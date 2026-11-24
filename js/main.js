@@ -690,12 +690,21 @@ function initSystemSoundToggle() {
   const toggleBtn = document.getElementById('hud-audio-toggle');
   if (!toggleBtn) return;
 
+  // AUDIO: ON/OFF spegne tutto: effetti del sito e musica del player.
+  // Lo stato passa al player con l'evento 'dj-audio' (detail.muted).
+  const setSiteAudio = (muted) => {
+    if (!window.audioEngine) return;
+    if (window.audioEngine.muted !== muted) window.audioEngine.toggleMute();
+    toggleBtn.textContent = muted ? 'AUDIO: OFF' : 'AUDIO: ON';
+    toggleBtn.classList.toggle('muted', muted);
+    window.dispatchEvent(new CustomEvent('dj-audio', { detail: { muted } }));
+  };
+  window.setSiteAudio = setSiteAudio;
+
   toggleBtn.addEventListener('click', () => {
-    if (window.audioEngine) {
-      const isMuted = window.audioEngine.toggleMute();
-      toggleBtn.textContent = isMuted ? 'AUDIO: OFF' : 'AUDIO: ON';
-      toggleBtn.classList.toggle('muted', isMuted);
-      if (!isMuted) window.audioEngine.playBeep(640, 0.05);
-    }
+    if (!window.audioEngine) return;
+    const muted = !window.audioEngine.muted;
+    setSiteAudio(muted);
+    if (!muted) window.audioEngine.playBeep(640, 0.05);
   });
 }

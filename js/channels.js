@@ -102,12 +102,77 @@
     });
   }
 
+  // Percorso: la barra XP del livello in corso si riempie in base a quanto manca alla fine del corso
+  function initLevels(root) {
+    root.querySelectorAll('.gx-level[data-start][data-end]').forEach((lv) => {
+      const a = new Date(lv.dataset.start).getTime();
+      const b = new Date(lv.dataset.end).getTime();
+      const k = Math.max(0.04, Math.min(1, (Date.now() - a) / (b - a)));
+      const bar = lv.querySelector('.gx-xp i');
+      const label = lv.querySelector('.gx-xp-label');
+      if (bar) bar.style.setProperty('--p', `${(k * 100).toFixed(1)}%`);
+      if (label) label.textContent = `XP ${Math.round(k * 100)}%`;
+      const xp = lv.querySelector('.gx-xp');
+      if (xp) xp.setAttribute('aria-label', `Corso completato al ${Math.round(k * 100)}%`);
+    });
+  }
+
+  // Fuori orario: i progetti fatti con un software (es. Blender) diventano cartucce di gioco
+  function initGame(root) {
+    const box = root.querySelector('.gx-game-list[data-soft]');
+    if (!box) return;
+    const soft = box.getAttribute('data-soft').toLowerCase();
+    const reg = window.PROJECT_REGISTRY || [];
+    const items = reg.filter((p) => (p.software || []).some((x) => String(x).toLowerCase().includes(soft)));
+    const short = (t) => String(t).split(' — ')[0];
+    box.innerHTML = items.map((p, i) => `
+      <button type="button" class="gx-cart" data-proj="${p.id}" style="--i:${i}; --r:${((i % 3) - 1) * 2}deg" aria-label="Apri il progetto ${short(p.title)}">
+        <span class="gx-cart-img"><img src="${p.coverImage}" alt="" loading="lazy" /></span>
+        <span class="gx-cart-name">${short(p.title)}</span>
+      </button>`).join('');
+    const scoreEl = root.querySelector('.gx-game-score b');
+    const screen = root.querySelector('.gx-game-screen');
+    let score = 0;
+    let raf = 0;
+    const addScore = (n) => {
+      const from = score;
+      score += n;
+      cancelAnimationFrame(raf);
+      const t0 = performance.now();
+      const tick = (t) => {
+        const k = Math.min(1, (t - t0) / 600);
+        scoreEl.textContent = String(Math.round(from + (score - from) * k)).padStart(6, '0');
+        if (k < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+    box.addEventListener('click', (e) => {
+      const b = e.target.closest('.gx-cart');
+      if (!b) return;
+      addScore(100);
+      const p = reg.find((x) => x.id === b.getAttribute('data-proj'));
+      if (p && window.openProjectModal) setTimeout(() => window.openProjectModal(p), 160);
+    });
+    const start = root.querySelector('.gx-game-start');
+    if (start) start.addEventListener('click', () => {
+      screen.classList.remove('is-started');
+      void screen.offsetWidth;
+      screen.classList.add('is-started');
+      start.textContent = '★ Scegli un gioco';
+      addScore(1000);
+      const a = audio();
+      if (a && a.playBeep) a.playBeep(880, 0.06);
+    });
+  }
+
   function initChannelG() {
     const root = document.getElementById('channel-view-g');
     if (!root) return null;
     const drawBlobs = initBlobs(root);
     initStickers(root);
     initProjectStickers(root);
+    initLevels(root);
+    initGame(root);
     // i blob si muovono lentamente: 30 fps e solo con l'hero a schermo
     // (controllo legato allo scroll: una lettura per evento, non per frame)
     let heroVisible = true;
