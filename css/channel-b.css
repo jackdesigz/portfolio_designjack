@@ -190,9 +190,9 @@ body.channel-b-active #channel-toast {
   left: 6%;
   right: 6%;
   top: 2px;
-  height: 48%;
+  height: 40%;
   border-radius: 999px 999px 50% 50% / 999px 999px 30% 30%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.12));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.04));
   pointer-events: none;
 }
 .bx-pill:hover { transform: translateY(-2px); filter: brightness(1.06) saturate(1.12); }
@@ -200,14 +200,15 @@ body.channel-b-active #channel-toast {
 .bx-pill:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
 .bx-pill-aqua {
   color: #fff;
-  text-shadow: 0 1px 1px rgba(0, 60, 120, 0.55);
-  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
-  border: 1px solid #056BB0;
+  text-shadow: 0 1px 2px rgba(0, 30, 75, 0.75);
+  /* tono più profondo: il bianco del testo ha contrasto vero */
+  background: linear-gradient(180deg, #45BDF5 0%, #1183D2 48%, #0466B5 52%, #0B7FCC 100%);
+  border: 1px solid #034F8E;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 6px 18px rgba(0, 90, 170, 0.4);
 }
 .bx-pill-glass {
   color: var(--bx-ink);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.35));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(225, 245, 255, 0.82));
   border: 1px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 6px 18px rgba(0, 70, 140, 0.22), inset 0 -3px 8px rgba(80, 180, 240, 0.25);
   backdrop-filter: blur(8px);
@@ -300,25 +301,6 @@ body.channel-b-active #channel-toast {
   min-width: 0;
   text-align: center;
 }
-.bx-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  padding: 9px 18px;
-  border-radius: 999px;
-  color: var(--bx-ink);
-  font-size: 0.9rem;
-  box-shadow: 0 8px 24px rgba(0, 80, 150, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-.bx-badge::before { border-radius: 999px 999px 40% 40%; }
-.bx-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #FFFFFF 0 18%, #3ACBFF 45%, #0A7FD1 100%);
-  box-shadow: 0 0 10px rgba(40, 195, 255, 0.8);
-}
 .bx-title {
   margin: 20px 0 12px;
   font-size: clamp(4rem, 12.5vw, 10.5rem);
@@ -336,7 +318,7 @@ body.channel-b-active #channel-toast {
   margin: 0 auto 32px;
   font-size: clamp(1.1rem, 2vw, 1.4rem);
   line-height: 1.5;
-  color: #0B4A82;
+  color: #063A6E;
 }
 .bx-hero-actions {
   display: flex;
@@ -367,6 +349,15 @@ body.channel-b-active #channel-toast {
 .bx-wave-mid path { fill: #5CC6F6; opacity: 0.85; }
 .bx-wave-front { animation-duration: 10s; }
 .bx-wave-front path { fill: #2BAEF0; }
+.bx-waves::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: #2BAEF0;
+}
 @keyframes bxWave {
   to { transform: translateX(-50%); }
 }
@@ -380,10 +371,28 @@ body.channel-b-active #channel-toast {
   padding: 90px 24px 200px;
   overflow: hidden;
   color: var(--bx-foam);
-  background: linear-gradient(180deg, #2BAEF0 0%, #0E7BD0 26%, #07549F 62%, #04306A 88%, var(--bx-abyss) 100%);
+  /* parte dallo stesso azzurro dell'onda davanti e scurisce piano */
+  background: linear-gradient(180deg, #2BAEF0 0, #2BAEF0 60px, #1E98E2 220px, #0E7BD0 30%, #07549F 62%, #04306A 88%, var(--bx-abyss) 100%);
+}
+/* velo d'acqua che sale sopra l'onda: unisce superficie e fondale */
+.bx-depths::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 260px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(43, 174, 240, 1) 0, rgba(43, 174, 240, 0) 100%);
 }
 
-.bx-rays { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.bx-rays {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  /* i raggi nascono sfumando dalla superficie: nessuna linea netta sotto l'onda */
+  -webkit-mask: linear-gradient(180deg, transparent 0, #000 220px);
+  mask: linear-gradient(180deg, transparent 0, #000 220px);
+}
 .bx-rays span {
   position: absolute;
   top: -8%;
@@ -414,8 +423,8 @@ body.channel-b-active #channel-toast {
   overflow: hidden;
   pointer-events: none;
   opacity: 0.35;
-  -webkit-mask: linear-gradient(180deg, #000, transparent);
-  mask: linear-gradient(180deg, #000, transparent);
+  -webkit-mask: linear-gradient(180deg, transparent 0, #000 180px, transparent);
+  mask: linear-gradient(180deg, transparent 0, #000 180px, transparent);
 }
 /* Riflessi di luce sull'acqua: macchie morbide grandi quanto la sezione,
    che vagano piano avanti e indietro. Niente texture ripetuta a piastrelle. */
@@ -565,6 +574,7 @@ body.channel-b-active #channel-toast {
   padding: 10px 20px;
   border-radius: 999px;
   color: #FFFFFF;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(3, 45, 105, 0.55));
   font-size: 0.95rem;
   text-align: center;
   text-shadow: 0 1px 4px rgba(0, 40, 90, 0.5);
@@ -601,7 +611,10 @@ body.channel-b-active .avatar-close {
   max-width: 1180px;
   margin: 0 auto;
 }
-.bx-panel { padding: 30px 28px 32px; }
+.bx-panel {
+  padding: 30px 28px 32px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(8, 70, 140, 0.32) 45%, rgba(3, 40, 95, 0.5) 100%);
+}
 .bx-panel h2 {
   margin: 0 0 8px;
   display: flex;
@@ -613,56 +626,121 @@ body.channel-b-active .avatar-close {
   color: #FFFFFF;
   text-shadow: 0 2px 10px rgba(0, 40, 90, 0.45);
 }
-.bx-panel p { margin: 0 0 20px; color: #CBEBFF; line-height: 1.5; }
+.bx-panel p { margin: 0 0 20px; color: #EAF8FF; line-height: 1.5; text-shadow: 0 1px 3px rgba(0, 30, 75, 0.55); }
 
-.bx-mail-pill {
+/* Contatti: una riga per canale, icona a sfera + etichetta + indirizzo */
+.bx-contacts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.bx-contact {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-  padding: 16px 20px;
-  border-radius: 999px;
-  overflow: hidden;
-  color: #fff;
-  font-size: 1.1rem;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(3, 40, 95, 0.5), rgba(3, 32, 77, 0.66));
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px rgba(0, 25, 70, 0.28);
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+.bx-contact:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(180deg, rgba(5, 55, 120, 0.6), rgba(3, 36, 85, 0.75));
+}
+.bx-contact-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px 12px 12px;
+  color: #FFFFFF;
   text-decoration: none;
-  text-shadow: 0 1px 1px rgba(0, 60, 120, 0.55);
-  word-break: break-all;
-  background: linear-gradient(180deg, #8FE6FF 0%, #22B3F5 50%, #0A8EDB 51%, #3ACBFF 100%);
-  border: 1px solid #056BB0;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 8px 22px rgba(0, 40, 110, 0.45);
-  transition: transform 0.2s, filter 0.2s;
+  border-radius: inherit;
 }
-.bx-mail-pill::before {
-  content: '';
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  top: 2px;
-  height: 46%;
-  border-radius: 999px 999px 50% 50% / 999px 999px 30% 30%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.1));
-}
-.bx-mail-pill:hover { transform: translateY(-2px); filter: brightness(1.07); }
-.bx-mail-icon {
+.bx-contact-link:focus-visible,
+.bx-contact-copy:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 2px; }
+.bx-contact-ico {
+  position: relative;
   flex: none;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 30%, #FFFFFF 0%, #D6F3FF 60%, #9BDDFB 100%);
-  color: var(--bx-navy);
-  text-shadow: none;
+  overflow: hidden;
+  color: #FFFFFF;
+  background: radial-gradient(circle at 50% 30%, #8FDDFF 0%, #1C9BE8 45%, #0767B8 85%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 -5px 10px rgba(0, 30, 90, 0.35), 0 4px 10px rgba(0, 25, 70, 0.35);
 }
+.bx-contact-ico::before {
+  content: '';
+  position: absolute;
+  top: 5%;
+  left: 20%;
+  width: 60%;
+  height: 38%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+}
+.bx-contact-ico svg { position: relative; filter: drop-shadow(0 1px 1px rgba(0, 30, 75, 0.5)); }
+.bx-contact-insta .bx-contact-ico { background: radial-gradient(circle at 30% 105%, #FFD776 0%, #F7774C 30%, #D6297C 58%, #8A3AC8 90%); }
+.bx-contact-linkedin .bx-contact-ico { background: radial-gradient(circle at 50% 30%, #5FA8EE 0%, #0A66C2 55%, #064C93 100%); }
+.bx-contact-txt { min-width: 0; display: grid; gap: 1px; line-height: 1.25; }
+.bx-contact-txt small {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9FDCFF;
+}
+.bx-contact-txt strong {
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  overflow-wrap: anywhere;
+}
+.bx-contact-go {
+  margin-left: auto;
+  flex: none;
+  font-size: 1.1rem;
+  color: #BFE8FF;
+  transition: transform 0.2s;
+}
+.bx-contact:hover .bx-contact-go { transform: translate(2px, -2px); color: #FFFFFF; }
+.bx-contact-mail .bx-contact-link { padding-right: 16px; }
+/* "Copia" sta sulla riga dell'etichetta: l'indirizzo resta su una riga sola */
+.bx-contact-copy {
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  padding: 3px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  background: linear-gradient(180deg, #FFFFFF, #D9F2FF);
+  color: var(--bx-ink);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 25, 70, 0.3);
+  transition: transform 0.15s;
+}
+.bx-contact-copy:hover { transform: translateY(-1px); }
 
 .bx-form { display: grid; gap: 14px; }
 .bx-field {
   display: grid;
   gap: 6px;
-  color: #DDF3FF;
+  color: #FFFFFF;
   font-size: 0.92rem;
+  text-shadow: 0 1px 3px rgba(0, 30, 75, 0.55);
 }
 .bx-field input,
 .bx-field textarea {
@@ -682,7 +760,7 @@ body.channel-b-active .avatar-close {
   border-color: #3ACBFF;
   box-shadow: inset 0 2px 4px rgba(0, 60, 120, 0.18), 0 0 0 4px rgba(58, 203, 255, 0.45);
 }
-.bx-form-note { margin: 0 !important; font-size: 0.82rem; color: #A9DDFB !important; }
+.bx-form-note { margin: 0 !important; font-size: 0.82rem; color: #CDEBFF !important; }
 
 .bx-panel-flute { text-align: center; }
 .bx-orb {
@@ -891,8 +969,7 @@ body.channel-b-active .avatar-close {
 }
 
 /* lampo di luce che scorre sui bottoni lucidi */
-.bx-pill::after,
-.bx-mail-pill::after {
+.bx-pill::after {
   content: '';
   position: absolute;
   top: 0;
@@ -904,8 +981,7 @@ body.channel-b-active .avatar-close {
   transform: translateX(-120%) skewX(-20deg);
   transition: transform 0.7s ease;
 }
-.bx-pill:hover::after,
-.bx-mail-pill:hover::after { transform: translateX(320%) skewX(-20deg); }
+.bx-pill:hover::after { transform: translateX(320%) skewX(-20deg); }
 
 /* ---------------------------------------------------------------------
    Responsive e movimento ridotto

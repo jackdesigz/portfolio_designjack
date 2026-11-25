@@ -357,7 +357,7 @@
         const body = name ? `${message}\n\n— ${name}` : message;
         const a = audio();
         if (a && a.playWaterDrop) a.playWaterDrop();
-        window.location.href = `mailto:jacopo@designjack.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:jacopofebi27@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       });
     }
 

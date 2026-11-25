@@ -258,11 +258,13 @@ body.channel-g-active .topbar-title {
 body.channel-g-active .topbar-title {
   color: var(--gx-mint);
   /* il font globale passa da --font-main (regola !important in styles.css) */
-  --font-main: 'Sedgwick Ave Display', 'Permanent Marker', cursive;
-  font-size: 1.35rem;
-  letter-spacing: 0.02em;
-  font-weight: 400;
-  transform: rotate(-1.5deg);
+  /* titoli G: serif organico e morbido (Fraunces SOFT/WONK), leggibile; il graffito resta solo decorazione */
+  --font-main: 'Fraunces', 'Bricolage Grotesque', serif;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 48;
+  font-size: 1.3rem;
+  letter-spacing: 0;
+  font-weight: 700;
+  transform: rotate(-1deg);
 }
 
 body.channel-g-active .btn-close-fullscreen {
@@ -774,10 +776,12 @@ body.channel-g-active .insta-project-card::before {
 }
 body.channel-g-active .insta-project-card:nth-child(even)::before { rotate: 4deg; left: 38%; }
 body.channel-g-active .insta-overlay-title {
-  font-family: 'Sedgwick Ave Display', 'Permanent Marker', cursive !important;
-  font-weight: 400;
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
+  font-family: 'Fraunces', 'Bricolage Grotesque', serif !important;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 36;
+  font-weight: 700;
+  font-size: 1.12rem;
+  line-height: 1.15;
+  letter-spacing: 0;
   color: var(--gx-lime);
 }
 body.channel-g-active .insta-filter-pill.active {

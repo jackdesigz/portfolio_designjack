@@ -90,10 +90,11 @@ body.channel-g-active .project-intro .project-header-section { border-bottom-col
 
 body.channel-g-active .project-intro .project-modal-title {
   color: var(--gx-mint);
-  --font-main: 'Sedgwick Ave Display', 'Permanent Marker', cursive;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  transform: rotate(-1.5deg);
+  --font-main: 'Fraunces', 'Bricolage Grotesque', serif;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transform: rotate(-1deg);
   text-shadow: 3px 3px 0 rgba(184, 242, 58, 0.35);
 }
 
@@ -133,10 +134,11 @@ body.channel-g-active .narrative-card {
 body.channel-g-active .narrative-card.is-design { rotate: 0.8deg; }
 body.channel-g-active .narrative-card:hover { transform: none; rotate: 0deg; box-shadow: 0 0 0 4px var(--gx-lime), 0 14px 30px rgba(0, 0, 0, 0.5); }
 body.channel-g-active .narrative-card h4 {
-  --font-main: 'Sedgwick Ave Display', 'Permanent Marker', cursive;
-  font-size: 1.4rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  --font-main: 'Fraunces', 'Bricolage Grotesque', serif;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0;
   color: var(--gx-moss);
   border-bottom: 2px dashed rgba(46, 94, 62, 0.4);
 }

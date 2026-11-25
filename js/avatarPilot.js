@@ -66,8 +66,10 @@
     ['.gx-cart', (el) => `${el.textContent.trim()}: fatto anche con Blender.`],
     ['.gx-game-start', 'Player 1, pronto?'],
     // Canale B
-    ['.bx-mail-pill', 'Scrivimi, rispondo davvero.'],
     ['.bx-copy', 'Copia e incolla, facile.'],
+    ['.bx-contact-insta', 'Su Instagram mi trovi come @jacopo.febi.'],
+    ['.bx-contact-linkedin', 'Il lato serio: LinkedIn.'],
+    ['.bx-contact-mail', 'Scrivimi, rispondo davvero.'],
     ['#bx-bottle-form', 'Scrivi pure, leggo tutto.'],
     ['#btn-open-flute', 'Il flauto magico… prova a suonarlo.'],
     ['.bx-bubble', 'Quella è vuota. La mia era più grande!'],

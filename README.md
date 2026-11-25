@@ -38,7 +38,7 @@ Stile Bauhaus su carta, con filtro da monitor CRT. Font Jost.
   - **Comandi:** `A` / `D` o frecce ← → per muovere il carrello, `Spazio` o `Invio` per pescare.
 
 ### G — Germogli & Graffiti (chi sono)
-La pagina autobiografica, organico × graffiti, tutto verde. Font Bricolage Grotesque; Sedgwick Ave Display per le scritte a spray, Permanent Marker per nome e cognome.
+La pagina autobiografica, organico × graffiti, tutto verde. Font Bricolage Grotesque; Sedgwick Ave Display per le scritte a spray, Permanent Marker per nome e cognome. Nel catalogo e nelle schede progetto in stile G i titoli usano Fraunces (morbido, leggibile).
 - **Muro:** muro notturno con blob che respirano e la tag "jack" con le colature, con "Jacopo" sopra e "Febi" sotto (si legge Jacopo “jack” Febi); sottotitolo "chi sono? cosa faccio?".
 - **Adesivi e nastro:** gli adesivi si staccano e si trascinano; sotto scorre un nastro con quello che faccio.
 - **Chi sono:** il racconto (dal CV) e una carta d'identità fatta di adesivi: nome, da dove vengo, cosa studio, lingue, passione; accanto c'è la casa dell'avatar.
@@ -52,7 +52,7 @@ La pagina autobiografica, organico × graffiti, tutto verde. Font Bricolage Grot
 Frutiger Aero marino, tutto blu e lucido. Font Hind.
 - **In superficie:** cielo con sole, onde, nastri di luce e un delfino.
 - **Sotto l'acqua:** discesa con raggi di luce e caustiche morbide.
-- **Contatti:** pannelli di vetro con l'email (e il tasto per copiarla) e il **messaggio in bottiglia**, che prepara una mail.
+- **Contatti:** pannelli di vetro. In *Scrivimi* una riga per canale: email (con il tasto per copiarla), Instagram @jacopo.febi e LinkedIn. Poi il **messaggio in bottiglia**, che prepara una mail.
 - **Flauto magico:** si apre dal suo pannello. I tasti R T Y U I suonano le note e ogni melodia porta a un canale.
 
 ### In comune

@@ -101,7 +101,7 @@ window.PROJECT_REGISTRY = [
         { src: 'blender.jpg', label: 'La scena', cap: 'In Blender: camera, luci e composizione della scena.' },
         { src: 'render-4.jpg', label: 'Prima prova', cap: 'Il ciondolo nero nello spazio: prima prova di composizione.' },
         { src: 'render-3.jpg', label: 'Seconda prova', cap: 'Ancora il ciondolo nero: luci e materiali si sistemano.' },
-        { src: 'render-2.jpg', label: 'Arriva l’oro', cap: 'Due ciondoli, oro e nero, con le catene e le sfere che fluttuano.' },
+        { src: 'render-2.jpg', label: 'Inserimento colori', cap: 'Arrivano i colori: l’oro e il verde delle pietre, con le catene e le sfere che fluttuano.' },
         { src: 'render-1.jpg', label: 'Render finale', cap: 'Il ciondolo d’oro sopra la Terra.' }
       ],
       renderText: 'Ho modellato il ciondolo in <strong>Blender</strong>: l’anello dorato con le pietre verdi, la croce, l’uovo spaccato al posto del globo, le catene. Poi l’ho messo in scena nello spazio, sopra la Terra. Qui sotto i passaggi, dal file di Blender al render finale: premi «Guarda il processo» oppure scegli un passo.',
