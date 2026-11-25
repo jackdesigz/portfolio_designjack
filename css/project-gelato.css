@@ -100,7 +100,19 @@
 .gp-logo .gp-l-wing { fill: var(--c-wing); }
 .gp-logo .gp-l-leg { fill: var(--c-leg); }
 .gp-logo .gp-l-beak { fill: var(--c-beak); }
-.gp-logo .gp-l-eye { fill: var(--c-eye); stroke: none; transition: transform 0.15s ease-out, fill 0.35s ease; }
+.gp-logo .gp-l-eye {
+  fill: var(--c-eye);
+  stroke: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  /* scatto con un piccolo rimbalzo, come un occhio vero */
+  transition: translate 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.35s ease;
+}
+.gp-logo .gp-l-eye.is-blink { animation: gp-blink 0.24s ease-in-out; }
+@keyframes gp-blink {
+  0%, 100% { scale: 1 1; }
+  45%, 55% { scale: 1.15 0.12; }
+}
 .gp-logo .gp-l-word path { fill: var(--c-word); transition: fill 0.35s ease; }
 .gp-logo .gp-l-di { fill: var(--c-di); transition: fill 0.35s ease; }
 .gp-logo .gp-l-guides { display: none; }
@@ -825,5 +837,7 @@
   .gp [data-reveal] { opacity: 1 !important; transform: none !important; }
   .gp-l-bird.is-hop,
   .gp-pbird.is-hop,
-  .gp-scoop.is-hop { animation: none; }
+  .gp-scoop.is-hop,
+  .gp-logo .gp-l-eye.is-blink { animation: none; }
+  .gp-logo .gp-l-eye { transition: fill 0.35s ease; }
 }

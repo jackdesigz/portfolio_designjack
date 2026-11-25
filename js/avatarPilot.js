@@ -71,7 +71,6 @@
     ['.bx-contact-linkedin', 'Il lato serio: LinkedIn.'],
     ['.bx-contact-mail', 'Scrivimi, rispondo davvero.'],
     ['#bx-bottle-form', 'Scrivi pure, leggo tutto.'],
-    ['#btn-open-flute', 'Il flauto magico… prova a suonarlo.'],
     ['.bx-bubble', 'Quella è vuota. La mia era più grande!'],
     ['a[href="#bx-depths"]', 'Trattieni il fiato!']
   ];
@@ -95,7 +94,7 @@
     b: [
       'Scrivimi pure, rispondo davvero.',
       'Il messaggio in bottiglia arriva dritto da me.',
-      'Il flauto ti porta in un altro canale.',
+      'Su LinkedIn trovi il mio lato più serio.',
       'Glu glu… tranquillo, qui fuori respiro.'
     ]
   };

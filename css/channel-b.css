@@ -608,7 +608,8 @@ body.channel-b-active .avatar-close {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
   gap: 28px;
   align-items: start;
-  max-width: 1180px;
+  /* due pannelli (Scrivimi + bottiglia): colonne larghe il giusto */
+  max-width: 920px;
   margin: 0 auto;
 }
 .bx-panel {
@@ -713,26 +714,79 @@ body.channel-b-active .avatar-close {
   transition: transform 0.2s;
 }
 .bx-contact:hover .bx-contact-go { transform: translate(2px, -2px); color: #FFFFFF; }
-.bx-contact-mail .bx-contact-link { padding-right: 16px; }
-/* "Copia" sta sulla riga dell'etichetta: l'indirizzo resta su una riga sola */
+.bx-contact-mail .bx-contact-link { padding-right: 8px; }
+/* Copia: bottone tondo nella stessa colonna delle frecce ↗ delle altre righe */
 .bx-contact-copy {
-  position: absolute;
-  top: 9px;
-  right: 12px;
-  padding: 3px 11px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  background: linear-gradient(180deg, #FFFFFF, #D9F2FF);
-  color: var(--bx-ink);
-  font: inherit;
-  font-size: 0.74rem;
-  font-weight: 600;
-  line-height: 1.3;
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-right: 10px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.08));
+  color: #FFFFFF;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 25, 70, 0.3);
-  transition: transform 0.15s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 3px 8px rgba(0, 25, 70, 0.3);
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
 }
-.bx-contact-copy:hover { transform: translateY(-1px); }
+@media (max-width: 480px) {
+  .bx-contact-link { gap: 10px; padding-left: 10px; }
+  .bx-contact-ico { width: 40px; height: 40px; }
+  .bx-contact-txt strong { font-size: 0.95rem; }
+  .bx-contact-copy { width: 36px; height: 36px; margin-right: 8px; }
+}
+.bx-contact-copy:hover {
+  background: linear-gradient(180deg, #FFFFFF, #D9F2FF);
+  border-color: #FFFFFF;
+  color: var(--bx-ink);
+  transform: translateY(-1px);
+}
+.bx-contact-copy:active { transform: scale(0.94); }
+.bx-copy-i { grid-area: 1 / 1; transition: opacity 0.2s, transform 0.25s; }
+.bx-copy-i-ok { opacity: 0; transform: scale(0.5); }
+/* copiato: bolla verde acqua con la spunta */
+.bx-contact-copy.is-done {
+  background: linear-gradient(180deg, #A8F7D2 0%, #2FCB8C 50%, #16A870 51%, #3BD99A 100%);
+  border-color: #0E8A5A;
+  color: #FFFFFF;
+}
+.bx-contact-copy.is-done .bx-copy-i-copy { opacity: 0; transform: scale(0.5); }
+.bx-contact-copy.is-done .bx-copy-i-ok { opacity: 1; transform: none; filter: drop-shadow(0 1px 1px rgba(0, 60, 40, 0.5)); }
+/* fumetto sopra il bottone: "Copia" al passaggio, "Copiato!" dopo il clic */
+.bx-copy-tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: var(--bx-ink);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 25, 70, 0.35);
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.bx-copy-tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-top-color: #FFFFFF;
+}
+.bx-contact-copy:hover .bx-copy-tip,
+.bx-contact-copy:focus-visible .bx-copy-tip,
+.bx-contact-copy.is-done .bx-copy-tip { opacity: 1; transform: translate(-50%, 0); }
+.bx-contact-copy.is-done .bx-copy-tip { color: #0E7A50; }
 
 .bx-form { display: grid; gap: 14px; }
 .bx-field {
@@ -762,36 +816,6 @@ body.channel-b-active .avatar-close {
 }
 .bx-form-note { margin: 0 !important; font-size: 0.82rem; color: #CDEBFF !important; }
 
-.bx-panel-flute { text-align: center; }
-.bx-orb {
-  position: relative;
-  width: 110px;
-  height: 110px;
-  margin: 6px auto 0;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  cursor: pointer;
-  background: radial-gradient(circle at 50% 32%, #C4F2FF 0%, #39C4FF 38%, #0A7FD1 74%, #06519A 100%);
-  box-shadow: 0 12px 34px rgba(0, 40, 100, 0.5), inset 0 -10px 18px rgba(0, 40, 120, 0.4), 0 0 0 6px rgba(255, 255, 255, 0.12);
-  transition: transform 0.25s cubic-bezier(.3, 1.6, .5, 1);
-  animation: bxBob 4s ease-in-out infinite;
-}
-.bx-orb::before {
-  content: '';
-  position: absolute;
-  top: 7%;
-  left: 18%;
-  width: 64%;
-  height: 40%;
-  border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.05));
-}
-.bx-orb span { position: relative; color: #fff; font-size: 2.6rem; text-shadow: 0 2px 6px rgba(0, 50, 110, 0.6); }
-.bx-orb:hover { transform: scale(1.08); }
-.bx-orb:focus-visible { outline: 3px solid #fff; outline-offset: 5px; }
-@keyframes bxBob { 50% { translate: 0 -6px; } }
 
 /* ---------------------------------------------------------------------
    Fondale
@@ -933,11 +957,13 @@ body.channel-b-active .avatar-close {
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  --drop: radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.95) 0 13%, rgba(255, 255, 255, 0.12) 28%, rgba(190, 235, 255, 0.22) 56%, rgba(255, 255, 255, 0.6) 64%, rgba(255, 255, 255, 0) 70%);
+  /* goccia intera disegnata in SVG: cerchio, bordo, riflesso. Sta tutta nel suo riquadro, niente tagli */
+  --drop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10.6' fill='rgba(200,240,255,0.16)' stroke='rgba(255,255,255,0.75)' stroke-width='1.2'/%3E%3Cpath d='M6.2 15.6a7 7 0 0 0 9.4 2.8' fill='none' stroke='rgba(255,255,255,0.45)' stroke-width='1.1' stroke-linecap='round'/%3E%3Cellipse cx='8.6' cy='8' rx='3.1' ry='2.1' transform='rotate(-30 8.6 8)' fill='rgba(255,255,255,0.95)'/%3E%3C/svg%3E");
   background: var(--drop), var(--drop), var(--drop), var(--drop), var(--drop);
   background-repeat: no-repeat;
-  background-size: 16px 16px, 10px 10px, 22px 22px, 8px 8px, 12px 12px;
-  background-position: calc(100% - 26px) 22px, calc(100% - 52px) 40px, calc(100% - 18px) 62px, calc(100% - 70px) 18px, 24px calc(100% - 26px);
+  /* tutte nella fascia sopra i titoli (e una in basso a sinistra): non coprono mai il testo */
+  background-size: 22px 22px, 12px 12px, 8px 8px, 10px 10px, 12px 12px;
+  background-position: calc(100% - 14px) 7px, calc(100% - 42px) 15px, calc(100% - 58px) 7px, calc(100% - 76px) 16px, 14px calc(100% - 9px);
 }
 
 /* icone a sfera lucida accanto ai titoli dei pannelli */
@@ -994,5 +1020,5 @@ body.channel-b-active .avatar-close {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bx-wave, .bx-cloud, .bx-sun, .bx-sun::after, .bx-sw, .bx-bokeh, .bx-sparkle, .bx-dolphin, .bx-rays span, .bx-caustics::before, .bx-caustics::after, .bx-bubble, .bx-fish, .bx-orb { animation: none; }
+  .bx-wave, .bx-cloud, .bx-sun, .bx-sun::after, .bx-sw, .bx-bokeh, .bx-sparkle, .bx-dolphin, .bx-rays span, .bx-caustics::before, .bx-caustics::after, .bx-bubble, .bx-fish { animation: none; }
 }

@@ -268,17 +268,44 @@
     const eye = heroLogo.querySelector('.gp-l-eye');
     const heroBird = heroLogo.querySelector('.gp-l-bird');
     const hero = root.querySelector('.gp-hero');
+    // l'occhio si sposta molto di più (fino a 7 unità del disegno: resta dentro la testa),
+    // con un piccolo rimbalzo; da fermo si guarda intorno da solo e ogni tanto sbatte le palpebre
+    const EYE_MAX = 7;
+    const setEye = (x, y) => { eye.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`; };
+    let lastMove = 0;
     const look = (e) => {
+      lastMove = performance.now();
       const r = heroLogo.getBoundingClientRect();
       const k = r.width / 364;
       const ex = r.left + (GEO.eye[0] + 3) * k;
       const ey = r.top + (GEO.eye[1] + 3) * k;
       const a = Math.atan2(e.clientY - ey, e.clientX - ex);
-      const dist = Math.min(1, Math.hypot(e.clientX - ex, e.clientY - ey) / 220);
-      eye.style.transform = `translate(${(Math.cos(a) * 3.4 * dist).toFixed(2)}px, ${(Math.sin(a) * 3.4 * dist).toFixed(2)}px)`;
+      const dist = Math.min(1, Math.hypot(e.clientX - ex, e.clientY - ey) / 90);
+      setEye(Math.cos(a) * EYE_MAX * dist, Math.sin(a) * EYE_MAX * 0.85 * dist);
     };
     hero.addEventListener('pointermove', look);
-    hero.addEventListener('pointerleave', () => { eye.style.transform = ''; });
+    hero.addEventListener('pointerleave', () => { lastMove = 0; setEye(0, 0); });
+    const blink = () => {
+      eye.classList.remove('is-blink');
+      void eye.getBoundingClientRect();
+      eye.classList.add('is-blink');
+    };
+    eye.addEventListener('animationend', () => eye.classList.remove('is-blink'));
+    if (!reduceMotion()) {
+      let idleT = 0;
+      const idle = () => {
+        // se il puntatore è fermo da un po', l'uccellino si guarda intorno
+        if (performance.now() - lastMove > 1800) {
+          const a = Math.random() * Math.PI * 2;
+          const d = Math.random() < 0.25 ? 0 : 0.6 + Math.random() * 0.4;
+          setEye(Math.cos(a) * EYE_MAX * d, Math.sin(a) * EYE_MAX * 0.85 * d);
+        }
+        if (Math.random() < 0.35) blink();
+        idleT = setTimeout(idle, 1100 + Math.random() * 1500);
+      };
+      idleT = setTimeout(idle, 900);
+      cleanups.push(() => clearTimeout(idleT));
+    }
     const hop = (b) => {
       b.classList.remove('is-hop');
       void b.getBoundingClientRect();

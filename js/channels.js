@@ -332,16 +332,44 @@
     const bubbles = document.getElementById('bx-bubbles');
     const fillBubbles = bubbles ? initBubbles(bubbles) : () => {};
 
+    // Copia l'indirizzo: clipboard moderna, con ripiego per i browser che la bloccano
+    const copyText = async (text) => {
+      try {
+        if (!navigator.clipboard || !window.isSecureContext) throw new Error('no clipboard');
+        // se il permesso resta in sospeso non aspettiamo all'infinito
+        await Promise.race([
+          navigator.clipboard.writeText(text),
+          new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 900))
+        ]);
+        return true;
+      } catch (err) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        ta.remove();
+        return ok;
+      }
+    };
     root.querySelectorAll('.bx-copy').forEach((btn) => {
-      const label = btn.textContent;
+      const tip = btn.querySelector('.bx-copy-tip');
+      const label = btn.getAttribute('aria-label');
+      let timer = 0;
       btn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(btn.dataset.copy);
-          btn.textContent = 'Copiato ✓';
-        } catch (err) {
-          btn.textContent = btn.dataset.copy;
-        }
-        setTimeout(() => { btn.textContent = label; }, 1800);
+        const ok = await copyText(btn.dataset.copy);
+        btn.classList.toggle('is-done', ok);
+        if (tip) tip.textContent = ok ? 'Copiato!' : btn.dataset.copy;
+        btn.setAttribute('aria-label', ok ? 'Indirizzo copiato' : label);
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          btn.classList.remove('is-done');
+          if (tip) tip.textContent = 'Copia';
+          btn.setAttribute('aria-label', label);
+        }, 2000);
       });
     });
 

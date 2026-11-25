@@ -53,7 +53,6 @@ Frutiger Aero marino, tutto blu e lucido. Font Hind.
 - **In superficie:** cielo con sole, onde, nastri di luce e un delfino.
 - **Sotto l'acqua:** discesa con raggi di luce e caustiche morbide.
 - **Contatti:** pannelli di vetro. In *Scrivimi* una riga per canale: email (con il tasto per copiarla), Instagram @jacopo.febi e LinkedIn. Poi il **messaggio in bottiglia**, che prepara una mail.
-- **Flauto magico:** si apre dal suo pannello. I tasti R T Y U I suonano le note e ogni melodia porta a un canale.
 
 ### In comune
 - **Tab R / G / B:** passandoci sopra compare un'etichetta con due parole che iniziano con la stessa lettera. In R scende come una tendina. In G si compone come un graffito: passata di spray, macchie di vernice attorno e una colatura. In B nasce come una bolla.
@@ -232,7 +231,7 @@ js/
   dither.js             pennello retinato e fogli a 1 bit
   crane2d.js · clawPhysics2D.js   claw machine 2D
   heroAvatar.js · avatarPilot.js  avatar 3D e i suoi spostamenti
-  musicPlayer.js · audio.js · flute.js · konami.js · softwareIcons.js
+  musicPlayer.js · audio.js · konami.js · softwareIcons.js
 assets/
   projects/             immagini dei progetti
   fonts/                font locali

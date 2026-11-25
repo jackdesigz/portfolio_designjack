@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.initCraneMachine) window.initCraneMachine();
   if (window.initClaw2D) window.initClaw2D();
   if (window.initModalManager) window.initModalManager();
-  if (window.initMagicFlute) window.initMagicFlute();
 });
 
 // ---------------------------------------------------------------------
@@ -284,7 +283,7 @@ function initChannelSwitcherCRT() {
     });
   }
 
-  // Expose global channel switcher for Flauto Magico and external triggers
+  // Switch di canale accessibile dall'esterno (avatar, scorciatoie)
   window.switchChannel = (target) => {
     if (!target) return;
     switchChannel(target.toUpperCase());

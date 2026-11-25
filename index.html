@@ -17,9 +17,9 @@
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hind:wght@300;400;500;600;700&family=Montserrat:wght@100;200;400;500;600&family=Rajdhani:wght@500;600;700&family=Rubik:wght@400;500;700&family=Sedgwick+Ave+Display&family=Anton&family=Michroma&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Special+Elite&family=Barlow+Condensed:wght@700&family=Italiana&family=Poppins:wght@300;400;500;600&family=Noto+Serif+JP:wght@600&family=Fraunces:opsz,wght,SOFT,WONK@9..144,500..800,0..100,0..1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=6.4">
+  <link rel="stylesheet" href="css/styles.css?v=6.5">
   <link rel="stylesheet" href="css/channel-g.css?v=2.3">
-  <link rel="stylesheet" href="css/channel-b.css?v=2.0">
+  <link rel="stylesheet" href="css/channel-b.css?v=2.4">
   <link rel="stylesheet" href="css/music-player.css?v=1.2">
   <link rel="stylesheet" href="css/project-champar.css?v=1.7">
   <link rel="stylesheet" href="css/project-brand.css?v=1.7">
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="css/project-mao.css?v=1.1">
   <link rel="stylesheet" href="css/project-decoder.css?v=2.8">
   <link rel="stylesheet" href="css/project-modartech.css?v=1.2">
-  <link rel="stylesheet" href="css/project-gelato.css?v=1.1">
+  <link rel="stylesheet" href="css/project-gelato.css?v=1.2">
   <link rel="stylesheet" href="css/project-designjack.css?v=1.0">
   <link rel="stylesheet" href="css/project-ikigai.css?v=1.3">
   <link rel="stylesheet" href="css/project-bosch.css?v=2.3">
@@ -684,7 +684,11 @@
                     <span class="bx-contact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg></span>
                     <span class="bx-contact-txt"><small>Email</small><strong>jacopofebi27@gmail.com</strong></span>
                   </a>
-                  <button type="button" class="bx-contact-copy bx-copy" data-copy="jacopofebi27@gmail.com" aria-label="Copia l'indirizzo email">Copia</button>
+                  <button type="button" class="bx-contact-copy bx-copy" data-copy="jacopofebi27@gmail.com" aria-label="Copia l'indirizzo email">
+                    <svg class="bx-copy-i bx-copy-i-copy" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M15 9V6.5A2.5 2.5 0 0 0 12.5 4h-6A2.5 2.5 0 0 0 4 6.5v6A2.5 2.5 0 0 0 6.5 15H9"/></svg>
+                    <svg class="bx-copy-i bx-copy-i-ok" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                    <span class="bx-copy-tip" aria-hidden="true">Copia</span>
+                  </button>
                 </li>
                 <li class="bx-contact bx-contact-insta">
                   <a href="https://www.instagram.com/jacopo.febi/" class="bx-contact-link" target="_blank" rel="noopener" title="Il profilo Instagram di jack">
@@ -717,11 +721,6 @@
               </form>
             </article>
 
-            <article class="bx-glass bx-panel bx-panel-flute">
-              <h2><span class="bx-icon-orb" aria-hidden="true">♪</span>Flauto magico</h2>
-              <p>Suona la melodia giusta e ti teletrasporta tra i canali.</p>
-              <button id="btn-open-flute" class="bx-orb" type="button" title="Suona il Flauto Magico" aria-label="Apri Flauto Magico"><span aria-hidden="true">♪</span></button>
-            </article>
           </div>
         </section>
 
@@ -924,177 +923,11 @@
     </div>
   </div>
 
-  <!-- ===================================================================
-       MODAL: FLAUTO MAGICO (STRUMENTO MUSICALE)
-       =================================================================== -->
-  <div id="magic-flute-modal" class="flute-modal-overlay" role="dialog" aria-modal="true" aria-label="Flauto Magico">
-    <div class="flute-modal-window">
-      <!-- Topbar Finestra Flauto -->
-      <div class="flute-modal-topbar">
-        <div class="flute-topbar-title">
-          <span class="flute-title-icon">🪈</span>
-          <span>FLAUTO MAGICO // MELODIE DI TELETRASPORTO</span>
-        </div>
-        <button id="btn-close-flute" class="flute-close-btn" title="Chiudi Flauto (ESC)">
-          ✕ CHIUDI
-        </button>
-      </div>
-
-      <div class="flute-modal-body">
-        <!-- Lato Sinistro: Lo Strumento e le Note -->
-        <div class="flute-instrument-column">
-          <div class="flute-instructions">
-            Suona le note con la tastiera (<kbd>R</kbd>, <kbd>T</kbd>, <kbd>Y</kbd>, <kbd>U</kbd>, <kbd>I</kbd>) oppure clicca sui fori del flauto per comporre le melodie di teletrasporto.
-          </div>
-
-          <!-- Pentagramma / Display Note Eseguite -->
-          <div class="flute-stave-display">
-            <div class="stave-notes-container" id="flute-notes-buffer">
-              <span class="stave-placeholder">SUONA UNA NOTA...</span>
-            </div>
-            <button id="btn-flute-clear-notes" class="btn-clear-stave" title="Cancella note eseguite">RESET</button>
-          </div>
-
-          <!-- Grafica dello Strumento Flauto con 5 Fori Interattivi -->
-          <div class="flute-body-graphic">
-            <div class="flute-mouthpiece"></div>
-            <div class="flute-stem">
-              <div class="flute-holes-row">
-                <!-- Nota 1: R -->
-                <button class="flute-hole-btn" data-note="R" data-key="r" title="Nota R (Re)">
-                  <span class="hole-key-badge">R</span>
-                  <div class="hole-orifice">
-                    <span class="hole-inner-glow"></span>
-                  </div>
-                  <span class="hole-note-label">RE · D4</span>
-                </button>
-
-                <!-- Nota 2: T -->
-                <button class="flute-hole-btn" data-note="T" data-key="t" title="Nota T (Fa)">
-                  <span class="hole-key-badge">T</span>
-                  <div class="hole-orifice">
-                    <span class="hole-inner-glow"></span>
-                  </div>
-                  <span class="hole-note-label">FA · F4</span>
-                </button>
-
-                <!-- Nota 3: Y -->
-                <button class="flute-hole-btn" data-note="Y" data-key="y" title="Nota Y (Sol)">
-                  <span class="hole-key-badge">Y</span>
-                  <div class="hole-orifice">
-                    <span class="hole-inner-glow"></span>
-                  </div>
-                  <span class="hole-note-label">SOL · G4</span>
-                </button>
-
-                <!-- Nota 4: U -->
-                <button class="flute-hole-btn" data-note="U" data-key="u" title="Nota U (La)">
-                  <span class="hole-key-badge">U</span>
-                  <div class="hole-orifice">
-                    <span class="hole-inner-glow"></span>
-                  </div>
-                  <span class="hole-note-label">LA · A4</span>
-                </button>
-
-                <!-- Nota 5: I -->
-                <button class="flute-hole-btn" data-note="I" data-key="i" title="Nota I (Si)">
-                  <span class="hole-key-badge">I</span>
-                  <div class="hole-orifice">
-                    <span class="hole-inner-glow"></span>
-                  </div>
-                  <span class="hole-note-label">SI · B4</span>
-                </button>
-              </div>
-            </div>
-            <div class="flute-end-bell"></div>
-          </div>
-        </div>
-
-        <!-- Lato Destro: Gli Spartiti dei Teletrasporti -->
-        <div class="flute-sheet-column">
-          <div class="sheet-column-header">
-            <span>SPARTITI DEI TELETRASPORTI</span>
-          </div>
-
-          <div class="sheet-cards-list">
-            <!-- Spartito Canale R -->
-            <div class="sheet-music-card card-channel-r" id="sheet-song-r">
-              <div class="sheet-card-header">
-                <span class="sheet-badge-r">CANALE R</span>
-                <span class="sheet-title">Melodia del Rosso</span>
-              </div>
-              <div class="sheet-notes-sequence">
-                <span class="sheet-note-pill pill-r">R</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-t">T</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-y">Y</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-r">R</span>
-              </div>
-              <div class="sheet-target-desc">Destinazione: Archivio Progetti & Toy Claw Machine</div>
-            </div>
-
-            <!-- Spartito Canale G -->
-            <div class="sheet-music-card card-channel-g" id="sheet-song-g">
-              <div class="sheet-card-header">
-                <span class="sheet-badge-g">CANALE G</span>
-                <span class="sheet-title">Melodia del Verde</span>
-              </div>
-              <div class="sheet-notes-sequence">
-                <span class="sheet-note-pill pill-t">T</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-y">Y</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-u">U</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-t">T</span>
-              </div>
-              <div class="sheet-target-desc">Destinazione: Germogli & Graffiti // Organic & Street</div>
-            </div>
-
-            <!-- Spartito Canale B -->
-            <div class="sheet-music-card card-channel-b" id="sheet-song-b">
-              <div class="sheet-card-header">
-                <span class="sheet-badge-b">CANALE B</span>
-                <span class="sheet-title">Melodia del Blu</span>
-              </div>
-              <div class="sheet-notes-sequence">
-                <span class="sheet-note-pill pill-y">Y</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-u">U</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-i">I</span>
-                <span class="sheet-arrow">›</span>
-                <span class="sheet-note-pill pill-y">Y</span>
-              </div>
-              <div class="sheet-target-desc">Destinazione: Contatti // Calm Ocean Abyss</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Prompt Dialog di Conferma Teletrasporto -->
-      <div id="flute-teleport-prompt" class="flute-teleport-prompt" style="display: none;">
-        <div class="prompt-box">
-          <div class="prompt-crest">✨ MELODIA SBLOCCATA! ✨</div>
-          <h3 id="prompt-melody-title" class="prompt-title">Hai suonato la Melodia del Canale R!</h3>
-          <p id="prompt-melody-msg" class="prompt-msg">Vuoi procedere ad andare a destinazione Canale R?</p>
-          <div class="prompt-actions">
-            <button id="btn-flute-prompt-cancel" class="prompt-btn secondary">✕ ANNULLA</button>
-            <button id="btn-flute-prompt-confirm" class="prompt-btn primary">TELETRASPORTATI ORA →</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
   <!-- Scripts -->
   <script src="js/projects.js?v=6.9"></script>
   <script src="js/softwareIcons.js?v=1.1"></script>
   <script src="js/audio.js?v=4.0"></script>
-  <script src="js/avatarPilot.js?v=3.3"></script>
+  <script src="js/avatarPilot.js?v=3.4"></script>
   <script src="js/musicPlayer.js?v=1.7"></script>
   <script src="js/heroAvatar.js?v=2.6"></script>
   <script src="js/hangingCatalog.js?v=5.2"></script>
@@ -1104,14 +937,13 @@
   <script src="js/projectChampar.js?v=1.3"></script>
   <script src="js/projectBrand.js?v=1.6"></script>
   <script src="js/projectEditorial.js?v=1.8"></script>
-  <script src="js/projectGelato.js?v=1.0"></script>
+  <script src="js/projectGelato.js?v=1.1"></script>
   <script src="js/projectDesignjack.js?v=1.0"></script>
   <script src="js/projectIkigai.js?v=1.0"></script>
   <script src="js/projectBosch.js?v=2.2"></script>
   <script src="js/modal.js?v=5.7"></script>
-  <script src="js/flute.js?v=4.1"></script>
-  <script src="js/channels.js?v=2.2"></script>
-  <script src="js/main.js?v=5.7"></script>
+  <script src="js/channels.js?v=2.4"></script>
+  <script src="js/main.js?v=5.8"></script>
   <script src="js/konami.js?v=1.1"></script>
 
 </body>
