@@ -53,10 +53,24 @@ Frutiger Aero marino, tutto blu e lucido. Font Hind.
 - **In superficie:** cielo con sole, onde, nastri di luce e un delfino.
 - **Sotto l'acqua:** discesa con raggi di luce e caustiche morbide.
 - **Contatti:** pannelli di vetro. In *Scrivimi* una riga per canale: email (con il tasto per copiarla), Instagram @jacopo.febi e LinkedIn. Poi il **messaggio in bottiglia**, che prepara una mail.
+- **Domande frequenti:** in fondo al canale tre domande con accanto l'avatar (una seconda testa 3D, creata quando la sezione entra in vista). Cliccando una domanda l'avatar risponde nel riquadro sotto di lui. Domande e risposte sono in `FAQ` dentro `js/channels.js` (traduzioni in `js/i18n-en.js`). Mentre le FAQ sono a schermo la bolla con l'avatar intrappolato si nasconde e le bolle decorative non passano sopra il riquadro.
 
 ### In comune
+- **Lingua IT / EN** (`js/i18n.js`, `js/i18n-en.js`): il pulsante IT / EN in alto a destra traduce tutto il sito in inglese e ricorda la scelta. Alla prima visita parte in italiano se il browser è in italiano, altrimenti in inglese, e finita l'intro un fumetto sotto il pulsante avvisa che si può cambiare lingua (una volta sola, poi si ricorda).
+  - Il sito resta scritto in italiano. In inglese ogni testo della pagina (anche `title`, `aria-label`, `alt`, `placeholder`) viene cercato nel dizionario `js/i18n-en.js` e sostituito, anche quello aggiunto dopo dagli script (pagine progetto, avatar, messaggi).
+  - Per tradurre un testo nuovo basta aggiungere una riga al dizionario: chiave il testo italiano esatto, valore l'inglese. Le frasi con una parte variabile stanno in `I18N_EN_RULES`.
+  - Testi su canvas e fumetti dell'avatar passano da `window.i18n.t()`.
+  - Restano in italiano, apposta: il prototipo del sito della gelateria e le immagini (pagine di riviste, manifesti).
 - **Tab R / G / B:** passandoci sopra compare un'etichetta con due parole che iniziano con la stessa lettera. In R scende come una tendina. In G si compone come un graffito: passata di spray, macchie di vernice attorno e una colatura. In B nasce come una bolla.
-- **Avatar** (`js/heroAvatar.js`, `js/avatarPilot.js`): la testa low-poly ha come texture `assets/avatar/jacopo-avatar.png`.
+- **Avatar** (`js/heroAvatar.js`, `js/avatarPilot.js`): la testa 3D è il modello Blender `assets/avatar/jacopo-head.glb`, caricato con `js/vendor/GLTFLoader.js` (Three.js r128).
+  - Il file nasce da `Avatar/Avatar.glb` senza la scansione fotografica "alta" (1,4 MB → 170 KB). Dopo un nuovo export da Blender: `python3 tools/glbprune.py Avatar/Avatar.glb assets/avatar/jacopo-head.glb alta`.
+  - Le parti si riconoscono dal nome di Blender: `testa` (materiali `pelle`, `occhiVERI`, labbra), `occhi` (pupille), `sopracciglia`, `capelli`, `Occhiali`.
+  - Sorriso a riposo e carnagione un po' più scura del colore di Blender: si regolano con `SMILE` e `SKIN_TONE` in cima a `js/heroAvatar.js`.
+  - Espressioni: battito di palpebre, pupille che seguono il cursore (e da ferme si guardano intorno), bocca che si apre parlando, sopracciglia che si alzano, sorpresa con occhi spalancati e bocca a O.
+  - Mosse buffe, a rotazione ogni 8–15 secondi quando è tranquillo (non mentre parla o lo trascini; spente con "riduci movimento"): sopracciglio dubbioso, smorfia a occhi chiusi, sguardo sinistro a destra e sinistra, doppio alzo di sopracciglia, guance gonfie. Cliccandolo 5 volte in poco tempo si arrabbia (rosso in faccia, sopracciglia aggrottate, scuote la testa) e dice "HEY NON SONO UN GIOCATTOLO!", poi su "beh… un po' sì…" si imbarazza. Tutto in `anticTargets()` di `js/heroAvatar.js`.
+  - Resa "Nintendo DS": circa 128 righe di pixel, retino ordinato leggero (12 livelli per canale con matrice di Bayer: si regola con `DITHER` in cima a `js/heroAvatar.js`, meno livelli = retino più evidente), texture senza smussatura, contorno di un pixel, griglia LCD leggera, ombra a puntini.
+  - Misure: hero R 490 px (400 su telefono), casa nel canale G 560 px (440), bolla nel canale B 250 px (190), FAQ 370 px (290), agganciato in basso a sinistra 230 px (170; 120 sopra il catalogo su telefono).
+  - La versione precedente (ritratto 2D su rilievo) è in `archive/heroAvatar-rilievo2D.js`.
   - Segue il cursore e sbatte le palpebre.
   - Si trascina per girarla e, se la clicchi, parla.
   - Scrollando si aggancia in basso a sinistra e commenta quello su cui passi.
@@ -231,7 +245,7 @@ js/
   dither.js             pennello retinato e fogli a 1 bit
   crane2d.js · clawPhysics2D.js   claw machine 2D
   heroAvatar.js · avatarPilot.js  avatar 3D e i suoi spostamenti
-  musicPlayer.js · audio.js · konami.js · softwareIcons.js
+  musicPlayer.js · audio.js · konami.js · softwareIcons.js · i18n.js · i18n-en.js
 assets/
   projects/             immagini dei progetti
   fonts/                font locali

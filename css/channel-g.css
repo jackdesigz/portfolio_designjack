@@ -992,7 +992,7 @@ body.channel-g-active #channel-toast {
 /* Casa dell'avatar accanto a "Chi sono" */
 .avatar-home--g {
   position: relative;
-  height: 430px;
+  height: 560px;
   min-width: 0;
 }
 .avatar-home--g::before {
@@ -1052,7 +1052,7 @@ body.channel-g-active .avatar-close {
 /* ---------- Responsive ---------- */
 @media (max-width: 860px) {
   .gx-about { grid-template-columns: 1fr; padding-top: 100px; }
-  .avatar-home--g { height: 360px; }
+  .avatar-home--g { height: 440px; }
   .gx-paper { padding: 46px 28px 36px; border-radius: 36px 70px 40px 80px / 50px 36px 70px 40px; }
   .gx-do-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gx-rules { grid-template-columns: 1fr; }

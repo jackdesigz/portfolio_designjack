@@ -13,13 +13,14 @@
 
   <!-- Three.js (r128) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/vendor/GLTFLoader.js?v=r128"></script>
 
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hind:wght@300;400;500;600;700&family=Montserrat:wght@100;200;400;500;600&family=Rajdhani:wght@500;600;700&family=Rubik:wght@400;500;700&family=Sedgwick+Ave+Display&family=Anton&family=Michroma&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Special+Elite&family=Barlow+Condensed:wght@700&family=Italiana&family=Poppins:wght@300;400;500;600&family=Noto+Serif+JP:wght@600&family=Fraunces:opsz,wght,SOFT,WONK@9..144,500..800,0..100,0..1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=6.5">
-  <link rel="stylesheet" href="css/channel-g.css?v=2.3">
-  <link rel="stylesheet" href="css/channel-b.css?v=2.4">
+  <link rel="stylesheet" href="css/styles.css?v=7.1">
+  <link rel="stylesheet" href="css/channel-g.css?v=2.4">
+  <link rel="stylesheet" href="css/channel-b.css?v=2.8">
   <link rel="stylesheet" href="css/music-player.css?v=1.2">
   <link rel="stylesheet" href="css/project-champar.css?v=1.7">
   <link rel="stylesheet" href="css/project-brand.css?v=1.7">
@@ -33,9 +34,9 @@
   <link rel="stylesheet" href="css/project-designjack.css?v=1.0">
   <link rel="stylesheet" href="css/project-ikigai.css?v=1.3">
   <link rel="stylesheet" href="css/project-bosch.css?v=2.3">
-  <link rel="stylesheet" href="css/project-page.css?v=1.4">
-  <link rel="stylesheet" href="css/mobile.css?v=1.0">
-  <link rel="stylesheet" href="css/catalog-ui.css?v=1.7">
+  <link rel="stylesheet" href="css/project-page.css?v=1.5">
+  <link rel="stylesheet" href="css/mobile.css?v=1.1">
+  <link rel="stylesheet" href="css/catalog-ui.css?v=2.0">
   <link rel="stylesheet" href="css/easter-egg.css?v=1.1">
 </head>
 <body class="crt-bezel-frame">
@@ -103,6 +104,10 @@
         <span class="ncb-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
         <span class="ncb-label">CATALOGO</span>
         <span class="ncb-count" aria-hidden="true"></span>
+      </button>
+      <!-- Lingua: italiano / inglese (js/i18n.js + dizionario js/i18n-en.js) -->
+      <button id="lang-toggle" class="nav-btn lang-toggle" type="button" data-lang-toggle data-i18n-skip aria-label="Lingua: italiano. Switch to English" title="Switch to English">
+        <span class="lt-opt is-on" data-lang="it">IT</span><span class="lt-sep" aria-hidden="true">/</span><span class="lt-opt" data-lang="en">EN</span>
       </button>
       <button id="hud-audio-toggle" class="nav-btn audio-toggle" title="Attiva/Disattiva Audio">
         AUDIO: ON
@@ -190,7 +195,7 @@
             <!-- AVATAR 3D LOW-POLY: senza finestra; scrollando vola in basso a sinistra (js/avatarPilot.js) -->
             <div class="hero-avatar-slot" data-avatar-home="r">
               <div class="avatar-pilot">
-                <div class="avatar-bubble" aria-live="polite" hidden></div>
+                <div class="avatar-bubble" aria-live="polite" data-i18n-skip hidden></div>
                 <div id="avatar-viewport" class="avatar-viewport" title="Cliccami per parlare, trascinami per girarmi"></div>
                 <button type="button" class="avatar-close" aria-label="Rimetti a posto l'avatar" title="Rimetti a posto">×</button>
               </div>
@@ -722,6 +727,25 @@
             </article>
 
           </div>
+
+          <!-- DOMANDE FREQUENTI: clicchi una domanda, l'avatar risponde nel riquadro sotto di lui
+               (seconda istanza di HeroAvatar, creata quando la sezione entra in vista: js/channels.js) -->
+          <div class="bx-faq" id="bx-faq" aria-labelledby="bx-faq-title">
+            <h2 class="bx-faq-title" id="bx-faq-title"><span class="bx-icon-orb" aria-hidden="true">?</span>Domande frequenti</h2>
+            <div class="bx-faq-grid">
+              <div class="bx-faq-jack">
+                <div class="bx-faq-avatar" id="bx-faq-avatar" role="img" aria-label="L’avatar di jack"></div>
+                <div class="bx-glass bx-faq-box">
+                  <p class="bx-faq-say" id="bx-faq-say" aria-live="polite" data-i18n-skip></p>
+                </div>
+              </div>
+              <ul class="bx-faq-list">
+                <li><button type="button" class="bx-faq-q" data-faq="sito"><span class="bx-faq-q-mark" aria-hidden="true">?</span><span>Come hai fatto questo sito?</span></button></li>
+                <li><button type="button" class="bx-faq-q" data-faq="programmi"><span class="bx-faq-q-mark" aria-hidden="true">?</span><span>Che programmi usi?</span></button></li>
+                <li><button type="button" class="bx-faq-q" data-faq="rgb"><span class="bx-faq-q-mark" aria-hidden="true">?</span><span>Perché i canali si chiamano R, G e B?</span></button></li>
+              </ul>
+            </div>
+          </div>
         </section>
 
         <footer class="bx-seabed">
@@ -749,7 +773,7 @@
   <div id="fullscreen-catalog-modal" class="fullscreen-catalog-modal" role="dialog" aria-modal="true" aria-label="Catalogo Completo Progetti">
     <div class="fullscreen-catalog-shell">
       <!-- decorazioni dello stile: spray e colature in G, luce e bolle in B (css/catalog-ui.css) -->
-      <div class="catalog-deco" aria-hidden="true"><span class="catalog-tag">jack</span><div class="catalog-bubbles"></div></div>
+      <div class="catalog-deco" aria-hidden="true"><div class="catalog-bubbles"></div></div>
       
       <!-- Topbar Finestra Fullscreen -->
       <div class="fullscreen-catalog-topbar">
@@ -790,9 +814,6 @@
 
       <!-- Area Scroll Griglia Stile Instagram -->
       <div class="fullscreen-grid-viewport">
-        <div class="fullscreen-grid-hint">
-          <span class="hint-pointer">Passa sopra un filtro per illuminare i progetti corrispondenti. Passa sopra un progetto per ingrandirlo e scoprire i dettagli.</span><span class="hint-touch">Tocca un filtro per vedere solo quella disciplina, tocca un progetto per aprire la scheda.</span>
-        </div>
         <div id="instagram-project-grid" class="instagram-project-grid">
           <!-- Popolato dinamicamente da PROJECT_REGISTRY con solo l'immagine del progetto -->
         </div>
@@ -924,17 +945,19 @@
   </div>
 
   <!-- Scripts -->
+  <script src="js/i18n-en.js?v=1.3"></script>
+  <script src="js/i18n.js?v=1.2"></script>
   <script src="js/projects.js?v=6.9"></script>
   <script src="js/softwareIcons.js?v=1.1"></script>
   <script src="js/audio.js?v=4.0"></script>
-  <script src="js/avatarPilot.js?v=3.4"></script>
+  <script src="js/avatarPilot.js?v=3.5"></script>
   <script src="js/musicPlayer.js?v=1.7"></script>
-  <script src="js/heroAvatar.js?v=2.6"></script>
+  <script src="js/heroAvatar.js?v=5.2"></script>
   <script src="js/hangingCatalog.js?v=5.2"></script>
   <script src="js/dither.js?v=4.2"></script>
   <script src="js/clawPhysics2D.js?v=4.6"></script>
-  <script src="js/crane2d.js?v=5.7"></script>
-  <script src="js/projectChampar.js?v=1.3"></script>
+  <script src="js/crane2d.js?v=5.8"></script>
+  <script src="js/projectChampar.js?v=1.4"></script>
   <script src="js/projectBrand.js?v=1.6"></script>
   <script src="js/projectEditorial.js?v=1.8"></script>
   <script src="js/projectGelato.js?v=1.1"></script>
@@ -942,7 +965,7 @@
   <script src="js/projectIkigai.js?v=1.0"></script>
   <script src="js/projectBosch.js?v=2.2"></script>
   <script src="js/modal.js?v=5.7"></script>
-  <script src="js/channels.js?v=2.4"></script>
+  <script src="js/channels.js?v=2.7"></script>
   <script src="js/main.js?v=5.8"></script>
   <script src="js/konami.js?v=1.1"></script>
 

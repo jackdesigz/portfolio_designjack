@@ -5051,11 +5051,11 @@ code {
    ===================================================================== */
 .hero-avatar-slot {
   position: relative;
-  height: 430px;
+  height: 560px;
 }
 
 .avatar-pilot {
-  --avatar-h: 360px;
+  --avatar-h: 490px;
   position: absolute;
   inset: 0;
 }
@@ -5073,13 +5073,13 @@ code {
 
 /* Agganciato in basso a sinistra (fuori da #main-app, che ha un transform) */
 .avatar-pilot.is-docked {
-  --avatar-h: 170px;
+  --avatar-h: 230px;
   position: fixed;
   inset: auto;
   left: 14px;
   bottom: 10px;
-  width: 150px;
-  height: 170px;
+  width: 200px;
+  height: 230px;
   z-index: 900;
 }
 
@@ -5152,7 +5152,7 @@ body.avatar-pinned .avatar-close { display: none; }
 }
 .avatar-pilot.is-docked .avatar-bubble {
   left: 58%;
-  bottom: 146px;
+  bottom: 200px;
   width: max-content;
   max-width: 250px;
 }
@@ -5165,10 +5165,10 @@ body.avatar-pinned .avatar-close { display: none; }
 }
 
 @media (max-width: 900px) {
-  .hero-avatar-slot { height: 380px; }
-  .avatar-pilot { --avatar-h: 310px; }
-  .avatar-pilot.is-docked { --avatar-h: 130px; width: 116px; height: 130px; }
-  .avatar-pilot.is-docked .avatar-bubble { bottom: 100px; max-width: 200px; }
+  .hero-avatar-slot { height: 470px; }
+  .avatar-pilot { --avatar-h: 400px; }
+  .avatar-pilot.is-docked { --avatar-h: 170px; width: 150px; height: 170px; }
+  .avatar-pilot.is-docked .avatar-bubble { bottom: 140px; max-width: 200px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5250,4 +5250,104 @@ body.avatar-pinned .avatar-close { display: none; }
 }
 @media (max-width: 520px) {
   .hanging-wire-arena { height: calc(36px + 440px * 0.58 + 54px); }
+}
+
+/* =====================================================================
+   Lingua IT / EN (js/i18n.js): stesso bottone della barra, in ogni canale
+   ===================================================================== */
+.nav-btn.lang-toggle { gap: 3px; letter-spacing: 0.04em; }
+.lang-toggle .lt-opt { opacity: 0.4; transition: opacity 0.15s; }
+.lang-toggle .lt-opt.is-on { opacity: 1; text-decoration: underline 2px; text-underline-offset: 3px; }
+.lang-toggle .lt-sep { opacity: 0.35; }
+.lang-toggle:hover .lt-opt:not(.is-on) { opacity: 0.75; }
+@media (max-width: 760px) {
+  .nav-btn.lang-toggle { gap: 2px; }
+}
+/* telefono: la barra è stretta, si vede solo la lingua attiva (tocca per cambiare) */
+@media (max-width: 520px) {
+  .nav-right { gap: 6px; }
+  .lang-toggle .lt-sep,
+  .lang-toggle .lt-opt:not(.is-on) { display: none; }
+  .lang-toggle .lt-opt.is-on { text-decoration: none; }
+}
+/* scritte della barra che vivono nel CSS */
+html[lang="en"] body.channel-b-active .nav-left::after { content: 'frutiger marine // contacts' !important; }
+html[lang="en"] body.channel-g-active .nav-left::after { content: 'organic × street // after hours' !important; }
+
+/* fumetto d'avviso sotto il pulsante IT / EN (js/i18n.js, solo alla prima visita) */
+.lang-hint {
+  --ax: 50%;
+  position: fixed;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(340px, calc(100vw - 16px));
+  padding: 10px 12px 10px 12px;
+  background: var(--ink, #151413);
+  color: var(--paper-light, #F7F1E4);
+  border: 2px solid var(--ink, #151413);
+  box-shadow: 4px 4px 0 var(--bauhaus-red, #D93D2A);
+  font-family: var(--font-main);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+.lang-hint.is-in { opacity: 1; transform: none; pointer-events: auto; }
+.lang-hint::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: var(--ax);
+  margin-left: -10px;
+  border: 10px solid transparent;
+  border-top-width: 0;
+  border-bottom-color: var(--ink, #151413);
+}
+.lang-hint .lh-ico { flex: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.lang-hint .lh-txt { display: grid; gap: 2px; line-height: 1.25; }
+.lang-hint .lh-txt b { font-size: 0.9rem; font-weight: 700; }
+.lang-hint .lh-txt small { font-size: 0.76rem; opacity: 0.72; }
+.lang-hint .lh-close {
+  flex: none;
+  align-self: flex-start;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.lang-hint .lh-close:hover { opacity: 1; }
+/* il pulsante indicato pulsa piano finché c'è il fumetto */
+.nav-btn.lang-toggle.is-hinted { animation: lt-pulse 1.4s ease-in-out infinite; }
+@keyframes lt-pulse {
+  0%, 100% { outline: 0 solid transparent; outline-offset: 2px; }
+  50% { outline: 3px solid var(--bauhaus-red, #D93D2A); outline-offset: 3px; }
+}
+/* G: verde notte e lime */
+body.channel-g-active .lang-hint {
+  background: #0F2A1D; color: #EEF5E6; border: 2px solid #B8F23A; border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+body.channel-g-active .lang-hint::before { border-bottom-color: #B8F23A; }
+body.channel-g-active .nav-btn.lang-toggle.is-hinted { animation-name: lt-pulse-g; }
+@keyframes lt-pulse-g { 50% { outline: 3px solid #B8F23A; outline-offset: 3px; } }
+/* B: vetro lucido azzurro */
+body.channel-b-active .lang-hint {
+  background: linear-gradient(180deg, #FFFFFF 0%, #DDF3FF 100%); color: #06305C;
+  border: 1px solid #7CC6EE; border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(0, 70, 140, 0.28);
+}
+body.channel-b-active .lang-hint::before { border-bottom-color: #FFFFFF; }
+@keyframes lt-pulse-b { 50% { outline: 3px solid #28C3FF; outline-offset: 3px; } }
+body.channel-b-active .nav-btn.lang-toggle.is-hinted { animation-name: lt-pulse-b; }
+@media (prefers-reduced-motion: reduce) {
+  .lang-hint { transition: none; transform: none; }
+  .nav-btn.lang-toggle.is-hinted { animation: none; outline: 3px solid var(--bauhaus-red, #D93D2A); outline-offset: 3px; }
 }

@@ -249,12 +249,12 @@
     const home = root.querySelector('.avatar-home--bubble');
     const site = root.querySelector('.bx-site');
     if (!home || !site) return { onShow() {}, frame() {} };
-    const st = { baseX: 0, y: 0, t: Math.random() * 10, W: 0, H: 0, size: 190, placed: false };
+    const st = { baseX: 0, y: 0, t: Math.random() * 10, W: 0, H: 0, size: 250, placed: false };
 
     const measure = () => {
       st.W = site.clientWidth;
       st.H = site.clientHeight;
-      st.size = home.offsetWidth || 190;
+      st.size = home.offsetWidth || 250;
     };
     const pickX = () => {
       const min = st.W * 0.05;
@@ -326,6 +326,90 @@
     };
   }
 
+  // ------------------------------------------------------------------
+  // Domande frequenti: un secondo avatar risponde nel riquadro sotto di lui
+  // ------------------------------------------------------------------
+  const FAQ = {
+    sito: 'L’ho progettato io e l’ho costruito parlando con un’intelligenza artificiale: io decidevo riferimenti, regole e dettagli, lei scriveva il codice, io provavo e correggevo. Un giro dopo l’altro. Trovi tutta la storia nel progetto designjack!',
+    programmi: 'Per la grafica Illustrator, Photoshop e InDesign, per le interfacce Figma, per il 3D Blender. Anche questa testa che ti sta parlando l’ho modellata io in Blender!',
+    rgb: 'Come i tre colori della luce di uno schermo. R sono i lavori e i giochi, G racconta chi sono, B è questo mare di contatti. Insieme fanno il sito intero, come rosso, verde e blu insieme fanno il bianco.'
+  };
+  const FAQ_HELLO = 'Scegli una domanda qui accanto: ti rispondo io!';
+  const FAQ_CHAT = [
+    'Fammi una domanda, scegline una qui accanto!',
+    'Le risposte le scrivo io, giuro.',
+    'Altre domande? Scrivimi una mail!'
+  ];
+
+  function initFaq() {
+    const sec = document.getElementById('bx-faq');
+    const box = document.getElementById('bx-faq-avatar');
+    const say = document.getElementById('bx-faq-say');
+    if (!sec || !box || !say) return;
+    const tr = (t) => (window.i18n ? window.i18n.t(t) : t);
+    let avatar = null;
+    let answered = false;
+    say.textContent = tr(FAQ_HELLO);
+    window.addEventListener('dj-lang', () => { if (!answered) say.textContent = tr(FAQ_HELLO); });
+
+    const start = () => {
+      if (avatar || !window.HeroAvatar || !window.THREE) return;
+      avatar = new window.HeroAvatar(box, { bubble: say, autoGreet: false, messages: FAQ_CHAT });
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) start();
+          // con le FAQ a schermo l'avatar agganciato in basso si fa da parte
+          document.body.classList.toggle('faq-avatar-on', en.isIntersecting);
+        });
+      }, { threshold: 0.15 }).observe(sec);
+    } else {
+      start();
+    }
+
+    // le bolle decorative non passano sopra il riquadro della risposta: buco nella maschera
+    const bubbles = document.getElementById('bx-bubbles');
+    const answerBox = sec.querySelector('.bx-faq-box');
+    if (bubbles && answerBox) {
+      const hole = () => {
+        const c = bubbles.getBoundingClientRect(), r = answerBox.getBoundingClientRect();
+        if (!c.width || !r.width) return;
+        const pad = 30;   // un bordo attorno, per le bolle più grandi
+        bubbles.style.setProperty('--hx', `${Math.round(r.left - c.left - pad)}px`);
+        bubbles.style.setProperty('--hy', `${Math.round(r.top - c.top - pad)}px`);
+        bubbles.style.setProperty('--hw', `${Math.round(r.width + pad * 2)}px`);
+        bubbles.style.setProperty('--hh', `${Math.round(r.height + pad * 2)}px`);
+        bubbles.classList.add('has-hole');
+      };
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(hole);
+        ro.observe(bubbles);
+        ro.observe(answerBox);
+      }
+      window.addEventListener('resize', hole);
+      hole();
+    }
+
+    sec.querySelectorAll('.bx-faq-q').forEach((btn) => {
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', () => {
+        const text = FAQ[btn.dataset.faq];
+        if (!text) return;
+        start();
+        answered = true;
+        sec.querySelectorAll('.bx-faq-q').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        if (avatar) {
+          avatar.hopVel = 0.05;
+          avatar.say(text);          // say() traduce da sé se il sito è in inglese
+        } else {
+          say.textContent = tr(text);
+        }
+      });
+    });
+  }
+
   function initChannelB() {
     const root = document.getElementById('channel-view-b');
     if (!root) return null;
@@ -372,6 +456,8 @@
         }, 2000);
       });
     });
+
+    initFaq();
 
     const form = document.getElementById('bx-bottle-form');
     if (form) {

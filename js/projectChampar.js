@@ -709,6 +709,7 @@
 
     banner(title, sub, W, over) {
       const c = this.ctx;
+      if (window.i18n) { title = window.i18n.t(title); sub = window.i18n.t(sub); }
       c.textAlign = 'center';
       c.textBaseline = 'middle';
       const big = Math.min(46, W / 9);

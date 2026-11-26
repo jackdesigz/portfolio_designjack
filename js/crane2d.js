@@ -153,7 +153,7 @@
       for (let x = -20; x < hx + 20; x += 18) { g.beginPath(); g.moveTo(x, this.Y0); g.lineTo(x + 9, this.Y0); g.lineTo(x + 21, this.Y0 + 12); g.lineTo(x + 12, this.Y0 + 12); g.closePath(); g.fill(); }
       g.restore();
       g.fillStyle = 'rgba(238,168,36,0.85)'; g.font = '700 11px "Jost", "Helvetica Neue", Arial, sans-serif'; g.textAlign = 'center';
-      g.save(); g.translate(hx / 2, (this.Y0 + this.playBottom) / 2 + 8); g.fillText('PREMI ↓', 0, 4); g.restore();
+      g.save(); g.translate(hx / 2, (this.Y0 + this.playBottom) / 2 + 8); g.fillText(window.i18n ? window.i18n.t('PREMI ↓') : 'PREMI ↓', 0, 4); g.restore();
 
       // --- paratia in acrilico
       const bx0 = this.sx(ch.x1), bx1 = this.sx(ch.x1 + ch.wallT), byTop = this.sy(ch.wallH);

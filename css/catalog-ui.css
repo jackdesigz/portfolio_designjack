@@ -264,7 +264,6 @@ body.channel-g-active .topbar-title {
   font-size: 1.3rem;
   letter-spacing: 0;
   font-weight: 700;
-  transform: rotate(-1deg);
 }
 
 body.channel-g-active .btn-close-fullscreen {
@@ -278,7 +277,6 @@ body.channel-g-active .btn-close-fullscreen:hover {
   background: var(--gx-lime);
   color: var(--gx-ink);
   border-color: var(--gx-lime);
-  transform: rotate(-2deg);
   box-shadow: none;
 }
 
@@ -318,17 +316,14 @@ body.channel-g-active .insta-filter-pill:hover {
   background: rgba(184, 242, 58, 0.12);
   color: var(--gx-lime);
   border-color: var(--gx-lime);
-  transform: rotate(-2deg);
   box-shadow: none;
 }
 body.channel-g-active .insta-filter-pill.active {
   background: var(--gx-lime);
   color: var(--gx-ink);
   border-color: var(--gx-lime);
-  transform: rotate(-2deg);
 }
 
-body.channel-g-active .fullscreen-grid-hint { color: var(--gx-sage); }
 
 /* riquadri come adesivi attaccati al muro, un po' storti */
 body.channel-g-active .insta-project-card {
@@ -355,7 +350,6 @@ body.channel-g-active .insta-overlay-cat {
   color: var(--gx-ink) !important;
   border: 0 !important;
   border-radius: 999px;
-  rotate: -3deg;
 }
 body.channel-g-active .insta-overlay-title { color: var(--gx-mint); }
 body.channel-g-active .insta-overlay-desc { color: var(--gx-sage); }
@@ -625,13 +619,11 @@ body.channel-g-active .nav-catalog-btn {
   background: var(--gx-lime);
   border: 0;
   border-radius: 999px;
-  rotate: -2deg;
   box-shadow: 0 0 0 3px rgba(184, 242, 58, 0.22), 0 0 22px rgba(184, 242, 58, 0.35);
 }
 body.channel-g-active .nav-catalog-btn:hover,
 body.channel-g-active .nav-catalog-btn:focus-visible {
   transform: scale(1.06);
-  rotate: 0deg;
   background: var(--gx-acid);
   box-shadow: 0 0 0 5px rgba(184, 242, 58, 0.3), 0 0 30px rgba(184, 242, 58, 0.5);
 }
@@ -710,9 +702,8 @@ body.channel-b-active .ncb-count::after { border-color: #FFFFFF; }
 }
 body.channel-g-active .catalog-deco,
 body.channel-b-active .catalog-deco { display: block; }
-.catalog-tag { display: none; }
 
-/* ---------- G: spray sul muro, una tag gigante, colature sotto la barra ---------- */
+/* ---------- G: spray sul muro e colature sotto la barra ---------- */
 body.channel-g-active .catalog-deco {
   background:
     radial-gradient(ellipse 26% 30% at 88% 18%, rgba(184, 242, 58, 0.22), transparent 70%),
@@ -730,19 +721,6 @@ body.channel-g-active .catalog-deco::before {
   opacity: 0.55;
   mix-blend-mode: overlay;
 }
-body.channel-g-active .catalog-tag {
-  display: block;
-  position: absolute;
-  right: -2vw;
-  bottom: -6vw;
-  font-family: 'Sedgwick Ave Display', 'Permanent Marker', cursive !important;
-  font-size: clamp(9rem, 34vw, 30rem);
-  line-height: 0.8;
-  color: transparent;
-  -webkit-text-stroke: 3px rgba(184, 242, 58, 0.16);
-  rotate: -9deg;
-  white-space: nowrap;
-}
 /* colature di vernice lime che scendono dalla barra in alto */
 body.channel-g-active .fullscreen-filters-bar::after {
   content: '';
@@ -757,7 +735,8 @@ body.channel-g-active .fullscreen-filters-bar::after {
   z-index: 2;
 }
 body.channel-g-active .fullscreen-filters-bar { position: relative; z-index: 2; }
-body.channel-g-active .fullscreen-grid-hint { margin-top: 16px; }
+/* spazio per le colature sotto la barra dei filtri */
+body.channel-g-active .instagram-project-grid { margin-top: 26px; }
 
 /* adesivi: nastro di carta in alto e titolo a pennarello */
 body.channel-g-active .insta-project-card::before {

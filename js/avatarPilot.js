@@ -29,6 +29,7 @@
     ['#channel-btn-g', 'Canale G: il mio lato organico e street.'],
     ['#channel-btn-b', 'Canale B: contatti. Scrivimi!'],
     ['#hud-audio-toggle', 'Accendi l’audio: i bip sono la mia voce.'],
+    ['#lang-toggle', 'Italiano o inglese? Scegli tu.'],
     ['.music-player', 'Ho collaborato con Ikigai alle grafiche di questi singoli.'],
     ['.hero-cta-btn.primary', 'I progetti stesi ad asciugare sul filo.'],
     ['a[href="#claw2d-window"]', 'La claw machine! Io ci perdo sempre.'],
