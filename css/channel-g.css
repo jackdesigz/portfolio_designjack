@@ -1072,6 +1072,6 @@ body.channel-g-active .avatar-close {
   .gx-do-grid { grid-template-columns: 1fr; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .gx-tape-track, .gx-drip, .gx-xp i, .gx-loading i, .gx-game-screen.is-started, .gx-game-screen.is-started .gx-cart { animation: none; }
 }

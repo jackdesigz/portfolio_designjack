@@ -404,7 +404,7 @@
   .bw-steps li:nth-child(3)::after { display: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .bw [data-reveal],
   .bw-render-img { transition: none !important; animation: none !important; }
   .bw [data-reveal] { opacity: 1 !important; transform: none !important; }

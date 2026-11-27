@@ -12,7 +12,7 @@
   const esc = KIT.esc || ((s) => String(s == null ? '' : s));
   const zoom = KIT.zoom || (() => '');
   const setupReveal = KIT.setupReveal || (() => () => {});
-  const reduceMotion = KIT.reduceMotion || (() => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const reduceMotion = KIT.reduceMotion || (() => (window.djReduceMotion && window.djReduceMotion()));
   const fmt = (s) => {
     if (!Number.isFinite(s)) return '0:00';
     const m = Math.floor(s / 60);

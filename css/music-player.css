@@ -270,7 +270,7 @@
   .music-player { --mp-disc: 52px; top: 66px; }
   .mp-panel { width: 210px; }
 }
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .mp-disc-spin { animation: none; }
   .mp-notes { display: none; }
   .mp-disc, .mp-panel { transition-duration: 0.01s; }

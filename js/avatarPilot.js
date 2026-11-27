@@ -279,7 +279,7 @@
     flip(first) {
       const last = this.pilot.getBoundingClientRect();
       if (!first.width || !last.width || !this.pilot.animate) return;
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if ((window.djReduceMotion && window.djReduceMotion())) return;
       const dx = first.left - last.left;
       const dy = first.top - last.top;
       const s = first.width / last.width;

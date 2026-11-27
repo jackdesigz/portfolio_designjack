@@ -422,6 +422,12 @@
 }
 .mt-cmp-tag.is-a { left: 12px; }
 .mt-cmp-tag.is-b { right: 12px; background: var(--mt-teal); }
+/* su schermi stretti le due etichette in alto si toccavano: quella dell'AI scende in basso a destra */
+@media (max-width: 600px) {
+  .mt-cmp-tag { top: 10px; padding: 4px 8px; font-size: 0.6rem; letter-spacing: 0.12em; }
+  .mt-cmp-tag.is-a { left: 10px; }
+  .mt-cmp-tag.is-b { top: auto; bottom: 10px; right: 10px; }
+}
 .mt-compare input {
   position: absolute;
   inset: 0;
@@ -487,6 +493,7 @@
   gap: clamp(12px, 2vw, 22px);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;   /* a fine corsa il trackpad non va avanti/indietro nella cronologia */
   scrollbar-width: none;
   padding-bottom: 4px;
   outline: none;
@@ -665,7 +672,7 @@
   .mt-bars.is-b { display: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .mt [data-reveal], .mt-chap .mt-trip img, .mt-stripes i, .mt-light-photo img, .mt-rig, .mt-lamp, .mt-beam { transition: none !important; animation: none !important; }
   .mt [data-reveal] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
 }

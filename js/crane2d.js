@@ -69,7 +69,7 @@
       this.dropPress = 0;
       this.statusT = 0;
       this.confetti = [];
-      this.reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      this.reduced = !!((window.djReduceMotion && window.djReduceMotion()));
 
       this.statusEl = section.querySelector('.claw2d-status');
       this.collectionEl = section.querySelector('.claw2d-collection');

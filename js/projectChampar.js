@@ -9,7 +9,7 @@
   'use strict';
 
   const LAYOUTS = (window.PROJECT_LAYOUTS = window.PROJECT_LAYOUTS || {});
-  const reduceMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = () => (window.djReduceMotion && window.djReduceMotion());
   // il font pixel non ha l'apostrofo tipografico: uso quello dritto nei titoli
   const px = (s) => esc(s).replace(/[’‘]/g, "'");
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));

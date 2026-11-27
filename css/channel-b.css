@@ -1160,6 +1160,6 @@ body.faq-avatar-on .avatar-home--bubble { opacity: 0; pointer-events: none; }
   .avatar-home--bubble { --bubble-size: 190px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .bx-wave, .bx-cloud, .bx-sun, .bx-sun::after, .bx-sw, .bx-bokeh, .bx-sparkle, .bx-dolphin, .bx-rays span, .bx-caustics::before, .bx-caustics::after, .bx-bubble, .bx-fish { animation: none; }
 }

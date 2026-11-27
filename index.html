@@ -11,6 +11,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=JetBrains+Mono:wght@400;500;600;700;800&family=Jost:ital,wght@0,300..900;1,300..900&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700&family=Press+Start+2P&family=Syne:wght@500;600;700;800&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 
+  <!-- Animazioni per tutti. Chi ha "mostra animazioni" spento in Windows (o "riduci movimento"
+       su Mac / telefono) di solito vede siti fermi: qui per scelta le animazioni restano accese.
+       Tutti gli script chiedono a window.djReduceMotion() invece che al sistema; per tornare a
+       rispettare l'impostazione basta far restituire a questa funzione
+       matchMedia('(prefers-reduced-motion: reduce)').matches. (Nel CSS i vecchi blocchi
+       "reduce" sono spenti con "and (update: none)", che vale solo in stampa.) -->
+  <script>window.djReduceMotion = function () { return false; };</script>
+
   <!-- Three.js (r128) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="js/vendor/GLTFLoader.js?v=r128"></script>
@@ -18,26 +26,26 @@
   <!-- Custom Stylesheet & Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hind:wght@300;400;500;600;700&family=Montserrat:wght@100;200;400;500;600&family=Rajdhani:wght@500;600;700&family=Rubik:wght@400;500;700&family=Sedgwick+Ave+Display&family=Anton&family=Michroma&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Special+Elite&family=Barlow+Condensed:wght@700&family=Italiana&family=Poppins:wght@300;400;500;600&family=Noto+Serif+JP:wght@600&family=Fraunces:opsz,wght,SOFT,WONK@9..144,500..800,0..100,0..1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=7.1">
-  <link rel="stylesheet" href="css/channel-g.css?v=2.4">
-  <link rel="stylesheet" href="css/channel-b.css?v=2.8">
-  <link rel="stylesheet" href="css/music-player.css?v=1.2">
-  <link rel="stylesheet" href="css/project-champar.css?v=1.7">
-  <link rel="stylesheet" href="css/project-brand.css?v=1.7">
-  <link rel="stylesheet" href="css/project-fanciulla.css?v=1.1">
-  <link rel="stylesheet" href="css/project-echo.css?v=1.0">
-  <link rel="stylesheet" href="css/project-editorial.css?v=1.0">
-  <link rel="stylesheet" href="css/project-mao.css?v=1.1">
-  <link rel="stylesheet" href="css/project-decoder.css?v=2.8">
-  <link rel="stylesheet" href="css/project-modartech.css?v=1.2">
-  <link rel="stylesheet" href="css/project-gelato.css?v=1.2">
-  <link rel="stylesheet" href="css/project-designjack.css?v=1.0">
-  <link rel="stylesheet" href="css/project-ikigai.css?v=1.3">
-  <link rel="stylesheet" href="css/project-bosch.css?v=2.3">
+  <link rel="stylesheet" href="css/styles.css?v=7.3">
+  <link rel="stylesheet" href="css/channel-g.css?v=2.5">
+  <link rel="stylesheet" href="css/channel-b.css?v=2.9">
+  <link rel="stylesheet" href="css/music-player.css?v=1.3">
+  <link rel="stylesheet" href="css/project-champar.css?v=1.8">
+  <link rel="stylesheet" href="css/project-brand.css?v=1.8">
+  <link rel="stylesheet" href="css/project-fanciulla.css?v=1.2">
+  <link rel="stylesheet" href="css/project-echo.css?v=1.1">
+  <link rel="stylesheet" href="css/project-editorial.css?v=1.1">
+  <link rel="stylesheet" href="css/project-mao.css?v=1.2">
+  <link rel="stylesheet" href="css/project-decoder.css?v=2.9">
+  <link rel="stylesheet" href="css/project-modartech.css?v=1.3">
+  <link rel="stylesheet" href="css/project-gelato.css?v=1.4">
+  <link rel="stylesheet" href="css/project-designjack.css?v=1.1">
+  <link rel="stylesheet" href="css/project-ikigai.css?v=1.4">
+  <link rel="stylesheet" href="css/project-bosch.css?v=2.4">
   <link rel="stylesheet" href="css/project-page.css?v=1.5">
   <link rel="stylesheet" href="css/mobile.css?v=1.1">
-  <link rel="stylesheet" href="css/catalog-ui.css?v=2.0">
-  <link rel="stylesheet" href="css/easter-egg.css?v=1.1">
+  <link rel="stylesheet" href="css/catalog-ui.css?v=2.1">
+  <link rel="stylesheet" href="css/easter-egg.css?v=1.2">
 </head>
 <body class="crt-bezel-frame">
 
@@ -99,6 +107,12 @@
     </div>
 
     <div class="nav-right">
+      <!-- Telefono: catalogo, lingua e audio stanno nel menu a tendina (js/navMenu.js).
+           Sul computer .nav-menu non fa da scatola (display: contents) e la barra resta com'era. -->
+      <button id="nav-menu-toggle" class="nav-btn nav-menu-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Apri il menu">
+        <span class="nmt-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+      <div class="nav-menu" id="nav-menu">
       <!-- Catalogo sempre a portata di mano, in tutti e tre i canali -->
       <button id="nav-open-catalog" class="nav-catalog-btn" type="button" data-open-catalog aria-label="Apri il catalogo completo dei progetti" title="Catalogo completo dei progetti">
         <span class="ncb-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -112,6 +126,7 @@
       <button id="hud-audio-toggle" class="nav-btn audio-toggle" title="Attiva/Disattiva Audio">
         AUDIO: ON
       </button>
+      </div>
     </div>
   </header>
 
@@ -227,7 +242,7 @@
 
             <div class="hanging-stage-controls">
               <span class="hanging-hint">
-                <span class="hint-pointer">Passa sopra un foglio per sollevarlo · Clicca per aprire la scheda</span><span class="hint-touch">Scorri con le frecce · Tocca un foglio per aprire la scheda</span>
+                <span class="hint-pointer">Trascina il filo per scorrere · Clicca un foglio per aprire la scheda</span><span class="hint-touch">Trascina il filo per scorrere · Tocca un foglio per aprire la scheda</span>
               </span>
               <div class="wire-nav-arrows">
                 <button id="btn-wire-scroll-left" class="wire-arrow-btn" aria-label="Scorri indietro" title="Scorri indietro lungo il filo">
@@ -945,28 +960,29 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/i18n-en.js?v=1.3"></script>
-  <script src="js/i18n.js?v=1.2"></script>
+  <script src="js/i18n-en.js?v=1.5"></script>
+  <script src="js/i18n.js?v=1.3"></script>
+  <script src="js/navMenu.js?v=1.0"></script>
   <script src="js/projects.js?v=6.9"></script>
   <script src="js/softwareIcons.js?v=1.1"></script>
   <script src="js/audio.js?v=4.0"></script>
-  <script src="js/avatarPilot.js?v=3.5"></script>
-  <script src="js/musicPlayer.js?v=1.7"></script>
-  <script src="js/heroAvatar.js?v=5.2"></script>
-  <script src="js/hangingCatalog.js?v=5.2"></script>
-  <script src="js/dither.js?v=4.2"></script>
+  <script src="js/avatarPilot.js?v=3.6"></script>
+  <script src="js/musicPlayer.js?v=1.8"></script>
+  <script src="js/heroAvatar.js?v=5.4"></script>
+  <script src="js/hangingCatalog.js?v=5.4"></script>
+  <script src="js/dither.js?v=4.3"></script>
   <script src="js/clawPhysics2D.js?v=4.6"></script>
-  <script src="js/crane2d.js?v=5.8"></script>
-  <script src="js/projectChampar.js?v=1.4"></script>
-  <script src="js/projectBrand.js?v=1.6"></script>
-  <script src="js/projectEditorial.js?v=1.8"></script>
-  <script src="js/projectGelato.js?v=1.1"></script>
-  <script src="js/projectDesignjack.js?v=1.0"></script>
-  <script src="js/projectIkigai.js?v=1.0"></script>
-  <script src="js/projectBosch.js?v=2.2"></script>
+  <script src="js/crane2d.js?v=5.9"></script>
+  <script src="js/projectChampar.js?v=1.5"></script>
+  <script src="js/projectBrand.js?v=1.7"></script>
+  <script src="js/projectEditorial.js?v=1.9"></script>
+  <script src="js/projectGelato.js?v=1.2"></script>
+  <script src="js/projectDesignjack.js?v=1.1"></script>
+  <script src="js/projectIkigai.js?v=1.1"></script>
+  <script src="js/projectBosch.js?v=2.3"></script>
   <script src="js/modal.js?v=5.7"></script>
-  <script src="js/channels.js?v=2.7"></script>
-  <script src="js/main.js?v=5.8"></script>
+  <script src="js/channels.js?v=2.8"></script>
+  <script src="js/main.js?v=5.9"></script>
   <script src="js/konami.js?v=1.1"></script>
 
 </body>

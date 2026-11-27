@@ -1570,11 +1570,20 @@ body.channel-b-active .nav-btn:hover {
   position: relative;
   overflow: hidden;
   overscroll-behavior-x: contain;
+  /* si prende e si trascina (js/hangingCatalog.js): il gesto verticale resta alla pagina */
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
   background: 
     radial-gradient(#121212 1px, transparent 1px),
     linear-gradient(to bottom, #FFFFFF 0%, #F5F5F0 100%);
   background-size: 20px 20px, 100% 100%;
 }
+
+.hanging-wire-arena.is-dragging,
+.hanging-wire-arena.is-dragging .hanging-sheet { cursor: grabbing; }
+.hanging-sheet img { -webkit-user-drag: none; }
 
 /* Overhead Steel Cable stretching across screen */
 .overhead-steel-wire {
@@ -3733,7 +3742,7 @@ footer {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .btn-drop-claw {
     animation: none;
   }
@@ -4552,7 +4561,7 @@ footer {
   .footer-mid { display: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .sheet-dither-canvas { transition: none; }
 }
 
@@ -4952,7 +4961,7 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .claw2d-drop { animation: none; }
 }
 
@@ -5171,7 +5180,7 @@ body.avatar-pinned .avatar-close { display: none; }
   .avatar-pilot.is-docked .avatar-bubble { bottom: 140px; max-width: 200px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .avatar-bubble.pop { animation: none; }
 }
 
@@ -5231,7 +5240,7 @@ body.avatar-pinned .avatar-close { display: none; }
 .channel-tab.channel-g:hover:not(.active) { color: #23965A; }
 .channel-tab.channel-b:hover:not(.active) { color: #1D5FC2; }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .channel-tab:hover .channel-tip,
   .channel-tab:focus-visible .channel-tip,
   .channel-tab:hover .channel-tip::before,
@@ -5347,7 +5356,114 @@ body.channel-b-active .lang-hint {
 body.channel-b-active .lang-hint::before { border-bottom-color: #FFFFFF; }
 @keyframes lt-pulse-b { 50% { outline: 3px solid #28C3FF; outline-offset: 3px; } }
 body.channel-b-active .nav-btn.lang-toggle.is-hinted { animation-name: lt-pulse-b; }
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .lang-hint { transition: none; transform: none; }
   .nav-btn.lang-toggle.is-hinted { animation: none; outline: 3px solid var(--bauhaus-red, #D93D2A); outline-offset: 3px; }
 }
+
+/* =====================================================================
+   Barra in alto su telefono: logo, canali R / G / B e menu ☰ (js/navMenu.js).
+   Catalogo, lingua e audio stanno nel pannello che si apre dal ☰.
+   Sul computer .nav-menu non fa da scatola e la barra resta com'era.
+   ===================================================================== */
+.nav-menu { display: contents; }
+.nav-menu-toggle { display: none; }
+
+@media (max-width: 760px) {
+  #main-nav { padding: 0 10px; gap: 8px; }
+  .nav-left,
+  .nav-right { flex: 0 0 auto; }
+  .nav-center { flex: 1 1 auto; min-width: 0; justify-content: center; }
+  .nav-right { gap: 0; }
+
+  .nav-btn.nav-menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 36px;
+    padding: 0;
+  }
+  .nmt-bars { position: relative; display: block; width: 18px; height: 14px; }
+  .nmt-bars i {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transition: top 0.2s, transform 0.2s, opacity 0.15s;
+  }
+  .nmt-bars i:nth-child(1) { top: 0; }
+  .nmt-bars i:nth-child(2) { top: 6px; }
+  .nmt-bars i:nth-child(3) { top: 12px; }
+  .nav-menu-toggle.is-open .nmt-bars i:nth-child(1) { top: 6px; transform: rotate(45deg); }
+  .nav-menu-toggle.is-open .nmt-bars i:nth-child(2) { opacity: 0; }
+  .nav-menu-toggle.is-open .nmt-bars i:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+  /* il pannello */
+  .nav-menu {
+    position: fixed;
+    top: 64px;
+    right: 10px;
+    z-index: 1001;
+    width: min(270px, calc(100vw - 20px));
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: var(--paper-light, #F4F1EA);
+    border: 2px solid var(--ink, #151413);
+    box-shadow: 5px 5px 0 var(--ink, #151413);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.18s, transform 0.18s, visibility 0s 0.18s;
+  }
+  .nav-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.18s, transform 0.18s;
+  }
+  .nav-menu > .nav-btn,
+  .nav-menu > .nav-catalog-btn {
+    width: 100%;
+    height: 46px;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 14px;
+    font-size: 0.8rem;
+  }
+  .nav-menu .ncb-label { display: inline; }
+  .nav-menu .ncb-count { top: -9px; right: -9px; }
+  /* lingua: nel pannello si vedono tutte e due, quella attiva sottolineata */
+  .nav-menu .lang-toggle .lt-sep,
+  .nav-menu .lang-toggle .lt-opt:not(.is-on) { display: inline; }
+  .nav-menu .lang-toggle .lt-opt.is-on { text-decoration: underline 2px; text-underline-offset: 4px; }
+  .nav-menu .lang-toggle { gap: 8px; font-size: 0.9rem; }
+
+  /* canale G: pannello bosco con bordo lime */
+  body.channel-g-active .nav-menu {
+    background: rgba(8, 26, 17, 0.97);
+    border: 2px solid var(--gx-lime, #B8F23A);
+    border-radius: 22px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  }
+  body.channel-g-active .nav-menu-toggle.is-open { border-color: var(--gx-lime) !important; color: var(--gx-lime) !important; }
+
+  /* canale B: vetro lucido */
+  body.channel-b-active .nav-menu {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(226, 246, 255, 0.97) 100%);
+    border: 1px solid #8CCDF0;
+    border-radius: 20px;
+    box-shadow: inset 0 1px 0 #fff, 0 14px 30px rgba(0, 80, 150, 0.25);
+  }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) and (update: none) {
+  .nav-menu,
+  .nav-menu.is-open,
+  .nmt-bars i { transition: none; }
+}
+.nav-btn.nav-menu-toggle.is-hinted { animation: lt-pulse 1.4s ease-in-out infinite; }
+body.channel-g-active .nav-btn.nav-menu-toggle.is-hinted { animation-name: lt-pulse-g; }
+body.channel-b-active .nav-btn.nav-menu-toggle.is-hinted { animation-name: lt-pulse-b; }

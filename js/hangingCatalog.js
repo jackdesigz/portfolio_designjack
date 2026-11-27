@@ -379,14 +379,25 @@ class HangingCatalogWire {
 
     // Trackpad orizzontale facoltativo e non invasivo (zero interferenze col browser o la cronologia)
     if (this.container) {
+      // Il listener NON è passivo: un gesto orizzontale del trackpad sopra il filo viene
+      // fermato (preventDefault) anche quando il filo è già all'inizio o alla fine.
+      // Altrimenti il gesto "passa" alla pagina e alcuni browser (Chrome, Edge, Safari su Mac)
+      // lo prendono per lo swipe che torna indietro o va avanti nella cronologia.
+      // Il gesto verticale resta libero e fa scorrere la pagina come sempre.
       this.container.addEventListener('wheel', (e) => {
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.5 && Math.abs(e.deltaX) > 4) {
-          const maxScroll = this.getMaxScroll();
-          this.targetScrollX = Math.min(0, Math.max(maxScroll, this.targetScrollX - e.deltaX * 0.75));
-          this.updateButtonStates();
-        }
-      }, { passive: true });
+        const k = e.deltaMode === 1 ? 16 : (e.deltaMode === 2 ? 400 : 1);   // righe / pagine → px
+        const dx = e.deltaX * k;
+        const dy = e.deltaY * k;
+        if (Math.abs(dx) <= Math.abs(dy) || dx === 0) return;
+        e.preventDefault();
+        if (Math.abs(dx) < 1) return;
+        const maxScroll = this.getMaxScroll();
+        this.targetScrollX = Math.min(0, Math.max(maxScroll, this.targetScrollX - dx * 0.75));
+        this.updateButtonStates();
+      }, { passive: false });
     }
+
+    this.setupDrag();
 
     window.addEventListener('resize', () => {
       this.relayout();
@@ -394,6 +405,83 @@ class HangingCatalogWire {
     });
 
     this.updateButtonStates();
+  }
+
+  // Prendi e trascina il filo (mouse e dito). Un movimento soprattutto verticale resta
+  // allo scorrimento della pagina (touch-action: pan-y nel CSS); uno orizzontale sposta
+  // i fogli, che ondeggiano per l'inerzia. Lasciando, il filo prosegue con lo slancio
+  // e se è andato oltre l'inizio o la fine torna indietro con una molla.
+  // Un trascinamento non apre la scheda del foglio su cui è partito.
+  setupDrag() {
+    const arena = this.container && this.container.querySelector('.hanging-wire-arena');
+    if (!arena) return;
+    this.arena = arena;
+    const clampScroll = (v) => Math.min(0, Math.max(this.getMaxScroll(), v));
+    let d = null;            // trascinamento in corso
+    let blockClick = false;  // il clic che segue un trascinamento non apre il foglio
+
+    // niente "fantasma" dell'immagine trascinata col mouse
+    arena.addEventListener('dragstart', (e) => e.preventDefault());
+
+    arena.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      d = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, t: performance.now(), v: 0, start: this.targetScrollX, on: false };
+      blockClick = false;
+    });
+
+    arena.addEventListener('pointermove', (e) => {
+      if (!d || e.pointerId !== d.id) return;
+      const dx = e.clientX - d.x0;
+      const dy = e.clientY - d.y0;
+      if (!d.on) {
+        if (Math.abs(dx) < 7 || Math.abs(dx) < Math.abs(dy)) return;
+        d.on = true;
+        try { arena.setPointerCapture(e.pointerId); } catch (err) { /* va bene lo stesso */ }
+        arena.classList.add('is-dragging');
+        if (window.audioEngine && window.audioEngine.playCableTwang) window.audioEngine.playCableTwang();
+      }
+      e.preventDefault();
+      const now = performance.now();
+      const step = e.clientX - d.x;
+      const dt = Math.max(1, now - d.t);
+      d.v = d.v * 0.6 + (step / dt) * 0.4;                // px al millisecondo, smussata
+      d.x = e.clientX;
+      d.t = now;
+      // oltre i bordi il filo fa resistenza
+      let target = d.start + dx;
+      const max = this.getMaxScroll();
+      if (target > 0) target *= 0.35;
+      else if (target < max) target = max + (target - max) * 0.35;
+      this.targetScrollX = target;
+      this.scrollX = target;                              // segue il dito senza ritardo
+      // i fogli ondeggiano nel verso opposto al movimento
+      this.sheets.forEach((s) => { s.omega = Math.max(-0.07, Math.min(0.07, s.omega - step * 0.0009)); });
+    });
+
+    const end = (e) => {
+      if (!d || (e && e.pointerId !== d.id)) return;
+      if (d.on) {
+        blockClick = true;
+        setTimeout(() => { blockClick = false; }, 60);
+        arena.classList.remove('is-dragging');
+        const idle = performance.now() - d.t > 90;        // fermo prima di lasciare: niente slancio
+        const fling = idle ? 0 : d.v * 180;
+        this.targetScrollX = clampScroll(this.targetScrollX + fling);
+        this.updateButtonStates();
+      }
+      d = null;
+    };
+    arena.addEventListener('pointerup', end);
+    arena.addEventListener('pointercancel', end);
+    arena.addEventListener('lostpointercapture', end);
+
+    // in cattura: ferma il clic del foglio se si stava trascinando
+    arena.addEventListener('click', (e) => {
+      if (!blockClick) return;
+      blockClick = false;
+      e.stopPropagation();
+      e.preventDefault();
+    }, true);
   }
 
   openWireView() {

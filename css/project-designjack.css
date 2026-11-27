@@ -475,7 +475,7 @@
   .dj-feats { grid-template-columns: minmax(0, 1fr); }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .dj [data-reveal],
   .dj-logo-v,
   .dj-shot,

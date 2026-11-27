@@ -12,7 +12,7 @@
 
 (function () {
   const isActive = (ch) => document.body.classList.contains(`channel-${ch}-active`);
-  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = (window.djReduceMotion && window.djReduceMotion());
   const audio = () => window.audioEngine || null;
 
   /* ================================================================== */

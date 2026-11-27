@@ -193,19 +193,27 @@
     waitIntro();
   }
 
-  function showHint(btn) {
+  function showHint(langBtn) {
+    // su telefono la lingua sta nel menu ☰: il fumetto indica quello
+    const menuBtn = document.getElementById('nav-menu-toggle');
+    const inMenu = !!(menuBtn && menuBtn.offsetParent && getComputedStyle(menuBtn).display !== 'none');
+    const btn = inMenu ? menuBtn : langBtn;
     if (!btn.offsetParent) return;                       // pulsante nascosto: niente fumetto
     try { localStorage.setItem(HINT, '1'); } catch (e) { /* va bene lo stesso */ }
 
     const en = lang === 'en';
+    const title = inMenu ? (en ? 'Language is in this menu' : 'La lingua è in questo menu')
+                         : (en ? 'You can switch language here' : 'Puoi cambiare lingua da qui');
+    const sub = inMenu ? (en ? 'Passa all’italiano da qui' : 'Switch to English from here')
+                       : (en ? 'Passa all’italiano con un clic' : 'Switch to English with one click');
     const hint = document.createElement('div');
     hint.className = 'lang-hint';
     hint.setAttribute('role', 'status');
     hint.setAttribute('data-i18n-skip', '');
     hint.innerHTML =
       '<svg class="lh-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.6-3.9-9S9.4 5.6 12 3z"/></svg>' +
-      '<span class="lh-txt"><b>' + (en ? 'You can switch language here' : 'Puoi cambiare lingua da qui') + '</b>' +
-      '<small>' + (en ? 'Passa all’italiano con un clic' : 'Switch to English with one click') + '</small></span>' +
+      '<span class="lh-txt"><b>' + title + '</b>' +
+      '<small>' + sub + '</small></span>' +
       '<button type="button" class="lh-close" aria-label="' + (en ? 'Close' : 'Chiudi') + '">×</button>';
     document.body.appendChild(hint);
     btn.classList.add('is-hinted');

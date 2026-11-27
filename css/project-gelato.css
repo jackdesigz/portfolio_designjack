@@ -39,6 +39,9 @@
   background: var(--gp-cream);
   color: var(--gp-ink);
   overflow-x: clip;
+  /* il file di Akzidenz Grotesk CE ha la legatura "fi" sbagliata ("finisce" usciva "änisce"): legature spente */
+  font-variant-ligatures: no-common-ligatures;
+  font-feature-settings: 'liga' 0, 'clig' 0;
 }
 
 .gp .gp-h,
@@ -829,7 +832,7 @@
   .gp-site-box { margin: 0; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .gp [data-reveal],
   .gp-step-img,
   .gp-slide,

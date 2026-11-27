@@ -87,6 +87,8 @@
       this.mouse = { x: 0, y: 0, tx: 0, ty: 0, moved: 0 };
       this.spin = 0;
       this.spinVel = 0;
+      this.nod = 0;                   // annuire trascinando in verticale
+      this.nodVel = 0;
       this.hop = 0;
       this.hopVel = 0;
       this.drag = null;
@@ -100,7 +102,7 @@
       this.anticQueue = [];
       this.anticWait = 7 + Math.random() * 5;
       this.clicks = [];
-      this.reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      this.reduceMotion = !!((window.djReduceMotion && window.djReduceMotion()));
       this.msgIndex = 0;
       this.typing = null;
       this.hideTimer = null;
@@ -795,25 +797,42 @@
         this.mouse.moved = 0;
       };
 
+      // Trascinando la testa gira (in orizzontale) e annuisce (in verticale), col mouse e col dito.
+      // Su telefono il gesto soprattutto verticale resta allo scorrimento della pagina
+      // (touch-action: pan-y): il browser manda pointercancel e la testa torna libera.
       window.addEventListener('pointermove', (e) => {
-        track(e.clientX, e.clientY);
-        if (this.drag) {
+        if (e.pointerType !== 'touch' || this.drag) track(e.clientX, e.clientY);
+        if (this.drag && e.pointerId === this.drag.id) {
           const dx = e.clientX - this.drag.x;
-          this.drag.moved += Math.abs(dx);
+          const dy = e.clientY - this.drag.y;
+          this.drag.moved += Math.abs(dx) + Math.abs(dy);
           this.spin = clamp(this.spin + dx * 0.006, -0.75, 0.75);
+          this.nod = clamp(this.nod + dy * 0.004, -0.35, 0.35);
           this.drag.x = e.clientX;
+          this.drag.y = e.clientY;
         }
       });
 
       this.container.addEventListener('pointerdown', (e) => {
-        this.drag = { x: e.clientX, moved: 0 };
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        this.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: 0, touch: e.pointerType !== 'mouse' };
+        // il dito resta "attaccato" alla testa anche se esce dal riquadro
+        try { this.container.setPointerCapture(e.pointerId); } catch (err) { /* va bene lo stesso */ }
         track(e.clientX, e.clientY);
       });
 
-      window.addEventListener('pointerup', () => {
-        if (!this.drag) return;
-        const clicked = this.drag.moved < 6;
+      // gesto annullato (es. il telefono ha iniziato a scorrere la pagina): niente clic
+      const release = () => {
+        if (this.drag && this.drag.touch) { this.mouse.tx = 0; this.mouse.ty = 0; }
         this.drag = null;
+      };
+      this.container.addEventListener('pointercancel', release);
+      window.addEventListener('pointercancel', (e) => { if (this.drag && e.pointerId === this.drag.id) release(); });
+
+      window.addEventListener('pointerup', (e) => {
+        if (!this.drag || e.pointerId !== this.drag.id) return;
+        const clicked = this.drag.moved < 8;
+        release();
         if (clicked && this.clickHandler && this.clickHandler() === false) return;
         if (clicked) {
           // tanti clic di fila: si spaventa
@@ -873,6 +892,9 @@
         this.spinVel += -this.spin * 0.02;
         this.spinVel *= 0.88;
         this.spin += this.spinVel;
+        this.nodVel += -this.nod * 0.03;
+        this.nodVel *= 0.86;
+        this.nod += this.nodVel;
       }
 
       // saltello quando lo clicchi
@@ -890,7 +912,7 @@
       }
       this.root.rotation.z = Math.sin(t * 0.9) * 0.02;
       this.head.rotation.y = clamp(this.spin + clamp(m.x, -1.2, 1.2) * 0.36, -0.85, 0.85);
-      this.head.rotation.x = clamp(m.y, -1.2, 1.2) * 0.16 + Math.sin(t * 1.1) * 0.015;
+      this.head.rotation.x = clamp(m.y, -1.2, 1.2) * 0.16 + this.nod + Math.sin(t * 1.1) * 0.015;
       if (this.shadow) {
         const s = 1 - this.root.position.y * 0.6;
         this.shadow.scale.set(s, s, s);

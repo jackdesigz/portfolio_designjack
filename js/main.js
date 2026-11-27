@@ -516,7 +516,7 @@ function initFullscreenInstagramCatalog() {
   const syncBubbles = () => {
     if (!bubbleLayer) return;
     const want = modal.classList.contains('active') && currentStyle() === 'B' &&
-      !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      !((window.djReduceMotion && window.djReduceMotion()));
     const has = bubbleLayer.childElementCount > 0;
     if (want && !has) for (let i = 0; i < 16; i++) spawnMarineBubble(bubbleLayer);
     if (!want && has) bubbleLayer.innerHTML = '';

@@ -13,7 +13,7 @@
   const esc = KIT.esc || ((s) => String(s == null ? '' : s));
   const zoom = KIT.zoom || (() => '');
   const setupReveal = KIT.setupReveal || (() => () => {});
-  const reduceMotion = KIT.reduceMotion || (() => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const reduceMotion = KIT.reduceMotion || (() => (window.djReduceMotion && window.djReduceMotion()));
   const CH = ['r', 'g', 'b'];
 
   const logo = () => `

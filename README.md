@@ -1,278 +1,192 @@
-# designjack — portfolio
+# designjack
 
-Portfolio di **Jacopo “Jack” Febi**, Communication & Digital Designer.
+**Il portfolio di Jacopo “Jack” Febi, Communication & Digital Designer.**
+Un sito che si sintonizza su tre canali, R, G e B, come i tre colori di uno schermo.
 
-Il sito è statico: HTML, CSS e JavaScript senza build. Three.js r128 arriva da CDN, i font in parte da Google Fonts e in parte da `assets/fonts/`.
+> *In English:* the portfolio of Jacopo “Jack” Febi, communication & digital designer. A static, no-build website (HTML, CSS, vanilla JS, Three.js) split into three visual “channels”, R, G and B, each with its own art direction. The whole site can be switched to English from the IT / EN button.
 
-Si divide in tre **canali**, R, G e B, come i tre colori di uno schermo. Ognuno ha il suo stile e il passaggio dall'uno all'altro è una transizione da vecchio televisore. Il logo in alto a sinistra resta sempre **designjack**: cambiando canale cambia solo il suo stile.
+| Canale R | Canale G | Canale B |
+|---|---|---|
+| ![Canale R: Bauhaus su carta, con l'avatar 3D](docs/screenshots/canale-r.jpg) | ![Canale G: muro di graffiti verde](docs/screenshots/canale-g.jpg) | ![Canale B: contatti in stile Frutiger Aero](docs/screenshots/canale-b.jpg) |
+| Lavori e playground | Chi sono | Contatti |
+
+---
+
+## Cosa c'è dentro
+
+- **Tre direzioni artistiche, un solo sito.** Bauhaus su carta con filtro CRT (R), organico × graffiti (G) e Frutiger Aero marino (B). Si passa dall'una all'altra con una transizione da vecchio televisore.
+- **12 progetti, ognuno con la sua pagina.** Ogni scheda ha un layout costruito sul progetto: riviste da sfogliare, un mini gioco, un sipario che si apre, un logo che segue il puntatore.
+- **Un avatar 3D che parla.** La mia testa modellata in Blender, resa come su un Nintendo DS: segue il cursore, si trascina, commenta quello che guardi e ogni tanto fa qualcosa di buffo.
+- **Una claw machine 2D** con fisica vera: ogni capsula pescata apre un progetto.
+- **Italiano e inglese**, con la scelta ricordata nel browser.
+- **Pensato anche per il telefono**: menu ☰, gesti col dito, layout dedicati.
+
+| Progetti sul filo | Una scheda progetto |
+|---|---|
+| ![I progetti appesi a un filo come fogli con le mollette](docs/screenshots/progetti-su-filo.jpg) | ![La pagina di Gelato di Piazza](docs/screenshots/scheda-progetto.jpg) |
+
+| Domande frequenti, con l'avatar che risponde | Su telefono |
+|---|---|
+| ![L'avatar risponde alle domande frequenti](docs/screenshots/domande-frequenti.jpg) | <img src="docs/screenshots/telefono.jpg" alt="Il sito su telefono" width="260"> |
+
+---
+
+## I tre canali
+
+| | Stile | Sezioni |
+|---|---|---|
+| **R — Realizzazioni & Ricreazione** | Bauhaus su carta, monitor CRT. Font Jost. | Presentazione con l'avatar e un pennello retinato che scopre una composizione nascosta · **Progetti su filo**: fogli appesi che oscillano, da trascinare · **Catalogo** con filtri · **Toy Claw Machine** |
+| **G — Germogli & Graffiti** | Muro notturno, spray, adesivi. Font Bricolage Grotesque, Sedgwick Ave Display, Fraunces. | Tag “jack” con le colature · Chi sono, con una carta d'identità ad adesivi · Il percorso di studi come livelli di un gioco · La cassetta degli attrezzi · Cosa faccio · Fuori orario (videogiochi e 3D) · Come lavoro |
+| **B — Bolle & Bottiglie** | Frutiger Aero, vetro lucido e mare. Font Hind. | Superficie con sole e delfino · Discesa sott'acqua · Contatti (email da copiare, Instagram, LinkedIn) · Messaggio in bottiglia · Domande frequenti con l'avatar |
+
+In tutti i canali ci sono il pulsante **CATALOGO**, lo switch **IT / EN**, il **music player** (un disco incastrato nel bordo che suona due brani di Ikigai) e un easter egg col Konami code.
+
+---
+
+## Progetti
+
+| Progetto | Categoria | Anno | Nella pagina |
+|---|---|---|---|
+| designjack — il portfolio | Web Design | 2026 | Il sito raccontato da sé: Design × Cultura visiva × AI, moodboard, i tre canali, come è stato costruito |
+| Ikigai × designjack — Yūgen / Kōkotsu | Collaborations | 2025 | Copertina che segue il puntatore, Canvas per Spotify che comanda il player del sito |
+| Hieronymus Bosch × Vivienne Westwood | Graphic Design | 2025 | Il ciondolo in 3D, il processo in Blender, l'Armor Ring accanto al trittico |
+| Gelato di Piazza | Brand Design | 2025 | Logo vettoriale con l'uccellino che ti guarda, percorso del marchio, palette a palline di gelato, sito con slider |
+| MAO — Museo d'Arte Orientale | Editorial Design | 2026 | Kanji a pennellate, la gabbia di Van de Graaf disegnata dal vivo, catalogo da sfogliare, campagna |
+| Decoder | Editorial Design | 2026 | Fanzine punk: segnale da sintonizzare, micropunti gialli da scoprire con la luce blu, rivista da sfogliare |
+| Modartech — Fotografia | Editorial Design | 2026 | Magazine da sfogliare, schemi di luce interattivi, confronto foto originale / AI |
+| Melagoccio | Brand Design | 2025 | Felpa che si gira, figurine a ventaglio, banner Instagram |
+| Teatro Salone Ablondi | Brand Design | 2025 | Sipario che si apre sul marchio, costruzione del simbolo |
+| Campari Champ-AR | Interaction Design | 2026 | Packaging arcade e un mini gioco endless giocabile ([codice del gioco AR](https://github.com/jackdesigz/champar)) |
+| La Fanciulla del West | Graphic Design | 2025 | Carta che si gira, bozze su un tavolo verde, mockup |
+| Echo Sound Festival | Graphic Design | 2025 | Anelli psichedelici, illustrazioni come adesivi |
+
+---
+
+## Tecnologie
+
+- **HTML, CSS e JavaScript senza framework e senza build.** Si apre con un server statico qualsiasi.
+- **[Three.js](https://threejs.org/) r128** (da CDN) per l'avatar e la capsula 3D, con `GLTFLoader` in `js/vendor/`.
+- **Canvas 2D** per la claw machine, il gioco di Campari, il dithering e le animazioni dei progetti.
+- **Web Audio** per i suoni dell'interfaccia.
+- **Traduzione senza librerie**: un dizionario italiano → inglese applicato al DOM, anche al contenuto creato dopo (`js/i18n.js`).
+- Font da Google Fonts e font locali in `assets/fonts/`.
 
 ---
 
 ## Avvio in locale
 
 ```bash
-cd Portfolio
+git clone https://github.com/jackdesigz/portfolio_designjack.git
+cd portfolio_designjack
 python3 -m http.server 8080
 ```
 
-Poi apri **http://localhost:8080**.
+Poi apri <http://localhost:8080>.
 
-Va aperto da un server e non come file (`file://`). Altrimenti il browser blocca le immagini nella capsula 3D, le maschere degli spruzzi e alcuni font.
-
----
-
-## I tre canali
-
-### R — Realizzazioni & Ricreazione (lavori e playground)
-Stile Bauhaus su carta, con filtro da monitor CRT. Font Jost.
-- **Chi sono:**
-  - titolo "Idee in forma. Forme in gioco.";
-  - una breve presentazione;
-  - l'avatar 3D low-poly;
-  - muovendo il cursore, un pennello retinato (dithering Bayer) scopre una composizione nascosta sotto la carta.
-- **Progetti su filo:** i progetti sono fogli appesi a un cavo con mollette e oscillano come pendoli. Passandoci sopra il foglio si solleva e mostra la versione a 1 bit; cliccandolo si apre la scheda. Si scorre con le frecce o con la rotella.
-- **Catalogo intero:** griglia di tutti i progetti, con filtri per categoria (quelli vuoti si nascondono).
-  - In alto a destra c'è lo switch R / G / B, che cambia lo stile di tutto il sito.
-  - Si apre anche dal pulsante **CATALOGO** nella barra in alto, che c'è in tutti e tre i canali e mostra il numero di progetti.
-- **Toy Claw Machine:** macchina 2D a tutta pagina con fisica vera: capsule rigide, artiglio a pendolo, presa che nasce dai contatti, scivolo e vaschetta. Ogni capsula ha dentro l'immagine di un progetto e, una volta pescata, si apre la sua scheda.
-  - **Comandi:** `A` / `D` o frecce ← → per muovere il carrello, `Spazio` o `Invio` per pescare.
-
-### G — Germogli & Graffiti (chi sono)
-La pagina autobiografica, organico × graffiti, tutto verde. Font Bricolage Grotesque; Sedgwick Ave Display per le scritte a spray, Permanent Marker per nome e cognome. Nel catalogo e nelle schede progetto in stile G i titoli usano Fraunces (morbido, leggibile).
-- **Muro:** muro notturno con blob che respirano e la tag "jack" con le colature, con "Jacopo" sopra e "Febi" sotto (si legge Jacopo “jack” Febi); sottotitolo "chi sono? cosa faccio?".
-- **Adesivi e nastro:** gli adesivi si staccano e si trascinano; sotto scorre un nastro con quello che faccio.
-- **Chi sono:** il racconto (dal CV) e una carta d'identità fatta di adesivi: nome, da dove vengo, cosa studio, lingue, passione; accanto c'è la casa dell'avatar.
-- **Il mio percorso:** gli studi come livelli di un gioco (Liceo Cecioni, Istituto Modartech, il prossimo livello); la barra XP di Modartech si calcola dalla data di oggi (`data-start` / `data-end` in `index.html`).
-- **La cassetta degli attrezzi:** gli strumenti dal CV come adesivi trascinabili, divisi per ambito.
-- **Cosa faccio:** le discipline (Brand, Editorial, Interaction, Graphic, Web Design e Collaborazioni), ognuna con gli adesivi dei suoi progetti presi dal registro (`category` in `js/projects.js`): al clic si apre la scheda. Una categoria nuova va aggiunta qui (`data-cat` in `index.html`) e tra i filtri del catalogo.
-- **Fuori orario:** la passione per videogiochi e 3D, come lo schermo di un gioco: i progetti che hanno Blender tra i software diventano cartucce che aprono la scheda; «Premi start» le fa saltare fuori.
-- **Come lavoro:** la filosofia di design in quattro regole, come manifesti attaccati al muro; passandoci sopra il titolo prende una passata di spray.
-
-### B — Bolle & Bottiglie (contatti)
-Frutiger Aero marino, tutto blu e lucido. Font Hind.
-- **In superficie:** cielo con sole, onde, nastri di luce e un delfino.
-- **Sotto l'acqua:** discesa con raggi di luce e caustiche morbide.
-- **Contatti:** pannelli di vetro. In *Scrivimi* una riga per canale: email (con il tasto per copiarla), Instagram @jacopo.febi e LinkedIn. Poi il **messaggio in bottiglia**, che prepara una mail.
-- **Domande frequenti:** in fondo al canale tre domande con accanto l'avatar (una seconda testa 3D, creata quando la sezione entra in vista). Cliccando una domanda l'avatar risponde nel riquadro sotto di lui. Domande e risposte sono in `FAQ` dentro `js/channels.js` (traduzioni in `js/i18n-en.js`). Mentre le FAQ sono a schermo la bolla con l'avatar intrappolato si nasconde e le bolle decorative non passano sopra il riquadro.
-
-### In comune
-- **Lingua IT / EN** (`js/i18n.js`, `js/i18n-en.js`): il pulsante IT / EN in alto a destra traduce tutto il sito in inglese e ricorda la scelta. Alla prima visita parte in italiano se il browser è in italiano, altrimenti in inglese, e finita l'intro un fumetto sotto il pulsante avvisa che si può cambiare lingua (una volta sola, poi si ricorda).
-  - Il sito resta scritto in italiano. In inglese ogni testo della pagina (anche `title`, `aria-label`, `alt`, `placeholder`) viene cercato nel dizionario `js/i18n-en.js` e sostituito, anche quello aggiunto dopo dagli script (pagine progetto, avatar, messaggi).
-  - Per tradurre un testo nuovo basta aggiungere una riga al dizionario: chiave il testo italiano esatto, valore l'inglese. Le frasi con una parte variabile stanno in `I18N_EN_RULES`.
-  - Testi su canvas e fumetti dell'avatar passano da `window.i18n.t()`.
-  - Restano in italiano, apposta: il prototipo del sito della gelateria e le immagini (pagine di riviste, manifesti).
-- **Tab R / G / B:** passandoci sopra compare un'etichetta con due parole che iniziano con la stessa lettera. In R scende come una tendina. In G si compone come un graffito: passata di spray, macchie di vernice attorno e una colatura. In B nasce come una bolla.
-- **Avatar** (`js/heroAvatar.js`, `js/avatarPilot.js`): la testa 3D è il modello Blender `assets/avatar/jacopo-head.glb`, caricato con `js/vendor/GLTFLoader.js` (Three.js r128).
-  - Il file nasce da `Avatar/Avatar.glb` senza la scansione fotografica "alta" (1,4 MB → 170 KB). Dopo un nuovo export da Blender: `python3 tools/glbprune.py Avatar/Avatar.glb assets/avatar/jacopo-head.glb alta`.
-  - Le parti si riconoscono dal nome di Blender: `testa` (materiali `pelle`, `occhiVERI`, labbra), `occhi` (pupille), `sopracciglia`, `capelli`, `Occhiali`.
-  - Sorriso a riposo e carnagione un po' più scura del colore di Blender: si regolano con `SMILE` e `SKIN_TONE` in cima a `js/heroAvatar.js`.
-  - Espressioni: battito di palpebre, pupille che seguono il cursore (e da ferme si guardano intorno), bocca che si apre parlando, sopracciglia che si alzano, sorpresa con occhi spalancati e bocca a O.
-  - Mosse buffe, a rotazione ogni 8–15 secondi quando è tranquillo (non mentre parla o lo trascini; spente con "riduci movimento"): sopracciglio dubbioso, smorfia a occhi chiusi, sguardo sinistro a destra e sinistra, doppio alzo di sopracciglia, guance gonfie. Cliccandolo 5 volte in poco tempo si arrabbia (rosso in faccia, sopracciglia aggrottate, scuote la testa) e dice "HEY NON SONO UN GIOCATTOLO!", poi su "beh… un po' sì…" si imbarazza. Tutto in `anticTargets()` di `js/heroAvatar.js`.
-  - Resa "Nintendo DS": circa 128 righe di pixel, retino ordinato leggero (12 livelli per canale con matrice di Bayer: si regola con `DITHER` in cima a `js/heroAvatar.js`, meno livelli = retino più evidente), texture senza smussatura, contorno di un pixel, griglia LCD leggera, ombra a puntini.
-  - Misure: hero R 490 px (400 su telefono), casa nel canale G 560 px (440), bolla nel canale B 250 px (190), FAQ 370 px (290), agganciato in basso a sinistra 230 px (170; 120 sopra il catalogo su telefono).
-  - La versione precedente (ritratto 2D su rilievo) è in `archive/heroAvatar-rilievo2D.js`.
-  - Segue il cursore e sbatte le palpebre.
-  - Si trascina per girarla e, se la clicchi, parla.
-  - Scrollando si aggancia in basso a sinistra e commenta quello su cui passi.
-  - Ha una casa per canale: la hero in R, accanto a "Chi sono" in G, dentro una bolla in B.
-- **Music player:** in alto a destra un mezzo disco gira incastrato nel bordo. Riproduce due singoli di Ikigai (cartella `Musica/yugen-kokotsu/`, nomi dei file solo in ASCII), con note che escono nello stile del canale. Il pulsante AUDIO in alto spegne anche la musica; premere play sul disco lo riaccende. Le pagine dei progetti possono comandarlo con `window.musicPlayer.playTrack(i)` (lo fa la pagina di Ikigai).
-- **Easter egg:** il Konami code (↑ ↑ ↓ ↓ ← → ← → B A; su telefono gli swipe e poi due tap). L'avatar si spaventa, sopra la testa compare il "!" di Metal Gear e parte il suono di allarme. Dalla console si prova con `konamiAlert()`.
-
----
-
-## Progetti
-
-| Id | Progetto | Categoria | Anno | Layout |
-|---|---|---|---|---|
-| r-24 | designjack — il portfolio | Web Design | 2026 | `designjack` |
-| r-23 | Ikigai × designjack — Yūgen / Kōkotsu | Collaborations | 2025 | `ikigai` |
-| r-22 | Hieronymus Bosch × Vivienne Westwood | Graphic Design | 2025 | `bosch` |
-| r-20 | Gelato di Piazza | Brand Design | 2025 | `gelato` |
-| r-19 | MAO — Museo d’Arte Orientale | Editorial Design | 2026 | `mao` |
-| r-18 | Decoder | Editorial Design | 2026 | `decoder` |
-| r-17 | Modartech — Fotografia | Editorial Design | 2026 | `modartech` |
-| r-16 | Melagoccio | Brand Design | 2025 | `melagoccio` |
-| r-15 | Teatro Salone Ablondi | Brand Design | 2025 | `ablondi` |
-| r-14 | Campari Champ-AR | Interaction Design | 2026 | `champar` |
-| r-13 | La Fanciulla del West | Graphic Design | 2025 | `fanciulla` |
-| r-06 | Echo Sound Festival | Graphic Design | 2025 | `echo` |
-
-I dati sono in `js/projects.js`, gli asset in `assets/projects/<progetto>/`, i materiali originali in `Progetti/`.
-
-### Come è fatta una scheda progetto
-1. **Parte introduttiva**, nello stile del **canale attivo** (`css/project-page.css`):
-   - titolo;
-   - software, palette e stile;
-   - le schede *Panoramica* e *Progettazione*.
-2. **Layout dedicato** sotto, nello stile del **progetto**. Ogni layout è una funzione registrata in `window.PROJECT_LAYOUTS[nome]`: disegna la pagina e restituisce una funzione di pulizia, che `js/modal.js` chiama alla chiusura.
-
-Si chiude con la X in alto a destra o con `Esc`.
-
-### Layout dedicati
-- **Campari Champ-AR** (`js/projectChampar.js`, `css/project-champar.css`; font Upheaval TT):
-  - apertura: la scatola sbuca e lo spiritello spunta da dietro;
-  - la storia con gli sprite animati, il packaging, lo showcase e la campagna sui telefoni;
-  - in fondo un mini gioco endless: si parte con **SALTA** (o Spazio o ↑) e si saltano le arance che lo spiritello lancia. Il record resta salvato nel browser.
-  - Il codice del gioco AR (A-Frame + MindAR) è su [github.com/jackdesigz/champar](https://github.com/jackdesigz/champar).
-- **Teatro Salone Ablondi** (`js/projectBrand.js`, `css/project-brand.css`; Montserrat e Radlush SemiBold):
-  - un sipario di velluto si apre sul marchio;
-  - il simbolo, dalle prime variazioni alla versione finale;
-  - la costruzione con le proporzioni delle linee guida;
-  - la palette, la tipografia e le magliette.
-- **designjack — il portfolio** (`js/projectDesignjack.js`, `css/project-designjack.css`; Jost e JetBrains Mono, il logo nei caratteri dei tre canali):
-  - apertura con il logo che cambia stile da solo (R, G, B) o con i pulsanti;
-  - Design × Cultura visiva × AI: un diagramma a tre cerchi, ogni cerchio racconta la sua parte;
-  - il moodboard con quattro zone da esplorare, ognuna legata al suo canale;
-  - i tre canali in una finestra del browser (screenshot in `assets/projects/designjack/`), con un pulsante che passa davvero al canale;
-  - come è stato costruito, in cinque passi (io / io + AI), e le parti del sito.
-  - Gli screenshot si rifanno quando il sito cambia: sono catture a 1440 × 900 delle sezioni.
-- **Ikigai × designjack** (`js/projectIkigai.js`, `css/project-ikigai.css`; Syne, kanji in Noto Serif JP):
-  - apertura con la copertina che si inclina verso il puntatore e forme di cromo che fluttuano;
-  - il Canvas per Spotify in un telefono (`canvas.mp4`, 540 × 960, senza audio), con i comandi che pilotano il player del sito;
-  - la copertina con cinque punti da esplorare;
-  - le due parole giapponesi dei titoli, ognuna con il suo brano.
-- **Hieronymus Bosch × Vivienne Westwood** (`js/projectBosch.js`, `css/project-bosch.css`; Italiana al posto di DreamAvenue, Poppins). Centrata sul mio lavoro:
-  - apertura con il render finale a tutta pagina, che si sposta appena seguendo il puntatore;
-  - l’idea come equazione (Orb + uovo = ciondolo);
-  - il ciondolo in 3D, il processo in Blender: dalla scena alle prove fino al render finale (`renders` nel registro, in ordine); «Guarda il processo» li scorre da solo;
-  - l’Armor Ring grande, con il trittico accanto: passando su un pannello si accende la fascia corrispondente dell’anello;
-  - da dove nasce: una doppia pagina breve, Bosch | Westwood (`authors` nel registro).
-- **Gelato di Piazza** (`js/projectGelato.js`, `css/project-gelato.css`; DIN Condensed Bold per marchio e titoli, Akzidenz Grotesk CE Roman per i testi):
-  - il logo è un SVG costruito dai tracciati originali (`Asset 1.svg`), con "DI PIAZZA" convertito in tracciati: è identico ovunque e si ricolora con le variabili CSS;
-  - apertura su crema con la colata di gelato; l'occhio dell'uccellino segue il puntatore e al clic saltella;
-  - il moodboard e il percorso del logo in cinque tappe, dalla statua della piazza all'uccellino;
-  - il marchio nelle versioni classica, invertita e su scuro, con la costruzione geometrica da mostrare, e le icone;
-  - la palette come palline di gelato su un cono (al clic copiano l'HEX) e i due caratteri;
-  - il pattern di uccellini che si girano a guardare il puntatore, poi grembiule e coppette;
-  - il sito: la home con lo slider dei banner funzionante e il confronto a tendina tra wireframe e mockup.
-- **Melagoccio** (`js/projectBrand.js`, `css/project-brand.css`; font del brand BLOCKY, testi in Rubik):
-  - il logo su un fondo di scritte che scorrono;
-  - palette e mascotte;
-  - la felpa che si gira tra fronte e retro;
-  - le figurine a ventaglio;
-  - il banner Instagram che si compone dai tre post.
-- **La Fanciulla del West** (`js/projectBrand.js`, `css/project-fanciulla.css`; font Decondol):
-  - apertura art déco con una carta che si gira e mostra il poster;
-  - la regina di cuori e la mano del morto;
-  - le sagome poligonali;
-  - moodboard, palette e font;
-  - le bozze su un tavolo verde e i mockup;
-  - il download della presentazione.
-- **Echo Sound Festival** (`js/projectBrand.js`, `css/project-echo.css`; font Super Earthly):
-  - anelli psichedelici che pulsano e il poster con le illustrazioni attaccate come adesivi;
-  - il poster con la palette a bollini;
-  - le tre illustrazioni a zig-zag;
-  - i mockup.
-
-### Editorial Design: le pubblicazioni da sfogliare
-I tre progetti editoriali sono in `js/projectEditorial.js`, con uno stile per ciascuno (`css/project-mao.css`, `css/project-decoder.css`, `css/project-modartech.css`). Le pagine vere stanno in `assets/projects/<progetto>/pages/` (01.jpg, 02.jpg…), ricavate dai PDF in `Progetti/Editorial Design/`.
-
-- **Lettore sfogliabile** (`createFlipbook`, stile base in `css/project-editorial.css`):
-  - la copertina sta da sola al centro, poi le doppie pagine;
-  - la pagina gira in 3D;
-  - si sfoglia con un clic sulla pagina, con le frecce della tastiera, con uno swipe o con la barra;
-  - il tasto ⤢ ingrandisce la pagina;
-  - su telefono si legge una pagina alla volta;
-  - le immagini si caricano solo attorno alla pagina aperta.
-- **MAO — Museo d’Arte Orientale** (font Gill Sans, quello di sistema su Mac e iPhone; Rotis Semi Serif per il motto):
-  - apertura come il banner: kanji 和敬清寂 che compaiono a pennellate, la fascia rossa e il Kongo Rikishi scontornato;
-  - i quattro principi (Wa, Kei, Sei, Jaku), uno alla volta;
-  - la gabbia: canone di Van de Graaf, moduli 7 × 5 e baseline grid disegnati dal vivo;
-  - il catalogo da sfogliare, con i capitoli che portano alla pagina giusta;
-  - palette con CMYK e HEX e tipografia;
-  - la campagna: il banner, il manifesto e il totem interi e grandi, i quattro post Instagram (scegli un post e la vista si avvicina finché non si legge), gli altri mockup in file a proporzioni vere.
-- **Decoder**, impaginata come una fanzine punk: fotocopie strappate, nastro adesivo, lettere ritagliate, timbri, pennarello (titoli in Anton al posto di Druk, testi in Special Elite, scritte a mano in Permanent Marker, numeri in Monobloco):
-  - testata nel carattere della rivista (rossa, stretta e altissima) e copertina incollata con il nastro; le lettere ritagliate restano per le cose più punk, come Johnny Silverhand;
-  - l’indice ad adesivi colorati: ogni voce apre la rivista a quella pagina;
-  - Decoder: impaginata come la pagina 7 (DECODER in Druk, il testo originale su tre colonne in Michroma, il fotogramma del film sotto), ma interattiva: il fotogramma arriva come un segnale disturbato e si sintonizza con la manopola (o trascinando sull’immagine) fino al canale 84, come il 1984 del film; lì il segnale si aggancia e compare la didascalia;
-  - sapevi che…: impaginata come la pagina 9 (titolo in Monobloco, testo originale su due colonne in Michroma, la stampante, le frecce e le cornici), ma interattiva: la stampante stampa il foglio, la luce blu scopre i micropunti gialli e il riquadro MIC decodifica seriale, data e ora della stampa man mano che muovi la luce;
-  - un’opera, uno stile: Akira, Blade Runner, Ghost in the Shell, Cyberpunk 2077, Johnny Silverhand, Marathon, Neuromante e Nine Inch Nails, ognuno con il suo colore, i suoi caratteri e le sue immagini, come nella rivista. Le immagini (`ed-*`) sono ritagliate da una versione del PDF senza testo (solo le lettere tolte, colori invariati), così le figure sono intere e pulite; si vedono sempre intere, con la larghezza presa dalle proporzioni (`ar` nel registro);
-  - chiusura su “No Future”.
-- **Modartech** (titoli in Boldark, testi in Cormorant Garamond al posto di Canela):
-  - copertina, testata e contenuti cliccabili;
-  - il magazine da sfogliare (le doppie pagine del PDF sono divise in pagine singole);
-  - gli schemi di illuminazione: scegli lo schema, cambia la foto e la luce si sposta nella pianta vista dall’alto;
-  - originale o AI: confronto con la linea da trascinare;
-  - i ritratti (aule, Crastan, parco) e la campagna #MADEINSENA che scorre in orizzontale;
-  - Viaggio, Vastità, Proporzione: le ultime tre doppie pagine, con i testi del magazine e un rimando alle pagine da sfogliare.
-
-La cornice della scheda (fondo, piede con Competenze e Torna ai progetti) segue il canale come l’intestazione: carta in R, muro verde in G, cielo in B (`css/project-page.css`); la pagina del progetto si attacca all’intestazione e al piede, senza fasce vuote.
-
-Tutte le immagini con `data-img-src` si aprono ingrandite al clic (anche quando la classe `zoomable-trigger` si perde accanto a un altro `class`). Ogni scheda di progetto si apre sempre dall’inizio.
-
-### Aggiungere un progetto
-1. Crea la cartella `assets/projects/<progetto>/` con:
-   - `cover.jpg` (catalogo e filo);
-   - `capsule.png` (quadrata, 256 px, per la claw machine).
-2. Aggiungi la voce in `js/projects.js`:
-   - `id`, `title`, `category`, `year`;
-   - `coverImage`, `capsuleImage` (e, se serve, `coverFocusY`: da dove ritagliare la copertina in verticale, 0 = in alto);
-   - `software`, `palette`, `style`;
-   - i testi di panoramica e progettazione;
-   - `gallery`.
-3. Per la pagina hai due strade:
-   - usa le sezioni standard di `gallery` (`poster`, `moodboard`, `sketches`, `illustrations`, `mockups`, `download`);
-   - oppure scrivi un layout dedicato: registra `PROJECT_LAYOUTS.<nome>` e metti `gallery.layout: '<nome>'`.
-4. Nella claw machine finiscono solo i progetti con `capsuleImage`.
+Va aperto da un server, non come file (`file://`): altrimenti il browser blocca il modello 3D, le maschere degli spruzzi e alcuni font.
 
 ---
 
 ## Struttura
 
 ```
-index.html              pagina unica: tre canali, catalogo, schede
+index.html                 pagina unica: tre canali, catalogo, schede progetto
 css/
-  styles.css            base e canale R
-  channel-g.css         canale G
-  channel-b.css         canale B
-  catalog-ui.css        catalogo, switch R/G/B, pulsante CATALOGO, X delle schede
-  project-page.css      parte introduttiva delle schede (stile del canale)
-  project-*.css         layout dedicati dei progetti (project-editorial.css: il lettore sfogliabile)
-  music-player.css · mobile.css · easter-egg.css
+  styles.css               base e canale R
+  channel-g.css            canale G
+  channel-b.css            canale B
+  catalog-ui.css           catalogo, switch R/G/B, pulsante CATALOGO
+  project-page.css         intestazione delle schede (nello stile del canale)
+  project-*.css            layout dedicati dei progetti
+  mobile.css · music-player.css · easter-egg.css
 js/
-  main.js               cambio canale, catalogo, filtri
-  channels.js           animazioni di G e B (muro spray, adesivi, bolle)
-  projects.js           registro dei progetti
-  modal.js              scheda progetto e capsula vinta
-  projectChampar.js     layout Campari + gioco
-  projectBrand.js       layout Ablondi, Melagoccio, Fanciulla, Echo
-  projectEditorial.js   lettore sfogliabile + layout MAO, Decoder, Modartech
-  projectGelato.js      layout Gelato di Piazza (logo in SVG, pattern, slider del sito)
-  projectDesignjack.js  layout del portfolio stesso (design × cultura visiva × AI)
-  projectIkigai.js      layout Ikigai × designjack (copertina, Canvas, player)
-  projectBosch.js       layout Bosch × Westwood (lente, fasi, render, Armor Ring)
-  hangingCatalog.js     fogli sul filo
-  dither.js             pennello retinato e fogli a 1 bit
-  crane2d.js · clawPhysics2D.js   claw machine 2D
+  main.js                  cambio canale, catalogo, filtri
+  channels.js              animazioni di G e B, domande frequenti
+  projects.js              registro dei progetti
+  modal.js                 scheda progetto
+  project*.js              layout dedicati (Editorial, Brand, Gelato, Champar, Ikigai, Bosch, designjack)
+  hangingCatalog.js        progetti sul filo
+  crane2d.js · clawPhysics2D.js   claw machine
   heroAvatar.js · avatarPilot.js  avatar 3D e i suoi spostamenti
-  musicPlayer.js · audio.js · konami.js · softwareIcons.js · i18n.js · i18n-en.js
-assets/
-  projects/             immagini dei progetti
-  fonts/                font locali
-  avatar/ · Immagini/ · sfx/
-Musica/                 brani del player
-Progetti/               materiali originali (PDF, istruzioni)
-archive/                versioni precedenti (claw machine 3D, sfera e avatar procedurale)
+  i18n.js · i18n-en.js     italiano / inglese
+  navMenu.js               menu ☰ su telefono
+  dither.js · musicPlayer.js · audio.js · konami.js · softwareIcons.js
+assets/                    immagini dei progetti, font, avatar, suoni
+docs/screenshots/          immagini di questo README
+Musica/                    brani del player
+Progetti/                  materiali originali (PDF, sorgenti)
+Avatar/                    export da Blender dell'avatar
+tools/glbprune.py          alleggerisce il modello dell'avatar
+archive/                   versioni precedenti (claw machine 3D, avatar 2D)
 ```
-
-`js/crane.js` è la vecchia claw machine 3D: la pagina non la carica. Come riattivarla è spiegato in `archive/claw-machine-3d/LEGGIMI.md`.
 
 ---
 
-## Note tecniche
+## Come si estende
 
-- **Cache:** i file CSS e JS sono richiamati con `?v=` in `index.html`. Quando ne modifichi uno, alza il numero, altrimenti il browser può tenere la versione vecchia.
-- **Prestazioni:** lo scroll gira a 60 fps in tutti e tre i canali.
-  - L'avatar non usa l'antialias WebGL: con l'antialias ogni ridimensionamento costava circa 200 ms.
-  - La barra in alto non ha `backdrop-filter`.
-  - Il catalogo ha un fondo pieno e nasconde il sito sotto (`body.catalog-open`), così non lampeggia.
-- **Telefono** (`css/mobile.css` e media query nei singoli file):
-  - fogli sul filo più piccoli;
-  - sfondo più leggero per la claw machine;
-  - suggerimenti "tocca" al posto di "passa sopra";
-  - disco della musica e avatar più piccoli.
-- **Spruzzi del canale G:** sono SVG generati usati come maschere (`--splat-*` in `css/channel-g.css`), quindi prendono il colore della lettera.
-- **Maiuscole nei percorsi:** la cartella `assets/Immagini` ha la I maiuscola. Online le maiuscole contano: se la rinomini, aggiorna `js/konami.js`.
-- **Font locali:** Upheaval TT, Radlush, BLOCKY, Decondol, Super Earthly, Rotis Semi Serif, Boldark, Monobloco e Akzidenz Grotesk CE Roman sono in `assets/fonts/`. Monobloco è libero anche per uso commerciale; per gli altri, prima di distribuire il repo verifica che le licenze lo permettano (Rotis è un font Adobe a pagamento, Akzidenz Grotesk è di Berthold, anch'esso a pagamento). DIN Condensed Bold non è nel repo: è un font di sistema di macOS e iOS, e altrove il sito usa Barlow Condensed.
-- **Font sostituiti:** Decoder usa Druk solo in versione Trial, che non si può pubblicare: sul sito i titoli sono in Anton (la testata vera resta nella copertina e nelle pagine). Canela (Modartech) e Gill Sans (MAO) non si possono distribuire: al loro posto ci sono Cormorant Garamond e, fuori dai dispositivi Apple, Hind.
-- **PDF troppo grande per GitHub:** `Progetti/Editorial Design/Fotografia_Modartech/Fotografia_Magazine_Jacopo_febi.pdf` pesa 117 MB e GitHub rifiuta i file oltre i 100 MB, quindi è in `.gitignore`. Il sito non lo usa: le pagine sono già in `assets/projects/modartech/pages/`.
+### Aggiungere un progetto
+
+1. Crea `assets/projects/<progetto>/` con `cover.jpg` (catalogo e filo) e, se deve finire nella claw machine, `capsule.png` (quadrata, 256 px).
+2. Aggiungi la voce in `js/projects.js`: `id`, `title`, `category`, `year`, `coverImage`, `capsuleImage`, `software`, `palette`, `style`, testi di panoramica e progettazione e `gallery`.
+3. Per la pagina scegli tra:
+   - le sezioni standard di `gallery`: `poster`, `moodboard`, `sketches`, `illustrations`, `mockups`, `download`;
+   - un layout dedicato: registra `window.PROJECT_LAYOUTS.<nome>` (una funzione che disegna la pagina e restituisce la sua funzione di pulizia) e metti `gallery.layout: '<nome>'`.
+4. Una categoria nuova va aggiunta anche tra i filtri del catalogo e in “Cosa faccio” del canale G (`data-cat` in `index.html`).
+
+### Tradurre un testo
+
+Il sito è scritto in italiano. Per tradurre un testo nuovo aggiungi una riga a `js/i18n-en.js`: la chiave è il testo italiano esatto, il valore è l'inglese. Le frasi con una parte variabile vanno in `I18N_EN_RULES`. I testi disegnati su canvas passano da `window.i18n.t()`.
+
+### Aggiornare l'avatar
+
+Esporta da Blender in `Avatar/Avatar.glb`, poi:
+
+```bash
+python3 tools/glbprune.py Avatar/Avatar.glb assets/avatar/jacopo-head.glb alta
+```
+
+Il comando toglie la scansione fotografica “alta” (1,4 MB → 170 KB). Le parti si riconoscono dal nome che hanno in Blender: `testa`, `occhi`, `sopracciglia`, `capelli`, `Occhiali`. Sorriso, carnagione e intensità del retino si regolano con `SMILE`, `SKIN_TONE` e `DITHER` in cima a `js/heroAvatar.js`.
+
+---
+
+<details>
+<summary><strong>Note tecniche</strong></summary>
+
+- **Cache.** CSS e JS sono richiamati con `?v=` in `index.html`: quando modifichi un file, alza il suo numero.
+- **Animazioni per tutti.** Per scelta il sito ignora l'impostazione di sistema “riduci movimento” (in Windows, “mostra animazioni” spento), così anche chi ce l'ha attiva vede il sito animato. Gli script chiedono a `window.djReduceMotion()`, definita nel `<head>` di `index.html`, che oggi restituisce sempre `false`. I blocchi CSS `prefers-reduced-motion: reduce` sono spenti con `and (update: none)`. Per tornare a rispettare l'impostazione: fai restituire a `djReduceMotion` il valore di `matchMedia('(prefers-reduced-motion: reduce)').matches` e togli `and (update: none)` dal CSS.
+- **Trackpad.** Il filo dei progetti ferma i gesti orizzontali (listener `wheel` non passivo), altrimenti Chrome, Edge e Safari li prendono per “indietro / avanti” nella cronologia.
+- **Prestazioni.** Lo scroll gira a 60 fps in tutti i canali:
+  - l'avatar non usa l'antialias WebGL;
+  - la barra in alto non usa `backdrop-filter`;
+  - il catalogo ha un fondo pieno e nasconde il sito sotto.
+- **Telefono.** Sotto i 760 px catalogo, lingua e audio passano nel menu ☰ (`js/navMenu.js`). L'avatar si gira col gesto orizzontale, mentre quello verticale scorre la pagina.
+- **Percorsi.** `assets/Immagini` ha la I maiuscola: online le maiuscole contano.
+- **Claw machine 3D.** `js/crane.js` è la vecchia versione 3D e la pagina non la carica. Come riattivarla è spiegato in `archive/claw-machine-3d/LEGGIMI.md`.
+- **File troppo grandi.** Il PDF di Modartech (117 MB) supera il limite di GitHub ed è in `.gitignore`. Il sito non lo usa: le pagine sono già in `assets/projects/modartech/pages/`.
+
+</details>
+
+<details>
+<summary><strong>Font</strong></summary>
+
+- **Font locali** in `assets/fonts/`: Upheaval TT, Radlush, BLOCKY, Decondol, Super Earthly, Rotis Semi Serif, Boldark, Monobloco, Akzidenz Grotesk CE Roman. Monobloco è libero anche per uso commerciale. Per gli altri bisogna verificare la licenza prima di riusarli: Rotis (Adobe) e Akzidenz Grotesk (Berthold) sono a pagamento.
+- **Font sostituiti sul sito**, perché non si possono distribuire:
+  - Druk Trial → Anton (Decoder);
+  - Canela → Cormorant Garamond (Modartech);
+  - Gill Sans → Hind fuori dai dispositivi Apple (MAO);
+  - DIN Condensed Bold → Barlow Condensed fuori da macOS e iOS (Gelato di Piazza).
+- Il file di Akzidenz Grotesk CE ha la legatura “fi” difettosa: nel layout di Gelato di Piazza le legature sono spente.
+
+</details>
+
+---
+
+## Contatti
+
+- Instagram: [@jacopo.febi](https://www.instagram.com/jacopo.febi/)
+- LinkedIn: [jacopofebidesigner](https://www.linkedin.com/in/jacopofebidesigner/)
+- Email: jacopofebi27@gmail.com
+
+## Diritti
+
+Il repository non ha una licenza open source. Progetti, immagini, testi e modello 3D sono lavori di Jacopo Febi: per riutilizzarli serve il suo permesso. I font di terze parti restano soggetti alle loro licenze.

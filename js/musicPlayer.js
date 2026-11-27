@@ -203,7 +203,7 @@
     // ---------- note che escono dal disco mentre la musica si sente ----------
     // così chi scorre il sito capisce da dove arriva il suono. Stile per canale (CSS).
     const notesBox = document.getElementById('mp-notes');
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reduceMotion = { get matches() { return (window.djReduceMotion && window.djReduceMotion()); } };
     const GLYPHS = {
       // R: teste quadrate, bandierine geometriche (Bauhaus)
       r: [

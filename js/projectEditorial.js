@@ -12,7 +12,7 @@
 
   const LAYOUTS = (window.PROJECT_LAYOUTS = window.PROJECT_LAYOUTS || {});
   const KIT = window.ProjectKit || {};
-  const reduceMotion = KIT.reduceMotion || (() => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const reduceMotion = KIT.reduceMotion || (() => (window.djReduceMotion && window.djReduceMotion()));
   const esc = KIT.esc || ((s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])));
   const zoom = KIT.zoom || ((src, caption) => `class="zoomable-trigger" data-img-src="${src}" data-img-caption="${esc(caption)}"`);
   const setupReveal = KIT.setupReveal || (() => () => {});

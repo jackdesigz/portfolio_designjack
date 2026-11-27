@@ -398,7 +398,7 @@
   .ik-phone { width: min(78%, 300px); }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .ik [data-reveal],
   .ik-blobs i,
   .ik-spot::after,

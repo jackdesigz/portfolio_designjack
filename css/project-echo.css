@@ -503,7 +503,7 @@
   .ec-sticker { width: 110px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .ec [data-reveal], .ec-sticker { transition: none !important; animation: none !important; }
   .ec-rings, .ec-marquee-track { animation: none; }
 }

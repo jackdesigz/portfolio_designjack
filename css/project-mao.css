@@ -626,7 +626,7 @@
   .mao-samurai { display: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .mao [data-reveal], .mao-kj, .mao-band, .mao-statue { transition: none !important; animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; }
   .mao-g-diag line, .mao-g-block, .mao-g-mod, .mao-g-base { transition: none !important; }
 }

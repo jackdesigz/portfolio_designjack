@@ -33,7 +33,7 @@
     blue: [29, 53, 87]
   };
 
-  const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const reduceMotion = !!((window.djReduceMotion && window.djReduceMotion()));
 
   // ------------------------------------------------------------------
   // 1. Pennello dither nell'hero

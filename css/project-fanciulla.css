@@ -697,7 +697,7 @@
   .fw-mock:first-child img { max-height: 70vh; object-fit: contain; background: #111; }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .fw [data-reveal], .fw-card-inner, .fw-sketch { transition: none !important; }
   .fw-rays { animation: none; }
 }

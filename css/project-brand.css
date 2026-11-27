@@ -1088,11 +1088,14 @@
   .mg-deck { flex-wrap: wrap; gap: 14px; }
   .mg-card { width: calc(50% - 10px); margin: 0; }
   .mg-deck.is-in .mg-card { transform: rotate(calc((var(--i) % 2 - 0.5) * 4deg)); }
-  .mg-color { width: 86px; height: 86px; }
+  /* su telefono i nomi lunghi (Rosa chiaro) vanno a capo dentro al cerchio invece di toccarne il bordo */
+  .mg-color { width: 92px; height: 92px; padding: 0 12px; grid-template-columns: minmax(0, 1fr); place-content: center stretch; }
+  .mg-color b { font-size: 0.76rem; }
+  .mg-color small { font-size: 0.64rem; }
   .mg-banner { grid-template-columns: repeat(3, 1fr); }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (update: none) {
   .ab [data-reveal], .mg [data-reveal], .ab-curtain, .ab-logo, .mg-card, .mg-tile { transition: none !important; }
   .mg-pattern span, .mg-hero-logo img, .mg-marquee-track, .mg-wall-track { animation: none !important; }
 }
